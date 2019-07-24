@@ -1,7 +1,8 @@
 #include <bits/stdc++.h>
 #define debug(x) cout << #x << " = " << x << endl
-#define REP(i,n) for(Long i = 0; i < (Long)n; i++)
+#define REP(i , n) for(Long i = 0; i < (Long)n ; i++)
 #define pb push_back
+
 using namespace std;
 
 typedef long long Long;
@@ -21,8 +22,6 @@ struct Graph {
 	}
 	
 	void addEdge(Long u, Long v){
-		u--;
-		v--;
 		adj[u].pb(v);
 		adj[v].pb(u);
 	}
@@ -86,5 +85,37 @@ struct Graph {
 } G;
 
 int main(){
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	cout.tie(NULL);
+	
+	Long T;
+	cin >> T;
+	REP(t , T){
+		cout << "Case " << t + 1 << ":\n";
+		Long n;
+		cin >> n;
+		G.clear(n);
+		REP(u , n){
+			Long k;
+			cin >> k;
+			REP( j ,k){
+				Long v;
+				cin >> v;
+				v--;
+				G.addEdge(u , v);
+			}
+		}
+		G.precalculate(n);
+		Long q;
+		cin >> q;
+		REP(i , q){
+			Long u ,v;
+			cin >> u >> v;
+			u--, v--;
+			cout << G.lca( u ,v) + 1 << "\n";
+		}
+	}
+	
 	return 0;
 }
