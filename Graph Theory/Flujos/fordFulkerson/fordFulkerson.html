@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>fordFulkerson.html</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="generator" content="SynEdit HTML exporter" />
+<style type="text/css">
+<!--
+body { color: #000000; background-color: #FFFFFF; }
+.cpp1-assembler { color: #0000FF; }
+.cpp1-character { color: #000000; }
+.cpp1-comment { color: #3399FF; font-style: italic; }
+.cpp1-float { color: #800080; }
+.cpp1-hexadecimal { color: #800080; }
+.cpp1-identifier { color: #000000; }
+.cpp1-illegalchar { color: #000000; }
+.cpp1-number { color: #800080; }
+.cpp1-octal { color: #800080; }
+.cpp1-preprocessor { color: #008000; }
+.cpp1-reservedword { color: #000000; font-weight: bold; }
+.cpp1-space { background-color: #FFFFFF; color: #000000; }
+.cpp1-string { color: #0000FF; font-weight: bold; }
+.cpp1-symbol { color: #FF0000; font-weight: bold; }
+-->
+</style>
+</head>
+<body>
+<pre>
+<code><span style="font: 9pt Consolas;"><span class="cpp1-preprocessor">#include &lt;bits/stdc++.h&gt;
+#define debug(x) cout &lt;&lt; #x &lt;&lt; &quot; = &quot; &lt;&lt; x &lt;&lt; endl
+#define FOR(i,n) for(ll i = 0; i &lt; n; i++)
+#define pb push_back
+#define ms(a,valor,n) FOR(i,n) a[i] = valor;
+#define snum(x) scanf(&quot;%lld&quot;,&amp;x)
+#define FAST ios_base::sync_with_stdio(0); cin.tie(0); cout.tie(0)
+#define MAX 5000
+#define INF (ll)(1e15)
+</span><span class="cpp1-reservedword">using</span><span class="cpp1-space"> </span><span class="cpp1-reservedword">namespace</span><span class="cpp1-space"> std</span><span class="cpp1-symbol">;
+
+</span><span class="cpp1-reservedword">typedef</span><span class="cpp1-space"> </span><span class="cpp1-reservedword">long</span><span class="cpp1-space"> </span><span class="cpp1-reservedword">long</span><span class="cpp1-space"> ll</span><span class="cpp1-symbol">;
+
+</span><span class="cpp1-reservedword">struct</span><span class="cpp1-space"> Graph</span><span class="cpp1-symbol">{
+</span><span class="cpp1-space">	vector</span><span class="cpp1-symbol">&lt;</span><span class="cpp1-identifier">ll</span><span class="cpp1-symbol">&gt;</span><span class="cpp1-space"> adj</span><span class="cpp1-symbol">[</span><span class="cpp1-identifier">MAX</span><span class="cpp1-symbol">];
+</span><span class="cpp1-space">	ll cap</span><span class="cpp1-symbol">[</span><span class="cpp1-identifier">MAX</span><span class="cpp1-symbol">][</span><span class="cpp1-identifier">MAX</span><span class="cpp1-symbol">];</span><span class="cpp1-space"> </span><span class="cpp1-comment">//capacidad
+</span><span class="cpp1-space">	</span><span class="cpp1-reservedword">bool</span><span class="cpp1-space"> vis</span><span class="cpp1-symbol">[</span><span class="cpp1-identifier">MAX</span><span class="cpp1-symbol">];
+</span><span class="cpp1-space">	</span><span class="cpp1-reservedword">bool</span><span class="cpp1-space"> M</span><span class="cpp1-symbol">[</span><span class="cpp1-identifier">MAX</span><span class="cpp1-symbol">][</span><span class="cpp1-identifier">MAX</span><span class="cpp1-symbol">];
+</span><span class="cpp1-space">	
+	</span><span class="cpp1-reservedword">void</span><span class="cpp1-space"> build</span><span class="cpp1-symbol">(){
+</span><span class="cpp1-space">		FOR</span><span class="cpp1-symbol">(</span><span class="cpp1-identifier">i</span><span class="cpp1-symbol">,</span><span class="cpp1-identifier">MAX</span><span class="cpp1-symbol">){
+</span><span class="cpp1-space">			adj</span><span class="cpp1-symbol">[</span><span class="cpp1-identifier">i</span><span class="cpp1-symbol">].</span><span class="cpp1-identifier">clear</span><span class="cpp1-symbol">();
+</span><span class="cpp1-space">			FOR</span><span class="cpp1-symbol">(</span><span class="cpp1-identifier">j</span><span class="cpp1-symbol">,</span><span class="cpp1-identifier">MAX</span><span class="cpp1-symbol">){
+</span><span class="cpp1-space">				cap</span><span class="cpp1-symbol">[</span><span class="cpp1-identifier">i</span><span class="cpp1-symbol">][</span><span class="cpp1-identifier">j</span><span class="cpp1-symbol">]</span><span class="cpp1-space"> </span><span class="cpp1-symbol">=</span><span class="cpp1-space"> </span><span class="cpp1-number">0</span><span class="cpp1-symbol">;
+</span><span class="cpp1-space">				M</span><span class="cpp1-symbol">[</span><span class="cpp1-identifier">i</span><span class="cpp1-symbol">][</span><span class="cpp1-identifier">j</span><span class="cpp1-symbol">]</span><span class="cpp1-space"> </span><span class="cpp1-symbol">=</span><span class="cpp1-space"> </span><span class="cpp1-reservedword">false</span><span class="cpp1-symbol">;
+</span><span class="cpp1-space">				vis</span><span class="cpp1-symbol">[</span><span class="cpp1-identifier">i</span><span class="cpp1-symbol">]</span><span class="cpp1-space"> </span><span class="cpp1-symbol">=</span><span class="cpp1-space"> </span><span class="cpp1-reservedword">false</span><span class="cpp1-symbol">;
+</span><span class="cpp1-space">			</span><span class="cpp1-symbol">}
+</span><span class="cpp1-space">		</span><span class="cpp1-symbol">}
+</span><span class="cpp1-space">	</span><span class="cpp1-symbol">}
+</span><span class="cpp1-space">	
+	ll dfs</span><span class="cpp1-symbol">(</span><span class="cpp1-identifier">ll u</span><span class="cpp1-symbol">,</span><span class="cpp1-space"> ll t </span><span class="cpp1-symbol">,</span><span class="cpp1-identifier">ll f</span><span class="cpp1-symbol">){
+</span><span class="cpp1-space">		</span><span class="cpp1-comment">//t = target
+</span><span class="cpp1-space">		</span><span class="cpp1-reservedword">if</span><span class="cpp1-symbol">(</span><span class="cpp1-identifier">u </span><span class="cpp1-symbol">==</span><span class="cpp1-space"> t</span><span class="cpp1-symbol">)</span><span class="cpp1-space"> </span><span class="cpp1-reservedword">return</span><span class="cpp1-space"> f</span><span class="cpp1-symbol">;
+</span><span class="cpp1-space">		</span><span class="cpp1-reservedword">if</span><span class="cpp1-symbol">(</span><span class="cpp1-identifier">vis</span><span class="cpp1-symbol">[</span><span class="cpp1-identifier">u</span><span class="cpp1-symbol">])</span><span class="cpp1-space"> </span><span class="cpp1-reservedword">return</span><span class="cpp1-space"> </span><span class="cpp1-number">0</span><span class="cpp1-symbol">;
+</span><span class="cpp1-space">		vis</span><span class="cpp1-symbol">[</span><span class="cpp1-identifier">u</span><span class="cpp1-symbol">]</span><span class="cpp1-space"> </span><span class="cpp1-symbol">=</span><span class="cpp1-space"> </span><span class="cpp1-reservedword">true</span><span class="cpp1-symbol">;
+</span><span class="cpp1-space">		
+		FOR</span><span class="cpp1-symbol">(</span><span class="cpp1-identifier">i</span><span class="cpp1-symbol">,</span><span class="cpp1-identifier">adj</span><span class="cpp1-symbol">[</span><span class="cpp1-identifier">u</span><span class="cpp1-symbol">].</span><span class="cpp1-identifier">size</span><span class="cpp1-symbol">()){
+</span><span class="cpp1-space">			ll v </span><span class="cpp1-symbol">=</span><span class="cpp1-space"> adj</span><span class="cpp1-symbol">[</span><span class="cpp1-identifier">u</span><span class="cpp1-symbol">][</span><span class="cpp1-identifier">i</span><span class="cpp1-symbol">];
+</span><span class="cpp1-space">			</span><span class="cpp1-reservedword">if</span><span class="cpp1-symbol">(</span><span class="cpp1-identifier">cap</span><span class="cpp1-symbol">[</span><span class="cpp1-identifier">u</span><span class="cpp1-symbol">][</span><span class="cpp1-identifier">v</span><span class="cpp1-symbol">]</span><span class="cpp1-space"> </span><span class="cpp1-symbol">==</span><span class="cpp1-space"> </span><span class="cpp1-number">0</span><span class="cpp1-symbol">)</span><span class="cpp1-space"> </span><span class="cpp1-reservedword">continue</span><span class="cpp1-symbol">;
+</span><span class="cpp1-space">			
+			ll ret </span><span class="cpp1-symbol">=</span><span class="cpp1-space"> dfs</span><span class="cpp1-symbol">(</span><span class="cpp1-identifier">v</span><span class="cpp1-symbol">,</span><span class="cpp1-identifier">t</span><span class="cpp1-symbol">,</span><span class="cpp1-space"> min</span><span class="cpp1-symbol">(</span><span class="cpp1-identifier">f</span><span class="cpp1-symbol">,</span><span class="cpp1-identifier">cap</span><span class="cpp1-symbol">[</span><span class="cpp1-identifier">u</span><span class="cpp1-symbol">][</span><span class="cpp1-identifier">v</span><span class="cpp1-symbol">])</span><span class="cpp1-space"> </span><span class="cpp1-symbol">);
+</span><span class="cpp1-space">			
+			</span><span class="cpp1-reservedword">if</span><span class="cpp1-symbol">(</span><span class="cpp1-identifier">ret </span><span class="cpp1-symbol">&gt;</span><span class="cpp1-space"> </span><span class="cpp1-number">0</span><span class="cpp1-symbol">){
+</span><span class="cpp1-space">				cap</span><span class="cpp1-symbol">[</span><span class="cpp1-identifier">u</span><span class="cpp1-symbol">][</span><span class="cpp1-identifier">v</span><span class="cpp1-symbol">]</span><span class="cpp1-space"> </span><span class="cpp1-symbol">-=</span><span class="cpp1-space"> ret</span><span class="cpp1-symbol">;
+</span><span class="cpp1-space">				cap</span><span class="cpp1-symbol">[</span><span class="cpp1-identifier">v</span><span class="cpp1-symbol">][</span><span class="cpp1-identifier">u</span><span class="cpp1-symbol">]</span><span class="cpp1-space"> </span><span class="cpp1-symbol">+=</span><span class="cpp1-space"> ret</span><span class="cpp1-symbol">;
+</span><span class="cpp1-space">				</span><span class="cpp1-reservedword">return</span><span class="cpp1-space"> ret</span><span class="cpp1-symbol">;
+</span><span class="cpp1-space">			</span><span class="cpp1-symbol">}
+</span><span class="cpp1-space">		</span><span class="cpp1-symbol">}
+</span><span class="cpp1-space">		</span><span class="cpp1-reservedword">return</span><span class="cpp1-space"> </span><span class="cpp1-number">0</span><span class="cpp1-symbol">;
+</span><span class="cpp1-space">	</span><span class="cpp1-symbol">}
+</span><span class="cpp1-space">	
+	ll fordFulkerson</span><span class="cpp1-symbol">(</span><span class="cpp1-identifier">ll s</span><span class="cpp1-symbol">,</span><span class="cpp1-space"> ll t</span><span class="cpp1-symbol">){</span><span class="cpp1-space"> </span><span class="cpp1-comment">//O((n+m)|F|
+</span><span class="cpp1-space">		ll flow </span><span class="cpp1-symbol">=</span><span class="cpp1-space"> </span><span class="cpp1-number">0</span><span class="cpp1-symbol">;
+</span><span class="cpp1-space">		</span><span class="cpp1-reservedword">while</span><span class="cpp1-symbol">(</span><span class="cpp1-reservedword">true</span><span class="cpp1-symbol">){
+</span><span class="cpp1-space">			ms</span><span class="cpp1-symbol">(</span><span class="cpp1-identifier">vis</span><span class="cpp1-symbol">,</span><span class="cpp1-reservedword">false</span><span class="cpp1-symbol">,</span><span class="cpp1-identifier">MAX</span><span class="cpp1-symbol">);
+</span><span class="cpp1-space">			ll inc </span><span class="cpp1-symbol">=</span><span class="cpp1-space"> dfs</span><span class="cpp1-symbol">(</span><span class="cpp1-identifier">s</span><span class="cpp1-symbol">,</span><span class="cpp1-identifier">t</span><span class="cpp1-symbol">,</span><span class="cpp1-identifier">INF</span><span class="cpp1-symbol">);
+</span><span class="cpp1-space">			</span><span class="cpp1-reservedword">if</span><span class="cpp1-symbol">(</span><span class="cpp1-identifier">inc </span><span class="cpp1-symbol">==</span><span class="cpp1-space"> </span><span class="cpp1-number">0</span><span class="cpp1-symbol">)</span><span class="cpp1-space"> </span><span class="cpp1-reservedword">break</span><span class="cpp1-symbol">;
+</span><span class="cpp1-space">			flow </span><span class="cpp1-symbol">+=</span><span class="cpp1-space"> inc</span><span class="cpp1-symbol">;
+</span><span class="cpp1-space">		</span><span class="cpp1-symbol">}
+</span><span class="cpp1-space">		</span><span class="cpp1-reservedword">return</span><span class="cpp1-space"> flow</span><span class="cpp1-symbol">;
+</span><span class="cpp1-space">	</span><span class="cpp1-symbol">}
+</span><span class="cpp1-space">	
+	</span><span class="cpp1-reservedword">void</span><span class="cpp1-space"> addEdge</span><span class="cpp1-symbol">(</span><span class="cpp1-identifier">ll u</span><span class="cpp1-symbol">,</span><span class="cpp1-space"> ll v</span><span class="cpp1-symbol">,</span><span class="cpp1-space"> ll uv</span><span class="cpp1-symbol">,</span><span class="cpp1-space"> ll vu </span><span class="cpp1-symbol">=</span><span class="cpp1-space"> </span><span class="cpp1-number">0</span><span class="cpp1-symbol">){
+</span><span class="cpp1-space">		</span><span class="cpp1-reservedword">if</span><span class="cpp1-symbol">(!</span><span class="cpp1-identifier">M</span><span class="cpp1-symbol">[</span><span class="cpp1-identifier">u</span><span class="cpp1-symbol">][</span><span class="cpp1-identifier">v</span><span class="cpp1-symbol">])</span><span class="cpp1-space"> adj</span><span class="cpp1-symbol">[</span><span class="cpp1-identifier">u</span><span class="cpp1-symbol">].</span><span class="cpp1-identifier">pb</span><span class="cpp1-symbol">(</span><span class="cpp1-identifier">v</span><span class="cpp1-symbol">);
+</span><span class="cpp1-space">		</span><span class="cpp1-reservedword">if</span><span class="cpp1-symbol">(!</span><span class="cpp1-identifier">M</span><span class="cpp1-symbol">[</span><span class="cpp1-identifier">v</span><span class="cpp1-symbol">][</span><span class="cpp1-identifier">u</span><span class="cpp1-symbol">])</span><span class="cpp1-space"> adj</span><span class="cpp1-symbol">[</span><span class="cpp1-identifier">v</span><span class="cpp1-symbol">].</span><span class="cpp1-identifier">pb</span><span class="cpp1-symbol">(</span><span class="cpp1-identifier">u</span><span class="cpp1-symbol">);
+</span><span class="cpp1-space">		
+		M</span><span class="cpp1-symbol">[</span><span class="cpp1-identifier">u</span><span class="cpp1-symbol">][</span><span class="cpp1-identifier">v</span><span class="cpp1-symbol">]</span><span class="cpp1-space"> </span><span class="cpp1-symbol">=</span><span class="cpp1-space"> M</span><span class="cpp1-symbol">[</span><span class="cpp1-identifier">v</span><span class="cpp1-symbol">][</span><span class="cpp1-identifier">u</span><span class="cpp1-symbol">]</span><span class="cpp1-space"> </span><span class="cpp1-symbol">=</span><span class="cpp1-space"> </span><span class="cpp1-reservedword">true</span><span class="cpp1-symbol">;
+</span><span class="cpp1-space">		cap</span><span class="cpp1-symbol">[</span><span class="cpp1-identifier">u</span><span class="cpp1-symbol">][</span><span class="cpp1-identifier">v</span><span class="cpp1-symbol">]</span><span class="cpp1-space"> </span><span class="cpp1-symbol">+=</span><span class="cpp1-space"> uv</span><span class="cpp1-symbol">;
+</span><span class="cpp1-space">		cap</span><span class="cpp1-symbol">[</span><span class="cpp1-identifier">v</span><span class="cpp1-symbol">][</span><span class="cpp1-identifier">u</span><span class="cpp1-symbol">]</span><span class="cpp1-space"> </span><span class="cpp1-symbol">+=</span><span class="cpp1-space"> vu</span><span class="cpp1-symbol">;
+</span><span class="cpp1-space">	</span><span class="cpp1-symbol">}
+}</span><span class="cpp1-space"> G</span><span class="cpp1-symbol">;
+
+</span><span class="cpp1-reservedword">int</span><span class="cpp1-space"> main</span><span class="cpp1-symbol">(){
+</span><span class="cpp1-space">	ll n</span><span class="cpp1-symbol">,</span><span class="cpp1-identifier">m</span><span class="cpp1-symbol">;
+</span><span class="cpp1-space">	snum</span><span class="cpp1-symbol">(</span><span class="cpp1-identifier">n</span><span class="cpp1-symbol">);
+</span><span class="cpp1-space">	snum</span><span class="cpp1-symbol">(</span><span class="cpp1-identifier">m</span><span class="cpp1-symbol">);
+</span><span class="cpp1-space">	
+	FOR</span><span class="cpp1-symbol">(</span><span class="cpp1-identifier">i</span><span class="cpp1-symbol">,</span><span class="cpp1-identifier">m</span><span class="cpp1-symbol">){
+</span><span class="cpp1-space">		ll u</span><span class="cpp1-symbol">,</span><span class="cpp1-identifier">v</span><span class="cpp1-symbol">,</span><span class="cpp1-identifier">c</span><span class="cpp1-symbol">;
+</span><span class="cpp1-space">		snum</span><span class="cpp1-symbol">(</span><span class="cpp1-identifier">u</span><span class="cpp1-symbol">);</span><span class="cpp1-space"> snum</span><span class="cpp1-symbol">(</span><span class="cpp1-identifier">v</span><span class="cpp1-symbol">);</span><span class="cpp1-space"> snum</span><span class="cpp1-symbol">(</span><span class="cpp1-identifier">c</span><span class="cpp1-symbol">);
+</span><span class="cpp1-space">		u</span><span class="cpp1-symbol">--;</span><span class="cpp1-space"> v</span><span class="cpp1-symbol">--;
+</span><span class="cpp1-space">		G</span><span class="cpp1-symbol">.</span><span class="cpp1-identifier">addEdge</span><span class="cpp1-symbol">(</span><span class="cpp1-identifier">u</span><span class="cpp1-symbol">,</span><span class="cpp1-identifier">v</span><span class="cpp1-symbol">,</span><span class="cpp1-identifier">c</span><span class="cpp1-symbol">);</span><span class="cpp1-comment">//directed
+</span><span class="cpp1-space">		</span><span class="cpp1-comment">//addEdge(u,v,c,c); //undirected
+</span><span class="cpp1-space">	</span><span class="cpp1-symbol">}
+</span><span class="cpp1-space">	
+	ll s</span><span class="cpp1-symbol">,</span><span class="cpp1-identifier">t</span><span class="cpp1-symbol">;
+</span><span class="cpp1-space">	snum</span><span class="cpp1-symbol">(</span><span class="cpp1-identifier">s</span><span class="cpp1-symbol">);</span><span class="cpp1-space"> snum</span><span class="cpp1-symbol">(</span><span class="cpp1-identifier">t</span><span class="cpp1-symbol">);
+</span><span class="cpp1-space">	ll resp </span><span class="cpp1-symbol">=</span><span class="cpp1-space"> G</span><span class="cpp1-symbol">.</span><span class="cpp1-identifier">fordFulkerson</span><span class="cpp1-symbol">(</span><span class="cpp1-identifier">s</span><span class="cpp1-symbol">,</span><span class="cpp1-identifier">t</span><span class="cpp1-symbol">);
+</span><span class="cpp1-space">	
+	</span><span class="cpp1-reservedword">return</span><span class="cpp1-space"> </span><span class="cpp1-number">0</span><span class="cpp1-symbol">;
+}
+</span></span>
+</code></pre>
+</body>
+</html>

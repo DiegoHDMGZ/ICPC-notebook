@@ -1,0 +1,2 @@
+https://www.spoj.com/problems/DQUERY/
+https://codeforces.com/contest/1195/problem/F

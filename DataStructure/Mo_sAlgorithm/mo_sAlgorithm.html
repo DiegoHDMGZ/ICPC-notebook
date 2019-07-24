@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>mo_sAlgorithm.html</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="generator" content="SynEdit HTML exporter" />
+<style type="text/css">
+<!--
+body { color: #000000; background-color: #FFFFFF; }
+.cpp1-assembler { color: #0000FF; }
+.cpp1-character { color: #000000; }
+.cpp1-comment { color: #3399FF; font-style: italic; }
+.cpp1-float { color: #800080; }
+.cpp1-hexadecimal { color: #800080; }
+.cpp1-identifier { color: #000000; }
+.cpp1-illegalchar { color: #000000; }
+.cpp1-number { color: #800080; }
+.cpp1-octal { color: #800080; }
+.cpp1-preprocessor { color: #008000; }
+.cpp1-reservedword { color: #000000; font-weight: bold; }
+.cpp1-space { background-color: #FFFFFF; color: #000000; }
+.cpp1-string { color: #0000FF; font-weight: bold; }
+.cpp1-symbol { color: #FF0000; font-weight: bold; }
+-->
+</style>
+</head>
+<body>
+<pre>
+<code><span style="font: 9pt Consolas;"><span class="cpp1-preprocessor">#include &lt;bits/stdc++.h&gt;
+#define debug(x) cout &lt;&lt; #x &lt;&lt; &quot; = &quot; &lt;&lt; x &lt;&lt; endl
+#define FOR(i,n) for(ll i = 0; i &lt; n; i++)
+#define pb push_back
+#define ms(a,valor,n) FOR(i,n) a[i] = valor;
+#define snum(x) scanf(&quot;%lld&quot;,&amp;x)
+#define FAST ios_base::sync_with_stdio(0); cin.tie(0); cout.tie(0)
+#define MAX 100000
+</span><span class="cpp1-reservedword">using</span><span class="cpp1-space"> </span><span class="cpp1-reservedword">namespace</span><span class="cpp1-space"> std</span><span class="cpp1-symbol">;
+
+</span><span class="cpp1-reservedword">typedef</span><span class="cpp1-space"> </span><span class="cpp1-reservedword">long</span><span class="cpp1-space"> </span><span class="cpp1-reservedword">long</span><span class="cpp1-space"> ll</span><span class="cpp1-symbol">;
+
+</span><span class="cpp1-comment">//Credits : https://www.geeksforgeeks.org/mos-algorithm-query-square-root-decomposition-set-1-introduction/
+//For a good explanation check : https://www.hackerearth.com/practice/notes/mos-algorithm/
+
+// Variable to represent block size.
+</span><span class="cpp1-identifier">ll block</span><span class="cpp1-symbol">;
+</span><span class="cpp1-identifier">ll N</span><span class="cpp1-symbol">;
+</span><span class="cpp1-identifier">ll A</span><span class="cpp1-symbol">[</span><span class="cpp1-identifier">MAX</span><span class="cpp1-symbol">];
+
+</span><span class="cpp1-reservedword">struct</span><span class="cpp1-space"> Query</span><span class="cpp1-symbol">{
+</span><span class="cpp1-space">    ll l</span><span class="cpp1-symbol">,</span><span class="cpp1-space"> r</span><span class="cpp1-symbol">;
+};
+</span><span class="cpp1-space"> 
+</span><span class="cpp1-comment">// Function used to sort all queries so that all queries of the same block are arranged together and within a block,
+// queries are sorted in increasing order of R values.
+</span><span class="cpp1-reservedword">bool</span><span class="cpp1-space"> compare</span><span class="cpp1-symbol">(</span><span class="cpp1-identifier">Query x</span><span class="cpp1-symbol">,</span><span class="cpp1-space"> Query y</span><span class="cpp1-symbol">)</span><span class="cpp1-space"> </span><span class="cpp1-symbol">{
+</span><span class="cpp1-space">    </span><span class="cpp1-comment">// Different blocks, sort by block.
+</span><span class="cpp1-space">    </span><span class="cpp1-reservedword">if</span><span class="cpp1-space"> </span><span class="cpp1-symbol">(</span><span class="cpp1-identifier">x</span><span class="cpp1-symbol">.</span><span class="cpp1-identifier">l</span><span class="cpp1-symbol">/</span><span class="cpp1-identifier">block </span><span class="cpp1-symbol">!=</span><span class="cpp1-space"> y</span><span class="cpp1-symbol">.</span><span class="cpp1-identifier">l</span><span class="cpp1-symbol">/</span><span class="cpp1-identifier">block</span><span class="cpp1-symbol">)</span><span class="cpp1-space"> </span><span class="cpp1-reservedword">return</span><span class="cpp1-space"> x</span><span class="cpp1-symbol">.</span><span class="cpp1-identifier">l</span><span class="cpp1-symbol">/</span><span class="cpp1-identifier">block </span><span class="cpp1-symbol">&lt;</span><span class="cpp1-space"> y</span><span class="cpp1-symbol">.</span><span class="cpp1-identifier">l</span><span class="cpp1-symbol">/</span><span class="cpp1-identifier">block</span><span class="cpp1-symbol">;
+</span><span class="cpp1-space">    </span><span class="cpp1-comment">// Same block, sort by R value
+</span><span class="cpp1-space">    </span><span class="cpp1-reservedword">return</span><span class="cpp1-space"> x</span><span class="cpp1-symbol">.</span><span class="cpp1-identifier">r </span><span class="cpp1-symbol">&lt;</span><span class="cpp1-space"> y</span><span class="cpp1-symbol">.</span><span class="cpp1-identifier">r</span><span class="cpp1-symbol">;
+}
+</span><span class="cpp1-space"> 
+</span><span class="cpp1-comment">// Prints sum of all query ranges. 
+</span><span class="cpp1-identifier">ll q</span><span class="cpp1-symbol">;
+</span><span class="cpp1-identifier">Query query</span><span class="cpp1-symbol">[</span><span class="cpp1-identifier">MAX</span><span class="cpp1-symbol">];
+
+</span><span class="cpp1-reservedword">void</span><span class="cpp1-space"> queryResults </span><span class="cpp1-symbol">(){
+</span><span class="cpp1-space">    </span><span class="cpp1-comment">// Find block size
+</span><span class="cpp1-space">    block </span><span class="cpp1-symbol">=</span><span class="cpp1-space"> </span><span class="cpp1-symbol">(</span><span class="cpp1-identifier">ll</span><span class="cpp1-symbol">)</span><span class="cpp1-identifier">sqrt</span><span class="cpp1-symbol">(</span><span class="cpp1-identifier">N</span><span class="cpp1-symbol">);
+</span><span class="cpp1-space"> 
+    </span><span class="cpp1-comment">// Sort all queries so that queries of same blocks are arranged together.
+</span><span class="cpp1-space">    sort</span><span class="cpp1-symbol">(</span><span class="cpp1-identifier">query</span><span class="cpp1-symbol">,</span><span class="cpp1-space"> query </span><span class="cpp1-symbol">+</span><span class="cpp1-space"> q</span><span class="cpp1-symbol">,</span><span class="cpp1-space"> compare</span><span class="cpp1-symbol">);
+</span><span class="cpp1-space">    
+    </span><span class="cpp1-comment">// Initialize current L, current R and current sum
+</span><span class="cpp1-space">    ll currL </span><span class="cpp1-symbol">=</span><span class="cpp1-space"> </span><span class="cpp1-number">0</span><span class="cpp1-symbol">,</span><span class="cpp1-space"> currR </span><span class="cpp1-symbol">=</span><span class="cpp1-space"> </span><span class="cpp1-number">0</span><span class="cpp1-symbol">;
+</span><span class="cpp1-space">    ll currSum </span><span class="cpp1-symbol">=</span><span class="cpp1-space"> </span><span class="cpp1-number">0</span><span class="cpp1-symbol">;
+</span><span class="cpp1-space"> 
+    </span><span class="cpp1-comment">// Traverse through all queries
+</span><span class="cpp1-space">    FOR</span><span class="cpp1-symbol">(</span><span class="cpp1-identifier">i</span><span class="cpp1-symbol">,</span><span class="cpp1-identifier">q</span><span class="cpp1-symbol">){
+</span><span class="cpp1-space">        </span><span class="cpp1-comment">// L and R values of current range
+</span><span class="cpp1-space">        ll l </span><span class="cpp1-symbol">=</span><span class="cpp1-space"> query</span><span class="cpp1-symbol">[</span><span class="cpp1-identifier">i</span><span class="cpp1-symbol">].</span><span class="cpp1-identifier">l</span><span class="cpp1-symbol">,</span><span class="cpp1-space"> r </span><span class="cpp1-symbol">=</span><span class="cpp1-space"> query</span><span class="cpp1-symbol">[</span><span class="cpp1-identifier">i</span><span class="cpp1-symbol">].</span><span class="cpp1-identifier">r</span><span class="cpp1-symbol">;
+</span><span class="cpp1-space"> 
+        </span><span class="cpp1-comment">// Remove extra elements of previous range. For example if previous range is [0, 3] and current
+</span><span class="cpp1-space">        </span><span class="cpp1-comment">// range is [2, 5], then a[0] and a[1] are subtracted
+</span><span class="cpp1-space">        </span><span class="cpp1-reservedword">while</span><span class="cpp1-space"> </span><span class="cpp1-symbol">(</span><span class="cpp1-identifier">currL </span><span class="cpp1-symbol">&lt;</span><span class="cpp1-space"> l</span><span class="cpp1-symbol">){
+</span><span class="cpp1-space">            currSum </span><span class="cpp1-symbol">-=</span><span class="cpp1-space"> A</span><span class="cpp1-symbol">[</span><span class="cpp1-identifier">currL</span><span class="cpp1-symbol">];
+</span><span class="cpp1-space">            currL</span><span class="cpp1-symbol">++;
+</span><span class="cpp1-space">        </span><span class="cpp1-symbol">}
+</span><span class="cpp1-space"> 
+        </span><span class="cpp1-comment">// Add Elements of current Range
+</span><span class="cpp1-space">        </span><span class="cpp1-reservedword">while</span><span class="cpp1-space"> </span><span class="cpp1-symbol">(</span><span class="cpp1-identifier">currL </span><span class="cpp1-symbol">&gt;</span><span class="cpp1-space"> l</span><span class="cpp1-symbol">)</span><span class="cpp1-space"> </span><span class="cpp1-symbol">{
+</span><span class="cpp1-space">            currSum </span><span class="cpp1-symbol">+=</span><span class="cpp1-space"> A</span><span class="cpp1-symbol">[</span><span class="cpp1-identifier">currL</span><span class="cpp1-symbol">-</span><span class="cpp1-number">1</span><span class="cpp1-symbol">];
+</span><span class="cpp1-space">            currL</span><span class="cpp1-symbol">--;
+</span><span class="cpp1-space">        </span><span class="cpp1-symbol">}
+</span><span class="cpp1-space">        </span><span class="cpp1-reservedword">while</span><span class="cpp1-space"> </span><span class="cpp1-symbol">(</span><span class="cpp1-identifier">currR </span><span class="cpp1-symbol">&lt;=</span><span class="cpp1-space"> r</span><span class="cpp1-symbol">){
+</span><span class="cpp1-space">            currSum </span><span class="cpp1-symbol">+=</span><span class="cpp1-space"> A</span><span class="cpp1-symbol">[</span><span class="cpp1-identifier">currR</span><span class="cpp1-symbol">];
+</span><span class="cpp1-space">            currR</span><span class="cpp1-symbol">++;
+</span><span class="cpp1-space">        </span><span class="cpp1-symbol">}
+</span><span class="cpp1-space"> 
+        </span><span class="cpp1-comment">// Remove elements of previous range.  For example when previous range is [0, 10] and current range
+</span><span class="cpp1-space">        </span><span class="cpp1-comment">// is [3, 8], then a[9] and a[10] are subtracted
+</span><span class="cpp1-space">        </span><span class="cpp1-reservedword">while</span><span class="cpp1-space"> </span><span class="cpp1-symbol">(</span><span class="cpp1-identifier">currR </span><span class="cpp1-symbol">&gt;</span><span class="cpp1-space"> r</span><span class="cpp1-symbol">+</span><span class="cpp1-number">1</span><span class="cpp1-symbol">){
+</span><span class="cpp1-space">            currSum </span><span class="cpp1-symbol">-=</span><span class="cpp1-space"> A</span><span class="cpp1-symbol">[</span><span class="cpp1-identifier">currR</span><span class="cpp1-symbol">-</span><span class="cpp1-number">1</span><span class="cpp1-symbol">];
+</span><span class="cpp1-space">            currR</span><span class="cpp1-symbol">--;
+</span><span class="cpp1-space">        </span><span class="cpp1-symbol">}
+</span><span class="cpp1-space"> 
+        </span><span class="cpp1-comment">// Print sum of current range
+</span><span class="cpp1-space">        printf</span><span class="cpp1-symbol">(</span><span class="cpp1-string">&quot;Sum of [ %lld , %lld ] = %lld\n&quot;</span><span class="cpp1-symbol">,</span><span class="cpp1-identifier">l</span><span class="cpp1-symbol">,</span><span class="cpp1-identifier">r</span><span class="cpp1-symbol">,</span><span class="cpp1-identifier">currSum</span><span class="cpp1-symbol">);
+</span><span class="cpp1-space">    </span><span class="cpp1-symbol">}
+}
+</span><span class="cpp1-space"> 
+</span><span class="cpp1-comment">// Driver program
+</span><span class="cpp1-reservedword">int</span><span class="cpp1-space"> main</span><span class="cpp1-symbol">(){
+</span><span class="cpp1-space">	snum</span><span class="cpp1-symbol">(</span><span class="cpp1-identifier">N</span><span class="cpp1-symbol">);
+</span><span class="cpp1-space">	FOR</span><span class="cpp1-symbol">(</span><span class="cpp1-identifier">i</span><span class="cpp1-symbol">,</span><span class="cpp1-identifier">N</span><span class="cpp1-symbol">){
+</span><span class="cpp1-space">		snum</span><span class="cpp1-symbol">(</span><span class="cpp1-identifier">A</span><span class="cpp1-symbol">[</span><span class="cpp1-identifier">i</span><span class="cpp1-symbol">]);
+</span><span class="cpp1-space">	</span><span class="cpp1-symbol">}
+</span><span class="cpp1-space">	snum</span><span class="cpp1-symbol">(</span><span class="cpp1-identifier">q</span><span class="cpp1-symbol">);
+</span><span class="cpp1-space">	FOR</span><span class="cpp1-symbol">(</span><span class="cpp1-identifier">i</span><span class="cpp1-symbol">,</span><span class="cpp1-identifier">q</span><span class="cpp1-symbol">){
+</span><span class="cpp1-space">		snum</span><span class="cpp1-symbol">(</span><span class="cpp1-identifier">query</span><span class="cpp1-symbol">[</span><span class="cpp1-identifier">i</span><span class="cpp1-symbol">].</span><span class="cpp1-identifier">l</span><span class="cpp1-symbol">);</span><span class="cpp1-space"> snum</span><span class="cpp1-symbol">(</span><span class="cpp1-identifier">query</span><span class="cpp1-symbol">[</span><span class="cpp1-identifier">i</span><span class="cpp1-symbol">].</span><span class="cpp1-identifier">r</span><span class="cpp1-symbol">);
+</span><span class="cpp1-space">	</span><span class="cpp1-symbol">}
+</span><span class="cpp1-space">    queryResults</span><span class="cpp1-symbol">();
+</span><span class="cpp1-space">    </span><span class="cpp1-reservedword">return</span><span class="cpp1-space"> </span><span class="cpp1-number">0</span><span class="cpp1-symbol">;
+}
+
+</span></span>
+</code></pre>
+</body>
+</html>

@@ -1,0 +1,48 @@
+#include <bits/stdc++.h>
+
+typedef long long Long;
+// Binary Indexed Tree
+// tree[i] = f[i - 2^r + 1] + ... + f[i]
+//ultimo bit encendido = x & -x;
+
+using namespace std;
+
+const Long MAX = 100000;
+const Long EXTRA = 6;
+struct FenwickTree{
+	Long tree[MAX+EXTRA + 1];
+	
+	void clean(Long n){ //O(nlogn)
+		for(Long i = 0; i < n; i++){
+			tree[i] = 0;
+		}
+	}
+	
+	Long query(Long i){ //O(log n)
+		i += EXTRA;
+		Long sum = 0;
+		while(i > 0){
+			sum += tree[i];
+			i -= (i & -i);
+		}
+		return sum;
+	}
+	
+	void update(Long i , Long delta){ //O(log MAX)
+		i += EXTRA;
+		while(i <= MAX){
+			tree[i] += delta;
+			i += (i & -i);
+		}
+	}
+	
+	void update(Long l , Long r, Long delta){
+		update(l , delta);
+		update(r + 1 , -delta);
+	}		
+} ft;
+
+int main() {
+	return 0;
+}
+
