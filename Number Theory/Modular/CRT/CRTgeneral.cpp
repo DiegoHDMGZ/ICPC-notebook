@@ -52,7 +52,7 @@ bool CRT(pair<Long, Long > p1  , pair<Long , Long > p2, pair<Long , Long > &resp
 	Long den = p2.first / g;
 	
 	aux = (aux % den) * p1.first % lcm;
-	aux = normalize(aux, lcm); //normalize
+	aux = normalize(aux, lcm); 
 	aux = (aux + p1.second) % lcm;
 	
 	resp = make_pair(lcm , aux);
@@ -70,7 +70,6 @@ bool CRT(vector<Long> &d, vector<Long> &a, pair<Long, Long> &resp) { //O( |d| lo
 			return false;
 		}
 	}
-	
 	resp = ant;
 	return true;
 }

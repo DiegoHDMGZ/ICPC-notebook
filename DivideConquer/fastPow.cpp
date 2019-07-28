@@ -19,7 +19,7 @@ Long fastPow(Long a, Long b , Long c){ //O(logb)
 	return (a*temp)%c;
 }
 
-Long modExp(Long a, Long b , Long mod){ //O(logb) 
+Long fermat(Long a, Long b , Long mod){ //O(logb) 
 	a = a %mod;
 	
 	b = b%(mod-1);

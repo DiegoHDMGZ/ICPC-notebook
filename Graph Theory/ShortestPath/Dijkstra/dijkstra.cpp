@@ -48,7 +48,7 @@ struct Graph{
 		cost[v].pb(w);
 	}
 	
-	void dijkstra(Long root, Long fin){ //O(nlogm + mlogn)
+	void dijkstra(Long root){ //O(nlogm + mlogn)
 		priority_queue<Path> q;
 		
 		Path inicio;
@@ -70,16 +70,20 @@ struct Graph{
 			}
 	
 			vis[u] = true;
-			if(u == fin) return;
-			
 			Long i = 0;
 			for( Long v : adj[u]){
 				if(vis[v]){
+					i++;
 					continue;
 				}
 				
 				if(d[u]+cost[u][i] < d[v]){
+					debug(u + 1);
+					debug(v + 1);
+					debug(cost[u][i]);
 					d[v] = d[u]+cost[u][i];
+					debug(d[v]);
+					cout << endl;
 					padre[v] = u;
 					Path nuevoPath(v,d[v]);
 					q.push(nuevoPath);
@@ -91,5 +95,17 @@ struct Graph{
 } G;
 
 int main() {
+	Long n , m;
+	cin >> n >> m;
+	G.clear(n);
+	REP( i , m){
+		Long u , v , w;
+		cin >> u >> v >> w;
+		G.addEdge(u , v , w);
+	}
+	G.dijkstra(0);
+	REP(i , n){
+		cout << G.d[i] << endl;
+	}
 	return 0;
 }
