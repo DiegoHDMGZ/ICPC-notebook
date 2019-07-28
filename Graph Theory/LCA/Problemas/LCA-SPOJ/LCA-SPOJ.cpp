@@ -7,6 +7,7 @@ using namespace std;
 
 typedef long long Long;
 
+//https://www.spoj.com/problems/LCA/
 const Long MAX = 1e5;
 const Long loga = log2(MAX)+1;
 

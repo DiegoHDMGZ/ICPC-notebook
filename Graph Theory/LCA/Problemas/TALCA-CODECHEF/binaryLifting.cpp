@@ -1,12 +1,13 @@
 #include <bits/stdc++.h>
 #define debug(x) cout << #x << " = " << x << endl
-#define REP(i,n) for(Long i = 0; i < (Long)n; i++)
+#define REP(i , n) for(Long i = 0; i < (Long)n ; i++)
 #define pb push_back
+
 using namespace std;
 
 typedef long long Long;
 
-const Long MAX = 1e5;
+const Long MAX = 2e5;
 const Long loga = 18;
 
 struct Graph {
@@ -75,8 +76,44 @@ struct Graph {
 	bool isAncestor(Long u, Long v){ //is u ancestor of v ?
 		return tIn[u] < tIn[v] && tOut[u] > tOut[v];
 	}	
+	Long query(Long r , Long u , Long v){
+		r--;
+		u--;
+		v--;
+		Long x = lca(u , v);
+		Long y = lca(r , u);
+		Long z = lca(r, v);
+		if(isAncestor(y , x)){
+			return x + 1;
+		}
+		if(y == x ) {
+			return z + 1;
+		}
+		return y + 1;
+	}	
 } G;
 
+
 int main(){
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	cout.tie(NULL);
+	
+	Long N;
+	cin >> N;
+	for(Long i = 0; i < N - 1; i++){
+		Long u , v;
+		cin >> u >> v;
+		G.addEdge(u , v);
+	}
+	G.precalculate(N);
+
+	Long Q;
+	cin >> Q;
+	for(Long q = 0; q < Q; q++){
+		Long r, u , v;
+		cin >> r >> u >> v;
+		cout << G.query(r, u , v) << "\n";
+	} 
 	return 0;
 }
