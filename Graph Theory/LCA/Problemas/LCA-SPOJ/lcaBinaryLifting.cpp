@@ -1,11 +1,13 @@
 #include <bits/stdc++.h>
 #define debug(x) cout << #x << " = " << x << endl
-#define REP(i,n) for(Long i = 0; i < (Long)n; i++)
+#define REP(i , n) for(Long i = 0; i < (Long)n ; i++)
 #define pb push_back
+
 using namespace std;
 
 typedef long long Long;
 
+//https://www.spoj.com/problems/LCA/
 const Long MAX = 1e5;
 const Long loga = log2(MAX)+1;
 
@@ -15,18 +17,18 @@ struct Graph {
 	int height[MAX];
 	int tIn[MAX];
 	int tOut[MAX];
+	Long inDegree[MAX];
 	int timer = 0;
 	
 	void clear(Long n){
 		for(Long i = 0; i < n; i++){
 			adj[i].clear();
+			inDegree[i] = 0;
 		}
 		timer = 0;
 	}
 	
 	void addEdge(int u , int v){
-		u--;
-		v--;
 		adj[u].push_back(v);
 		adj[v].push_back(u);
 	}
@@ -42,7 +44,13 @@ struct Graph {
 		}
 		tOut[u] = timer++;
 	}
-
+	
+	Long getRoot(Long n) {
+		REP(i , n){
+			if(inDegree[i] == 0) return i;
+		}
+		return -1;
+	}
 	void precalculate(int N, int root = 0){ //O(nlogn)
 		anc[root][0] = -1;
 		height[root] = 0;
@@ -86,5 +94,37 @@ struct Graph {
 } G;
 
 int main(){
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	cout.tie(NULL);
+	
+	Long T;
+	cin >> T;
+	REP(t , T){
+		cout << "Case " << t + 1 << ":\n";
+		Long n;
+		cin >> n;
+		G.clear(n);
+		REP(u , n){
+			Long k;
+			cin >> k;
+			REP( j ,k){
+				Long v;
+				cin >> v;
+				v--;
+				G.addEdge(u , v);
+			}
+		}
+		G.precalculate(n, G.getRoot(n));
+		Long q;
+		cin >> q;
+		REP(i , q){
+			Long u ,v;
+			cin >> u >> v;
+			u--, v--;
+			cout << G.lca( u ,v) + 1 << "\n";
+		}
+	}
+	
 	return 0;
 }

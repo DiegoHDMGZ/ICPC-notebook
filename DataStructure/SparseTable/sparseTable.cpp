@@ -10,7 +10,7 @@ typedef long long Long;
 const Long MAX = 1e6;
 const Long loga = (Long)log2(MAX)+1;
 
-struct sparseTable{
+struct SparseTable{
 	Long st[MAX][loga];
 	
 	Long f(Long a, Long b){

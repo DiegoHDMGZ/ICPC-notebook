@@ -1,17 +1,19 @@
 #include <bits/stdc++.h>
 #define debug(x) cout << #x << " = " << x << endl
-#define REP(i,n) for(Long i = 0; i < (Long)n; i++)
+#define REP(i , n) for(Long i = 0; i < (Long)n ; i++)
 #define pb push_back
+
 using namespace std;
 
 typedef long long Long;
 
-const Long MAX = 1e5;
-const Long loga = log2(MAX)+1;
+//https://www.codechef.com/problems/TALCA
+const Long MAX = 2e5;
+const Long loga = 18;
 
 struct Graph {
 	vector<int> adj[MAX];
-	int anc[MAX][loga]; //anc[i][j] : ancestor of i at distance 2^j
+	int anc[MAX][loga];
 	int height[MAX];
 	int tIn[MAX];
 	int tOut[MAX];
@@ -27,8 +29,8 @@ struct Graph {
 	void addEdge(int u , int v){
 		u--;
 		v--;
-		adj[u].push_back(v);
-		adj[v].push_back(u);
+		adj[u].pb(v);
+		adj[v].pb(u);
 	}
 	
 	void dfs(int u = 0){ //O(n+m)
@@ -45,7 +47,6 @@ struct Graph {
 
 	void precalculate(int N, int root = 0){ //O(nlogn)
 		anc[root][0] = -1;
-		height[root] = 0;
 		dfs(root);
 		for(int j = 1; (1 << j) < N; j++){
 			for(int i = 0; i < N; i++){
@@ -83,8 +84,50 @@ struct Graph {
 	bool isAncestor(Long u, Long v){ //is u ancestor of v ?
 		return tIn[u] < tIn[v] && tOut[u] > tOut[v];
 	}	
+	Long query(Long r , Long u , Long v){
+		r--;
+		u--;
+		v--;
+		Long x = lca(u , v);
+		Long y = lca(r , u);
+		Long z = lca(r, v);
+		if(isAncestor(y , x)){
+			return x + 1;
+		}
+		if(y == x ) {
+			return z + 1;
+		}
+		return y + 1;
+	}	
 } G;
 
+
 int main(){
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	cout.tie(NULL);
+	
+	Long N;
+	cin >> N;
+	//probando el clear
+	for(Long i = 0; i < N - 1; i++){
+		G.addEdge(i + 1 , i + 2);
+	}
+	G.precalculate(N);
+	G.clear(N); //
+	for(Long i = 0; i < N - 1; i++){
+		Long u , v;
+		cin >> u >> v;
+		G.addEdge(u , v);
+	}
+	G.precalculate(N);
+
+	Long Q;
+	cin >> Q;
+	for(Long q = 0; q < Q; q++){
+		Long r, u , v;
+		cin >> r >> u >> v;
+		cout << G.query(r, u , v) << "\n";
+	} 
 	return 0;
 }

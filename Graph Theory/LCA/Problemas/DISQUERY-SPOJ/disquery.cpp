@@ -1,10 +1,13 @@
 #include <bits/stdc++.h>
 #define debug(x) cout << #x << " = " << x << endl
-#define REP(i,n) for(Long i = 0; i < (Long)n; i++)
+#define REP(i , n) for(Long i = 0; i < (Long)n ; i++)
 #define pb push_back
+
 using namespace std;
 
 typedef long long Long;
+
+//https://www.spoj.com/problems/DISQUERY/
 
 const Long MAX = 1e5;
 const Long INF = 1e18;
@@ -76,7 +79,7 @@ struct Graph{
 		}
 	}
 	
-	pair<Long,Long> bestOnPath(Long u, Long v){ //O(logn) <min, max>
+	pair<Long,Long> bestOnPath(Long u, Long v){ //O(logn)
 		if(height[u] < height[v]){
 			swap(u,v);
 		}
@@ -106,14 +109,31 @@ struct Graph{
 		bestV = f(bestV , st[v][0]); 
 		return f( bestU, bestV );
 	}
-	
-	bool isAncestor(Long u, Long v){ //is u ancestor of v ?
-		return tIn[u] < tIn[v] && tOut[u] > tOut[v];
-	}	
 } G;
 
-int main() {
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	cout.tie(NULL);
+	
+	Long n;
+	cin >> n;
+	
+	for(Long i = 0; i < n - 1; i++){
+		Long u , v , w;
+		cin >> u >> v >> w;
+		G.addEdge(u , v , w);
+	}
+	G.precalculate(n);
+	Long Q;
+	cin >> Q;
+	for(Long q = 0; q < Q; q++){
+		Long u , v;
+		cin >> u>> v;
+		u--;
+		v--;
+		cout << G.bestOnPath(u , v).first << " " << G.bestOnPath(u , v).second << "\n";
+	}
+	
 	return 0;
 }
-
-

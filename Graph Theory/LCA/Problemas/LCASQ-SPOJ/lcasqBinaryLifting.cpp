@@ -7,22 +7,28 @@ using namespace std;
 
 typedef long long Long;
 
-const Long MAX = 2e5;
-const Long loga = 18;
+//https://www.spoj.com/problems/LCA/
+const Long MAX = 1e5;
+const Long loga = log2(MAX)+1;
 
 struct Graph {
 	vector<int> adj[MAX];
-	int anc[MAX][loga];
+	int anc[MAX][loga]; //anc[i][j] : ancestor of i at distance 2^j
 	int height[MAX];
 	int tIn[MAX];
 	int tOut[MAX];
 	int timer = 0;
 	
+	void clear(Long n){
+		for(Long i = 0; i < n; i++){
+			adj[i].clear();
+		}
+		timer = 0;
+	}
+	
 	void addEdge(int u , int v){
-		u--;
-		v--;
-		adj[u].pb(v);
-		adj[v].pb(u);
+		adj[u].push_back(v);
+		adj[v].push_back(u);
 	}
 	
 	void dfs(int u = 0){ //O(n+m)
@@ -36,9 +42,10 @@ struct Graph {
 		}
 		tOut[u] = timer++;
 	}
-
+	
 	void precalculate(int N, int root = 0){ //O(nlogn)
 		anc[root][0] = -1;
+		height[root] = 0;
 		dfs(root);
 		for(int j = 1; (1 << j) < N; j++){
 			for(int i = 0; i < N; i++){
@@ -76,44 +83,33 @@ struct Graph {
 	bool isAncestor(Long u, Long v){ //is u ancestor of v ?
 		return tIn[u] < tIn[v] && tOut[u] > tOut[v];
 	}	
-	Long query(Long r , Long u , Long v){
-		r--;
-		u--;
-		v--;
-		Long x = lca(u , v);
-		Long y = lca(r , u);
-		Long z = lca(r, v);
-		if(isAncestor(y , x)){
-			return x + 1;
-		}
-		if(y == x ) {
-			return z + 1;
-		}
-		return y + 1;
-	}	
 } G;
-
 
 int main(){
 	ios_base::sync_with_stdio(false);
 	cin.tie(NULL);
 	cout.tie(NULL);
 	
-	Long N;
-	cin >> N;
-	for(Long i = 0; i < N - 1; i++){
-		Long u , v;
-		cin >> u >> v;
-		G.addEdge(u , v);
+	Long n;
+	cin >> n;
+	REP(u , n){
+		Long k;
+		cin >> k;
+		REP( j ,k){
+			Long v;
+			cin >> v;
+			G.addEdge(u , v);
+		}
 	}
-	G.precalculate(N);
-
-	Long Q;
-	cin >> Q;
-	for(Long q = 0; q < Q; q++){
-		Long r, u , v;
-		cin >> r >> u >> v;
-		cout << G.query(r, u , v) << "\n";
-	} 
+	G.precalculate(n);
+	Long q;
+	cin >> q;
+	REP(i , q){
+		Long u ,v;
+		cin >> u >> v;
+		cout << G.lca( u ,v) << "\n";
+	}
+	
+	
 	return 0;
 }
