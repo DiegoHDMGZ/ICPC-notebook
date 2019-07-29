@@ -25,14 +25,14 @@ struct Graph {
 	vector<Edge> bridge;
 	vector<Long> articulation;
 	bool isArticulation[MAX];
+	unordered_map<Long,bool> isBridge[MAX];
 	
 	void clear(Long N = MAX) {
 		REP( i , N) {
 			adj[i].clear();
 			vis[i] = false;
-			tIn[i] = -1;
-			low[i] = -1;
 			isArticulation[i] = false;
+			isBridge[i].clear();
 		}
 		bridge.clear();
 		articulation.clear();
@@ -59,17 +59,20 @@ struct Graph {
 				low[u] = min(low[u] , low[v]);
 				if(low[v] > tIn[u]) {
 					bridge.pb(Edge(u , v));
+					isBridge[min(u,v)][max(u,v)] = true;
 				}
 				if(low[v] >= tIn[u] && p != -1 && !isArticulation[u]) {
 					articulation.pb(u);
 					isArticulation[u] = true;
 				}
 				children++;
+				if(p == -1 && children > 1){
+					if(!isArticulation[u]){
+						isArticulation[u] = true;
+						articulation.push_back(u);
+					}
+				}
 			}
-		}
-		if(p == -1 && children > 1) {
-			articulation.pb(u);
-			isArticulation[u] = true;
 		}
 	}
 	
@@ -96,41 +99,6 @@ struct Graph {
 		cout << endl;
 	}
 } G;
- 
-/*
-11 14
-1 2
-1 3
-2 3
-2 4
-2 5
-3 5
-4 9
-9 10
-9 11
-10 11
-5 7
-5 6
-6 7
-6 8
- 
-11 13
-1 11
-11 2
-2 3
-2 4
-3 4
-11 5
-5 6
-5 7
-7 6
-11 8
-8 9
-9 10
-10 8
- 
-
-*/
 
 int main() {
 	ios_base::sync_with_stdio(false);

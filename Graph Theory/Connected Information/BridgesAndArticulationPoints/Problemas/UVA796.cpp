@@ -6,6 +6,8 @@ using namespace std;
 
 typedef long long Long;
 
+//https://uva.onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=737
+
 const Long MAX = 4e5;  
 
 struct Edge{
