@@ -24,7 +24,7 @@ Matrix add(const Matrix &a , const Matrix &b){ //O(n * m)
 	return c;
 }
 
-Matrix mult(const Matrix &a, const Matrix &b){ //O( n^3)
+Matrix mult( Matrix &a,   Matrix &b , Long mod) { //O( n^3)
 	Long n1 = a.size();
 	Long m1 = a[0].size();
 	Long n2 = b.size();
@@ -38,10 +38,28 @@ Matrix mult(const Matrix &a, const Matrix &b){ //O( n^3)
 		for(Long j = 0; j < m; j++){
 			for(Long k = 0; k < m1; k++){
 				c[i][j] += a[i][k] * b[k][j];
+				c[i][j] %= mod;
 			}
 		}
 	}
 	return c;
+}
+
+
+Matrix matPow( Matrix a, Long b , Long mod){ //O(n^3 log b) only square matrix
+	Long n = a.size();
+	Matrix ans = Matrix(n , vector<Long>(n , 0));
+	for(Long i = 0; i < n; i++){
+		ans[i][i] = 1;
+	}
+	while(b > 0){
+		if(b & 1 == 1){ //b % 2 == 1
+			ans = mult(ans , a , mod);
+		}
+		a = mult(a , a , mod);
+		b >>= 1; //b /= 2;
+	}
+	return ans;
 }
 
 void print(Matrix &a){
@@ -60,24 +78,16 @@ int main(){
 	cin.tie(NULL);
 	cout.tie(NULL);
 
-	
-	Long n, m;
-	cin >> n >> m;
-	Matrix a(n , vector<Long>(m));
+	Long n , b ,mod;
+	cin >> n >> b >> mod;
+	Matrix a(n , vector<Long>(n));
 	REP(i , n){
-		REP(j , m){
+		REP(j , n){
 			cin >> a[i][j];
 		}
 	}
-	cin >> n >> m;
-	Matrix b(n , vector<Long>(m));
-	REP(i , n){
-		REP(j , m){
-			cin >> b[i][j];
-		}
-	}
 	
-	Matrix c = mult(a , b);
+	Matrix c = matPow(a , b , mod);
 	print(c);
 	return 0;
 }
