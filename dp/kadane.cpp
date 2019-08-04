@@ -6,9 +6,7 @@ using namespace std;
 
 typedef long long Long;
 
-vector<Long> v;
-
-Long kadane(){
+Long kadane(vector<Long> &v){
 	Long maxSoFar = 0;
 	Long maxEndingHere = 0;
 	
@@ -20,7 +18,6 @@ Long kadane(){
 }
 
 int main() {
-
 	return 0;
 }
 
