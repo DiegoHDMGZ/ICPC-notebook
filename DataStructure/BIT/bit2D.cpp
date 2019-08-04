@@ -5,27 +5,22 @@ typedef long long Long;
 
 const Long MAXX = 1000;
 const Long MAXY = 1000;
+const Long EXTRA = 6;
 
 struct FenwickTree2D{
-	Long tree[MAXX+1][MAXY+1];
+	Long tree[MAXX+EXTRA][MAXY+EXTRA];
 	
-	FenwickTree2D(){ //O(MAXX * MAXY)
-		for(Long i = 0; i<= MAXX; i++){
-			for(Long j = 0; j <= MAXY; j++){
-				tree[i][j] = 0;	
-			}
-		}
-	}
-	
-	void build(){ //O(MAXX * MAXY)
-		for(Long i = 0; i<= MAXX; i++){
-			for(Long j = 0; j <= MAXY; j++){
+	void clear(Long n, Long m){ //O(n * m)
+		for(Long i = 0; i< n + EXTRA; i++){
+			for(Long j = 0; j < m + EXTRA; j++){
 				tree[i][j] = 0;	
 			}
 		}
 	}
 	
 	Long query(Long i, Long j){ // O(log i * log j)
+		i += EXTRA;
+		j += EXTRA;
 		Long sum = 0;
 		while(i > 0){
 			Long _j = j;
@@ -43,9 +38,11 @@ struct FenwickTree2D{
 	}
 	
 	void update(Long i, Long j, Long delta){ //O(log MAXX * log MAXY)
-		while(i <= MAXX){
+		i += EXTRA;
+		j += EXTRA;
+		while(i < MAXX + EXTRA){
 			Long _j = j;
-			while(_j <= MAXY){
+			while(_j < MAXY + EXTRA){
 				tree[i][_j] += delta;
 				_j += (_j & -_j);
 			}

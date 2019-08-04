@@ -10,10 +10,10 @@ using namespace std;
 const Long MAX = 100000;
 const Long EXTRA = 6;
 struct FenwickTree{
-	Long tree[MAX+EXTRA + 1];
+	Long tree[MAX+EXTRA];
 	
-	void clean(Long n){ //O(nlogn)
-		for(Long i = 0; i < n; i++){
+	void clear(Long n){ //O(n)
+		for(Long i = 0; i < n + EXTRA; i++){
 			tree[i] = 0;
 		}
 	}
@@ -30,7 +30,7 @@ struct FenwickTree{
 	
 	void update(Long i , Long delta){ //O(log MAX)
 		i += EXTRA;
-		while(i <= MAX){
+		while(i < MAX + EXTRA){
 			tree[i] += delta;
 			i += (i & -i);
 		}
