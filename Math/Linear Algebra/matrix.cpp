@@ -6,9 +6,7 @@
 using namespace std;
 
 typedef long long Long;
-typedef long double Double;
 
-const Double EPS = 1e-6;
 typedef vector<vector<Long> > Matrix;
 
 Long add(Long a , Long b , Long m){
