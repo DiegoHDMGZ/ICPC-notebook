@@ -6,7 +6,10 @@
 using namespace std;
 
 typedef long long Long;
-typedef vector<vector<Long> > Matrix;
+typedef long double Double;
+
+const Double EPS = 1e-6;
+typedef vector<vector<Double> > Matrix;
 
 Matrix add(const Matrix &a , const Matrix &b){ //O(n * m)
 	Long n = a.size();
@@ -14,7 +17,7 @@ Matrix add(const Matrix &a , const Matrix &b){ //O(n * m)
 	assert(a.size() == b.size() );
 	assert(a[0].size() == b[0].size());
 	
-	Matrix c(n , vector<Long> (m ));
+	Matrix c(n , vector<Double> (m ));
 	
 	for(Long i = 0; i < n; i++){
 		for(Long j = 0; j <m; j++){
@@ -33,7 +36,7 @@ Matrix mult(const Matrix &a, const Matrix &b){ //O( n^3)
 	
 	Long n = n1;
 	Long m = m2;
-	Matrix c(n, vector<Long>(m , 0));
+	Matrix c(n, vector<Double>(m , 0));
 	for(Long i = 0; i < n; i++){
 		for(Long j = 0; j < m; j++){
 			for(Long k = 0; k < m1; k++){
@@ -42,6 +45,37 @@ Matrix mult(const Matrix &a, const Matrix &b){ //O( n^3)
 		}
 	}
 	return c;
+}
+
+Double determinant(Matrix M){
+	assert(M.size() == M[0].size());
+	Long n = M.size();
+	Double det = 1.0;
+	for(Long i = 0; i < n; i++){
+		Long pivot = i;
+		//heuristic to find pivot
+		for(Long j = i + 1; j < n; j++){
+			if(fabs(M[j][i]) > fabs(M[pivot][i]) ){
+				pivot = j;
+			} 
+		}
+		if(fabs(M[pivot][i]) < EPS) {
+			return 0;
+		}
+		if(i != pivot){
+			swap(M[i] , M[pivot]);
+			det *= -1.0;
+		}
+		det *= M[i][i];
+		for(Long j = i + 1; j < n; j++){
+			if(fabs(M[j][i]) >= EPS){
+				for(Long k = i + 1; k < n; k++){
+					M[j][k] -= (Double)M[i][k] * M[j][i] / M[i][i];
+				}
+			}
+		}
+	}
+	return det;
 }
 
 void print(Matrix &a){
@@ -61,23 +95,14 @@ int main(){
 	cout.tie(NULL);
 
 	
-	Long n, m;
-	cin >> n >> m;
-	Matrix a(n , vector<Long>(m));
+	Long n;
+	cin >> n;
+	Matrix a(n , vector<Double>(n));
 	REP(i , n){
-		REP(j , m){
+		REP(j , n){
 			cin >> a[i][j];
 		}
 	}
-	cin >> n >> m;
-	Matrix b(n , vector<Long>(m));
-	REP(i , n){
-		REP(j , m){
-			cin >> b[i][j];
-		}
-	}
-	
-	Matrix c = mult(a , b);
-	print(c);
+	cout << fixed << setprecision(3) << determinant(a) << endl;
 	return 0;
 }
