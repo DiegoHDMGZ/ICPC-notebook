@@ -62,7 +62,8 @@ Matrix mult(const Matrix &a, const Matrix &b){ //O( n^3)
 	return c;
 }
 
-void print(Matrix &a){
+void print(Matrix &a , string nombre){
+	cout << nombre << " = " << endl;
 	Long n = a.size();
 	Long m = a[0].size();
 	for(Long i = 0; i < n; i++){
@@ -109,17 +110,22 @@ Long determinant(Matrix M, Long mod){
 			return 0;
 		}
 		det = mult(det , M[i][i] , mod);
+		Long x = modInverse(M[i][i], mod);
+		for(Long j = i + 1; j < n; j++){
+			M[i][j] = mult(M[i][j] , x, mod);
+		}
+		
+		
 		for(Long j = i + 1; j < n; j++){
 			if(M[j][i] != 0){
 				for(Long k = i + 1; k < n; k++){
-					M[j][k] = sub(M[j][k] , mult( mult(M[i][k] , M[j][i] , mod) , modInverse(M[i][i], mod) , mod) , mod);
+					M[j][k] = sub(M[j][k] , mult(M[i][k] , M[j][i] , mod) , mod);
 				}
 			}
 		}
 	}
 	return det;
 }
-
 /*
 7 1000000007
 5 6 -5 9 12 38 18
@@ -130,6 +136,8 @@ Long determinant(Matrix M, Long mod){
 3 9 8 1 3 2 1
 -5 0 5 6 7 8 9
 Rpta = 987646945
+
+
 
 
 */

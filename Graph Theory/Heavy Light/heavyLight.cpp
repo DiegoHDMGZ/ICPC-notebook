@@ -6,6 +6,8 @@ using namespace std;
 
 typedef long long Long;
 
+//https://cp-algorithms.com/graph/hld.html
+
 const Long MAX = 1e5;
 Long segmentTreeQuery(Long pos1 , Long pos2) { 
 	return 0;
