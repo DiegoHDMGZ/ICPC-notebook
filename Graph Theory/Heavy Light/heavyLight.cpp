@@ -59,7 +59,7 @@ struct Graph {
 	
 	Long curPos = 0;
 	
-	Long decompose(Long u = 0, Long h = 0) { //O(N + M)
+	void decompose(Long u = 0, Long h = 0) { //O(N + M)
 		head[u] = h;
 		pos[u] = curPos++;
 		if(heavy[u] != -1) {
