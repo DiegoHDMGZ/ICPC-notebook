@@ -73,7 +73,7 @@ struct SegmentTree{
 			else {
 				update(pos, valor, 2 * v + 1, tm + 1, tr);
 			}
-			t[v] = t[2 * v] + t[2 * v + 1];
+			t[v] = combine(t[2 * v] , t[2 * v + 1] );
 		}
 	}
 	

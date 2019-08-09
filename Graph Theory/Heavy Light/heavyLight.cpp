@@ -8,6 +8,8 @@ typedef long long Long;
 
 //https://cp-algorithms.com/graph/hld.html
 
+//With weight on edges, put the weight in the node with greater depth and add one line to query function
+
 const Long MAX = 1e5;
 Long segmentTreeQuery(Long pos1 , Long pos2) { 
 	return 0;
@@ -20,6 +22,7 @@ struct Graph {
 	Long heavy[MAX];
 	Long head[MAX];
 	Long pos[MAX];
+	Long curPos = 0;
 	
 	void clear(Long N = MAX) { //O(N)
 		REP( i , N) {
@@ -28,6 +31,7 @@ struct Graph {
 			heavy[i] = -1;
 			depth[i] = head[i] = pos[i] = 0;
 		}
+		curPos = 0;
 	}
 	
 	void addEdge(Long u, Long v) { //O(1)
@@ -40,7 +44,7 @@ struct Graph {
 	Long dfs(Long u = 0){ //O(N + M)
 		Long sz = 1;
 		Long maxSize = 0;
-		
+		heavy[u] = -1;
 		for(Long v : adj[u]){
 			if(v != parent[u]) {
 				parent[v] = u;
@@ -57,9 +61,7 @@ struct Graph {
 		return sz;
 	}
 	
-	Long curPos = 0;
-	
-	void decompose(Long u = 0, Long h = 0) { //O(N + M)
+	void decompose(Long u , Long h ) { //O(N + M)
 		head[u] = h;
 		pos[u] = curPos++;
 		if(heavy[u] != -1) {
@@ -71,6 +73,14 @@ struct Graph {
 				decompose(v , v);
 			}
 		}
+	}
+	
+	void decompose(Long u = 0){
+		curPos = 0;
+		depth[u] = 0;
+		parent[u] = -1;
+		dfs(u);
+		decompose(u , u);
 	}
 	
 	Long query(Long u , Long v) {	//O( O( data query) log N)
@@ -90,8 +100,10 @@ struct Graph {
 		if(depth[u] > depth[v]) {
 			swap(u , v);
 		}
-		//last heavy path
 		
+		//u = heavy[u]; //when weight are on edges
+		
+		//last heavy path
 		Long lastMax = segmentTreeQuery(pos[u], pos[v]);
 		ans = max(ans, lastMax);
 		return ans;
@@ -99,7 +111,6 @@ struct Graph {
 } G;
 
 int main() {
-	G.dfs();
 	G.decompose();
 	return 0;
 }
