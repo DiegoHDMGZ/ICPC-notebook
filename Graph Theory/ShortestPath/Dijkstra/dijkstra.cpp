@@ -78,12 +78,7 @@ struct Graph{
 				}
 				
 				if(d[u]+cost[u][i] < d[v]){
-					debug(u + 1);
-					debug(v + 1);
-					debug(cost[u][i]);
 					d[v] = d[u]+cost[u][i];
-					debug(d[v]);
-					cout << endl;
 					padre[v] = u;
 					Path nuevoPath(v,d[v]);
 					q.push(nuevoPath);

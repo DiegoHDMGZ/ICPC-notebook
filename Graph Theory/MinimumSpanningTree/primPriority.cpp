@@ -54,6 +54,9 @@ struct Graph {
 	}
 	
 	Long prim (Long N) { //O(mlogn)
+		REP(i , N){
+			minCost[i] = INF;
+		}
 	    Long totalWeight = 0;
 		minCost[0] = 0;
 	    priority_queue<Edge> q;
@@ -95,5 +98,17 @@ struct Graph {
 } G;
 
 int main() {
+	Long n , m;
+	cin >> n >> m;
+	G.clear(n);
+	REP(i , m){
+		Long u , v , w;
+		cin >> u >> v >> w;
+		G.addEdge(u , v, w);
+	}
+	G.prim(n);
+	REP(i , n){
+		cout << G.p[i] + 1<< " -> " << i + 1 << endl;
+	}
     return 0;
 }
