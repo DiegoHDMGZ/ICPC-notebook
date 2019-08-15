@@ -48,9 +48,11 @@ struct Graph{
 		cost[v].pb(w);
 	}
 	
-	void dijkstra(Long root){ //O(nlogm + mlogn)
+	void dijkstra(Long root, Long N){ //O(nlogm + mlogn)
 		priority_queue<Path> q;
-		
+		REP(i , N){
+			d[i] = INF;
+		}
 		Path inicio;
 		inicio.nodo = root;
 		inicio.cost = 0;
@@ -98,7 +100,7 @@ int main() {
 		cin >> u >> v >> w;
 		G.addEdge(u , v , w);
 	}
-	G.dijkstra(0);
+	G.dijkstra(0, n);
 	REP(i , n){
 		cout << G.d[i] << endl;
 	}

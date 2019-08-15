@@ -9,6 +9,8 @@ typedef long long Long;
 
 //https://codeforces.com/blog/entry/61290
 
+//Ec. : ai = x % di . We need to find x
+
 Long normalize(Long x, Long mod){
 	return (x + mod) % mod;
 }
@@ -60,18 +62,17 @@ bool CRT(pair<Long, Long > p1  , pair<Long , Long > p2, pair<Long , Long > &resp
 	return true;	
 }
 
-bool CRT(vector<Long> &d, vector<Long> &a, pair<Long, Long> &resp) { //O( |d| log LCM(d1, d2 , ... , ) )
+pair<Long,Long> CRT(vector<Long> &d, vector<Long> &a) { //O( |d| log LCM(d1, d2 , ... , ) )
 	// ( lcm , mod)
 	pair<Long , Long > ant = make_pair(d[0], a[0]);
 	
 	Long sz = d.size();
 	for(Long i = 1; i < sz ; i++) {
 		if( !CRT(ant , make_pair(d[i] , a[i]) , ant ) ) {
-			return false;
+			return {-1 , -1}; //no solution
 		}
 	}
-	resp = ant;
-	return true;
+	return ant;
 }
 
 int main() {

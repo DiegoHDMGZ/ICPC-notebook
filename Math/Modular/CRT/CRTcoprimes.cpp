@@ -6,7 +6,7 @@
 using namespace std;
 typedef long long Long;
 //Chinese Remainder Theorem (Cormen)
-//ai = x % di
+//Ec. : ai = x % di . We need to find x
 //n = d1 * d2 * ... * dk
 // di pairwise relatively prime
 // Def : mi = n / di , ci = mi * invMod(mi , ni)
