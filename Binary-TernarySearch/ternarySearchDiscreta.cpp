@@ -10,26 +10,19 @@ typedef long long Long;
 
 Long n,m;
 
-Long A[MAX],B[MAX];
+Long A[MAX];
 
-Long f(Long fijo){
-	Long cont = 0;
-	
-	REP(i,n){
-		cont += max(0LL,fijo-A[i]);
-	}
-	
-	REP(i,m){
-		cont += max(0LL,B[i]-fijo);
-	}
-	return cont;
+Long f(Long i){
+	return A[i];
 }
 
 Long ternarySearch(Long ini, Long fin){ //O(log x * O(f))
 	while(fin - ini > 2){
+		
 		Long m1 = ini + (fin-ini)/3;
 		Long m2 = fin - (fin-ini)/3;
-		if(f(m1) > f(m2)){
+
+		if(f(m1) < f(m2)){
 			ini = m1;
 		}
 		else{
@@ -37,20 +30,19 @@ Long ternarySearch(Long ini, Long fin){ //O(log x * O(f))
 		}
 	}
 	
-	Long mini = f(ini);
+	Long maxi = f(ini);
 	for(int i = ini; i <= fin; i++){
-		mini = min(mini,f(i));
+		maxi = max(maxi,f(i));
 	}
 	
-	return mini;
+	return maxi;
 }
 
 int main() {
-	cin >> n >> m;
+	cin >> n ;
 	REP(i,n) cin >> A[i];
-	REP(i,m) cin >> B[i];
 	
-	cout << ternarySearch(1,1e9) << endl;
+	cout << ternarySearch(0,n - 1) << endl;
 	
 	return 0;
 }

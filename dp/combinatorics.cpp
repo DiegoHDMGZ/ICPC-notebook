@@ -20,7 +20,7 @@ Long comb(Long n , Long m) {
 	if(used[n][m]) {
 		return dp[n][m];
 	}
-	
+	used[n][m] = true;
 	return dp[n][m] = comb(n - 1 , m - 1) + comb(n - 1 , m );
 }
 

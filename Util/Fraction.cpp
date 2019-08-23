@@ -14,9 +14,12 @@ struct Fraction {
 	Fraction(){
 	}
 	Fraction(Long n, Long d) {
-		
 		if(d == 0) {
-			num = INF;
+			if(n > 0){
+				num = INF;
+			} else {
+				num = -INF;
+			}
 			den = 1;
 		} else {
 			if(d < 0) {
@@ -30,7 +33,7 @@ struct Fraction {
 	
 	void normalize() {
 		if(num == 0 && den == 0) return;
-		Long g = __gcd(num , den);
+		Long g = __gcd(abs(num) , abs(den));
 		num /= g;
 		den /= g;
 	}

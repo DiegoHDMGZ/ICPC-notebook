@@ -8,6 +8,8 @@ typedef long long Long;
 const Long MX = 1e5;
 const Long INF = 1e18;
 
+//https://codeforces.com/contest/20/problem/C
+
 struct Path{
 	Long node, weight;
 	Path(){
@@ -26,8 +28,8 @@ struct Path{
 struct Graph{
 	vector<Path> adj[MX];
 	bool vis[MX];
-	Long d[MX];
 	Long parent[MX];
+	Long d[MX];
 	
 	void clear(Long N = MX) {
 		REP( i , N) {
@@ -50,7 +52,6 @@ struct Graph{
 		REP(i , N){
 			d[i] = INF;
 			vis[i] = false;
-			parent[i] = -1;
 		}
 
 		d[root] = 0;
@@ -84,9 +85,28 @@ struct Graph{
 			}
 		}
 	}
+	
+	void retrievePath(Long v){
+		if(parent[v] == -1){
+			cout << -1 << endl;
+			return;
+		}
+		deque<Long> q;
+		while(v != -1){
+			q.push_front(v);
+			v = parent[v];
+		}
+		REP(i , q.size()){
+			cout << q[i] + 1 << " ";
+		}
+		cout << endl;
+	}
 } G;
 
 int main() {
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	cout.tie(NULL);
 	Long n , m;
 	cin >> n >> m;
 	G.clear(n);
@@ -96,8 +116,7 @@ int main() {
 		G.addEdge(u , v , w);
 	}
 	G.dijkstra(0, n);
-	REP(i , n){
-		cout << G.d[i] << endl;
-	}
+
+	G.retrievePath(n - 1);
 	return 0;
 }
