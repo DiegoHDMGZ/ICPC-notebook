@@ -11,27 +11,25 @@ const Long INF = 1e18;
 
 struct Graph{
 	vector<Long> adj[MX];
-	Long cap[MX][MX]; //capacity
+	unordered_map<Long, Long> cap[MX]; //capacity
 	bool vis[MX];
-	bool added[MX][MX];
+	unordered_map<Long , bool> added[MX];
 	
 	void clear(Long N = MX){
 		for(Long i = 0 ; i < N; i++){
 			adj[i].clear();
+			cap[i].clear();
+			added[i].clear();
 			vis[i] = false;
-			for(Long j = 0; j < N; j++) {
-				cap[i][j] = 0;
-				added[i][j] = false;
-			}
 		}
 	}
 	
 	void addEdge(Long u, Long v, Long uv, Long vu = 0){
-		if(!added[min(u, v)][max(u , v)]) {
+		if(!added[min(u , v)][max(u, v)]){
 			adj[u].push_back(v);
 			adj[v].push_back(u);
-		}
-		added[min(u , v)][max(u , v)] = true;
+		} 	
+		added[min(u, v)][max(u, v)] = true;
 		cap[u][v] += uv;
 		cap[v][u] += vu;
 	}
@@ -44,9 +42,7 @@ struct Graph{
 		
 		for( Long v : adj[u] ) {
 			if(cap[u][v] == 0) continue;
-			
 			Long ret = dfs(v,t, min(f,cap[u][v]) );
-			
 			if(ret > 0){
 				cap[u][v] -= ret;
 				cap[v][u] += ret;
