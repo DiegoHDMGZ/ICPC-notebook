@@ -34,7 +34,7 @@ struct Graph{
 		cap[v][u] += vu;
 	}
 	
-	Long dfs(Long u, Long t ,Long f){
+	Long dfs(Long u, Long t ,Long f){ //O(E)
 		//t = target
 		if(u == t) return f;
 		if(vis[u]) return 0;
@@ -52,7 +52,7 @@ struct Graph{
 		return 0;
 	}
 	
-	Long fordFulkerson(Long s, Long t){ //O((n+m)|F|
+	Long maxFlow(Long s, Long t){ //O(E |F| )
 		Long flow = 0;
 		while(true){
 			fill(vis, vis + MX, false);
@@ -81,7 +81,7 @@ int main(){
 	
 	Long s,t;
 	cin >> s >> t;
-	Long resp = G.fordFulkerson(s,t);
+	Long resp = G.maxFlow(s,t);
 	
 	return 0;
 }
