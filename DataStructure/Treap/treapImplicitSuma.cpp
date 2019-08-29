@@ -1,26 +1,27 @@
 #include <bits/stdc++.h>
 #define debug(x) cout << #x << " = " << x << endl
-#define REP(i,n) for(Long i = 0; i < (Long)n; i++)
+#define REP(i , n) for(Long i = 0; i < (Long)n ; i++)
 #define pb push_back
+
 using namespace std;
 
 typedef long long Long;
 
 const int MAXINT = 1e9;
-
-mt19937_64  rng(chrono::steady_clock::now().time_since_epoch().count());
-
-Long random(Long a, Long b) {
-	return uniform_int_distribution<Long>(a , b)(rng);
+ 
+mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
+ 
+Long random(Long a, Long b){
+	return uniform_int_distribution<int> (a , b) (rng);
 }
-
+ 
 struct Item{
-	Long value,prior , cnt;
+	Long value,prior , cnt , add;
 	Item *l, *r;
 	Item(){
 	}
 	
-	Item(Long value, Long prior) : value(value) , prior(prior), l (NULL), r(NULL) , cnt(0){}
+	Item(Long value, Long prior) : value(value) , prior(prior),add(0), l (NULL), r(NULL) , cnt(0){}
 };
 
 typedef Item * pitem;
@@ -32,6 +33,16 @@ Long cnt(pitem it) {
 void updCnt(pitem it) {
 	if(it) {
 		it -> cnt = cnt(it -> l) + cnt(it -> r) + 1;
+	}
+}
+
+Long val(pitem it){
+	return it ? it->value + it->add : 0;
+}
+
+void updateVal(pitem it){
+	if(it){
+		it->add =  val(it->l) + val(it->r);
 	}
 }
 
@@ -53,6 +64,7 @@ void merge (pitem &t, pitem l , pitem r){ //O(log N)
 		t = r;
 	}
 	updCnt(t);
+	updateVal(t);
 }
 
 void split(pitem t,  pitem &l, pitem &r, Long key, Long add = 0){ //O(log N)
@@ -61,7 +73,7 @@ void split(pitem t,  pitem &l, pitem &r, Long key, Long add = 0){ //O(log N)
 		return;
 	}
 	
-	Long curKey = add + cnt(t -> l); //implicit key
+	Long curKey = add + cnt(t -> l); // implicit key
 	
 	if(key <= curKey){
 		split(t -> l, l , t -> l , key , add);
@@ -73,6 +85,7 @@ void split(pitem t,  pitem &l, pitem &r, Long key, Long add = 0){ //O(log N)
 	}
 	
 	updCnt(t);
+	updateVal(t);
 }
 
 const Long INF = 1e18;
@@ -107,65 +120,33 @@ struct Treap{
 			}
 		}
 		updCnt(t);
+		updateVal(t);
 	}
 	
 	void erase(Long key){ //O(log N)
 		erase(tree,key);
 	}
 	
-	Long search(pitem t, Long key, Long add = 0){ //O(log N)
-		if(!t){
-			return -INF;
-		}
+	Long query(Long A, Long B){
+		pitem T1,T2,T3;
+		split(tree,T1,T2,A);
+		split(T2,T2,T3,B - A +1);
 		
-		Long curKey = add + cnt(t -> l);
-		if(curKey == key){
-			return t->value;
-		}
-		else{
-			if(key < curKey){
-				return search(t->l, key , add);
-			}
-			else{
-				return search(t->r ,key, add + 1 + cnt(t -> l) );
-			}
-		}
-	}
+		Long resp = val(T2);
 	
-	Long search(Long key){ //O(log N)
-		return search(tree,key);
-	}
-	
-	void replace(pitem t, Long key, Long val , Long add = 0){ //O(log N)
-		if(!t){
-			return;
-		}
+		merge(tree,T1,T2);
+		merge(tree,tree,T3);
 		
-		Long curKey = add + cnt(t -> l);
-		if(curKey == key){
-			t -> value = val;
-		}
-		else{
-			if(key < curKey){
-				replace(t->l, key , val , add);
-			}
-			else{
-				replace(t->r ,key, val , add + 1 + cnt(t -> l) );
-			}
-		}
+		return resp;
 	}
-	
-	void replace(Long key, Long val){ //O(log N)
-		return replace(tree,key, val);
-	}
+
 	
 }tp;
 
-
-int main() {
+int main(){
 	ios_base::sync_with_stdio(false);
 	cin.tie(NULL);
+	cout.tie(NULL);
 	
 	return 0;
 }
-
