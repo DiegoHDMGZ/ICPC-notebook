@@ -21,7 +21,7 @@ Long search(  Long ini , Long fin , Long x){ //O(logn)
 		Long med= (ini + fin) / 2;
 		
 		if(check( med, x )){
-			fin=med;
+			fin = med;
 		} 
 		else {
 			ini = med;
@@ -31,6 +31,26 @@ Long search(  Long ini , Long fin , Long x){ //O(logn)
 	//hay 2 valores ini es F y fin es V
 	return fin;
 }
+
+/*Long search(  Long ini , Long fin , Long x){ //O(logn)
+	// V V V ... F F F
+	if(check(fin,x)) return fin; //todos V
+	if(!check(ini,x)) return -1; //todos F
+	
+	while(fin - ini > 1){ // hay mas de 2 valores
+		Long med= (ini + fin) / 2;
+		
+		if(check( med, x )){
+			ini = med;
+		} 
+		else {
+			fin = med;
+		}
+	}
+
+	//hay 2 valores ini es V y fin es F
+	return ini;
+}*/
 
 int main(){
 	return 0;

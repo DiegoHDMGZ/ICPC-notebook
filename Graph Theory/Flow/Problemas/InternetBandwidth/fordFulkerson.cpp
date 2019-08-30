@@ -95,7 +95,7 @@ int main(){
 			G.addEdge(u , v , w );
 		}
 		cout << "Network " << T++ << endl;
-		cout << "The bandwidth is " << G.maxFlow(s , t) << endl;
+		cout << "The bandwidth is " << G.maxFlow(s , t) << "." <<endl << endl;
 	}
 	return 0;
 }
