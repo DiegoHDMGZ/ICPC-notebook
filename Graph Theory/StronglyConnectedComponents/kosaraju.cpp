@@ -10,7 +10,7 @@ const Long MAX = 1e5;
 
 //Una componente fuertemente conexa (SCC) es aquella en la que entre todo par de vertices u, v. u es alcanzable por v y viceversa
 //Se puede condensar el grafo en sus componentes conexas. Este grafo es un DAG
-class Graph {
+struct Graph {
 	//llamar a dfs1 y luego a process component
 	vector <Long> adj[MAX];
 	vector <Long> rev[MAX];
@@ -20,7 +20,7 @@ class Graph {
 	Long numComponent = 0;
 	Long scc[MAX];
 	
-	public : void clear(Long N = MAX) {
+	void clear(Long N = MAX) {
 		REP( i , N) {
 			adj[i].clear();
 			rev[i].clear();
@@ -31,14 +31,14 @@ class Graph {
 		numComponent = 0;
 	}
 	
-	public : void addEdge(Long u, Long v) {
+	void addEdge(Long u, Long v) {
 		u--;
 		v--;
 		adj[u].pb(v);
 		rev[v].pb(u);
 	}
 	
-	public : void dfs1(Long u){ //O(N + M)
+	void dfs1(Long u){ //O(N + M)
 		vis1[u] = true;
 		for(Long v : adj[u]) {
 			if(!vis1[v]) {
@@ -48,7 +48,7 @@ class Graph {
 		order.pb(u);
 	}
 	
-	private : void dfs2(Long u) { //O(N + M)
+	void dfs2(Long u) { //O(N + M)
 		vis2[u] = true;
 		component.pb(u);
 		for(Long v : rev[u]) {
@@ -59,7 +59,7 @@ class Graph {
 	}
 	
 //arreglar plantilla
-	public : void calculateSCC(Long N) { //O(N + M)
+	void calculateSCC(Long N) { //O(N + M)
 		REP(i , N ) {
 			Long u = order[N - 1 - i];
 			if(!vis2[u]) {

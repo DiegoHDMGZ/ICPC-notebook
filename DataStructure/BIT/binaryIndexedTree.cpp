@@ -7,10 +7,10 @@ typedef long long Long;
 
 using namespace std;
 
-const Long MAX = 100000;
+const Long MX = 100000;
 const Long EXTRA = 6;
 struct FenwickTree{
-	Long tree[MAX+EXTRA];
+	Long tree[MX+EXTRA];
 	
 	void clear(Long n){ //O(n)
 		for(Long i = 0; i < n + EXTRA; i++){
@@ -28,9 +28,9 @@ struct FenwickTree{
 		return sum;
 	}
 	
-	void update(Long i , Long delta){ //O(log MAX)
+	void update(Long i , Long delta){ //O(log MX)
 		i += EXTRA;
-		while(i < MAX + EXTRA){
+		while(i < MX + EXTRA){
 			tree[i] += delta;
 			i += (i & -i);
 		}

@@ -26,14 +26,17 @@ struct Graph{
 		}
 	}
 	
-	void addEdge(Long u, Long v, Long uv, Long vu = 0){
+	void addEdge(Long u, Long v, Long w, bool dir = false){
 		if(!added[min(u, v)][max(u , v)]) {
 			adj[u].push_back(v);
 			adj[v].push_back(u);
 		}
 		added[min(u , v)][max(u , v)] = true;
-		cap[u][v] += uv;
-		cap[v][u] += vu;
+		cap[u][v] += w;
+		if(!dir){
+			cap[v][u] += w;
+		}
+		
 	}
 	
 	Long dfs(Long u, Long t ,Long f){ //O(E)
