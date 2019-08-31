@@ -29,14 +29,19 @@ struct Graph{
 		}
 	}
 	
-	void addEdge(Long u, Long v, Long uv, Long vu = 0){
+	void addEdge(Long u, Long v, Long w, bool dir = false){
+		u--;
+		v--;
 		if(!added[min(u, v)][max(u , v)]) {
 			adj[u].push_back(v);
 			adj[v].push_back(u);
 		}
 		added[min(u , v)][max(u , v)] = true;
-		cap[u][v] += uv;
-		cap[v][u] += vu;
+		cap[u][v] += w;
+		if(!dir){
+			cap[v][u] += w;
+		}
+		
 	}
 	
 	void transition(Long s , Long t, Long inc){
@@ -50,24 +55,25 @@ struct Graph{
 		}
 	}
 	
-	Long bfs(Long s, Long t ){ //O(E)
-		fill(vis, vis + MX, false);
-		fill(parent, parent + MX, false);
+	Long bfs(Long s, Long t , Long n){ //O(E)
+		fill(vis, vis + n, false);
+		fill(parent, parent + n, -1);
 		
 		deque<pair<Long,Long> > q; //< node, capacity>
 		q.push_back({s , INF});
+		vis[s] = true;
 		while(!q.empty()){
 			Long u = q.front().first;
 			Long c = q.front().second;
 			q.pop_front();
+			if(u == t){
+				return c;
+			}
 			for(Long v : adj[u]){
 				if(!vis[v] && cap[u][v] > 0){
 					parent[v] = u;
 					vis[v] = true;
 					Long x = min(c , cap[u][v]);
-					if(s == t){
-						return x;
-					}
 					q.push_back({v , x});
 				}
 			}
@@ -75,10 +81,10 @@ struct Graph{
 		return 0;
 	}
 	
-	Long maxFlow(Long s, Long t){ //O( V * E ^ 2)
+	Long maxFlow(Long s, Long t , Long n){ //O( V * E ^ 2)
 		Long flow = 0;
 		while(true){
-			Long inc = bfs(s, t);
+			Long inc = bfs(s, t, n);
 			if(inc == 0) break;
 			flow += inc;
 			transition(s , t , inc);
@@ -87,6 +93,7 @@ struct Graph{
 	}
 	
 } G;
+
 
 
 int main(){

@@ -4,7 +4,7 @@ using namespace std;
 typedef long long Long;
 const Long MAX = 100000;
 
-struct DisjointSetUnion{
+struct DSU{
 	Long parent[MAX];
 	Long size[MAX];
 	
