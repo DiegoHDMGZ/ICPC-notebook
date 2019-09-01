@@ -83,8 +83,8 @@ struct Graph{
 		}
 	}
 	
-	Long maxFlow(Long s, Long t, Long n){ //O((E * V * min(V , |F|))
-		//initialize
+	Long maxFlow(Long s, Long t, Long n){ //O(V ^ 3)
+		//General push-relabel without discharge runs in O((E * V * min(V , |F|))
 		h[s] = n - 2;
 		e[s] = 0;
 		for(Long v  : adj[s]){
