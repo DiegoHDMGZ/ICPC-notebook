@@ -12,7 +12,8 @@ const Long INF = 1e18;
 
 struct Graph{
 	vector<Long> adj[MX];
-	Long cap[MX][MX]; //capacity
+	Long cap[MX][MX]; 
+	Long flow[MX][MX];
 	bool vis[MX];
 	bool added[MX][MX];
 	
@@ -22,6 +23,7 @@ struct Graph{
 			vis[i] = false;
 			for(Long j = 0; j < N; j++) {
 				cap[i][j] = 0;
+				flow[i][j] = 0;
 				added[i][j] = false;
 			}
 		}
@@ -49,23 +51,24 @@ struct Graph{
 		vis[u] = true;
 		
 		for( Long v : adj[u] ) {
-			if(cap[u][v] == 0) continue;
+			Long cf = cap[u][v] - flow[u][v];
+			if(cf == 0) continue;
 			
-			Long ret = dfs(v,t, min(f,cap[u][v]) );
+			Long ret = dfs(v,t, min(f, cf) );
 			
 			if(ret > 0){
-				cap[u][v] -= ret;
-				cap[v][u] += ret;
+				flow[u][v] += ret;
+				flow[v][u] -= ret;
 				return ret;
 			}
 		}
 		return 0;
 	}
 	
-	Long maxFlow(Long s, Long t){ //O((E |F|)
+	Long maxFlow(Long s, Long t, Long n){ //O((E |F|)
 		Long flow = 0;
 		while(true){
-			fill(vis, vis + MX, false);
+			fill(vis, vis + n, false);
 			Long inc = dfs(s, t, INF);
 			if(inc == 0) break;
 			flow += inc;
@@ -95,7 +98,7 @@ int main(){
 			G.addEdge(u , v , w );
 		}
 		cout << "Network " << T++ << endl;
-		cout << "The bandwidth is " << G.maxFlow(s , t) << "." <<endl << endl;
+		cout << "The bandwidth is " << G.maxFlow(s , t , n) << "." <<endl << endl;
 	}
 	return 0;
 }

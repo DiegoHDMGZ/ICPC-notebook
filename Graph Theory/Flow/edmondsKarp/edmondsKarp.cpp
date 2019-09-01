@@ -12,7 +12,8 @@ const Long INF = 1e18;
 
 struct Graph{
 	vector<Long> adj[MX];
-	Long cap[MX][MX]; //capacity
+	Long cap[MX][MX]; 
+	Long flow[MX][MX];
 	bool vis[MX];
 	bool added[MX][MX];
 	Long parent[MX];
@@ -24,6 +25,7 @@ struct Graph{
 			parent[i] = -1;
 			for(Long j = 0; j < N; j++) {
 				cap[i][j] = 0;
+				flow[i][j] = 0;
 				added[i][j] = false;
 			}
 		}
@@ -49,16 +51,13 @@ struct Graph{
 		
 		while(cur != s){
 			Long prev = parent[cur];
-			cap[prev][cur] -= inc;
-			cap[cur][prev] += inc;
+			flow[prev][cur] += inc;
+			flow[cur][prev] -= inc;
 			cur = prev;
 		}
 	}
 	
-	Long bfs(Long s, Long t , Long n){ //O(E)
-		fill(vis, vis + n, false);
-		fill(parent, parent + n, -1);
-		
+	Long bfs(Long s, Long t ){ //O(E)
 		deque<pair<Long,Long> > q; //< node, capacity>
 		q.push_back({s , INF});
 		vis[s] = true;
@@ -70,10 +69,11 @@ struct Graph{
 				return c;
 			}
 			for(Long v : adj[u]){
-				if(!vis[v] && cap[u][v] > 0){
+				Long cf = cap[u][v] - flow[u][v];
+				if(!vis[v] && cf > 0){
 					parent[v] = u;
 					vis[v] = true;
-					Long x = min(c , cap[u][v]);
+					Long x = min(c , cf);
 					q.push_back({v , x});
 				}
 			}
@@ -81,15 +81,17 @@ struct Graph{
 		return 0;
 	}
 	
-	Long maxFlow(Long s, Long t , Long n){ //O( V * E ^ 2)
-		Long flow = 0;
+	Long maxFlow(Long s, Long t , Long n){ //O(E * min(E * V , |F|))
+		Long ans = 0;
 		while(true){
-			Long inc = bfs(s, t, n);
+			fill(vis, vis + n, false);
+			fill(parent, parent + n, -1);
+			Long inc = bfs(s, t);
 			if(inc == 0) break;
-			flow += inc;
+			ans += inc;
 			transition(s , t , inc);
 		}
-		return flow;
+		return ans;
 	}
 	
 } G;
