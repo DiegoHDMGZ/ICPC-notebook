@@ -1,0 +1,6 @@
+1.Construir -> Establecer comandos de construccion
+
+Compile -> g++  -std=c++14 -c "%f"
+Build -> g++  -std=c++14 -o "%e" "%f"
+
+2.Editar-> Preferencias -> Completado-> Desactivar autocompletar comentarios en 

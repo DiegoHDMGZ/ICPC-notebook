@@ -11,7 +11,6 @@ const Long MAX = 1e5;
 //Una componente fuertemente conexa (SCC) es aquella en la que entre todo par de vertices u, v. u es alcanzable por v y viceversa
 //Se puede condensar el grafo en sus componentes conexas. Este grafo es un DAG
 struct Graph {
-	//llamar a dfs1 y luego a process component
 	vector <Long> adj[MAX];
 	vector <Long> rev[MAX];
 	bool vis1[MAX];
@@ -58,18 +57,22 @@ struct Graph {
 		}
 	}
 	
-//arreglar plantilla
 	void calculateSCC(Long N) { //O(N + M)
+		REP(i, N){
+			if(!vis1[i]) dfs1(i);
+		}
 		REP(i , N ) {
 			Long u = order[N - 1 - i];
 			if(!vis2[u]) {
 				dfs2(u);
+				numComponent++;
+				REP(t , component.size()) {
+					scc[component[t]] = numComponent;
+				}
+				//all nodes in "component" form a scc
+				component.clear();
 			}
-			REP(t , component.size()) {
-				scc[component[t]] = numComponent;
-			}
-			numComponent++;
-			component.clear();
+			
 		}
 		
 	}
