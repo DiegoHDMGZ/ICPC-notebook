@@ -7,6 +7,7 @@ using namespace std;
  
 typedef long long Long;
  
+//https://www.spoj.com/problems/CSUMQ/
 const Long MX = 1e5 + 5;
 const Long SQ = sqrt(MX) + 1;
 
@@ -35,13 +36,9 @@ struct SQRT{
 	}
 	
 	void clear(Long N){
-		if(n == 0){
-			return;
-		}
 		for(Long i = 0; i < N; i++){
 			A[i] = 0;
 			ans[block(i)] = 0;
-			lazy[block(i)] = 0;
 		}
 		n = 0;
 		sq = 0;
@@ -76,7 +73,6 @@ struct SQRT{
 		r = lowerLim(r) - 1 ;
 		for(Long i = l; i <= r; i+= sq){
 			ans[block(i)] += x * (upperLim(i) - lowerLim(i) + 1);
-			lazy[block(i)] += x;
 		} 
 	}
 	 
@@ -103,14 +99,26 @@ struct SQRT{
 	}
 }sq;
 
-
-
  
 int main(){
 	ios_base::sync_with_stdio(false);
 	cin.tie(NULL);
 	cout.tie(NULL);
 
+	Long n;
+	cin >> n;
+	vector<Long> v(n);
+	REP(i , n){
+		cin >> v[i];
+	}
+	sq.build(v);
+	Long q;
+	cin >> q;
+	REP(i ,q){
+		Long l , r;
+		cin >> l >> r;
+		cout << sq.query(l , r ) << endl;
+	}
 
 	return 0;
 }

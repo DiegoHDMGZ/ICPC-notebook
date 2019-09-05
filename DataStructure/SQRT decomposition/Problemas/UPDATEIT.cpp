@@ -7,7 +7,8 @@ using namespace std;
  
 typedef long long Long;
  
-const Long MX = 1e5 + 5;
+//https://www.spoj.com/problems/UPDATEIT/
+const Long MX = 1e4 + 5;
 const Long SQ = sqrt(MX) + 1;
 
 struct SQRT{
@@ -103,14 +104,34 @@ struct SQRT{
 	}
 }sq;
 
-
-
  
 int main(){
 	ios_base::sync_with_stdio(false);
 	cin.tie(NULL);
 	cout.tie(NULL);
 
+	Long T;
+	cin >> T;
+	REP(t, T){
+		Long n;
+		cin >> n;
+		sq.clear(n);
+		sq.setN(n);
+		Long u;
+		cin >> u;
+		REP(i , u){
+			Long l , r , x;
+			cin >> l >> r >> x;
 
+			sq.update(l , r , x);
+		}
+		Long q;
+		cin >> q;
+		REP( i , q){
+			Long pos;
+			cin >> pos;
+			cout << sq.query(pos , pos) << "\n";
+		}
+	}
 	return 0;
 }

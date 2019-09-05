@@ -39,11 +39,13 @@ struct Fraction {
 	}
 	
 	Fraction operator + (const Fraction &F) const{
-		return Fraction(num * F.den + den * F.num , den * F.den);
+		Long g = __gcd(den , F.den);	
+		return Fraction(num * (F.den / g) + F.num * (den / g), den * (F.den / g));
 	}
 	
 	Fraction operator - (const Fraction &F) const{
-		return Fraction(num * F.den + den * F.num , den * F.den);
+		Long g = __gcd(den , F.den);
+		return Fraction(num * (F.den / g) - F.num * (den / g), den * (F.den / g));
 	}
 	
 	Fraction operator * (const Fraction &F) const{
