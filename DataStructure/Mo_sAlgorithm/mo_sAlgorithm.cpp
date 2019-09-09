@@ -9,6 +9,11 @@ typedef long long Long;
 
 const Long MAX = 1e5;
 
+//Conditions
+//1) No update
+//2) Offline
+//3) Knowing f([l,r]) , we can compute f([l + 1 , r]) , f([l - 1 , r]) , f([l, r + 1]) , f([l , r - 1]) in O(|f|)
+
 struct Query{
     Long id, l, r;
 
@@ -43,7 +48,7 @@ struct Mo{
 		q.push_back( Query(id ,l , r));
 	}
 	
-	void process(Long N) {
+	void process(Long N) { //O((N + Q) sqrt(N) |F|)
 	    block = (Long)sqrt(N);
 	 
 	    sort(q.begin() , q.end(), compara);
