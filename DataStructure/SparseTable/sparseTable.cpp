@@ -50,8 +50,8 @@ struct SparseTable{
 		return ans;
 	}
 	
-	Long queryFast(Long L, Long R){ //O(1)
-		//solo casos especiales que cuando se sobrelapen rangos, salga la misma respuesta ( como en min, max, gcd)
+	Long queryFast(Long L, Long R){ //O(|f|)
+		//special cases : overlapping(  min, max, gcd)
 		Long T = R - L + 1;
 		Long lg = 31 - (__builtin_clz(T));
 		return f(st[L][lg], st[R- (1LL << lg) + 1][lg]);
