@@ -33,11 +33,11 @@ void join( int a, int b ) {
 	b = getp(b);
 	
 	if(a != b){
-		/*if(size[a] < size[b]){
+		if(size[a] < size[b]){
 			swap(a,b);
-		}*/
-		p[a] = b;
-		//size[a] += size[b];
+		}
+		p[b] = a;
+		size[a] += size[b];
 	}
 }
  
@@ -45,6 +45,7 @@ double solve(int n) {
     getp_calls = 0;
     for (int i = 1; i <= n; ++i) {
         p[i] = i;
+        size[i] = 1;
     }
     for (int i = 2; i <= n; ++i) {
         join(uniform_int_distribution<>(1, 1 + i / sqrt(5.0))(gen), i);
