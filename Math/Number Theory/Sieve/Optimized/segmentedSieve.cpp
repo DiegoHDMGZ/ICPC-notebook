@@ -5,20 +5,20 @@
 using namespace std;
 
 typedef long long Long;
-const Long MAX = 2e6;
-bool isPrime[MAX];
+const Long MX = 2e6;
+bool isPrime[MX];
 vector<Long> primes;
 
-void sieve(){ //O(MAX)
+void sieve(){ //O(MX)
 	//x = i * p. p is the smallest prime factor
-	fill(isPrime, isPrime + MAX , true);
+	fill(isPrime, isPrime + MX , true);
 	isPrime[0] = false;
 	isPrime[1] = false;
-	for(Long i = 2; i  < MAX; i++){
+	for(Long i = 2; i  < MX; i++){
 		if(isPrime[i]) {
 			primes.pb(i);
 		}
-		for(Long j = 0 ; j < primes.size() && i * primes[j] < MAX; j++){
+		for(Long j = 0 ; j < primes.size() && i * primes[j] < MX; j++){
 			isPrime[i * primes[j]] = false;
 			if(i % primes[j] == 0) {
 				break;
@@ -27,11 +27,11 @@ void sieve(){ //O(MAX)
 	}
 }
 
-bool isPrimeR[MAX];
+bool isPrimeR[MX];
 
 void segmentedSieve(Long l, Long r) { //O( (r - l) * log log (r - l) )
 
-    fill(isPrimeR, isPrimeR + MAX , true);
+    fill(isPrimeR, isPrimeR + MX , true);
 
     for(Long i = 0; i < primes.size(); i++) {
         if(primes[i] * primes[i] > r) {
