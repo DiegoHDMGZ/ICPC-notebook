@@ -19,8 +19,7 @@ Long fastPow(Long a, Long b, Long c){ //O(logb)
 }
 
 Long modInverse(Long a, Long m){ //O(logm)
-	//m debe ser primo
-	//if(__gcd(a,m) != 1) return -1;
+	//m prime
 	return fastPow(a,m-2,m);
 }
 
@@ -39,7 +38,7 @@ Long gcd (Long a, Long b, Long & x, Long & y) { //O(max(loga,logb))
 }
 
 Long modInverseGCD(Long a, Long m){ //O(max(loga,logb))
-//a y m son comprimos
+//a , m coprime
 	Long x,y;
 	Long g = gcd(a,m,x,y);
 	return (x%m+m)%m;
