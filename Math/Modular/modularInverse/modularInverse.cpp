@@ -45,18 +45,7 @@ Long modInverseGCD(Long a, Long m){ //O(max(loga,logb))
 	return (x%m+m)%m;
 }
 
-
 int main() {
 	Long mod = 1e9+7;
-	Long a , b;
-	cin >> a >> b;
-	
-	Long resp = b * modInverse(a, mod) % mod;
-	Long aux = a * modInverse(b,mod) % mod;
-	resp = (resp * aux) % mod;
-	cout << resp << endl;
-
 	return 0;
 }
-
-

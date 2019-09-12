@@ -9,7 +9,7 @@ typedef long long Long;
 
 const Long MX = 1e5;
 
-const Long MOD = 1e9;
+const Long MOD = 97;
 
 Long mult(Long a, Long b){
 	a %= MOD;
@@ -37,6 +37,5 @@ int main(){
 	ios_base::sync_with_stdio(false);
 	cin.tie(NULL);
 	cout.tie(NULL);
-	
 	return 0;
 }
