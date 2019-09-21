@@ -71,7 +71,7 @@ vector<Long> getDivisors(Long x) {
 		}
 		
 	}
-	//sort(ans.begin(), ans.end();
+	//sort(ans.begin(), ans.end());
 	return ans;
 }
 

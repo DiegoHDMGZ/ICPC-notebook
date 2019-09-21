@@ -7,16 +7,14 @@ using namespace std;
 
 typedef long long Long;
 typedef long double Double;
-const Long MAX = 3000;
-const Double ERROR = 1e-6;
+const Double EPS = 1e-6;
 
 Double f(Double x){
     return 3*x*x - 5 *x+7;
 }
 
 Double ternarySearch(Double ini, Double fin){ //O(log x)
-	
-    while(abs(fin-ini) > ERROR){
+    while(abs(fin-ini) > EPS){
         Double m1 = ini + (fin-ini)/3.0;
         Double m2 = fin - (fin-ini)/3.0;
 	
@@ -27,10 +25,10 @@ Double ternarySearch(Double ini, Double fin){ //O(log x)
             ini= m1;
         }
     }
-    
     return f((ini+fin)/2.0);
 }
 
 int main(){
     cout << fixed << setprecision(6) << ternarySearch(-200000,200000) << endl;
+    return 0;
 }

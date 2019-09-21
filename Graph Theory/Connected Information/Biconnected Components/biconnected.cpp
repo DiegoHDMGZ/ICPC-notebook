@@ -7,6 +7,8 @@ using namespace std;
 
 //https://www.spoj.com/problems/POLQUERY/
 
+//biconnected component is a maximal subgrah that does not have articulation points
+
 struct Edge{
 	int u, v;
 	Edge(int u , int v) : u(min(u , v)) , v(max(u,v)){
@@ -23,11 +25,11 @@ struct Edge{
 	}
 };
 
-const int MAX = 1e5;
-const int MAX2 = 2 * MAX;
+const int MX = 1e5;
+const int MX2 = 2 * MX;
 
 struct BCT{
-	vector<int> adj[MAX2];
+	vector<int> adj[MX2];
 	
 	void addEdge(int u , int v){
 		adj[u].pb(v);
@@ -37,17 +39,17 @@ struct BCT{
 
 
 struct Graph{
-	vector<int> adj[MAX];
-	bool vis[MAX];
-	int tIn[MAX];
-	int low[MAX];
+	vector<int> adj[MX];
+	bool vis[MX];
+	int tIn[MX];
+	int low[MX];
 	int timer;
 	stack<Edge> edges;
-	bool isArticulation[MAX];
-	unordered_map<int,bool> isBridge[MAX];
+	bool isArticulation[MX];
+	unordered_map<int,bool> isBridge[MX];
 	
-	int bcn[MAX]; //biconnected component of node. Articulation are considered separated
-	unordered_map<int,int> bce[MAX]; //biconnected component of edge
+	int bcn[MX]; //biconnected component of node. Articulation are considered separated
+	unordered_map<int,int> bce[MX]; //biconnected component of edge
 	vector<int> articulation;
 	vector<Edge> bridge;
 	
