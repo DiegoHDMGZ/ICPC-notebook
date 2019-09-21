@@ -6,14 +6,14 @@ using namespace std;
 
 typedef long long Long;
 
-const Long MAX = 100000;
+const Long MX = 100000;
 
 Long combine(Long x , Long y) {
 	return x + y;
 }
 
 struct SegmentTree{
-	Long t[4 * MAX];
+	Long t[4 * MX];
 	Long maxN;
 	
 	void setN(Long x) {
@@ -21,7 +21,7 @@ struct SegmentTree{
 	}
 	
 	void clear() {
-		for(Long i = 0; i < 4 * MAX; i++) {
+		for(Long i = 0; i < 4 * MX; i++) {
 			t[i] = 0;
 		}
 		maxN = 0;
