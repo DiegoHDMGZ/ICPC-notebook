@@ -28,7 +28,7 @@ struct Graph{
 		}
 	}
 	
-	void addEdge(Long u, Long v, Long w, bool dir = false){
+	void addEdge(Long u, Long v, Long w, bool dir ){
 		u--;
 		v--;
 		if(!added[min(u, v)][max(u , v)]) {
@@ -44,7 +44,6 @@ struct Graph{
 	}
 	
 	Long dfs(Long u, Long t ,Long f){ //O(E)
-		//t = target
 		if(u == t) return f;
 		if(vis[u]) return 0;
 		vis[u] = true;
@@ -66,7 +65,7 @@ struct Graph{
 	
 	Long maxFlow(Long s, Long t, Long n){ //O((E |F|)
 		Long ans = 0;
-		while(true){
+		while(true){ // O(|F|) iterations
 			fill(vis, vis + n, false);
 			Long inc = dfs(s, t, INF);
 			if(inc == 0) break;
@@ -87,7 +86,7 @@ int main(){
 		Long u,v,c;
 		cin >> u >> v >> c;
 		u--; v--;
-		G.addEdge(u,v,c);//undirected
+		G.addEdge(u,v,c , false);//undirected
 		//addEdge(u,v,c,true); //directed
 	}
 	

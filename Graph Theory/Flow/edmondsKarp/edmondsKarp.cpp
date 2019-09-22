@@ -31,7 +31,7 @@ struct Graph{
 		}
 	}
 	
-	void addEdge(Long u, Long v, Long w, bool dir = false){
+	void addEdge(Long u, Long v, Long w, bool dir ){
 		u--;
 		v--;
 		if(!added[min(u, v)][max(u , v)]) {
@@ -83,7 +83,7 @@ struct Graph{
 	
 	Long maxFlow(Long s, Long t , Long n){ //O(E * min(E * V , |F|))
 		Long ans = 0;
-		while(true){
+		while(true){ //O( min (E * V , |F| ) ) iterations
 			fill(vis, vis + n, false);
 			fill(parent, parent + n, -1);
 			Long inc = bfs(s, t);

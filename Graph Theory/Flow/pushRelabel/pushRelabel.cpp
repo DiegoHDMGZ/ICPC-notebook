@@ -33,7 +33,7 @@ struct Graph{
 		}
 	}
 	
-	void addEdge(Long u, Long v, Long w, bool dir = false){
+	void addEdge(Long u, Long v, Long w, bool dir ){
 		u--;
 		v--;
 		if(!added[min(u, v)][max(u , v)]) {
