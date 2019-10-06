@@ -5,8 +5,8 @@ using namespace std;
 
 typedef long long Long;
 
-const Long MAX = 100000;
-Long A[MAX];
+const Long MX = 100000;
+Long A[MX];
 
 bool check( Long med , Long x){
 	return A[ med ] >= x;

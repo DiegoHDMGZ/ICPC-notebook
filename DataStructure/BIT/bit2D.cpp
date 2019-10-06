@@ -3,12 +3,12 @@ using namespace std;
 
 typedef long long Long;
 
-const Long MAXX = 1000;
-const Long MAXY = 1000;
+const Long MXX = 1000;
+const Long MXY = 1000;
 const Long EXTRA = 6;
 
 struct FenwickTree2D{
-	Long tree[MAXX+EXTRA][MAXY+EXTRA];
+	Long tree[MXX+EXTRA][MXY+EXTRA];
 	
 	void clear(Long n, Long m){ //O(n * m)
 		for(Long i = 0; i< n + EXTRA; i++){
@@ -37,12 +37,12 @@ struct FenwickTree2D{
 		return query(x2 , y2) - query(x2 , y1 - 1) - query(x1 - 1 , y2) + query(x1 - 1 , y1 - 1);
 	}
 	
-	void update(Long i, Long j, Long delta){ //O(log MAXX * log MAXY)
+	void update(Long i, Long j, Long delta){ //O(log MXX * log MXY)
 		i += EXTRA;
 		j += EXTRA;
-		while(i < MAXX + EXTRA){
+		while(i < MXX + EXTRA){
 			Long _j = j;
-			while(_j < MAXY + EXTRA){
+			while(_j < MXY + EXTRA){
 				tree[i][_j] += delta;
 				_j += (_j & -_j);
 			}

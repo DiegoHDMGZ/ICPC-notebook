@@ -1,0 +1,40 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+typedef long long Long;
+
+struct MaxStack{
+	stack<pair<Long,Long>> s; // ( valor , maximo)
+	
+	Long f(Long a, Long b){
+		return max(a,b);
+	}
+
+	Long get(){
+		if(s.empty()) return 0;
+		return s.top().second;
+	}
+	
+	void add(Long newElement){
+		Long newVal = s.empty() ? newElement : min(newElement, s.top().second);
+		s.push({newElement , newVal});
+	}
+	
+	void pop(){
+		s.pop();
+	}
+	
+	void clear(){
+		while(!s.empty()){
+			s.pop();
+		}
+	}
+}ms;
+
+
+int main() {
+	return 0;
+}
+
+
+

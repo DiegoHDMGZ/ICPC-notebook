@@ -2,11 +2,11 @@
 using namespace std;
 
 typedef long long Long;
-const Long MAX = 100000;
+const Long MX = 100000;
 
 struct DSU{
-	Long parent[MAX];
-	Long size[MAX];
+	Long parent[MX];
+	Long size[MX];
 	
 	void make_set(Long v){ //O(1)
 		parent[v] = v;
