@@ -1,4 +1,6 @@
-#include <bits/stdc++.h>
+#include <iostream>
+#include <vector>
+#include <deque>
 #define debug(x) cout << #x << " = " << x << endl
 #define REP(i , n) for(Long i = 0; i < (Long)n ; i++)
 #define pb push_back
@@ -69,7 +71,8 @@ struct Graph{
 		while(!q.empty()){
 			Long u = q.front();
 			q.pop_front();
-			for(Long v : adj[u]){
+			for(Long i = 0; i < adj[u].size() ;i++){
+				Long v = adj[u][i];
 				Long cf = cap[u][v] - flow[u][v];
 				if(level[v] == -1 && cf > 0){
 					level[v] = level[u] + 1;
@@ -81,8 +84,6 @@ struct Graph{
 	}
 	
 	Long maxFlow(Long s, Long t, Long n){//General: O(E * V^2), Unit Cap: O(E * min(E^(1/2) , V^(2/3))), Unit Network: O(E * V^(1/2))
-		//unit network is a network in which all the edges have unit capacity,
-		//and for any vertex except s and t either incoming or outgoing edge is unique.
 		Long ans = 0;
 		while(true){ //O(V) iterations
 			fill(level, level + n, -1);
@@ -101,11 +102,49 @@ struct Graph{
 	}
 } G;
 
+vector<Long> clients[MX];
 
 int main(){
 	ios_base::sync_with_stdio(false);
 	cin.tie(NULL);
 	cout.tie(NULL);
 	
+	Long n, m;
+	cin >> n >> m;
+	Long t = m + n + 1;
+	Long s = 0;
+	for(Long i= 1 ; i <= n; i++){
+		Long w;
+		cin >> w;
+		if(w > 0){
+			G.addEdge(m + i  , t , w, true);
+		}
+		
+	}
+	for(Long i = 1; i <= m; i++){
+		Long K;
+		cin >> K;
+		vector<Long> batch;
+		REP(k , K){
+			Long u;
+			cin >> u;
+			batch.pb(u);
+			G.addEdge(i , m + u , INF, true);
+			for(Long t = 0; t < clients[u].size(); t++){
+				Long c = clients[u][t];
+				G.addEdge(i , c , INF, true);
+			}
+		}
+		REP(t, batch.size()){
+			Long u = batch[t];
+			clients[u].pb(i);
+		}
+		Long w;
+		cin >> w;
+		if(w > 0){
+			G.addEdge(s , i , w , true );
+		}
+	}
+	cout << G.maxFlow(s , t , n + m + 2) << endl;
 	return 0;
 }

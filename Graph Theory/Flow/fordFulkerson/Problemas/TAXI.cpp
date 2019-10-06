@@ -1,13 +1,16 @@
 #include <bits/stdc++.h>
 #define debug(x) cout << #x << " = " << x << endl
-#define REP(i,n) for(Long i = 0; i < (Long)n; i++)
+#define REP(i , n) for(Long i = 0; i < (Long)n ; i++)
 #define pb push_back
+
 using namespace std;
 
 typedef long long Long;
 
+
 const Long MX = 5000;
 const Long INF = 1e18;
+
 
 struct Graph{
 	vector<Long> adj[MX];
@@ -73,24 +76,38 @@ struct Graph{
 	}
 	
 } G;
-
 int main(){
 	ios_base::sync_with_stdio(false);
 	cin.tie(NULL);
-	Long n,m;
-	cin >> n >> m;
+	cout.tie(NULL);
 	
-	REP( i , m){
-		Long u,v,c;
-		cin >> u >> v >> c;
-		u--; v--;
-		G.addEdge(u,v,c , false);//undirected
-		//addEdge(u,v,c,true); //directed
+	Long Q;
+	cin >> Q;
+	REP(q , Q){
+		Long n , m , v , maxT;
+		cin >> n >> m >> v >> maxT;
+		vector<pair<Long,Long> > person(n);
+		vector<pair<Long,Long> > taxi(m);
+		Long s = 0;
+		Long t = n + m + 1;
+		G.clear(t + 1);
+		REP(i , n){
+			G.addEdge(m + i + 1 , t ,1 , true );
+			cin >> person[i].first >> person[i].second;
+		}
+		REP(i , m){
+			G.addEdge(s , i + 1, 1 , true);
+			cin >> taxi[i].first >> taxi[i].second;
+		}
+		REP(i , m){
+			REP(j , n){
+				if(( abs(taxi[i].first - person[j].first) + abs(taxi[i].second - person[j].second) ) * 200 <= maxT * v){
+					G.addEdge(i + 1 , j + m + 1 , 1 , true);
+				}
+			}
+		}
+		cout << G.maxFlow(s , t , t + 1) << endl;
 	}
-	
-	Long s,t;
-	cin >> s >> t;
-	Long resp = G.maxFlow(s, t, n);
 	
 	return 0;
 }

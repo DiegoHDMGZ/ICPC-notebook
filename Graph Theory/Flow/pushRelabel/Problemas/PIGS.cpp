@@ -1,4 +1,6 @@
-#include <bits/stdc++.h>
+#include <iostream>
+#include <vector>
+#include <deque>
 #define debug(x) cout << #x << " = " << x << endl
 #define REP(i , n) for(Long i = 0; i < (Long)n ; i++)
 #define pb push_back
@@ -9,7 +11,6 @@ typedef long long Long;
 
 const Long MX = 5000;
 const Long INF = 1e18;
-
 struct Graph{
 	vector<Long> adj[MX];
 	Long cap[MX][MX];
@@ -64,7 +65,8 @@ struct Graph{
 	void discharge(Long u){
 		while(e[u] > 0){
 			Long minHeight = INF;
-			for(Long v : adj[u]){
+			REP(i, adj[u].size()){
+				Long v = adj[u][i];
 				if(cap[u][v] - flow[u][v] > 0 ){
 					if(h[u] == h[v] + 1){
 						push(u , v);
@@ -85,7 +87,8 @@ struct Graph{
 		//General push-relabel without discharge runs in O((E * V * min(V , |F|))
 		h[s] = n - 2;
 		e[s] = 0;
-		for(Long v  : adj[s]){
+		REP(i, adj[s].size()){
+			Long v = adj[s][i];
 			flow[s][v] += cap[s][v];
 			flow[v][s] -= cap[s][v];
 			e[s] -= cap[s][v];
@@ -104,8 +107,49 @@ struct Graph{
 	}
 } G;
 
+vector<Long> clients[MX];
 
 int main(){
-
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	cout.tie(NULL);
+	
+	Long n, m;
+	cin >> n >> m;
+	Long t = m + n + 1;
+	Long s = 0;
+	for(Long i= 1 ; i <= n; i++){
+		Long w;
+		cin >> w;
+		if(w > 0){
+			G.addEdge(m + i  , t , w, true);
+		}
+		
+	}
+	for(Long i = 1; i <= m; i++){
+		Long K;
+		cin >> K;
+		vector<Long> batch;
+		REP(k , K){
+			Long u;
+			cin >> u;
+			batch.pb(u);
+			G.addEdge(i , m + u , INF, true);
+			for(Long t = 0; t < clients[u].size(); t++){
+				Long c = clients[u][t];
+				G.addEdge(i , c , INF, true);
+			}
+		}
+		REP(t, batch.size()){
+			Long u = batch[t];
+			clients[u].pb(i);
+		}
+		Long w;
+		cin >> w;
+		if(w > 0){
+			G.addEdge(s , i , w , true );
+		}
+	}
+	cout << G.maxFlow(s , t , n + m + 2) << endl;
 	return 0;
 }

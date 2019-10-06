@@ -1,7 +1,8 @@
 #include <bits/stdc++.h>
 #define debug(x) cout << #x << " = " << x << endl
-#define REP(i,n) for(Long i = 0; i < (Long)n; i++)
+#define REP(i , n) for(Long i = 0; i < (Long)n ; i++)
 #define pb push_back
+
 using namespace std;
 
 typedef long long Long;
@@ -29,6 +30,10 @@ struct Graph{
 	}
 	
 	void addEdge(Long u, Long v, Long w, bool dir ){
+		/*debug(u );
+		debug(v );
+		debug(w);
+		cout << endl;*/
 		if(!added[min(u, v)][max(u , v)]) {
 			adj[u].push_back(v);
 			adj[v].push_back(u);
@@ -77,20 +82,52 @@ struct Graph{
 int main(){
 	ios_base::sync_with_stdio(false);
 	cin.tie(NULL);
-	Long n,m;
-	cin >> n >> m;
+	cout.tie(NULL);
 	
-	REP( i , m){
-		Long u,v,c;
-		cin >> u >> v >> c;
-		u--; v--;
-		G.addEdge(u,v,c , false);//undirected
-		//addEdge(u,v,c,true); //directed
+	Long N;
+	while(cin >> N){
+		
+		vector<pair<Long,Long> > v;
+		REP(i , N){
+			Long a , b;
+			cin >> a >> b;
+			v.pb({a,b});
+		}
+		Long ans = 0;
+		Long s = 0;
+		Long t = 2 * N + 1;
+		REP(i , N){
+			G.clear(2 * N + 2);
+			Long k = 0;
+			for(Long j = 0; j < N; j++){
+				if(v[j].first - 1 == i || v[j].second - 1 == i){
+					k++;
+				}
+			}
+			if(k <= 1){
+				ans++;
+				continue;
+			}
+			for(Long j = 0; j < N; j++){
+				if(v[j].first - 1 != i && v[j ].second - 1 != i && i != j){
+					G.addEdge(j + 1 , v[j].first + N, 1, true);
+					G.addEdge(j + 1, v[j ].second + N , 1, true);
+					G.addEdge(s , j + 1, 1, true);
+					
+				}
+				if(j != v[i].first - 1 && j != v[i].second - 1){
+					G.addEdge(j + 1 + N , t , k - 1 , true);
+				} else {
+					G.addEdge(j + 1 + N , t , k - 2  , true);
+				}
+				
+			}
+			if(G.maxFlow(s , t , 2 * N + 2) < N - k - 1){
+				ans++;
+			}
+		}
+		cout << ans << endl;
 	}
-	
-	Long s,t;
-	cin >> s >> t;
-	Long resp = G.maxFlow(s, t, n);
 	
 	return 0;
 }

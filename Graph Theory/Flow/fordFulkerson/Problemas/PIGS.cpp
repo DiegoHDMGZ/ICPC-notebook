@@ -1,11 +1,13 @@
-#include <bits/stdc++.h>
+#include <iostream>
+#include <vector>
+#include <deque>
 #define debug(x) cout << #x << " = " << x << endl
-#define REP(i,n) for(Long i = 0; i < (Long)n; i++)
+#define REP(i , n) for(Long i = 0; i < (Long)n ; i++)
 #define pb push_back
+
 using namespace std;
 
 typedef long long Long;
-
 const Long MX = 5000;
 const Long INF = 1e18;
 
@@ -46,7 +48,8 @@ struct Graph{
 		if(vis[u]) return 0;
 		vis[u] = true;
 		
-		for( Long v : adj[u] ) {
+		REP(i , adj[u].size()) {
+			Long v = adj[u][i];
 			Long cf = cap[u][v] - flow[u][v];
 			if(cf == 0) continue;
 			
@@ -73,24 +76,49 @@ struct Graph{
 	}
 	
 } G;
+vector<Long> clients[MX];
 
 int main(){
 	ios_base::sync_with_stdio(false);
 	cin.tie(NULL);
-	Long n,m;
+	cout.tie(NULL);
+	
+	Long n, m;
 	cin >> n >> m;
-	
-	REP( i , m){
-		Long u,v,c;
-		cin >> u >> v >> c;
-		u--; v--;
-		G.addEdge(u,v,c , false);//undirected
-		//addEdge(u,v,c,true); //directed
+	Long t = m + n + 1;
+	Long s = 0;
+	for(Long i= 1 ; i <= n; i++){
+		Long w;
+		cin >> w;
+		if(w > 0){
+			G.addEdge(m + i  , t , w, true);
+		}
+		
 	}
-	
-	Long s,t;
-	cin >> s >> t;
-	Long resp = G.maxFlow(s, t, n);
-	
+	for(Long i = 1; i <= m; i++){
+		Long K;
+		cin >> K;
+		vector<Long> batch;
+		REP(k , K){
+			Long u;
+			cin >> u;
+			batch.pb(u);
+			G.addEdge(i , m + u , INF, true);
+			for(Long t = 0; t < clients[u].size(); t++){
+				Long c = clients[u][t];
+				G.addEdge(i , c , INF, true);
+			}
+		}
+		REP(t, batch.size()){
+			Long u = batch[t];
+			clients[u].pb(i);
+		}
+		Long w;
+		cin >> w;
+		if(w > 0){
+			G.addEdge(s , i , w , true );
+		}
+	}
+	cout << G.maxFlow(s , t , n + m + 2) << endl;
 	return 0;
 }

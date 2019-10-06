@@ -106,6 +106,54 @@ struct Graph{
 
 
 int main(){
-
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	cout.tie(NULL);
+	
+	Long N;
+	while(cin >> N){
+		
+		vector<pair<Long,Long> > v;
+		REP(i , N){
+			Long a , b;
+			cin >> a >> b;
+			v.pb({a,b});
+		}
+		Long ans = 0;
+		Long s = 0;
+		Long t = 2 * N + 1;
+		REP(i , N){
+			G.clear(2 * N + 2);
+			Long k = 0;
+			for(Long j = 0; j < N; j++){
+				if(v[j].first - 1 == i || v[j].second - 1 == i){
+					k++;
+				}
+			}
+			if(k <= 1){
+				ans++;
+				continue;
+			}
+			for(Long j = 0; j < N; j++){
+				if(v[j].first - 1 != i && v[j ].second - 1 != i && i != j){
+					G.addEdge(j + 1 , v[j].first + N, 1, true);
+					G.addEdge(j + 1, v[j ].second + N , 1, true);
+					G.addEdge(s , j + 1, 1, true);
+					
+				}
+				if(j != v[i].first - 1 && j != v[i].second - 1){
+					G.addEdge(j + 1 + N , t , k - 1 , true);
+				} else {
+					G.addEdge(j + 1 + N , t , k - 2  , true);
+				}
+				
+			}
+			if(G.maxFlow(s , t , 2 * N + 2) < N - k - 1){
+				ans++;
+			}
+		}
+		cout << ans << endl;
+	}
+	
 	return 0;
 }

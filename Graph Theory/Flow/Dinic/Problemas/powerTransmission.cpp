@@ -81,8 +81,6 @@ struct Graph{
 	}
 	
 	Long maxFlow(Long s, Long t, Long n){//General: O(E * V^2), Unit Cap: O(E * min(E^(1/2) , V^(2/3))), Unit Network: O(E * V^(1/2))
-		//unit network is a network in which all the edges have unit capacity,
-		//and for any vertex except s and t either incoming or outgoing edge is unique.
 		Long ans = 0;
 		while(true){ //O(V) iterations
 			fill(level, level + n, -1);
@@ -106,6 +104,36 @@ int main(){
 	ios_base::sync_with_stdio(false);
 	cin.tie(NULL);
 	cout.tie(NULL);
+	
+	Long n;
+	while(cin >> n){
+		G.clear(2 * n + 2);
+		for(Long i = 1 ;i <= n; i++){
+			Long w;
+			cin >> w;
+			G.addEdge(2 * i - 1 , 2 * i  , w , true);
+		}
+		Long m;
+		cin >> m;
+		REP(i , m){
+			Long u , v , w;
+			cin >> u >> v >> w;
+			G.addEdge(2 * u , 2 * v - 1, w , true);
+		}
+		Long B, D;
+		cin >> B >> D;
+		REP(i , B){
+			Long x;
+			cin >> x;
+			G.addEdge(0 , 2 * x - 1 , INF, true);
+		}
+		REP(i , D){
+			Long x;
+			cin >> x;
+			G.addEdge(2 * x , 2 * n + 1 , INF, true);
+		}
+		cout << G.maxFlow(0 , 2 * n + 1 , 2 * n + 2) << endl;
+	}
 	
 	return 0;
 }

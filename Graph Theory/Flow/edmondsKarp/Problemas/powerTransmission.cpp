@@ -94,12 +94,40 @@ struct Graph{
 	
 } G;
 
-
-
 int main(){
 	ios_base::sync_with_stdio(false);
 	cin.tie(NULL);
 	cout.tie(NULL);
+	
+	Long n;
+	while(cin >> n){
+		G.clear(2 * n + 2);
+		for(Long i = 1 ;i <= n; i++){
+			Long w;
+			cin >> w;
+			G.addEdge(2 * i - 1 , 2 * i  , w , true);
+		}
+		Long m;
+		cin >> m;
+		REP(i , m){
+			Long u , v , w;
+			cin >> u >> v >> w;
+			G.addEdge(2 * u , 2 * v - 1, w , true);
+		}
+		Long B, D;
+		cin >> B >> D;
+		REP(i , B){
+			Long x;
+			cin >> x;
+			G.addEdge(0 , 2 * x - 1 , INF, true);
+		}
+		REP(i , D){
+			Long x;
+			cin >> x;
+			G.addEdge(2 * x , 2 * n + 1 , INF, true);
+		}
+		cout << G.maxFlow(0 , 2 * n + 1 , 2 * n + 2) << endl;
+	}
 	
 	return 0;
 }

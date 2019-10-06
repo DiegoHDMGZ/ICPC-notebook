@@ -1,7 +1,8 @@
 #include <bits/stdc++.h>
 #define debug(x) cout << #x << " = " << x << endl
-#define REP(i,n) for(Long i = 0; i < (Long)n; i++)
+#define REP(i , n) for(Long i = 0; i < (Long)n ; i++)
 #define pb push_back
+
 using namespace std;
 
 typedef long long Long;
@@ -31,8 +32,6 @@ struct Graph {
 		REP( i , N) {
 			adj[i].clear();
 			vis[i] = false;
-			tIn[i] = 0;
-			low[i] = 0;
 			isArticulation[i] = false;
 			isBridge[i].clear();
 		}
@@ -85,39 +84,51 @@ struct Graph {
 			}
 		}
 	}
-	
-	void printBridges() {
-		cout << "Bridges = ";
-		REP(i , bridge.size()){
-			cout << "( " << bridge[i].u + 1 << " - " << bridge[i].v + 1 << " ) ; ";
-		}
-	} 	
-	
-	void printArticulations() {
-		cout << "Articulations = ";
-		REP(i , articulation.size()) {
-			cout << articulation[i] + 1 << " ";
-		}
-		cout << endl;
-	}
 } G;
 
-int main() {
+map<string , Long> vertex;
+string name[MX];
+
+int main(){
 	ios_base::sync_with_stdio(false);
 	cin.tie(NULL);
 	cout.tie(NULL);
-	
-	Long n, m;
-	cin >> n >> m;
-	REP(i , m) {
-		Long u , v;
-		cin >> u >> v;
-		G.addEdge(u , v);
+
+	Long N;
+	cin >> N;
+	Long T = 1;
+	while(true){
+		G.clear(N);
+		vertex.clear();
+		REP(i , N){
+			string s;
+			cin >> s;
+			name[i] = s;
+			vertex[s] = vertex.size() + 1;
+		}
+		Long M;
+		cin >> M;
+		REP(i , M){
+			string a, b;
+			cin >> a >> b;
+			G.addEdge(vertex[a] , vertex[b]);
+		}
+		G.calculate(N);
+		cout << "City map #" << T << ": " << G.articulation.size() << " camera(s) found" << "\n";
+		vector<string> ans;
+		REP(i , N){
+			if(G.isArticulation[i]){
+				ans.pb(name[i]);
+			}
+		}
+		sort(ans.begin(), ans.end());
+		REP(i , ans.size()){
+			cout << ans[i] << "\n";
+		}
+		cin >> N;
+		if(N == 0) break;
+		cout << "\n";
+		T++;
 	}
-	G.calculate(n);
-	G.printArticulations();
-	G.printBridges();
-	
 	return 0;
 }
-

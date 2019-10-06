@@ -1,10 +1,12 @@
 #include <bits/stdc++.h>
 #define debug(x) cout << #x << " = " << x << endl
-#define REP(i,n) for(Long i = 0; i < (Long)n; i++)
+#define REP(i , n) for(Long i = 0; i < (Long)n ; i++)
 #define pb push_back
+
 using namespace std;
 
 typedef long long Long;
+
 
 const Long MX = 4e5;  
 
@@ -25,14 +27,13 @@ struct Graph {
 	vector<Edge> bridge;
 	vector<Long> articulation;
 	bool isArticulation[MX];
-	unordered_map<Long,bool> isBridge[MX];
+	map<Long,bool> isBridge[MX];
+	Long component[MX];
 	
 	void clear(Long N = MX) {
 		REP( i , N) {
 			adj[i].clear();
 			vis[i] = false;
-			tIn[i] = 0;
-			low[i] = 0;
 			isArticulation[i] = false;
 			isBridge[i].clear();
 		}
@@ -48,16 +49,17 @@ struct Graph {
 		adj[v].pb(u);
 	}
 	
-	void dfs(Long u, Long p = -1){ //O(N + M)
+	void dfs(Long u, Long c , Long p = -1){ //O(N + M)
 		vis[u] = true;
 		tIn[u] = low[u] = timer++;
 		Long children = 0;
+		component[u] = c;
 		for(Long v : adj[u]) {
 			if(v == p) continue;
 			if(vis[v]) {
 				low[u] = min(low[u] , tIn[v]);
 			} else {
-				dfs(v , u);
+				dfs(v , c , u);
 				low[u] = min(low[u] , low[v]);
 				if(low[v] > tIn[u]) {
 					bridge.pb(Edge(u , v));
@@ -79,45 +81,56 @@ struct Graph {
 	}
 	
 	void calculate(Long n) { //O(N + M)
+		Long T = 1;
 		for(Long i = 0; i < n; i++) {
 			if(!vis[i]) {
-				dfs(i);
+				dfs(i, T++ );
 			}
 		}
 	}
-	
-	void printBridges() {
-		cout << "Bridges = ";
-		REP(i , bridge.size()){
-			cout << "( " << bridge[i].u + 1 << " - " << bridge[i].v + 1 << " ) ; ";
-		}
-	} 	
-	
-	void printArticulations() {
-		cout << "Articulations = ";
-		REP(i , articulation.size()) {
-			cout << articulation[i] + 1 << " ";
-		}
-		cout << endl;
-	}
-} G;
+} G1 , G2;
 
-int main() {
+
+
+int main(){
 	ios_base::sync_with_stdio(false);
 	cin.tie(NULL);
 	cout.tie(NULL);
 	
-	Long n, m;
-	cin >> n >> m;
-	REP(i , m) {
-		Long u , v;
-		cin >> u >> v;
-		G.addEdge(u , v);
+	Long N, M, Q;
+	cin >> N >> M >> Q;
+	while(!(N == 0 && M == 0 && Q == 0)){
+		G1.clear(N);
+		G2.clear(N);
+		vector<pair<Long,Long> > edges;
+		REP(i , M){
+			Long u , v;
+			cin >> u >> v;
+			G1.addEdge(u , v);
+			edges.pb({u - 1 , v - 1});
+		}
+		G1.calculate(N);
+		
+		REP(i , M){
+			if(G1.isBridge[edges[i].first][edges[i].second]){
+				G2.addEdge(edges[i].first + 1 , edges[i].second + 1);
+			}
+		}
+		G2.calculate(N);
+
+		REP(i , Q){
+			Long u , v;
+			cin >> u >> v;
+			u--;
+			v--;
+			if( (G1.component[u] != G1.component[v]) || (G2.component[u] != G2.component[v])){
+				cout << "N\n";
+			} else {
+				cout << "Y\n";
+			}
+		}
+		cout << "-\n";
+		cin >> N >> M >> Q;
 	}
-	G.calculate(n);
-	G.printArticulations();
-	G.printBridges();
-	
 	return 0;
 }
-

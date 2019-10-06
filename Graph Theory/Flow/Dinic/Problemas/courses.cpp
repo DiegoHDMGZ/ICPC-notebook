@@ -102,10 +102,38 @@ struct Graph{
 } G;
 
 
+
 int main(){
 	ios_base::sync_with_stdio(false);
 	cin.tie(NULL);
 	cout.tie(NULL);
 	
+	Long T;
+	cin >> T;
+	REP(q, T){
+		Long n , p;
+		cin >> p >> n;
+		Long s = 0;
+		Long t = p + n + 1;
+		G.clear(t + 1);
+		REP(i , p){
+			Long c;
+			cin >> c;
+			G.addEdge(s , i + 1, 1 , true); 
+			REP(j , c){
+				Long x;
+				cin >> x;
+				G.addEdge(i + 1 , x + p , 1 , true);
+			}
+		}
+		REP(i , n){
+			G.addEdge(i + p + 1 , t , 1 ,true);
+		}
+		if(G.maxFlow(s , t , t + 1) == p){
+			cout << "YES\n";
+		} else {
+			cout << "NO\n";
+		}
+	}
 	return 0;
 }

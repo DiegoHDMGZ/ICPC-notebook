@@ -1,7 +1,8 @@
 #include <bits/stdc++.h>
 #define debug(x) cout << #x << " = " << x << endl
-#define REP(i,n) for(Long i = 0; i < (Long)n; i++)
+#define REP(i , n) for(Long i = 0; i < (Long)n ; i++)
 #define pb push_back
+
 using namespace std;
 
 typedef long long Long;
@@ -31,8 +32,6 @@ struct Graph {
 		REP( i , N) {
 			adj[i].clear();
 			vis[i] = false;
-			tIn[i] = 0;
-			low[i] = 0;
 			isArticulation[i] = false;
 			isBridge[i].clear();
 		}
@@ -85,39 +84,42 @@ struct Graph {
 			}
 		}
 	}
-	
-	void printBridges() {
-		cout << "Bridges = ";
-		REP(i , bridge.size()){
-			cout << "( " << bridge[i].u + 1 << " - " << bridge[i].v + 1 << " ) ; ";
-		}
-	} 	
-	
-	void printArticulations() {
-		cout << "Articulations = ";
-		REP(i , articulation.size()) {
-			cout << articulation[i] + 1 << " ";
-		}
-		cout << endl;
-	}
 } G;
 
-int main() {
+void parsing( string &s){
+	Long tokens;  
+	stringstream entrada( s );
+	
+	Long u = -1;
+	while( entrada >> tokens ){
+		if(u == -1) {
+			u = tokens;
+		} else {
+			G.addEdge(u , tokens);
+		}
+	}
+}
+
+int main(){
 	ios_base::sync_with_stdio(false);
 	cin.tie(NULL);
 	cout.tie(NULL);
 	
-	Long n, m;
-	cin >> n >> m;
-	REP(i , m) {
-		Long u , v;
-		cin >> u >> v;
-		G.addEdge(u , v);
+	Long N;
+	cin >> N;
+	while(N > 0){
+		G.clear(N);
+		cin.ignore();
+		while(true){
+			string s;
+			getline(cin , s);
+			if(s[0] == '0') break;
+			parsing(s);
+		}
+		G.calculate(N);
+		cout << G.articulation.size() << "\n";
+		cin >> N;
 	}
-	G.calculate(n);
-	G.printArticulations();
-	G.printBridges();
 	
 	return 0;
 }
-

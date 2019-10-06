@@ -6,8 +6,9 @@ using namespace std;
 
 typedef long long Long;
 
+const Long INF = 1e18;
 Long kadane(vector<Long> &v){
-	Long maxSoFar = 0;
+	Long maxSoFar = -INF;
 	Long maxEndingHere = 0;
 	
 	REP(i , v.size() ) {

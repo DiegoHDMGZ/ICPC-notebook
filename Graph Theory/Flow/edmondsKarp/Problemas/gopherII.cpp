@@ -6,6 +6,7 @@
 using namespace std;
 
 typedef long long Long;
+typedef long double Double;
 
 const Long MX = 5000;
 const Long INF = 1e18;
@@ -95,11 +96,37 @@ struct Graph{
 } G;
 
 
+Double dist(pair<Double, Double> a, pair<Double,Double> b){
+	return (b.second - a.second)* (b.second - a.second) + (b.first - a.first) * (b.first - a.first);
+}
 
 int main(){
 	ios_base::sync_with_stdio(false);
 	cin.tie(NULL);
 	cout.tie(NULL);
 	
+	Long n, m , maxTime ,v;
+	while(cin >> n >> m >> maxTime >> v){
+		vector<pair<Double,Double> > gopher(n);
+		vector<pair<Double,Double> > hole(m);
+		Long s = 0 , t = n + m + 1;
+		G.clear(t + 1);
+		REP(i , n){
+			cin >> gopher[i].first >> gopher[i].second;
+			G.addEdge(s , i + 1 , 1 , true);
+		}
+		REP(i , m){
+			cin >> hole[i].first >> hole[i].second;
+			G.addEdge(i + 1 + n , t , 1 , true);
+		}
+		REP(i , n){
+			REP(j , m){
+				if(dist(gopher[i], hole[j]) <= (maxTime * v) * (maxTime * v)){
+					G.addEdge(i + 1 , j + n + 1 , 1 , true);
+				}
+			}
+		}
+		cout << n - G.maxFlow(s ,t , t + 1) << endl;
+	}
 	return 0;
 }

@@ -7,7 +7,7 @@ using namespace std;
 
 typedef long long Long;
 
-const Long MX = 5000;
+const Long MX = 2010;
 const Long INF = 1e18;
 
 struct Graph{
@@ -105,7 +105,70 @@ struct Graph{
 } G;
 
 
-int main(){
+bool possible(vector<Long> &hA, vector<Long> &hB , Long n , Long d){
+	Long a = hA.size();
+	Long b = hB.size();
+	Long s = 0;
+	Long t = 2 * a + 2 * b + 1;
+	G.clear(t + 1);
+	
+	for(Long i = 1 ; i <= n; i++){
+		G.addEdge(s , i  , 1 , true);
+	}
+	
+	for(Long i = 1; i <= a; i++){
+		G.addEdge(i , i + a , 1, true); 
+	}
+	for(Long i = 2 * a + 1; i <= 2 * a + b; i++){
+		G.addEdge(i , i + b , 1, true);
+	}
+	
+	for(Long i = 2 * a + b + 1; i <= 2 * a + b + n; i++){
+		G.addEdge(i , t, 1 , true);
+	}
+	
+	REP(i , a){
+		REP(j , b){
+			if( abs(hA[i] - hB[j]) < d){
+				G.addEdge(i + 1 + a , 2 * a + j + 1, 1 , true);
+				G.addEdge(2 * a + b + j + 1 , i + 1, 1 ,true);
+			}
+		}
+	}
+	
+	return G.maxFlow(s , t , t + 1) == n; 
+} 
 
+
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	cout.tie(NULL);
+	
+	Long n ,a , b , d;
+	cin >> n >> a >> b >> d;
+	vector<Long> hA(a);
+	REP(i , a){
+		cin >> hA[i];
+	}
+	vector<Long> hB(b);
+	REP(i , b){
+		cin >> hB[i];
+	}
+	sort(hA.rbegin(), hA.rend());
+	sort(hB.begin(), hB.end());
+
+	
+	if(possible(hA, hB, n , d) ){
+		cout << "S\n";
+	} else {
+		sort(hB.rbegin(), hB.rend());
+		sort(hA.begin(), hA.end());
+		if(possible(hB, hA, n , d)){
+			cout << "S\n";
+		} else {
+			cout << "N\n";
+		}
+	}
 	return 0;
 }
