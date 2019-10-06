@@ -6,9 +6,9 @@ using namespace std;
 
 typedef long long Long;
 
-const Long MAX = 1000;
-Long dp[MAX][MAX];
-bool used[MAX][MAX];
+const Long MX = 1000;
+Long dp[MX][MX];
+bool used[MX][MX];
 Long comb(Long n , Long m) {
 	if(n == m){ 
 		return 1;

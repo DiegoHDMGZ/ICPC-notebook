@@ -10,21 +10,21 @@ typedef long long Long;
 
 //With weight on edges, put the weight in the node with greater depth and add one line to query function
 
-const Long MAX = 1e5;
+const Long MX = 1e5;
 Long segmentTreeQuery(Long pos1 , Long pos2) { 
 	return 0;
 }
 
 struct Graph {
-	vector <Long> adj[MAX];
-	Long parent[MAX];
-	Long depth[MAX];
-	Long heavy[MAX];
-	Long head[MAX];
-	Long pos[MAX];
+	vector <Long> adj[MX];
+	Long parent[MX];
+	Long depth[MX];
+	Long heavy[MX];
+	Long head[MX];
+	Long pos[MX];
 	Long curPos = 0;
 	
-	void clear(Long N = MAX) { //O(N)
+	void clear(Long N = MX) { //O(N)
 		REP( i , N) {
 			adj[i].clear();
 			parent[i] = -1;
@@ -35,8 +35,6 @@ struct Graph {
 	}
 	
 	void addEdge(Long u, Long v) { //O(1)
-		u--;
-		v--;
 		adj[u].pb(v);
 		adj[v].pb(u);
 	}

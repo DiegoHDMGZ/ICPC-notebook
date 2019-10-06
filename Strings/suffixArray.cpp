@@ -90,6 +90,8 @@ vector<Long> sortCyclic(string &s) { //O(n log n)
 	return p;
 }
 
+//A suffix array will contain integers that represent the starting indexes of the all the suffixes of a given string,
+// after the aforementioned suffixes are sorted.
 vector<Long> suffixArray(string &s) {
 	s += minChar;
 	vector<Long> v = sortCyclic(s);

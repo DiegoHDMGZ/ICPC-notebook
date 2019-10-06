@@ -5,20 +5,20 @@
 using namespace std;
 
 typedef long long Long;
-const Long MAX = 2e7;
-bool isPrime[MAX];
+const Long MX = 2e7;
+bool isPrime[MX];
 vector<Long> primes;
 
 //pending system test
 
-void sieve(){ //O(MAX log log MAX)
-	fill(isPrime, isPrime + MAX , true);
+void sieve(){ //O(MX log log MX)
+	fill(isPrime, isPrime + MX , true);
 	isPrime[0] = isPrime[1] = false;
-	for(Long i = 2; i  < MAX; i++){
+	for(Long i = 2; i  < MX; i++){
 		if(isPrime[i]) {
 			primes.pb(i);
-			if(i * i < MAX){
-				for(Long j = i * i; j < MAX; j += i){
+			if(i * i < MX){
+				for(Long j = i * i; j < MX; j += i){
 					isPrime[j] = false;
 				}
 			}

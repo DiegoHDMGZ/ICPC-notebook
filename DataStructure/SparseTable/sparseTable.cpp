@@ -7,11 +7,11 @@ using namespace std;
 
 typedef long long Long;
 
-const Long MAX = 1e6;
-const Long loga = (Long)log2(MAX)+1;
+const Long MX = 1e6;
+const Long loga = (Long)log2(MX)+1;
 
 struct SparseTable{
-	Long st[MAX][loga];
+	Long st[MX][loga];
 	
 	Long f(Long a, Long b){
 		return a + b;

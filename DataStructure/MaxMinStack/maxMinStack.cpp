@@ -10,17 +10,17 @@ struct MaxStack{
 		return max(a,b);
 	}
 
-	Long get(){
+	Long get(){ //O(1) amortized
 		if(s.empty()) return 0;
 		return s.top().second;
 	}
 	
-	void add(Long newElement){
+	void add(Long newElement){ //O(1) amortized
 		Long newVal = s.empty() ? newElement : min(newElement, s.top().second);
 		s.push({newElement , newVal});
 	}
 	
-	void pop(){
+	void pop(){ //O(1) amortized
 		s.pop();
 	}
 	

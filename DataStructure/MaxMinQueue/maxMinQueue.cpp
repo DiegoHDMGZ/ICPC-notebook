@@ -10,7 +10,7 @@ struct MaxQueue{
 		return max(a,b);
 	}
 
-	Long get(){
+	Long get(){ //O(1) amortized
 		if(s1.empty() && s2.empty()) return 0;
 		if(s1.empty() || s2.empty()){
 			return s1.empty() ? s2.top().second : s1.top().second;
@@ -20,12 +20,12 @@ struct MaxQueue{
 		}
 	}
 	
-	void add(Long newElement){
+	void add(Long newElement){ //O(1) amortized
 		Long aux = s1.empty() ? newElement : f(newElement,s1.top().second);
 		s1.push(make_pair(newElement,aux));
 	}
 	
-	void pop(){
+	void pop(){ //O(1) amortized
 		if(s2.empty()){
 			//s1 = inverse(s2)
 			while(!s1.empty()){

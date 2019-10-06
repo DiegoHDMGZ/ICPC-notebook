@@ -6,19 +6,19 @@ using namespace std;
 
 typedef long long Long;
 
-const Long MAX = 1e5;
+const Long MX = 1e5;
 const Long INF = 1e18;
-const Long loga = log2(MAX)+1;
+const Long loga = log2(MX)+1;
 
 struct Graph{
-	vector<Long> adj [MAX];
-	vector<Long> cost[MAX];
+	vector<Long> adj [MX];
+	vector<Long> cost[MX];
 	
-	Long anc[MAX][loga]; //anc[i][j] : ancestor of i at distance 2^j
-	Long height[MAX]; 
-	pair<Long,Long> st[MAX][loga]; //st[i][j] : min/max edge starting at i and ending at anc[i][j]
-	int tIn[MAX];
-	int tOut[MAX];
+	Long anc[MX][loga]; //anc[i][j] : ancestor of i at distance 2^j
+	Long height[MX]; 
+	pair<Long,Long> st[MX][loga]; //st[i][j] : min/max edge starting at i and ending at anc[i][j]
+	int tIn[MX];
+	int tOut[MX];
 	int timer = 0;
 	
 	void clear(Long N) {
@@ -30,8 +30,6 @@ struct Graph{
 	}
 	
 	void addEdge(Long u , Long v, Long w) {
-		u--;
-		v--;
 		adj[u].push_back(v);
 		adj[v].push_back(u);
 		cost[u].push_back(w);

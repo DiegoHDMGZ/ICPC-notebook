@@ -6,13 +6,13 @@
 using namespace std;
 typedef long long Long;
 
-const Long MAX = 5000000;
+const Long MX = 5000000;
 Long B = 67; //Utilizamos el caso extremo en que se trabajo con digitos, letras ( minus y mayus)
 //en caso se quiera restringir, cambiar en todos los hashing 
 Long mod = 1e9+7;
-Long pot[MAX];
-Long hPref[MAX];
-Long hSuf[MAX];
+Long pot[MX];
+Long hPref[MX];
+Long hSuf[MX];
 Long minChar = (Long)('0');
 
 Long hSub(Long i, Long j){ //O(1)
@@ -32,7 +32,7 @@ bool isPalindrome(Long i, Long j){ //O(1)
 
 void precalc(){
 	pot[0]= 1;
-	for(int i = 1; i<MAX;i++){
+	for(int i = 1; i<MX;i++){
 		pot[i] = (pot[i-1]*B)%mod;
 	}
 }

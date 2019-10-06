@@ -6,11 +6,11 @@ using namespace std;
 
 typedef long long Long;
 
-const Long MAX = 1e5;
+const Long MX = 1e5;
 
 struct DisjointSetUnion{
-	Long parent[MAX];
-	Long size[MAX];
+	Long parent[MX];
+	Long size[MX];
 	
 	void make_set(Long v){ //O(1)
 		parent[v] = v;
@@ -49,7 +49,7 @@ struct Edge{
 
 struct Graph{
 	vector<Edge> edges;
-	vector<Long> tree[MAX];
+	vector<Long> tree[MX];
 	
 	void clear(Long N) { //O(n+m)
 		REP(i, N) {
@@ -59,8 +59,6 @@ struct Graph{
 	}
 	
 	void addEdge(Long u, Long v, Long w) {
-		u--;
-		v--;
 		edges.pb(Edge(u , v , w));
 	}
 	

@@ -6,7 +6,7 @@ using namespace std;
 
 typedef long long Long;
 
-const Long MAX = 1e5;
+const Long MX = 1e5;
 const Long INF = 1e18;
 
 struct Edge{
@@ -27,12 +27,12 @@ struct Edge{
 };
 
 struct Graph { 
-	vector<Long> adj [MAX];
-	vector<Long> cost[MAX];
+	vector<Long> adj [MX];
+	vector<Long> cost[MX];
 	
-	Long minCost[MAX];
-	Long p[MAX]; //padre en el MST
-	bool selected[MAX];
+	Long minCost[MX];
+	Long p[MX]; //padre en el MST
+	bool selected[MX];
 	
 	void clear(Long N) { //mandatory
 		REP( i, N) {
@@ -45,8 +45,6 @@ struct Graph {
 	}
 	
 	void addEdge(Long u, Long v, Long w) {
-		u--;
-		v--;
 		adj[u].pb(v);
 		adj[v].pb(u);
 		cost[u].pb(w);

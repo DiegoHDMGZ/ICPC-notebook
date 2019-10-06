@@ -18,9 +18,7 @@ Long random(Long a, Long b){
 struct Item{
 	Long value,prior , cnt , add;
 	Item *l, *r;
-	Item(){
-	}
-	
+	Item(){}
 	Item(Long value, Long prior) : value(value) , prior(prior),add(0), l (NULL), r(NULL) , cnt(0){}
 };
 
@@ -94,7 +92,7 @@ struct Treap{
 	pitem tree;
 	
 	void insert(Long pos, Long X){ //O(log N) 
-		Long r = random(0,MAXINT);
+		Long r = random(0 , MAXINT);
 		pitem it = new Item(X,r);
 		pitem T1, T2;
 		split(tree , T1, T2, pos);
@@ -139,8 +137,6 @@ struct Treap{
 		
 		return resp;
 	}
-
-	
 }tp;
 
 int main(){

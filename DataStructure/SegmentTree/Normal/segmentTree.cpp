@@ -20,8 +20,8 @@ struct SegmentTree{
 		maxN = x;
 	}
 	
-	void clear() {
-		for(Long i = 0; i < 4 * MX; i++) {
+	void clear(Long n) {
+		for(Long i = 0; i < 4 * n; i++) {
 			t[i] = 0;
 		}
 		maxN = 0;

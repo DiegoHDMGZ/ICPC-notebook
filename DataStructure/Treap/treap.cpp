@@ -2,21 +2,17 @@
 #define debug(x) cout << #x << " = " << x << endl
 #define REP(i,n) for(Long i = 0; i < (Long)n; i++)
 #define pb push_back
-#define RANDOM mt19937 rng(chrono::steady_clock::now().time_since_epoch().count())
-#define unif(a,b) uniform_int_distribution<int>(a,b)(rng)
 
 using namespace std;
 
 typedef long long Long;
 
 const int MAXINT = 1e9;
-RANDOM;
+
 struct Item{
 	Long key,prior;
 	Item *l, *r;
-	Item(){
-	}
-	
+	Item(){}
 	Item(Long key, Long prior) : key(key) , prior(prior), l (NULL), r(NULL){}
 };
 
@@ -49,11 +45,15 @@ void merge (pitem &t, pitem l , pitem r){ //O(log N)
 	}
 }
 
+mt19937_64  rng(chrono::steady_clock::now().time_since_epoch().count());
+
+Long random(Long a, Long b) {
+	return uniform_int_distribution<Long>(a , b)(rng);
+}
+
 struct Treap{
 	pitem tree;
-	
 
-	
 	void insert(pitem &t, pitem it){ //O(log N) 
 		if(!t){
 			t = it;
@@ -73,8 +73,8 @@ struct Treap{
 	}
 	
 	void insert(Long X){ //O(log N) . !warning : only different elements
-		Long random = unif(0,MAXINT);
-		pitem it = new Item(X,random);
+		Long r = random(0 , MAXINT);
+		pitem it = new Item(X , r);
 		insert(tree,it);
 	}
 	

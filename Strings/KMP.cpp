@@ -2,11 +2,12 @@
 #define debug(x) cout << #x << " = " << x << endl
 #define REP(i,n) for(Long i = 0; i < (Long)n; i++)
 #define pb push_back
-#define MAX 100000
 using namespace std;
 
 typedef long long Long;
-vector<Long> b(MAX); //b[i] es la longitud del borde más grande en la subcadena s[0...i]
+
+const Long MX = 1e5;
+vector<Long> b(MX); //b[i] es la longitud del borde más grande en la subcadena s[0...i]
 
 void prefixFunction(string s){ //O(n)
 	Long n = s.size();

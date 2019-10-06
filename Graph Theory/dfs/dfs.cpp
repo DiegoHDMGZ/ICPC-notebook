@@ -6,21 +6,22 @@
 using namespace std;
 
 typedef long long Long;
-const Long MAX = 1e5;
+const Long MX = 1e5;
 
 struct Graph {
-	vector <Long> adj[MAX];
-	bool vis[MAX];
-	Long comp[MAX];
-	Long p[MAX];
-	bool ciclo = false;
+	vector <Long> adj[MX];
+	bool vis[MX];
+	Long tIn[MX];
+	Long tOut[MX];
+	Long timer = 0;
 	
-	void clear(Long N = MAX) {
+	void clear(Long N = MX) {
 		REP( i , N) {
 			adj[i].clear();
 			vis[i] = false;
-			p[i] = -1;
+			tIn[i] = tOut[i] = 0;
 		}
+		timer = 0;
 	}
 	
 	void addEdge(Long u, Long v) {
@@ -30,21 +31,24 @@ struct Graph {
 		adj[v].pb(u);
 	}
 	
-	void dfs(Long u, Long curComp){
+	void dfs(Long u){
 		vis[u] = true;
-		comp[u] = curComp;
-		
+		tIn[u] = ++timer;
 		for(Long v : adj[u]){
 			if(!vis[v]){
-				dfs(v, curComp);
-				p[v] = u; //padre de v es u;
+				dfs(v); //tree edge
 			}
 			else{
-				if( v != p[u]){
-					ciclo = true; //ancestro ya visitado (back edge)
+				if(tOut[v] == 0){
+					//back edge
+				} else if(tIn[u] < tIn[v]){
+					//forward edge
+				} else {
+					//cross edge
 				}
 			} 
 		}
+		tOut[u] = ++timer;
 	}
 } G;
 

@@ -12,12 +12,12 @@ struct PartialSum{
 	Long A[MX];
 	Long dif[MX + 5];
 	
-	void update(Long l, Long r, Long delta) {
+	void update(Long l, Long r, Long delta) { //O(1)
 		dif[l] += delta;
 		dif[r + 1] -= delta;
 	}
 
-	void finalUpdate(Long n) {
+	void finalUpdate(Long n) { //O(n)
 		for(Long i = 1 ; i < n; i++) {
 			dif[i] += dif[i - 1];
 		}
@@ -26,7 +26,7 @@ struct PartialSum{
 		}
 	}
 
-	Long query(Long pos){
+	Long query(Long pos){ //O(1)
 		return A[pos];
 	}
 	

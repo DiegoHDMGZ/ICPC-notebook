@@ -13,7 +13,7 @@ struct DSU{
 		size[v] = 1;
 	}
 	
-	Long find(Long v){ //O(log(N))
+	Long find(Long v){ //O(1) amortized
 		if(v==parent[v]){
 			return v;
 		}

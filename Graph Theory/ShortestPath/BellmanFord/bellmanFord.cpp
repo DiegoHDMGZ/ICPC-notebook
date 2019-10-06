@@ -5,7 +5,7 @@
 using namespace std;
 
 typedef long long Long;
-const Long MAX = 1e4;
+const Long MX = 1e4;
 const Long INF = 1e18;
 
 struct Edge{
@@ -20,8 +20,8 @@ struct Edge{
 
 struct Graph{
 	vector<Edge> E;
-	Long d[MAX];
-	Long p[MAX];
+	Long d[MX];
+	Long p[MX];
 	
 	deque<Long> path;
 	
@@ -34,8 +34,6 @@ struct Graph{
 	}
 	
 	void addEdge(Long u, Long v, Long w) {
-		u--;
-		v--;
 		E.pb(Edge(u, v , w));
 	}
 	
@@ -54,6 +52,10 @@ struct Graph{
 	}
 	
 	bool beLongmanFord(Long n, Long m, Long root = 0){ //O(nm)
+		REP(i , n) {
+			d[i] = INF;
+			p[i] = -1;
+		}
 		d[root] = 0;
 	
 		Long x;

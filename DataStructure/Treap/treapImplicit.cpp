@@ -81,7 +81,7 @@ struct Treap{
 	pitem tree;
 	
 	void insert(Long pos, Long X){ //O(log N) 
-		Long r = random(0,MAXINT);
+		Long r = random(0 , MAXINT);
 		pitem it = new Item(X,r);
 		pitem T1, T2;
 		split(tree , T1, T2, pos);

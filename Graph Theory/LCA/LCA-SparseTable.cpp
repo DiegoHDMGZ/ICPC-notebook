@@ -6,11 +6,11 @@ using namespace std;
 
 typedef long long Long;
 
-const Long MAX = 1e5;
-const Long loga = log2(MAX)+1;
+const Long MX = 1e5;
+const Long loga = log2(MX)+1;
 
 struct SparseTable{
-	pair<Long,Long> st[2 * MAX][loga + 1]; //<min height , node>
+	pair<Long,Long> st[2 * MX][loga + 1]; //<min height , node>
 	
 	pair<Long,Long> f(pair<Long,Long> a, pair<Long,Long> b){
 		return min(a , b);
@@ -42,12 +42,12 @@ struct SparseTable{
 }st;
 
 struct Graph {
-	vector<Long> adj[MAX];
+	vector<Long> adj[MX];
 	vector<pair<Long,Long>> euler;
-	Long first[MAX];
-	Long height[MAX];
-	Long tIn[MAX];
-	Long tOut[MAX];
+	Long first[MX];
+	Long height[MX];
+	Long tIn[MX];
+	Long tOut[MX];
 	Long timer = 0;
 	
 	void clear(Long n){
@@ -59,8 +59,6 @@ struct Graph {
 	}
 	
 	void addEdge(Long u , Long v){
-		u--;
-		v--;
 		adj[u].push_back(v);
 		adj[v].push_back(u);
 	}

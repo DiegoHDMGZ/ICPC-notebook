@@ -87,7 +87,7 @@ struct Point{
 		return false;
 	}
 	
-	Long inPolygon( vector<Point> &poly ) {
+	Long inPolygon( vector<Point> &poly ) { //O(log n)
 		//works with convex polygons in counter-clockwise order
 		//use prepare (poly) before use it
 		

@@ -6,18 +6,18 @@ using namespace std;
 
 typedef long long Long;
 
-const Long MAX = 1e5;
+const Long MX = 1e5;
 
 struct SegmentTree{
-	Long t[4 * MAX];
+	Long t[4 * MX];
 	Long maxN;
 	
 	void setN(Long x) {
 		maxN = x;
 	}
 	
-	void clear() {
-		for(Long i = 0; i < 4 * MAX; i++) {
+	void clear(Long n) {
+		for(Long i = 0; i < 4 * n; i++) {
 			t[i] = 0;
 		}
 		maxN = 0;

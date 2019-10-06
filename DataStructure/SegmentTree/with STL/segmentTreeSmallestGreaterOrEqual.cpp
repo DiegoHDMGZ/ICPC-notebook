@@ -5,19 +5,19 @@
 using namespace std;
 
 typedef long long Long;
-const Long MAX = 1e5;
+const Long MX = 1e5;
 const Long INF = 1e18;
 
 struct SegmentTree {
-	vector<Long> t[4 * MAX]; //O(nlogn)
+	vector<Long> t[4 * MX]; //O(nlogn)
 	Long maxN;
 	
 	void setN(Long x) {
 		maxN = x;
 	}
 	
-	void clear() { 
-		for(Long i = 0; i < 4 * MAX; i++) {
+	void clear(Long n) { 
+		for(Long i = 0; i < 4 * n; i++) {
 			t[i].clear();
 		}
 		maxN = 0;

@@ -7,9 +7,9 @@ using namespace std;
 
 typedef long long Long;
 
-const Long MAX = 100;
-Long fact[MAX];
-Long inv[MAX];
+const Long MX = 100;
+Long fact[MX];
+Long inv[MX];
 
 Long fastPow(Long a, Long b, Long c){ //O(logb)
 	if(b == 0){
@@ -29,7 +29,7 @@ Long modInverse(Long a, Long m){ //O(logm)
 	return fastPow(a,m-2,m);
 }
 
-void init(Long mod) {
+void init(Long mod) { //O(mod)
 	fact[0] = 1;
 	inv[0] = 1;
 	
@@ -39,20 +39,17 @@ void init(Long mod) {
 	}
 }
 
-Long comb(Long N, Long M, Long mod) {
+Long comb(Long N, Long M, Long mod) { //O(1)
 	if(N < M){
 	  return 0;
 	}
-	
 	return ( (fact[N] * inv[M]) % mod ) * inv[N-M] % mod; 
 }
 
 
 
-Long lucas(Long N, Long M, Long mod) {
+Long lucas(Long N, Long M, Long mod) { //O(log N + log M)
 	//mod is prime
-	init(mod);
-	
 	Long resp = 1;
 	while(N > 0 || M > 0) {
 		resp = (resp * comb(N % mod, M % mod , mod)) % mod;
@@ -63,8 +60,10 @@ Long lucas(Long N, Long M, Long mod) {
 	return resp;
 }
 
-int main() {
+const Long MOD = 1e9 + 7;
 
+int main() {
+	init(MOD);
 	return 0;
 }
 

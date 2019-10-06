@@ -6,16 +6,16 @@ using namespace std;
 
 typedef long long Long;
 
-const Long MAX = 1e5;
+const Long MX = 1e5;
 const Long INF = 1e18;
 
 struct Graph{
-	Long d[MAX];
-	bool used[MAX];
-	vector<Long> adj[MAX];
-	vector<Long> cost[MAX];
+	Long d[MX];
+	bool used[MX];
+	vector<Long> adj[MX];
+	vector<Long> cost[MX];
 	
-	void clear(Long N = MAX) {
+	void clear(Long N = MX) {
 		REP(i, N) {
 			used[i] = false;
 			adj[i].clear();
@@ -25,8 +25,6 @@ struct Graph{
 	}
 	
 	void addEdge(Long u , Long v, Long w) {
-		u--;
-		v--;
 		adj[u].pb(v);
 		adj[v].pb(u);
 		cost[u].pb(w);

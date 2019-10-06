@@ -10,13 +10,11 @@ using namespace std;
 typedef long long Long;
 
 const int MAXINT = 1e9;
-RANDOM;
+
 struct Item{
 	Long key,prior,value,add;
 	Item *l, *r;
-	Item(){
-	}
-	
+	Item(){}
 	Item(Long key, Long prior, Long value) : key(key) , prior(prior), value(value), add(0),l (NULL), r(NULL){}
 	
 	void debugItem(string s){
@@ -65,6 +63,12 @@ void merge (pitem &t, pitem l , pitem r){
 	updateVal(t);
 }
 
+mt19937_64  rng(chrono::steady_clock::now().time_since_epoch().count());
+
+Long random(Long a, Long b) {
+	return uniform_int_distribution<Long>(a , b)(rng);
+}
+
 struct Treap{
 	pitem tree;
 	
@@ -88,8 +92,8 @@ struct Treap{
 	}
 	
 	void insert(Long X, Long valor){
-		Long random = unif(0,MAXINT);
-		pitem it = new Item(X,random,valor);
+		Long r = random(0 , MAXINT);
+		pitem it = new Item(X, r, valor);
 		insert(tree,it);
 	}
 	

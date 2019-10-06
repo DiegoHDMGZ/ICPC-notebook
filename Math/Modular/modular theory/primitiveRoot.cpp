@@ -10,23 +10,24 @@ typedef long long Long;
 //If g is primitive root modulo n, then gcd(a, n) = 1 and "a" is of order phi(n)
 //Hence, to know if a number is a primitive root modulo n, we must check that there is no such a "p" (p < phi(n) ) that a ^ p = 1 (mod n)
 //Additionally, if this "p" exists, it have to be a divisor of phi(n)
-//We just have to check all of divisors of form  phi(n) / pi  [pi prime factor of phi(n)] because other divisor d satisfy : d |  phi(n) / pi
+//We just have to check all of divisors of form  phi(n) / pi  [pi prime factor of phi(n)] 
+//because other divisor d satisfy : d |  phi(n) / pi
 
-/*const Long MAX = 1e7;
-bool isPrime[MAX];
-Long fact[MAX];
+/*const Long MX = 1e7;
+bool isPrime[MX];
+Long fact[MX];
 vector<Long> primes;
 
-void extSieve(){ //O(MAX)
+void extSieve(){ //O(MX)
 	//x = i * p. p is the smallest prime factor
-	fill(isPrime, isPrime + MAX , true);
+	fill(isPrime, isPrime + MX , true);
 	isPrime[1] = false;
-	for(Long i = 2; i  < MAX; i++){
+	for(Long i = 2; i  < MX; i++){
 		if(isPrime[i]) {
 			primes.pb(i);
 			fact[i] = i;
 		}
-		for(Long j = 0 ; j < primes.size() && i * primes[j] < MAX; j++){
+		for(Long j = 0 ; j < primes.size() && i * primes[j] < MX; j++){
 			isPrime[i * primes[j]] = false;
 			fact[i * primes[j]] = primes[j];
 			if(i % primes[j] == 0) {

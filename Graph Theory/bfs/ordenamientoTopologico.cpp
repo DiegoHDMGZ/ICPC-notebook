@@ -6,14 +6,14 @@ using namespace std;
 
 typedef long long Long;
 
-const Long MAX = 1e6;
+const Long MX = 1e6;
 const Long INF = 1e18;
 
 struct Graph {
-	vector<Long> adj[MAX];
-	Long indegree[MAX]; //indegree #nodos que terminan en ese nodo
+	vector<Long> adj[MX];
+	Long indegree[MX]; //indegree #nodos que terminan en ese nodo
 	
-	void clear(Long N = MAX) {
+	void clear(Long N = MX) {
 		REP(i , N){
 			indegree[i] = 0;
 			adj[i].clear();
@@ -21,8 +21,6 @@ struct Graph {
 	}
 	
 	void addEdge(Long u, Long v) {
-		u--;
-		v--;
 		adj[u].pb(v);
 		indegree[v]++;
 	}

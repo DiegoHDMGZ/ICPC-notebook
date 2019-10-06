@@ -6,30 +6,28 @@
 using namespace std;
 
 typedef long long Long;
-const Long MAX = 500;
+const Long MX = 500;
 const Long INF = 1e18;
 
 struct Graph {
-	Long d[MAX][MAX];
-	Long w[MAX][MAX];
-	Long p[MAX][MAX];
+	Long d[MX][MX];
+	Long p[MX][MX];
 	vector<Long> path;
 	
 	void clean( Long N) {
 		REP(i , N) {
 			REP( j , N) {
-				w[i][j] = INF, 
 				d[i][j] = INF;
 				p[i][j] = -1;
 			}
 		}
 	}
 	
+	Graph(){
+		clean(MX);
+	}
+	
 	void addEdge(Long u, Long v, Long cost) {
-		u--;
-		v--;
-		w[u][v] = min(w[u][v],cost);
-		w[v][u] = w[u][v];
 		d[u][v] = min(d[u][v],cost);
 		d[v][u] = d[u][v];
 	}
@@ -87,13 +85,6 @@ struct Graph {
 	}
 } G;
 
-
-
-
-
-
 int main() {
 	return 0;
 }
-
-

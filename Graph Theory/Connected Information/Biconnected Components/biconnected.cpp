@@ -60,8 +60,6 @@ struct Graph{
 		numComponent = 0;
 	}
 	void addEdge(int u , int v){
-		u--;
-		v--;
 		adj[u].pb(v);
 		adj[v].pb(u);
 	}

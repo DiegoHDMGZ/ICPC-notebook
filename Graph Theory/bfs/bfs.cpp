@@ -8,13 +8,13 @@ using namespace std;
 typedef long long Long;
 
 const Long INF= 1e7;
-const Long MAX = 1e5;
+const Long MX = 1e5;
 
 struct Graph{
-	Long d[MAX];
-	vector<Long> adj[MAX];
+	Long d[MX];
+	vector<Long> adj[MX];
 	
-	void clear(Long N = MAX) {
+	void clear(Long N = MX) {
 		REP(i , N) {
 			adj[i].clear();
 			d[i] = INF;
@@ -22,8 +22,6 @@ struct Graph{
 	}
 	
 	void addEdge(Long u, Long v) {
-		u--;
-		v--;
 		adj[u].pb(v);
 		adj[v].pb(u);
 	}

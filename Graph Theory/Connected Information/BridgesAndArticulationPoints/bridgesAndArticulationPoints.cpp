@@ -42,8 +42,6 @@ struct Graph {
 	}
 	
 	void addEdge(Long u, Long v) {
-		u--;
-		v--;
 		adj[u].pb(v);
 		adj[v].pb(u);
 	}

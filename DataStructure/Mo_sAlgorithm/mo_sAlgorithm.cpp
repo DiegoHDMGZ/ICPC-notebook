@@ -7,7 +7,7 @@ typedef long long Long;
 //Credits : https://www.geeksforgeeks.org/mos-algorithm-query-square-root-decomposition-set-1-introduction/
 //For a good explanation check : https://www.hackerearth.com/practice/notes/mos-algorithm/
 
-const Long MAX = 1e5;
+const Long MX = 1e5;
 
 //Conditions
 //1) No update
@@ -22,7 +22,6 @@ struct Query{
 
 };
 
-
 Long block;
 
 bool compara(const Query &x, const Query &y){
@@ -32,10 +31,9 @@ bool compara(const Query &x, const Query &y){
 }
 
 struct Mo{
-	
 	vector<Query> q;
-	Long answer[MAX];
-	Long A[MAX];
+	Long answer[MX];
+	Long A[MX];
 
 	void addQuery(Long l , Long r) {
 		l--;

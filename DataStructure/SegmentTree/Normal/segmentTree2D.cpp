@@ -7,12 +7,12 @@ using namespace std;
 
 typedef long long Long;
 
-const Long MAXX = 1000;
-const Long MAXY = 1000;
-//Long a[MAXX][MAXY];
+const Long MXX = 1000;
+const Long MXY = 1000;
+//Long a[MXX][MXY];
 
 struct SegmentTree{
-	Long t[4 * MAXX][4 * MAXY];
+	Long t[4 * MXX][4 * MXY];
 	Long maxN, maxM;
 	
 	void build_y(vector< vector < Long > > &a , Long vx, Long lx, Long rx, Long vy , Long ly, Long ry ) {

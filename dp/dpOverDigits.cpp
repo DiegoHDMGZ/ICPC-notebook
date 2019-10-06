@@ -7,10 +7,10 @@ using namespace std;
 typedef long long Long;
 
 const Long DIGIT = 10;
-const Long MAXSUM = 9 * DIGIT;
+const Long MXSUM = 9 * DIGIT;
 string s;
-Long dp[DIGIT][2][MAXSUM];
-bool used[DIGIT][2][MAXSUM];
+Long dp[DIGIT][2][MXSUM];
+bool used[DIGIT][2][MXSUM];
 Long f( Long pos, bool lower, Long sum) { //suma de todos los digitos del 1 al s
 	if(pos == s.size() ) {
 		return sum;

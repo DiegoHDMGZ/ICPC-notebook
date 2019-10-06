@@ -6,15 +6,15 @@ using namespace std;
 
 typedef long long Long;
 
-const Long MAX = 1e5;
-const Long loga = log2(MAX)+1;
+const Long MX = 1e5;
+const Long loga = log2(MX)+1;
 
 struct Graph {
-	vector<int> adj[MAX];
-	int anc[MAX][loga]; //anc[i][j] : ancestor of i at distance 2^j
-	int height[MAX];
-	int tIn[MAX];
-	int tOut[MAX];
+	vector<int> adj[MX];
+	int anc[MX][loga]; //anc[i][j] : ancestor of i at distance 2^j
+	int height[MX];
+	int tIn[MX];
+	int tOut[MX];
 	int timer = 0;
 	
 	void clear(Long n){
@@ -25,8 +25,6 @@ struct Graph {
 	}
 	
 	void addEdge(int u , int v){
-		u--;
-		v--;
 		adj[u].push_back(v);
 		adj[v].push_back(u);
 	}

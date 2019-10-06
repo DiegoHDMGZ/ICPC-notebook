@@ -6,12 +6,12 @@ using namespace std;
 
 typedef long long Long;
 
-const Long MAX = 1e5; //Suma de caracteres de todas las palabras + 1 : cantidad maxima de nodos
+const Long MX = 1e5; //Suma de caracteres de todas las palabras + 1 : cantidad maxima de nodos
 const Long ALPH = 26; // tamaño del alfabeto
 
 struct Trie{
-	Long memo[MAX][ALPH];
-	bool term[MAX]; //indica si es nodo terminal
+	Long memo[MX][ALPH];
+	bool term[MX]; //indica si es nodo terminal
 	Long nodos = 1;
 	
 	void init(Long cnt){

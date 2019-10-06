@@ -20,8 +20,6 @@ struct Graph{
 	}
 	
 	void addEdge(Long u , Long v){
-		u--;
-		v--;
 		adj[u].push_back(v);
 		adj[v].push_back(u);
 	}
@@ -35,7 +33,7 @@ struct Graph{
 	}
 };
 
-vector<Long> prufer(Graph &G){
+vector<Long> prufer(Graph &G){ //O(n)
 	Long n = G.adj.size();
 	G.dfs(n - 1);
 	
@@ -75,7 +73,7 @@ struct Edge{
 	Edge(Long u , Long v) : u(u), v(v){}
 };
 
-vector<Edge> getTree(vector<Long> &code){
+vector<Edge> getTree(vector<Long> &code){ //O(n)
 	Long n = code.size() + 2;
 	vector<Long> degree(n , 1);
 	for(Long u : code){

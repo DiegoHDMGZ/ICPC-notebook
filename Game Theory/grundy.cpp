@@ -33,11 +33,8 @@ Long grundy(Long n) { //O(N + M log M)
 		}
 		s.insert(g);
 	}
-	
-	retunr mex(s);
-
+	return mex(s);
 }
-
 
 int main(){
 	ios_base::sync_with_stdio(false);
