@@ -35,8 +35,13 @@ struct BCT{
 		adj[u].pb(v);
 		adj[v].pb(u);
 	}
+	
+	void clear(int N){
+		REP(i , N){
+			adj[i].clear();
+		}
+	}
 };
-
 
 struct Graph{
 	vector<int> adj[MX];
@@ -52,43 +57,63 @@ struct Graph{
 	unordered_map<int,int> bce[MX]; //biconnected component of edge
 	vector<int> articulation;
 	vector<Edge> bridge;
+	int lastComponent[MX];
 	
 	BCT bct;
 	int numComponent;
+	
+	void clear(int N){
+		articulation.clear();
+		bridge.clear();
+		timer = numComponent = 0;
+		bct.clear(2 * N);
+		REP(i , N){
+			adj[i].clear();
+			tIn[i] = low[i] = 0;
+			isArticulation[i] = false;
+			vis[i] = false;
+			isBridge[i].clear();
+			bce[i].clear();
+			lastComponent[i] = -1;
+		}
+	}
+	
 	Graph(){
-		timer = 0;
-		numComponent = 0;
+		clear(MX);
 	}
 	void addEdge(int u , int v){
 		adj[u].pb(v);
 		adj[v].pb(u);
 	}
 	
+	void addArticulation(int u){
+		if(!isArticulation[u]){
+			isArticulation[u] = true;
+			bcn[u] = numComponent++;
+			articulation.push_back(u);
+		}
+	}
+	
+	void addEdgeBCT(int u){
+		if(!isArticulation[u]){
+			bcn[u] = numComponent;
+		} else {
+			if(lastComponent[u] != numComponent){
+				bct.addEdge(bcn[u] , numComponent);
+				lastComponent[u] = numComponent;
+			}
+		}
+	}
+	
 	void addBiconnectedComponent(Edge e){
 		if(edges.empty()) return;
 		
-		unordered_set<int> processed; //articulation processed
 		while(!edges.empty()){
 			Edge cur = edges.top();
 			int u = cur.u;
 			int v = cur.v;
-	
-			if(!isArticulation[u]){
-				bcn[u] = numComponent;
-			} else {
-				if(processed.find(u) == processed.end()){
-					bct.addEdge(bcn[u] , numComponent);
-					processed.insert(u);
-				}
-			}
-			if(!isArticulation[v]){
-				bcn[v] = numComponent;
-			} else {
-				if(processed.find(v) == processed.end()){
-					bct.addEdge(bcn[v] , numComponent);
-					processed.insert(v);
-				}
-			}
+			addEdgeBCT(u);
+			addEdgeBCT(v);
 			bce[u][v] = numComponent;
 			edges.pop();
 			if(cur == e){
@@ -118,30 +143,25 @@ struct Graph{
 					bridge.push_back(Edge(u , v));
 				}
 				if(low[v] >= tIn[u] && p != -1 ) {
-					if(!isArticulation[u]){
-						isArticulation[u] = true;
-						bcn[u] = numComponent++;
-						articulation.push_back(u);
-					}
-					Edge e = Edge(u,v);
-					addBiconnectedComponent(e);
+					addArticulation(u);
+					addBiconnectedComponent(Edge(u,v));
 				}
 				children++;
 				if(p == -1 && children > 1){
-					if(!isArticulation[u]){
-						isArticulation[u] = true;
-						bcn[u] = numComponent++;
-						articulation.push_back(u);
-					}
-					Edge e = Edge(u,v);
-					addBiconnectedComponent(e);
+					addArticulation(u);
+					addBiconnectedComponent(Edge(u,v));
 				}
 			}
 		}
 		if(p == -1 ) {
-			Edge e = Edge(-1,-1);
-			addBiconnectedComponent(e);
+			addBiconnectedComponent(Edge(-1,-1));
 		} 
+	}
+	
+	void buildBicomponents(int n){
+		for(int i = 0; i < n; i++){
+			if(!vis[i]) dfs(i);
+		}
 	}
 	
 	void printBlockCutTree(int n){

@@ -23,12 +23,12 @@ struct Edge{
 	}
 };
 
-const int MAX = 1e5;
-const int MAX2 = 2 * MAX;
+const int MX = 1e5;
+const int MX2 = 2 * MX;
 const int loga = 18;
 
 struct SparseTable{
-	pair<int,int> st[2 * MAX2][loga + 1]; //<min height , node>
+	pair<int,int> st[2 * MX2][loga + 1]; //<min height , node>
 	
 	pair<int,int> f(pair<int,int> a, pair<int,int> b){
 		return min(a , b);
@@ -60,17 +60,23 @@ struct SparseTable{
 }st;
  
 struct BCT{
-	vector<int> adj[MAX2];
+	vector<int> adj[MX2];
 	vector<pair<int,int>> euler;
-	int first[MAX2];
-	int height[MAX2];
-	int tIn[MAX2];
-	int tOut[MAX2];
+	int first[MX2];
+	int height[MX2];
+	int tIn[MX2];
+	int tOut[MX2];
 	int timer = 0;
 	
 	void addEdge(int u , int v){
 		adj[u].push_back(v);
 		adj[v].push_back(u);
+	}
+	
+	void clear(int N){
+		REP(i , N){
+			adj[i].clear();
+		}
 	}
 	
 	void dfs(int u = 0, int p = -1){ //O(n+m)
@@ -103,61 +109,79 @@ struct BCT{
 };
 
 
+
+
 struct Graph{
-	vector<int> adj[MAX];
-	bool vis[MAX];
-	int tIn[MAX];
-	int low[MAX];
+	vector<int> adj[MX];
+	bool vis[MX];
+	int tIn[MX];
+	int low[MX];
 	int timer;
 	stack<Edge> edges;
-	bool isArticulation[MAX];
-	unordered_map<int,bool> isBridge[MAX];
+	bool isArticulation[MX];
+	unordered_map<int,bool> isBridge[MX];
 	
-	int bcn[MAX]; //biconnected component of node. Articulation are considered separated
-	unordered_map<int,int> bce[MAX]; //biconnected component of edge
-	
-	//vector<int> articulation;
-	//vector<Edge> bridge;
+	int bcn[MX]; //biconnected component of node. Articulation are considered separated
+	unordered_map<int,int> bce[MX]; //biconnected component of edge
+	vector<int> articulation;
+	vector<Edge> bridge;
+	int lastComponent[MX];
 	
 	BCT bct;
-	
 	int numComponent;
-	Graph(){
-		timer = 0;
-		numComponent = 0;
+	
+	void clear(int N){
+		articulation.clear();
+		bridge.clear();
+		timer = numComponent = 0;
+		bct.clear(2 * N);
+		REP(i , N){
+			adj[i].clear();
+			tIn[i] = low[i] = 0;
+			isArticulation[i] = false;
+			vis[i] = false;
+			isBridge[i].clear();
+			bce[i].clear();
+			lastComponent[i] = -1;
+		}
 	}
-	void addEdge(int &u , int &v){
-		u--;
-		v--;
+	
+	Graph(){
+		clear(MX);
+	}
+	void addEdge(int u , int v){
 		adj[u].pb(v);
 		adj[v].pb(u);
 	}
 	
-	void addBiconnectedComponent(Edge &e){
+	void addArticulation(int u){
+		if(!isArticulation[u]){
+			isArticulation[u] = true;
+			bcn[u] = numComponent++;
+			articulation.push_back(u);
+		}
+	}
+	
+	void addEdgeBCT(int u){
+		if(!isArticulation[u]){
+			bcn[u] = numComponent;
+		} else {
+			if(lastComponent[u] != numComponent){
+				bct.addEdge(bcn[u] , numComponent);
+				lastComponent[u] = numComponent;
+			}
+		}
+	}
+	
+	void addBiconnectedComponent(Edge e){
 		if(edges.empty()) return;
 		
-		unordered_set<int> processed; //articulation processed
 		while(!edges.empty()){
 			Edge cur = edges.top();
 			int u = cur.u;
 			int v = cur.v;
-	
-			if(!isArticulation[u]){
-				bcn[u] = numComponent;
-			} else {
-				if(processed.find(u) == processed.end()){
-					bct.addEdge(bcn[u] , numComponent);
-					processed.insert(u);
-				}
-			}
-			if(!isArticulation[v]){
-				bcn[v] = numComponent;
-			} else {
-				if(processed.find(v) == processed.end()){
-					bct.addEdge(bcn[v] , numComponent);
-					processed.insert(v);
-				}
-			}
+			addEdgeBCT(u);
+			addEdgeBCT(v);
 			bce[u][v] = numComponent;
 			edges.pop();
 			if(cur == e){
@@ -172,9 +196,7 @@ struct Graph{
 		tIn[u] = low[u] = timer++;
 		int children = 0;
 		for(int v : adj[u]) {
-			
 			if(v == p) continue;
-
 			if(vis[v]) {
 				low[u] = min(low[u] , tIn[v]);
 				if(tIn[v] < tIn[u]){
@@ -183,43 +205,27 @@ struct Graph{
 			} else {
 				edges.push(Edge(u , v));
 				dfs(v , u );
-				
 				low[u] = min(low[u] , low[v]);
-				
 				if(low[v] > tIn[u]) {
 					isBridge[min(u,v)][max(u,v)] = true;
-					//bridge.push_back(Edge(u , v));
+					bridge.push_back(Edge(u , v));
 				}
-				
 				if(low[v] >= tIn[u] && p != -1 ) {
-					if(!isArticulation[u]){
-						isArticulation[u] = true;
-						bcn[u] = numComponent++;
-						//articulation.push_back(u);
-					}
-					Edge e = Edge(u,v);
-					addBiconnectedComponent(e);
+					addArticulation(u);
+					addBiconnectedComponent(Edge(u,v));
 				}
-				
 				children++;
 				if(p == -1 && children > 1){
-					if(!isArticulation[u]){
-						isArticulation[u] = true;
-						bcn[u] = numComponent++;
-						//articulation.push_back(u);
-					}
-					Edge e = Edge(u,v);
-					addBiconnectedComponent(e);
+					addArticulation(u);
+					addBiconnectedComponent(Edge(u,v));
 				}
 			}
 		}
-		
 		if(p == -1 ) {
-			Edge e = Edge(-1,-1);
-			addBiconnectedComponent(e);
+			addBiconnectedComponent(Edge(-1,-1));
 		} 
-		
 	}
+	
 	
 	bool inPath(int &A, int &B, int &C) {
 		int x = bct.lca(A , B); 
@@ -328,7 +334,7 @@ int main(){
 	REP(i , m) {
 		int u , v;
 		scanf("%d %d", &u , &v);
-		G.addEdge(u , v);
+		G.addEdge(u - 1, v - 1);
 	}
 	G.dfs();
 	G.bct.precalculate(G.numComponent);

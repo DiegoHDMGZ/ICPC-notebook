@@ -1,6 +1,6 @@
 #include <bits/stdc++.h>
 #define debug(x) cout << #x << " = " << x << endl
-#define REP(i,n) for(ll i = 0; i < n; i++)
+#define REP(i,n) for(Long i = 0; i < n; i++)
 #define pb push_back
 using namespace std;
 

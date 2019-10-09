@@ -2,119 +2,265 @@
 #define debug(x) cout << #x << " = " << x << endl
 #define REP(i,n) for(Long i = 0; i < (Long)n; i++)
 #define pb push_back
-
+ 
 using namespace std;
-
+ 
 typedef long long Long;
-
-void debugDeque( deque<Long> d){
-	for(Long i = 0; i < d.size() ; i++){
-		cout << d[i];
-	}
-	cout << endl;
-}
-
-deque<Long> suma(deque<Long> a, deque<Long> b){ //O( max (|a| , |b| )  )
-	Long carry = 0;
-	deque<Long>  resultado;
-	Long i = a.size( ) - 1, j = b.size() - 1;
+ 
+struct Big{
+	deque<Long> digits;
+	Long sgn;
 	
-	while(i >= 0 && j >= 0){
-		Long suma = a[i] + b[j]  + carry;
-		carry = 0;
-		if( suma >= 10){
-			carry = 1;
-			suma = suma % 10;
+	Big(){
+		digits.pb(0);
+		sgn = 1;
+	}
+	
+	Big(Long x){
+		if(x >= 0) {
+			sgn = 1;
+		} else {
+			sgn = -1;
 		}
-		resultado.push_front(suma);
-		i--;
-		j--;
-	}
-	
-	if( i >= 0 ){
-		for(Long k = i; k >= 0 ; k--){
-			Long suma = a[k] + carry;
-			carry = 0;
-			if( suma >= 10){
-				carry = 1;
-				suma = suma % 10;
+		x = abs(x);
+		if(x == 0){
+			digits = {0};
+		} else {
+			while(x > 0){
+				digits.push_front(x % 10);
+				x /= 10;
 			}
-			resultado.push_front(suma);
 		}
 	}
-	else{
-		for(Long k = j ; k >= 0; k--){
-			Long suma = b[k] + carry;
+	
+	Big(deque<Long> v , Long s = 1){
+	   deque<Long> transf;
+	   Long i = 0;
+	   while(i < v.size() && v[i] == 0){
+		   i++;
+	   }
+	   while(i < v.size()){
+		   transf.pb(v[i]);
+		   i++;
+	   }
+	   if(transf.size() == 0){
+	      transf.pb(0);   
+	   }
+	  
+	   if(transf.size()==1 && transf[0] == 0) {
+	      s = 1;
+	   }
+		digits = transf;
+		sgn = s;
+	}
+
+	bool operator == (const Big &P) const{
+		return P.digits == digits && sgn == P.sgn;
+	}
+	
+	bool operator < (const Big &P) const{
+		if(P.sgn != sgn){
+			return P.sgn == 1;
+		}
+		if(P.digits.size() != digits.size()){
+			return digits.size() < P.digits.size();
+		}
+		for(Long i = 0; i < digits.size(); i++){
+			if(digits[i] != P.digits[i]){
+				return digits[i] < P.digits[i];
+			}
+		}
+		return false;
+	}
+	
+	bool operator > (const Big &P) const{
+		if(P.sgn != sgn){
+			return sgn == 1;
+		}
+		if(P.digits.size() != digits.size()){
+			return digits.size() > P.digits.size();
+		}
+		for(Long i = 0; i < digits.size(); i++){
+			if(digits[i] != P.digits[i]){
+				return digits[i] > P.digits[i];
+			}
+		}
+		return false;
+	}
+	
+	
+	friend ostream & operator << (ostream &out, const Big &c);
+	
+	Big operator +(const Big &x) const {
+		deque<Long> ans;
+		deque<Long> a = digits;
+		deque<Long> b = x.digits;
+		if(sgn * x.sgn == 1){
+			Long carry = 0;
+			Long i = (Long)a.size( ) - 1, j = (Long)b.size() - 1;
+			
+			while(i >= 0 && j >= 0){
+				Long sum = a[i] + b[j]  + carry;
+				carry = 0;
+				if( sum >= 10){
+					carry = 1;
+					sum = sum % 10;
+				}
+				ans.push_front(sum);
+				i--;
+				j--;
+			}
+			
+			if( i >= 0 ){
+				for(Long k = i; k >= 0 ; k--){
+					Long sum = a[k] + carry;
+					carry = 0;
+					if( sum >= 10){
+						carry = 1;
+						sum = sum % 10;
+					}
+					ans.push_front(sum);
+				}
+			}
+			else{
+				for(Long k = j ; k >= 0; k--){
+					Long sum = b[k] + carry;
+					
+					carry = 0;
+					
+					if( sum >= 10){
+						carry = 1;
+						sum = sum % 10;
+					}
+					ans.push_front(sum);
+				}
+			}
+			
+			if( carry > 0 ){
+				ans.push_front(1);
+			}
+			return Big(ans , sgn);
+		} 
+
+		Long newSgn = sgn;
+		if(Big(a) < Big(b)) {
+			swap(a , b);
+			newSgn = x.sgn;
+		}
+		
+		Long i = (Long)a.size() - 1, j = (Long)b.size() - 1;
+		
+		while(i >= 0 && j >= 0){
+			Long subs = a[i] - b[j] ;
+		
+			if( subs < 0){
+				subs += 10;
+				Long k = i - 1;
+				while(a[k] == 0){
+					a[k] = 9;
+					k--;
+				}
+				a[k]--;
+			}
+			ans.push_front(subs);
+			i--;
+			j--;
+		}
+		Long k = 0;
+		while(k <= i && a[k] == 0) {
+			k++;
+		}
+		for(Long j = i; j >= k; j--){
+			ans.push_front(a[j]);
+		}
+    
+		return Big(ans , newSgn);	
+	}
+	
+	Big operator -(const Big &x) const {
+		Big aux = x;
+		if(aux.digits.size() > 1 || aux.digits[0] != 0){
+			aux.sgn *= -1;
+		}
+		
+		return (*this) + aux;
+	}
+	
+	Big operator *(const Long &c) const {
+		if(c == 0){
+			return Big(0);
+		}
+		
+		if(c == 1){
+			return Big(digits);
+		}
+		
+		deque<Long> ans;
+		Long carry = 0;
+		
+		for(Long i = digits.size() - 1; i >=0; i--){
+			Long mult = digits[i] * c + carry;
 			
 			carry = 0;
 			
-			if( suma >= 10){
-				carry = 1;
-				suma = suma % 10;
+			if(mult >= 10){
+				carry = mult / 10;
+				mult = mult % 10;
 			}
-			resultado.push_front(suma);
+			
+			ans.push_front(mult);
+		}
+		
+		if(carry > 0){
+			ans.push_front(carry);
+		}
+		return Big(ans);
+	}
+
+	void mult10(Big &num, Long pot){
+		for(Long i = 0; i < pot; i++){
+			num.digits.push_back(0);
 		}
 	}
 	
-	if( carry > 0 ){
-		resultado.push_front(1);
-	}
-	return resultado;
-}
-
-deque<Long> multUnDigito(deque<Long> a, Long c){
-	if(c == 0){
-		deque<Long> resp;
-		resp.push_front(0);
-		return resp;
-	}
-	
-	if(c == 1){
-		return a;
-	}
-	
-	deque<Long> resultado;
-	Long carry = 0;
-	
-	for(Long i = a.size() - 1; i >=0; i--){
-		Long mult = a[i] * c + carry;
+	Big operator *(const Big &b) const {
+		Big ans(0);
+		Big a = *this;
 		
-		carry = 0;
-		
-		if(mult >= 10){
-			carry = mult / 10;
-			mult = mult % 10;
+		for(Long i = b.digits.size() - 1; i >= 0; i--){
+			Long pot = (Long)b.digits.size() - i - 1;
+			Big aux = a * b.digits[i];
+			for(Long i = 0; i < pot; i++){
+				aux.digits.pb(0);
+			}
+			ans = ans + aux;
 		}
-		
-		resultado.push_front(mult);
+		ans.sgn = sgn * b.sgn;
+		if(ans.digits.size() == 1 && ans.digits[0] == 0){
+			ans.sgn = 1;
+		}
+		return ans;
 	}
-	
-	if(carry > 0){
-		resultado.push_front(carry);
-	}
-	return resultado;
-}
 
-deque<Long> mult10(deque<Long> num, Long pot){
-	for(Long i = 0; i < pot; i++){
-		num.push_back(0);
-	}
-	return num;
-}
 
-deque<Long> mult(deque<Long> a, deque<Long> b){
-	deque<Long> resultado;
-	
-	for(Long i = b.size() - 1; i >= 0; i--){
-		Long pot = b.size() - i - 1;
-		deque<Long> auxiliar = multUnDigito(a , b[i]);
-		auxiliar = mult10(auxiliar, pot);
-		resultado = suma(resultado, auxiliar);
-	}
-	
-	return resultado;
-}
+};
 
+
+ostream & operator << (ostream &out, const Big &number)
+{
+	if(number.sgn == -1){
+		cout << "-";
+	}
+	for(Long i = 0; i < number.digits.size(); i++){
+		out << number.digits[i];
+	}
+    return out;
+}
+ 
 int main() {
+	Long a ,b;
+	cin >> a >> b;
+	cout << Big(a) + Big(b) << endl;
+	cout << Big(a) * Big(b) << endl;
 	return 0;
 }
