@@ -1,12 +1,13 @@
 #include <bits/stdc++.h>
 #define debug(x) cout << #x << " = " << x << endl
-#define REP(i,n) for(Long i = 0; i < (Long)n; i++)
+#define REP(i , n) for(Long i = 0; i < (Long)n ; i++)
 #define pb push_back
+
 using namespace std;
 
 typedef long long Long;
 
-const Long MX = 3000;
+const Long MX = 5000;
 const Long INF = 1e18;
 
 struct Graph{
@@ -77,20 +78,29 @@ struct Graph{
 int main(){
 	ios_base::sync_with_stdio(false);
 	cin.tie(NULL);
-	Long n,m;
-	cin >> n >> m;
+	cout.tie(NULL);
 	
-	REP( i , m){
-		Long u,v,c;
-		cin >> u >> v >> c;
-		u--; v--;
-		G.addEdge(u,v,c , false);//undirected
-		//addEdge(u,v,c,true); //directed
+	Long T;
+	cin >> T;
+	REP(q, T){
+		Long n;
+		cin >> n;
+		Long s = 0;
+		Long t = 120 + 120 + 1;
+		G.clear(t + 1);
+		for(Long i = 1; i <= 120; i++){
+			G.addEdge(s , i, 1 , true);
+			G.addEdge(i + 120, t, 1 ,  true);
+		}
+		REP(i, n){
+			Long x, y;
+			cin >> x >> y;
+			x++;
+			y++;
+			G.addEdge(x , y + 120, 1 , true);
+		}
+		cout << G.maxFlow(s ,t , t + 1) << "\n";
 	}
-	
-	Long s,t;
-	cin >> s >> t;
-	Long resp = G.maxFlow(s, t, n);
 	
 	return 0;
 }

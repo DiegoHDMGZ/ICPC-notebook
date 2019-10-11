@@ -33,6 +33,13 @@ int main() {
 		}
 		cout << endl;
 	}
+	//transverse all submask
+	for(Long mask = 0; mask < (1LL << n) ; mask++){
+		//s 0 is present in all submask
+		for(Long s = mask; s > 0; s = (s - 1) & mask){
+			
+		}
+	}
 	return 0;
 }
 

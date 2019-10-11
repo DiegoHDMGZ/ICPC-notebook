@@ -49,9 +49,9 @@ void segmentedSieve(Long l, Long r) { //O( (r - l) * log log (r - l) )
             isPrimeR[primes[i] * j - l] = false;
         }
     }
-    /*if(l == 1) {
+    if(l == 1) {
         isPrimeR[0] = false;
-    }*/
+    }
 }
 
 int main() {

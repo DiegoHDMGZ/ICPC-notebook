@@ -9,7 +9,6 @@ typedef long long Long;
 
 const Long MX = 3000;
 const Long INF = 1e18;
-
 struct Graph{
 	vector<Long> adj[MX];
 	Long cap[MX][MX]; 
@@ -94,12 +93,51 @@ struct Graph{
 	
 } G;
 
-
-
 int main(){
 	ios_base::sync_with_stdio(false);
 	cin.tie(NULL);
 	cout.tie(NULL);
+	
+	Long T;
+	cin >> T;
+	REP(q, T){
+		cout << "Case " << q + 1 << ": ";
+		Long n, m;
+		cin >> n;
+		
+		vector<Long> a(n);
+		REP(i , n){
+			cin >> a[i];
+		}
+		cin >> m;
+		vector<Long> b(m);
+		REP(i , m){
+			cin >> b[i];
+		}
+		Long s = 0;
+		Long t = n + m + 1;
+		G.clear(t + 1);
+		REP(i , n){
+			G.addEdge(s , i + 1, 1 , true);
+		}
+		REP(i , m){
+			G.addEdge(i + 1 + n , t, 1 , true);
+		}
+		REP(i , n){
+			REP(j , m){
+				if(a[i] == 0) {
+					if(b[j] == 0){
+						G.addEdge(i + 1 , j + n + 1 , 1 , true);
+					}
+				} else {
+					if(b[j] % a[i] == 0 ){
+						G.addEdge(i + 1 , j + n + 1 , 1 , true);
+					}
+				}
+			}
+		}
+		cout << G.maxFlow(s,t , t + 1) << "\n";
+	}
 	
 	return 0;
 }

@@ -7,7 +7,7 @@ using namespace std;
 
 typedef long long Long;
 
-const Long MX = 3000;
+const Long MX = 5000;
 const Long INF = 1e18;
 
 struct Graph{
@@ -104,8 +104,32 @@ struct Graph{
 	}
 } G;
 
-
 int main(){
-
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	cout.tie(NULL);
+	
+	Long T;
+	cin >> T;
+	REP(q, T){
+		Long n;
+		cin >> n;
+		Long s = 0;
+		Long t = 120 + 120 + 1;
+		G.clear(t + 1);
+		for(Long i = 1; i <= 120; i++){
+			G.addEdge(s , i, 1 , true);
+			G.addEdge(i + 120, t, 1 ,  true);
+		}
+		REP(i, n){
+			Long x, y;
+			cin >> x >> y;
+			x++;
+			y++;
+			G.addEdge(x , y + 120, 1 , true);
+		}
+		cout << G.maxFlow(s ,t , t + 1) << "\n";
+	}
+	
 	return 0;
 }
