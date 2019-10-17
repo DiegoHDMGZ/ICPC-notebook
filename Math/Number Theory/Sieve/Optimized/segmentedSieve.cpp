@@ -27,11 +27,11 @@ void sieve(){ //O(MX)
 	}
 }
 
-bool isPrimeR[MX];
+bool isPrimeRange[MX];
 
 void segmentedSieve(Long l, Long r) { //O( (r - l) * log log (r - l) )
 
-    fill(isPrimeR, isPrimeR + MX , true);
+    fill(isPrimeRange, isPrimeRange + MX , true);
 
     for(Long i = 0; i < primes.size(); i++) {
         if(primes[i] * primes[i] > r) {
@@ -46,11 +46,11 @@ void segmentedSieve(Long l, Long r) { //O( (r - l) * log log (r - l) )
             if(primes[i] * j > r ) {
                 break;
             }
-            isPrimeR[primes[i] * j - l] = false;
+            isPrimeRange[primes[i] * j - l] = false;
         }
     }
     if(l == 1) {
-        isPrimeR[0] = false;
+        isPrimeRange[0] = false;
     }
 }
 
@@ -66,7 +66,7 @@ int main() {
     
     Long x;
     cin >> x;
-    if(isPrimeR[x - l]) {
+    if(isPrimeRange[x - l]) {
     	cout << "es primo" << endl;
 	}
 	return 0;
