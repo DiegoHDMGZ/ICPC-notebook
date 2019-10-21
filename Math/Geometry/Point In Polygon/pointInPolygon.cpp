@@ -91,7 +91,7 @@ struct Point{
 		//works with convex polygons in counter-clockwise order
 		//use prepare (poly) before using it
 		
-		//-1 : not inside
+		//-1 : outside
 		//0 : boundary
 		//1 : inside
 		Long n = poly.size();
