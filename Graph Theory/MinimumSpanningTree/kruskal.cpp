@@ -17,17 +17,17 @@ struct DisjointSetUnion{
 		size[v] = 1;
 	}
 	
-	Long find_set(Long v){ //O(log(N))
+	Long find(Long v){ //O(log(N))
 		if(v==parent[v]){
 			return v;
 		}
 		
-		return parent[v] = find_set(parent[v]);
+		return parent[v] = find(parent[v]);
 	}
 	
-	void union_sets(Long a, Long b){ //O(1)
-		a = find_set(a);
-		b = find_set(b);
+	void join(Long a, Long b){ //O(1)
+		a = find(a);
+		b = find(b);
 		if(a != b){
 			if(size[a] < size[b]){
 				swap(a,b);
@@ -70,11 +70,11 @@ struct Graph{
 		sort(edges.begin(),edges.end());
 		
 		for( Edge e : edges ) {
-			if(dsu.find_set(e.u) != dsu.find_set(e.v)){
+			if(dsu.find(e.u) != dsu.find(e.v)){
 				cost += e.w;
 				tree[e.u].pb(e.v);
 				tree[e.v].pb(e.u);
-				dsu.union_sets(e.u,e.v);				
+				dsu.join(e.u,e.v);				
 			}
 		}
 		return cost;
