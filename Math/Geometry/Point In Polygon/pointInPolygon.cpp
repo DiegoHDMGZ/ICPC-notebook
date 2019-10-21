@@ -89,7 +89,7 @@ struct Point{
 	
 	Long inPolygon( vector<Point> &poly ) { //O(log n)
 		//works with convex polygons in counter-clockwise order
-		//use prepare (poly) before use it
+		//use prepare (poly) before using it
 		
 		//-1 : not inside
 		//0 : boundary
