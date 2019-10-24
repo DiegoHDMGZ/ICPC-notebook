@@ -90,7 +90,6 @@ struct Point{
 	Long inPolygon( vector<Point> &poly ) { //O(log n)
 		//works with convex polygons in counter-clockwise order
 		//use prepare (poly) before using it
-		
 		//-1 : outside
 		//0 : boundary
 		//1 : inside
@@ -103,7 +102,6 @@ struct Point{
 				return -1;
 			}
 		}
-		
 		if(n == 2) {
 			if(P.inSegment(poly[0] , poly[1])) {
 				return 0;
@@ -111,7 +109,6 @@ struct Point{
 				return -1;
 			}
 		}
-		
 		//verify if the angle of the point lies between the angle of p0p1 and p0pn-1
 		if(poly[0].cross(poly[1] , P)  != 0 
 		    && sgn(poly[0].cross(poly[1] , P)  ) != sgn(poly[0].cross(poly[1] , poly[n - 1]) )) {
@@ -124,7 +121,6 @@ struct Point{
 	
 		Long ini = 2;
 		Long fin = n - 1;
-		
 		if(poly[0].cross(poly[ini], P) <= 0){
 			fin = ini;
 		} else {
@@ -139,11 +135,9 @@ struct Point{
 				}
 			}
 		}
-		
 		if(!P.inTriangle(poly[0] , poly[fin - 1] , poly[fin])) {
 			return -1;
 		}
-		
 		if(P.inSegment(poly[fin - 1] , poly[fin] )) {
 			return 0;
 		}
