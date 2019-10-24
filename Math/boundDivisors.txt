@@ -1,0 +1,7 @@
+Maximum number of divisors of any number less than 10 = 4
+Maximum number of divisors of any number less than 100 = 12
+Maximum number of divisors of any number less than 1000000 = 240
+Maximum number of divisors of any number less than 1000000000 = 1344
+Maximum number of divisors of any number less than 1000000000000 = 6720
+Maximum number of divisors of any number less than 1000000000000000 = 26880
+Maximum number of divisors of any number less than 1000000000000000000 = 103680
