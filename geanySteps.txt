@@ -3,4 +3,23 @@
 Compile -> g++  -std=c++14 -c "%f"
 Build -> g++  -std=c++14 -o "%e" "%f"
 
-2.Editar-> Preferencias -> Completado-> Desactivar autocompletar comentarios en 
+2.Editar-> Preferencias -> Editor -> Completado-> Desactivar autocompletar comentarios 
+
+
+.conf :
+
+[Special]
+brace_open={\n\t
+brace_close=}\n
+block={\n\t\n}
+block_cursor={\n\t%cursor%\n}
+
+[C++]
+if=if (%cursor%)%block%
+else=else%block_cursor%\n
+for=for (Long i = 0; i < %cursor%; i++)%block%\n
+while=while (%cursor%)%block%\n
+do=do%block% while (%cursor%)\n
+switch=switch (%cursor%)%brace_open%case %cursor%:\n\t\t%cursor%\n\t\tbreak;\n\tdefault:\n\t\t%cursor%\n%brace_close%
+try=try%block%\ncatch (%cursor%)%block_cursor%
+plantilla=#include <bits/stdc++.h>\n#define debug(x) cout << #x << " = " << x << endl\n#define REP(i,n) for(Long i = 0; i < (Long)n; i++)\n#define pb push_back\nusing namespace std;\n\ntypedef long long Long;\n\nint main() {\n\tios_base::sync_with_stdio(false);\n\tcin.tie(NULL);\n\tcout.tie(NULL);\n\n\treturn 0;\n}

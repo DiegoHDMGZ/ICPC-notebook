@@ -1,0 +1,2187 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+    <head>
+        <meta name="theme-color" content="#323754">
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <meta name="description" content=" 
+## Introduction ## Matrix is a popular math object. It is basically a two-dimensional table of numbers. In this article we’ll look at integer matrices, i.e. tables with integers. This ...
+ HackerEarth is a global hub of 3M+ developers. We help companies accurately assess, interview, and hire top developers for a myriad of roles." >
+        <link rel="canonical" href="https://www.hackerearth.com/practice/notes/matrix-exponentiation-1/" />
+        <meta name="msvalidate.01" content="1BF418E510B5A17A2D71685C571BF4EB" />
+
+        
+        <meta name="referrer" content="strict-origin-when-cross-origin">
+        
+
+        
+        <script>
+          (function() {
+              if (window.BOOMR && window.BOOMR.version) {
+                  return;
+              }
+              var dom, doc, where, iframe = document.createElement("iframe"),
+                  win = window;
+
+              function boomerangSaveLoadTime(e) {
+                  win.BOOMR_onload = (e && e.timeStamp) || new Date().getTime();
+              }
+              if (win.addEventListener) {
+                  win.addEventListener("load", boomerangSaveLoadTime, false);
+              } else if (win.attachEvent) {
+                  win.attachEvent("onload", boomerangSaveLoadTime);
+              }
+
+              iframe.src = "javascript:false";
+              iframe.title = "";
+              iframe.role = "presentation";
+              (iframe.frameElement || iframe).style.cssText = "width:0;height:0;border:0;display: none;";
+              where = document.getElementsByTagName("script")[0];
+              where.parentNode.insertBefore(iframe, where);
+
+              try {
+                  doc = iframe.contentWindow.document;
+              } catch (e) {
+                  dom = document.domain;
+                  iframe.src = "javascript:var d=document.open();d.domain='" + dom + "';void(0);";
+                  doc = iframe.contentWindow.document;
+              }
+              doc.open()._l = function() {
+                  var js = this.createElement("script");
+                  if (dom) this.domain = dom;
+                  js.id = "boomr-if-as";
+                  js.src = "https://s.go-mpulse.net/boomerang/" +
+                      "QKZWA-3BVYP-7W6XK-6HKWZ-EFFZ4";
+                  BOOMR_lstart = new Date().getTime();
+                  this.body.appendChild(js);
+              };
+              doc.write('<body onload="document._l();">');
+              doc.close();
+          })();
+        </script>
+        
+
+
+        
+<meta name="google-site-verification" content="ozqyeStBcz4eehbY9Ohb_IUQcA4y8BKzzDCT-H1QPPc" />
+
+
+        
+        
+        <!-- google analytics start -->
+        <script>
+            (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+            })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+            ga('create', 'UA-34729975-1', 'auto');
+            ga('require', 'displayfeatures');
+            
+            ga('send', 'pageview');
+        </script>
+        <!-- google analytics end -->
+        
+        
+
+        
+        
+        <!-- Google Tag Manager -->
+        <script>
+            (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+            new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+            j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+            'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+            })(window,document,'script','dataLayer','GTM-PBHB3B9');
+        </script>
+        <!-- End Google Tag Manager -->
+        
+        
+
+        <title>   Matrix exponentiation  | HackerEarth  </title>
+
+        
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<!-- Facebook tags -->
+<meta property="fb:app_id" content="190817380995032" />
+<meta property="og:title" content="Matrix exponentiation - Mike Koltsov" />
+<meta property="og:image" content="https://he-s3.s3.amazonaws.com/media/avatars/misha/resized/200/0e47b5cimg_20140706_164324.jpg" />
+<meta property="og:description" content="## Introduction ## Matrix is a popular math object. It is basically a two-dimensional table of numbers. In this article we’ll look at integer matrices, i.e. tables with integers. This is how matrices are usually pictured: ![nxm matrix][1] **A** is ..."/>
+<meta property="og:url" content="https://www.hackerearth.com/practice/notes/matrix-exponentiation-1/" />
+<meta property="og:site_name" content="HackerEarth"/>
+<meta property="og:type" content="website"/>
+<!-- end Facbook tags -->
+
+<!-- Twitter tags -->
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:site" content="@HackerEarth"/>
+<meta name="twitter:url" content="https://www.hackerearth.com/practice/notes/matrix-exponentiation-1/"/>
+<meta name="twitter:title" content="Matrix exponentiation"/>
+<!-- end Twitter tags -->
+
+        
+        <link rel="shortcut icon" href="https://static-fastly.hackerearth.com/static/hackerearth/images/logo/HE_identity.png" type="image/x-icon">
+        
+
+        
+
+        
+            <link rel="stylesheet" href="https://static-fastly.hackerearth.com/static/base/base_common_combined.css?vrsn=59"/>
+            <link rel="stylesheet" href="https://static-fastly.hackerearth.com/static/base/assessment_footer.css?vrsn=4"/>
+            <link rel="stylesheet" href="https://static-fastly.hackerearth.com/static/js/tooltip/tipTip.css?vrsn=0"/>
+            <link rel="stylesheet" href="https://static-fastly.hackerearth.com/static/offline/offline-theme-slide.css?vrsn=0"/>
+            <link rel="stylesheet" href="https://static-fastly.hackerearth.com/static/css/font-awesome-4.7.0/css/font-awesome.min.css?vrsn=0"/>
+            <link rel="stylesheet" href="https://static-fastly.hackerearth.com/static/css/opensans/opensans.css?vrsn=0"/>
+            <link rel="stylesheet" href="https://static-fastly.hackerearth.com/static/css/proxima-nova/proxima-nova.css?vrsn=1"/>
+            <link rel="stylesheet" href="https://static-fastly.hackerearth.com/static/css/hack/hack.css?vrsn=1"/>
+            <link rel="stylesheet" href="https://static-fastly.hackerearth.com/static/css/unicons.css?vrsn=1"/>
+        
+
+        
+
+
+
+        
+<link rel="stylesheet" type="text/css" href="https://static-fastly.hackerearth.com/static/polls/polls.css?v=0.3" />
+<link rel="stylesheet" type="text/css" href="https://static-fastly.hackerearth.com/static/markdown/pagedown.css?v=2.0" />
+<link rel="stylesheet" type="text/css" href="https://static-fastly.hackerearth.com/static/notes/notes.css?v=1.3" />
+<link rel="stylesheet" type="text/css" href="https://static-fastly.hackerearth.com/static/css/nice_threadedcomments.css?v=3.3">
+<link href="https://static-fastly.hackerearth.com/static/google-code-prettify/prettify.css?v=0.3" type="text/css" rel="stylesheet" />
+
+
+        <!-- Make the static variable available for all js files -->
+        <script>
+            var STATIC_URL = "https://static-fastly.hackerearth.com/static/";
+        </script>
+
+        <!-- Store CSRF_COOKIE -->
+        <script>
+            var CSRF_COOKIE_USED = "True";
+            var CSRF_COOKIE = "YLGAyTTF8xS4GCWURrEdb1CVYNGhQS7QqeBmsHjdXOOEDnN7jF5gI2EROt6MnxQR";
+        </script>
+
+        
+
+    </head>
+
+    <body >
+        
+            
+<link rel="stylesheet" href="https://static-fastly.hackerearth.com/static/base/notification_toast.css?vrsn=5"/>
+<div class="notification-toast-container notification-top-center regular">
+    <div class="notification-errors">
+        <p id="notification-auth-error" class="error-item hidden no-margin">
+            <span class="fa fa-times less-margin-right"></span>Ensure that you are logged in and have the required permissions to access the test.
+        </p>
+        <p id="notification-server-error" class="error-item hidden no-margin">
+            <span class="fa fa-times less-margin-right"></span>A server error has occurred. Please refresh the page or try after some time.
+        </p>
+        <p id="notification-error" class="error-item hidden no-margin">
+            <span class="fa fa-times less-margin-right"></span>An error has occurred. Please refresh the page or try after some time.
+        </p>
+        <p id="notification-custom-error" class="error-item hidden no-margin"></p>
+        
+    </div>
+</div>
+<script type="text/javascript" src="https://static-fastly.hackerearth.com/static/base/notification-toast.js?vrsn=8" crossorigin="anonymous" defer></script>
+        
+        
+        
+        <!-- Google Tag Manager (noscript) -->
+        <noscript>
+            <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PBHB3B9"
+            height="0" width="0" style="display:none;visibility:hidden"></iframe>
+        </noscript>
+        <!-- End Google Tag Manager (noscript) -->
+        
+        
+
+        <!-- Placeholder for any alert message on the site -->
+        
+        <div id="alert-message-holder">
+            
+
+            <!-- put a dummy message box so that it can be used when cloning
+                 and adding more -->
+            <div class="alert-message hidden">
+                <div class="message float-left"></div>
+                <div class="cross-holder float-left"><span class="small-cross sprites"></span></div>
+                <div class="clear"></div>
+            </div>
+        </div> <!-- end alert-message-holder -->
+
+        <!-- Placeholder for any error message on the site -->
+        
+        <div id="error-message-holder">
+            
+
+            <!-- put a dummy message box so that it can be used when cloning
+                 and adding more -->
+            <div class="error-message hidden">
+                <div class="message float-left"></div>
+                <div class="cross-holder float-left"><span class="small-cross sprites"></span></div>
+                <div class="clear"></div>
+            </div>
+        </div> <!-- end error-message-holder -->
+        
+        
+
+        
+    <div id="top-prompt-container" class="hidden prompt-container"></div>
+    <div id="right-prompt-container" class="hidden prompt-container"></div>
+    <div id="center-modal-prompt-container" class="hidden prompt-container"></div>
+    
+    
+        
+        <header class="header">
+            <i class="fa fa-bars mobile-menu-btn"></i>
+            <nav class="navigation">
+                
+                <a href="https://www.hackerearth.com" class="logo logo-h-terminal  no-underline float-left track-header-logo"></a>
+                
+
+                
+                <ul class="nav-bar no-padding float-left tablet-hide">
+                    <!-- challenges page -->
+                    <li id="challenges" class="nav-bar-menu "><a class="track-header-challenges" href="https://www.hackerearth.com/challenges/">CHALLENGES</a></li>
+                    <!-- hackathons page -->
+                    
+                    <!-- practice page -->
+                    <li id="problems" class="nav-bar-menu "><a class="track-header-problems" href="https://www.hackerearth.com/practice/">PRACTICE</a></li>
+                    <!-- companies page -->
+                    <li id="companies" class="nav-bar-menu "><a class="track-header-companies" href="https://www.hackerearth.com/companies/">COMPANIES</a></li>
+                </ul>
+                <ul class="nav-bar right-nav-bar no-padding float-right tablet-hide">
+                    
+                    
+                    <li id="searchbar">
+                        <div id="search-icon-container" class="float-left">
+                            <i class="fa fa-search"></i>
+                        </div>
+                        <input id="searchbar-input" class="float-left" type="text" value="" name="q" autocomplete="off" spellcheck="false" placeholder="Search developers, problems, etc" ajax1="/search/AJAX/search/" ajax2="/search/search-results/" ></input>
+                        <div id="search-dropdown"></div>
+                    </li>
+                    
+                    
+
+                    
+
+                    
+
+
+                    
+
+                    
+
+                    
+                    <li class="nav-bar-menu login-menu-btn"><a target="login-modal" class="track-header-login show-modal">LOGIN</a></li>
+                    <li class="nav-bar-menu signup-menu-btn"><a target="login-modal" class="track-header-signup show-modal show-signup-in-modal">SIGN UP</a></li>
+                    
+
+                    <div class="clear"></div>
+                </ul> <!-- nav-bar -->
+                <div class="clear"></div>
+                
+            </nav> <!-- navigation -->
+
+            <i class="fa fa-filter challenge-filter-btn hidden"></i>
+
+        </header> <!-- header -->
+        
+    
+     <style>
+  #gdpr-modal {
+    position: absolute;
+    bottom: 0;
+  }
+</style>
+<div id="gdpr-modal" class="modal-window smaller-modal hidden">
+  
+
+<style>
+  #gdpr-modal-content {
+    font-family: 'Open Sans', sans-serif;
+  }
+
+  #gdpr-modal-content .modal-header {
+    padding: 50px 55px 35px 55px;
+    font-size: 24px;
+    font-weight: 400;
+  }
+
+  #gdpr-modal-content .modal-footer {
+    padding: 25px 55px 90px;
+  }
+
+  #gdpr-modal-content .modal-content {
+    padding: 0 55px 5px;
+    font-size: 16px;
+    line-height: 22px;
+  }
+
+  #gdpr-modal-content .modal-footer .checkbox-row {
+    font-size: 16px;
+    display: inline-flex;
+  }
+
+  #gdpr-modal-content a {
+    color: #0099ff;
+  }
+  
+  #gdpr-modal-content .button.disabled {
+    background: #f5f6f6 !important;
+  }
+</style>
+
+<div id="gdpr-modal-content">
+  
+<div class="modal-header">HackerEarth’s Privacy Policy and Terms of Service</div>
+  <div class="modal-content">
+      We care about your data privacy. HackerEarth uses the information that you provide to contact you about relevant content, products, and services. <br /> <br />
+
+      Our <a href="/privacy/" target="_blank">Privacy Policy</a> and <a href="/terms-of-service/" target="_blank">Terms of Service</a> will help you understand that you are in control of your data at HackerEarth.
+  </div>
+  <div class="modal-footer">
+    <div class="margin-bottom-15 regular checkbox-row">
+      <input type="checkbox" name="gdpr-tnc" />
+      I have read and I agree.
+    </div>
+    <div class="">
+      <input type="submit" name="submit" value="Proceed" class="button btn-blue fontawesome btn-largest disabled large" id="gdpr-submit" />
+    </div>
+  </div>
+</div>
+
+</div>
+
+
+    
+
+    
+    
+    <div class="top-banner">
+        <p class="banner-text login-banner dark">
+        
+         Signup and get free access to 100+ Tutorials and Practice Problems <a class="button btn-orange-bright inline-block medium-margin-left show-modal show-signup-in-modal" target="login-modal">Start Now</a>
+        
+        </p>
+    </div>
+    
+    
+
+    
+
+    <div id="comment-share-modal" class="modal-window small-modal">
+        <div class="modal-header">
+            Comment permalink
+        </div>
+        <div class="modal-content">
+            <div class="comment-share-wrapper align-center">
+                <textarea class="comment-share-text" type="textbox" rows="4" readonly="readonly" onclick="this.select();"></textarea>
+            </div>
+        </div>
+    </div>
+
+    
+    
+
+    
+    <!-- live events widget -->
+    <div id="live-events-trigger-data"></div>
+    
+
+    <!-- This is the center page which has a fixed width of 1100px -->
+    
+<div class="responsive-page denim-gray-texture">
+    <div class="responsive-container">
+        <div class="page-data">
+            <div class="left medium-margin">
+                <div class="notes-header content weight-600 large" id="notes-left-container">
+                    <a href="/practice/notes/"><i class="fa fa-long-arrow-left"></i> Notes</a>
+                    
+            </div> <!--heading-2 -->
+            <div class="clear"></div>
+
+            
+
+
+
+
+<div class="note-container">
+    <div class="note-title-container content">
+        
+        
+        <div class="notes-vote regular align-center light">
+            <span class="polls">
+                <a href="#" class="anon-polls-up light show-modal inline-block show-signup-in-modal" target="login-modal"><i class="fa fa-caret-up fa-lg fa-3x"></i></a>
+                <br />
+                <span class="polls-count only-positive inline-block dark">123 </span>
+            </span>
+        </div> <!-- end of notes-vote -->
+        
+        
+
+        
+
+        <div class="notes-item standard-margin-left">
+            <div class="notes-title">
+             Matrix exponentiation
+            </div>
+            <div class="notes-description">
+                    
+                    <div class="less-margin tags-list">
+                    
+                        
+                        
+                        <div class="note-tags dark smaller float-left medium-margin-right"> Matrix exponentiation</div>
+                        
+                        
+                        
+                        <div class="note-tags dark smaller float-left medium-margin-right"> Matrix multiplication</div>
+                        
+                        
+                        
+                        <div class="note-tags dark smaller float-left medium-margin-right"> CodeMonk</div>
+                        
+                        
+                        
+                        <div class="note-tags dark smaller float-left medium-margin-right"> Code Monk</div>
+                        
+                        
+                        
+                        <div class="note-tags dark smaller float-left medium-margin-right"> Math</div>
+                        
+                        
+                        
+                        <div class="note-tags dark smaller float-left medium-margin-right"> Dynamic Programming</div>
+                        
+                        
+                    
+                        </div> <!-- tags-list -->
+                    
+                    
+                    <div class="clear"></div>
+
+            </div> <!-- notes-description -->
+        </div><!-- notes-tem -->
+    </div> <!-- note-title-container -->
+
+    <hr class="hr-dashed"/>
+
+    <div class="regular darker note-body content">
+        <h2>Introduction</h2>
+<p>Matrix is a popular math object. It is basically a two-dimensional table of numbers. In this article we’ll look at integer matrices, i.e. tables with integers. This is how matrices are usually pictured:
+<img alt="nxm matrix" src="https://he-s3.s3.amazonaws.com/media/uploads/ac339f1.png" /><br />
+<strong>A</strong> is the matrix with n rows and m columns. Each integer in A is represented as <strong>a<sub>ij</sub></strong>: i is the row number (ranging from 1 to n), j is the column number (ranging from 1 to m).   </p>
+<p>Matrices appear very frequently in computer science, with notable examples being:</p>
+<ol>
+<li>Adjacency matrix of a graph;</li>
+<li>Matrix of system of linear equations;</li>
+<li>Matrices of affine transformations in 3D graphics;</li>
+<li>Probability vectors, defining probability mass function of discrete random variable.</li>
+</ol>
+<p>Even if you don’t know linear algebra (where matrices are heavily studied) or anything like that, I bet you’ve used matrices at least once. This happens every time when you define a 2D-array! <br />
+Let’s say you have declared a variable like this (in C++):  </p>
+<pre class="prettyprint"><code>int arr[1000][1000];
+</code></pre>
+<p>Then you can write something like this:</p>
+<pre class="prettyprint"><code>for(int i = 0; i &lt; n; i++)
+  for(int j = 0; j &lt; n; j++)
+    cin &gt;&gt; arr[i][j];
+</code></pre>
+<p>To access 2D-array <strong>arr</strong>, you use two integers [i][j]. It is exactly the same as with matrix, where you need to specify row number and column number to pinpoint one element. One conclusion from this paragraph: you can <strong>represent matrices in code</strong> with 2D-arrays.  </p>
+<p>Surprisingly, in competitive programming matrices can appear too. There are 10 problems with tag “Matrix exponentiation” on HackerEarth (at the time of writing). 8 of them also have tag “Hard”. If you become familiar with matrices and exponentiating them, those problems will become at least “Medium” for you, or even “Easy”!</p>
+<h2>Matrix multiplication</h2>
+<p>Consider two matrices: </p>
+<ol>
+<li>Matrix A have n rows and k columns;</li>
+<li>Matrix B have k rows and m columns (notice that number of <strong>rows in B is the same as number of columns in A</strong>).  </li>
+</ol>
+<p>Then we define operation:<br />
+C = A * B <strong>(matrix multiplication)</strong><br />
+<img alt="matrix product" src="https://he-s3.s3.amazonaws.com/media/uploads/4a46cae.png" /><br />
+such that C is a matrix with n rows and m columns, and each element of C should be computed by the following formula:<br />
+<img alt="multiplication_definition" src="https://he-s3.s3.amazonaws.com/media/uploads/d1c80e1.png" /><br />
+The meaning of matrix multiplication is different for different usage of matrices, so it is OK if you still have no idea how multiplication could be useful.</p>
+<p>Several things to notice:</p>
+<ol>
+<li>Matrix C has the same number of rows as A, and the same number of columns as B;</li>
+<li>Matrix C has n * m elements, each element is computed in k steps with given formula =&gt; we can obtain C in <strong>O(n * m * k)</strong>, given A and B;</li>
+<li>If n = m = k (i.e. both A and B have n rows and n columns), then C has n rows and n columns, and can be computed in <strong>O(n<sup>3</sup>)</strong>.  </li>
+</ol>
+<p>Here are some useful properties of matrix multiplication:</p>
+<ol>
+<li>It is <strong>not commutative</strong>: A * B ≠ B * A in general case;</li>
+<li>It is <strong>associative</strong>: A * B * C = (A * B) * C = A * (B * C) in case A * B * C exists;</li>
+<li>If you have matrix with n rows and n columns, then multiplying it by <strong>I<sub>n</sub></strong> gives the same matrix, i. e. I<sub>n</sub> * A = A * I<sub>n</sub> = A. <strong>I<sub>n</sub></strong> is a matrix with n rows and n columns of such form:
+<img alt="identity_matrix" src="https://he-s3.s3.amazonaws.com/media/uploads/32ae1bd.png" /></li>
+</ol>
+<h2>Matrix exponentiation</h2>
+<p>Suppose you have a matrix A with n rows and n columns (we’ll call such matrices “<strong>square matrix of size n</strong>”). We can define matrix exponentiation as:<br />
+A<sup>x</sup> = A * A * A * … * A   (x times)<br />
+with special case of x = 0:<br />
+A<sup>0</sup> = I<sub>n</sub><br />
+Here x is non-negative integer (i. e. 0, 1, 2, 3, …). Don’t worry if this operation seem meaningless to you. Let’s now analyse how fast we can compute A<sup>x</sup>, given A and x.  </p>
+<p>The brute-force solution would be (written in pseudo code):</p>
+<pre class="prettyprint"><code>function matrix_power_naive(A, x):
+  result = I_n
+  for i = 1..x:
+    result = result * A
+  return result
+</code></pre>
+<p>It runs in Θ(n<sup>3</sup> * x): we do x matrix multiplications on square matrices of size n, and each multiplication runs in Θ(n<sup>3</sup>).  </p>
+<p>We can do better! Let’s choose <strong>x = 75</strong> as an example. Write down binary representation of x:<br />
+75<sub>10</sub> = 1001011<sub>2</sub>   =&gt; 75 = 2<sup>0</sup> + 2<sup>1</sup> + 2<sup>3</sup> + 2<sup>6</sup> = 1 + 2 + 8 + 64.<br />
+Now we can rewrite A<sup>x</sup> as <br />
+A<sup>75</sup> = A<sup>1</sup> * A<sup>2</sup> * A<sup>8</sup> * A<sup>64</sup>. There are a lot less multiples, don’t you think? We had 75 of them, now we’ve got <strong>only 4</strong>, which is a number of 1’s in binary representation of our x.<br />
+And it turns out, we can find A<sup>2<sup>r</sup></sup> really fast for any r:<br />
+A<sup>2<sup>0</sup></sup> = A<sup>1</sup> = A  (zero steps)<br />
+A<sup>2<sup>1</sup></sup> = A<sup>2<sup>0</sup> * 2</sup> = A<sup>2<sup>0</sup> + 2<sup>0</sup></sup> = A<sup>2<sup>0</sup></sup> * A<sup>2<sup>0</sup></sup> (one multiplication - n<sup>3</sup> steps)<br />
+A<sup>2<sup>2</sup></sup> = A<sup>2<sup>1</sup> * 2</sup> = A<sup>2<sup>1</sup> + 2<sup>1</sup></sup> = A<sup>2<sup>1</sup></sup> * A<sup>2<sup>1</sup></sup> (one multiplication - 2 * n<sup>3</sup> steps)<br />
+… (computations happen) ...<br />
+A<sup>2<sup>r</sup></sup> = A<sup>2<sup>r - 1</sup> * 2</sup> = A<sup>2<sup>r - 1</sup> + 2<sup>r - 1</sup></sup> = A<sup>2<sup>r - 1</sup></sup> * A<sup>2<sup>r - 1</sup></sup> (one multiplication - r * n<sup>3</sup> steps) <br />
+Therefore, we can find A<sup>2<sup>r</sup></sup> in <strong>O(r * n<sup>3</sup>)</strong> time, given A and r.  Notice, however, that r = O(log(x)), because we compute A<sup>2<sup>r</sup></sup> only when there is r’th bit is set to 1 in binary representation of x, and length of binary representation of x is not more than log<sub>2</sub>(x) + 1.  </p>
+<p>So, for x = 75 we compute A<sup>2</sup>, A<sup>4</sup>, A<sup>8</sup>, A<sup>16</sup>, A<sup>32</sup>, A<sup>64</sup> (that’s the fastest way we can get A<sup>64</sup>) in 6 * n<sup>3</sup> steps, then perform 4 multiplications (I<sub>n</sub> * A<sup>1</sup> * A<sup>2</sup> * A<sup>8</sup> * A<sup>64</sup>) in 4 * n<sup>3</sup> steps. In total, this gets us to <strong>10 * n<sup>3</sup> steps for computing A<sup>75</sup></strong>, instead of 75 * n<sup>3</sup> steps with brute force.   </p>
+<p>We could implement this new idea in general (for any x) in the following way:</p>
+<pre class="prettyprint"><code>function matrix_power_smart(A, x):
+  result = I_n
+  r = 0
+  cur_a = A
+  while 2^r &lt;= x:
+    if r’th bit is set in x:
+      result = result * cur_a
+    r += 1
+    cur_a = cur_a * cur_a
+  return result
+</code></pre>
+<p>Here, on every step of the <em>while</em> loop, cur_a = A<sup>2<sup>r</sup></sup>.<br />
+While the above code works, there is a more conventional way of implementing this algorithm. Instead of incrementing r, we will <strong>strip the 0’th bit from x on every iteration</strong>. And instead of checking if r’th bit is set, we must check if 0’th bit is set in x. Also, instead of having variable cur_a, we will multiply A <strong>by itself in-place</strong>.  </p>
+<p>Here is the implementation:</p>
+<pre class="prettyprint"><code>function matrix_power_final(A, x):
+  result = I_n
+  while x &gt; 0:
+    if x % 2 == 1:
+      result = result * A
+    A = A * A
+    x = x / 2
+  return result
+</code></pre>
+<p>Major conclusion here: we can find <strong>A<sup>x</sup> for any integer x in O(n<sup>3</sup> * log<sub>2</sub>x)</strong> time.</p>
+<h2>Applications of matrix exponentiation</h2>
+<p></p><h3>Finding N’th Fibonacci number</h3><br />
+Fibonacci numbers <strong>F<sub>n</sub></strong> are defined as follows:<p></p>
+<ol>
+<li>F<sub>0</sub> =  F<sub>1</sub> = 1;</li>
+<li>F<sub>i</sub> =  F<sub>i - 1</sub> +  F<sub>i - 2</sub> for i ≥ 2.  </li>
+</ol>
+<p>We want to find F<sub>N</sub> modulo 1000000007, where <strong>N</strong> can be up to 10<sup>18</sup>.  </p>
+<p>The first thing that comes to mind is to run a <em>for</em> loop, according to the definition:</p>
+<pre class="prettyprint"><code>function fibonacci_definition(N):
+  if N &lt;= 1:
+    return 1
+  x = 1
+  y = 1
+  for i = 0..N-2:
+    next_y = (x + y) mod 1000000007
+    x = y
+    y = next_y
+  return y
+</code></pre>
+<p>After i’th iteration of <em>for</em> loop, we maintain x = F<sub>i + 1</sub> and y = F<sub>i + 2</sub>. As the last iteration is N-2’th, we get y = F<sub>N - 2 + 2</sub>  = F<sub>N</sub> when we return from the function.<br />
+The running time of this loop is clearly <strong>O(N)</strong>. This can work in reasonable time for N up to 10<sup>9</sup>. If we want N up to 10<sup>18</sup>, we have to switch to a faster approach.  </p>
+<p>Here is when matrices get involved. Suppose we have a <strong>vector</strong> (matrix with one row and several columns) of (F<sub>i - 2</sub>, F<sub>i - 1</sub>) and we want to multiply it by some matrix, so that we get (F<sub>i - 1</sub>, F<sub>i</sub>). Let’s call this matrix <strong>M</strong>:<br />
+<img alt="fibo_matrix_abstract" src="https://he-s3.s3.amazonaws.com/media/uploads/8b32b8c.png" /><br />
+Two questions arise immediately:</p>
+<ol>
+<li>What are the dimensions of M?</li>
+<li>What are exact values in M?</li>
+</ol>
+<p>We can answer them, using the definition of matrix multiplication:  </p>
+<ol>
+<li><strong>The size</strong>. We multiply the  (F<sub>i - 2</sub>, F<sub>i - 1</sub>), which has 1 row and 2 columns, by M. The result is (F<sub>i - 1</sub>, F<sub>i</sub>), which has 1 row and 2 columns.<br />
+ By definition, if we multiply a matrix with n rows and k columns by a matrix with k rows and m columns, we get a matrix with n rows and m columns.<br />
+ In our case, n = 1, k = 2 (number of rows and columns of (F<sub>i - 2</sub>, F<sub>i - 1</sub>)), and m = 2 (number of columns in the resulting (F<sub>i - 1</sub>, F<sub>i</sub>)).<br />
+ Therefore, M has <strong>k = 2 rows and m = 2 columns</strong>.</li>
+<li><strong>Values</strong>. We now know that M has 2 rows and 2 columns, 4 values overall. Let’s denote them by letters, as we usually do with unknown variables:<br />
+<img alt="fibo_matrix_values_abstract" src="https://he-s3.s3.amazonaws.com/media/uploads/ddf3976.png" /><br />
+    We want to find x, y, z and w. Let’s see what we get, if we multiply  (F<sub>i - 2</sub>, F<sub>i - 1</sub>) by M by definition:<br />
+<img alt="fibo_matrix_mult" src="https://he-s3.s3.amazonaws.com/media/uploads/f8b9bef.png" /><br />
+    On the other hand, we know that the result of this multiplication must be (F<sub>i - 1</sub>, F<sub>i</sub>):<br />
+<img alt="fibo_matrix_equation" src="https://he-s3.s3.amazonaws.com/media/uploads/11c1866.png" /><br />
+    Now we can write the system of equations:
+    F<sub>i - 2 </sub>* x + F<sub>i - 1</sub> * z = F<sub>i - 1</sub><br />
+    F<sub>i - 2</sub> * y + F<sub>i - 1</sub> * w = F<sub>i</sub><br />
+    The easiest way to satisfy the first equation is to set <strong>x = 0, z = 1</strong>.<br />
+    For the second equation, we look at the definition of Fibonacci numbers:<br />
+    F<sub>i</sub> = F<sub>i - 1</sub> + F<sub>i - 2</sub><br />
+    So the solution is <strong>y = 1, w = 1</strong>.</li>
+</ol>
+<p>Now we know the size and contents of M:<br />
+<img alt="fibo_matrix_answer" src="https://he-s3.s3.amazonaws.com/media/uploads/59391ca.png" /><br />
+You may wonder why on Earth would we need to overcomplicate the problem, introduce matrices, etc.? You’ll see why in a moment.<br />
+Initially, we have F<sub>0</sub> and F<sub>1</sub>. Arrange them as a vector:<br />
+<img alt="fibo_initial_vector" src="https://he-s3.s3.amazonaws.com/media/uploads/6ae6895.png" /><br />
+Multiplying this vector with the matrix M will get us to (F<sub>1</sub>, F<sub>2</sub>) = (1, 2):<br />
+<img alt="fibo_f1_f2" src="https://he-s3.s3.amazonaws.com/media/uploads/803c518.png" /><br />
+If we multiply (1, 2) with M, we get (F<sub>2</sub>, F<sub>3</sub>) = (2, 3):<br />
+<img alt="fibo_f2_f3" src="https://he-s3.s3.amazonaws.com/media/uploads/8c3a5a5.png" /><br />
+ But we could get the same result by multiplying (1, 1) by M two times:<br />
+<img alt="fibo_two_times" src="https://he-s3.s3.amazonaws.com/media/uploads/99b8936.png" /> </p>
+<p>In general, multiplying k times by M gives us F<sub>k</sub>, F<sub>k + 1</sub>:<br />
+<img alt="fibo_k_times" src="https://he-s3.s3.amazonaws.com/media/uploads/aad8ac0.png" /><br />
+Here matrix exponentiation comes into play: <strong>multiplying k times by M is equal to multiplying by M<sup>k</sup></strong>: <br />
+<img alt="fibo_mk" src="https://he-s3.s3.amazonaws.com/media/uploads/c08d084.png" /><br />
+Computing M<sup>k</sup> takes O((size of M)<sup>3</sup> * log(k)) time. In our problem, size of M is 2, so we can find N’th Fibonacci number in O(2<sup>3</sup> * log(N)) = <strong>O(log(N))</strong>:  </p>
+<pre class="prettyprint"><code>function fibonacci_exponentiation(N):
+  if N &lt;= 1:
+    return 1
+  initial = (1, 1)
+  exp = matrix_power_with_modulo(M, N - 1, 1000000007) // assuming we’ve defined M
+  return (initial * exp)[1][2] modulo 1000000007
+</code></pre>
+<p>We multiply our initial vector (1, 1) by M<sup>N - 1</sup> and get initial * exp = (F<sub>N - 1</sub>, F<sub>N</sub>). We must return F<sub>N</sub>, so we take it from first row, second column of initial * exp. All indexation is done starting from 1.  </p>
+<h3>Finding N’th element of linear recurrent sequence</h3>
+<p>Let’s take a look at more general problem than before. Sequence <strong>A</strong> satisfies two properties:</p>
+<ol>
+<li>A<sub>i</sub> = c<sub>1</sub> * A<sub>i - 1</sub> + c<sub>2</sub> * A<sub>i - 2</sub> + … + c<sub>k</sub> * A<sub>i - k</sub> for i ≥ k (c<sub>1</sub>, c<sub>2</sub> …, c<sub>k</sub> are given integers);</li>
+<li>A<sub>0</sub> = a<sub>0</sub>, A<sub>1</sub> = a<sub>1</sub>, …, A<sub>k - 1</sub> = a<sub>k - 1</sub> (a<sub>0</sub>, a<sub>1</sub>, …, a<sub>k - 1</sub> are given integers).<br />
+We need to find A<sub>N</sub> modulo 1000000007, when <strong>N</strong> is up to 10<sup>18</sup> and <strong>k</strong> up to 50.  </li>
+</ol>
+<p><em>Side note</em>: such a sequence A<sub>i</sub> is called <strong>recurrent</strong>, because computing A<sub>i</sub> requires computing A<sub>j</sub> for some j &lt; i. Also, A<sub>i</sub> is called <strong>linear</strong>, because it depends linearly on A<sub>j</sub> for some j &lt; i.    </p>
+<p>Notice that if we take k = 2, a<sub>0</sub> = a<sub>1</sub> = 1, c<sub>1</sub> = c<sub>2</sub> = 1, then this sequence will be Fibonacci sequence from the previous problem.  </p>
+<p>Here we will look for a solution that involves matrix multiplication right from the start. If we obtain matrix <strong>M</strong>, such that:<br />
+<img alt="recurrent_matrix_def" src="https://he-s3.s3.amazonaws.com/media/uploads/82a75be.png" /><br />
+then we can get A<sub>N</sub> in the following manner:<br />
+<img alt="recurrent_matrix_result" src="https://he-s3.s3.amazonaws.com/media/uploads/93fc067.png" /> </p>
+<p>Two questions arise:</p>
+<ol>
+<li>What is the number of rows and columns of M? <br />
+The reasoning is the same as with Fibonacci numbers: we multiply matrix with 1 row and k columns by M, and get matrix with 1 row and k columns. <br />
+Therefore, <strong>M has k rows and k columns</strong>. In other words, 
+M is square matrix with size k;</li>
+<li>What are the values in M? Let’s denote them as <strong>x<sub>ij</sub></strong>:<br />
+<img alt="recurrent_xij" src="https://he-s3.s3.amazonaws.com/media/uploads/b8e75ce.png" /><br />
+    Then we can write down equations, which are based on the definition of matrix multiplication:<br />
+<img alt="recurrent_system" src="https://he-s3.s3.amazonaws.com/media/uploads/c4fae24.png" /><br />
+    From the first equation it is easy to see, that <strong>x<sub>21</sub> = 1</strong> and x<sub>i1</sub> = 0 for i = 1, 3, 4, …, k.<br />
+    From the second equation we conclude that <strong>x<sub>32</sub> = 1</strong> and x<sub>i2</sub> = 0 for i = 1, 2, 4, …, k.<br />
+    Following this logic up to k-1’th equation, we get <strong>x<sub>i,i-1</sub> = 1</strong> for i = 2, 3, …, k and <strong>x<sub>ij</sub> = 0</strong> for i = 1, 2, 3, …, k and j ≤ k - 1, j ≠ i - 1.<br />
+    The last equation looks like the definition of A<sub>i</sub>. Based on that, we get <strong>x<sub>ik</sub> = c<sub>k - i +1</sub></strong>:<br />
+<img alt="recurrent_matrix_final" src="https://he-s3.s3.amazonaws.com/media/uploads/37ba915.png" /> </li>
+</ol>
+<p>Now, when we have M, there are no more obstacles. We can implement the solution.<br />
+Pseudo code:</p>
+<pre class="prettyprint"><code>function recurrent_seq(N, k, a, c): // a and c are arrays of size k
+  if N &lt;= k - 1:
+    return a[N]
+  M = build_M(k, c)
+  initial = a // initial vector: (a_0, a_1, …, a_{k-1})
+  exp = matrix_power_with_modulo(M, N - k + 1, 1000000007)
+  return (initial * exp)[1][k] modulo 1000000007 // initial*exp is a matrix (A_{N - k + 1}, A_{N - k + 2}, …, A_N). We take first row, last column as the result, which is A_N.
+</code></pre>
+<p>This code will run in <strong>O(k<sup>3</sup> * log(N))</strong> if we use fast matrix exponentiation.</p>
+<h3>Finding the sum of Fibonacci numbers up to N</h3>
+<p>Let’s go back to Fibonacci numbers:  </p>
+<ol>
+<li>F<sub>0</sub> = F<sub>1</sub> = 1;</li>
+<li>F<sub>i</sub> = F<sub>i - 1</sub> + F<sub>i - 2</sub> for i ≥ 2.</li>
+</ol>
+<p>Introduce a new sequence: <strong>P<sub>i</sub></strong> = F<sub>0</sub> + F<sub>1</sub> + … + F<sub>i</sub> (i.e. sum of first i Fibonacci numbers).<br />
+The problem is: find P<sub>N</sub> modulo 1000000007 for <strong>N</strong> up to 10<sup>18</sup>.</p>
+<p>Surprisingly, we can do it with matrices again. Let’s imagine we have a matrix <strong>M</strong>, such that:<br />
+<img alt="sum_matrix" src="https://he-s3.s3.amazonaws.com/media/uploads/bc9f9e1.png" /><br />
+Then we can obtain P<sub>N</sub> by doing:<br />
+<img alt="sum_solution" src="https://he-s3.s3.amazonaws.com/media/uploads/c54759d.png" /> </p>
+<p>By now you must be familiar with the method of obtaining M and determining its size. I’ll present you M right away:<br />
+<img alt="sum_m" src="https://he-s3.s3.amazonaws.com/media/uploads/d0d2aa9.png" /> <br />
+The first column is three 1’s, because P<sub>i</sub> = P<sub>i - 1</sub> + F<sub>i</sub> = P<sub>i - 1</sub> + F<sub>i - 2</sub> + F<sub>i - 1</sub>.  </p>
+<p>You can find sum of first N numbers of <strong>any recurrent linear sequence A<sub>i</sub>, not just Fibonacci</strong>. To do that, introduce the “sum sequence” P<sub>i</sub> = A<sub>0</sub> + A<sub>1</sub> + … + A<sub>i</sub>. Put this sequence into the initial vector. Then find the matrix that gives you P<sub>i + 1</sub>, based on P<sub>i</sub> and some A’s.</p>
+<h3>Computing multiple linear recurrent sequences at once</h3>
+<p>Take a look at the problem <a href="https://www.hackerearth.com/problem/algorithm/candy-distribution-3-1/description/">Candy Distribution 3</a> from HackerEarth Medium Track. Basically, it asks, given integer n ≥ 10<sup>6</sup>, find the number of pairs of integers (x, y) such that:  </p>
+<ol>
+<li>0 ≤ x &lt; 2<sup>n</sup>;</li>
+<li>0  ≤ y &lt; 2<sup>n</sup>;</li>
+<li>Bitwise OR of x and y is not equal to x;</li>
+<li>Bitwise OR of x and y is not equal to y.</li>
+</ol>
+<p>When solving this problem, I came up with the following solution: let <strong>dp<sub>i</sub></strong> be the answer for n = i. Then it can be shown that:<br />
+dp<sub>i</sub> = dp<sub>i - 1</sub> * 4 +  g<sub>i - 1</sub> * 2 for i &gt; 1,<br />
+dp<sub>1</sub> = 0, <br />
+where sequence <strong>g</strong> satisfies:<br />
+g<sub>i</sub> = g<sub>i - 1</sub> * 3 + 2<sup>i - 1</sup> for i &gt; 1, <br />
+g<sub>1</sub> = 1.</p>
+<p><em>Side note</em>: this is not the only way to solve this problem. For example, there is another approach proposed in the editorial. Also, due to this specific problem constraints’ (namely, up to 10<sup>6</sup> inputs for each test), it can not be accepted with matrix exponentiation.</p>
+<p>There are 3 recurrent sequences involved: dp<sub>i</sub> depends on g<sub>i - 1</sub>, g<sub>i</sub> depends on 2<sup>i - 1</sup> (powers of two can be viewed as recurrent sequence <strong>P<sub>i</sub></strong>: P<sub>0</sub> = 1, P<sub>i</sub> = 2 * P<sub>i - 1</sub>). <strong>What if we want to compute dp<sub>n</sub> using matrix exponentiation</strong>?  </p>
+<p>Find a matrix <strong>M</strong>, such that:<br />
+<img alt="candy_transition" src="https://he-s3.s3.amazonaws.com/media/uploads/b033823.png" /><br />
+One can see that:  <br />
+<img alt="candy_matrix" src="https://he-s3.s3.amazonaws.com/media/uploads/ba162d1.png" /> </p>
+<p>How to come up with M without much thinking? <br />
+Notice, that in the first column we have 4, 2 and 0. This is precisely because <br />
+dp<sub>i</sub> = dp<sub>i - 1</sub> * <strong>4</strong> + g<sub>i - 1</sub> * <strong>2</strong> + 2<sup>i - 1</sup> * <strong>0</strong><br />
+Generally, if the value at row i and column j equals x, then i’th column of initial vector has the coefficient x when calculating j’th column of resulting vector. For example, value in first row and third column is 0, because 2<sup>i</sup> = <strong>0</strong> * dp<sub>i - 1</sub> + … .</p>
+<p>The answer for this problem would be the first row and first column of<br />
+<img alt="candy_answer" src="https://he-s3.s3.amazonaws.com/media/uploads/ee35218.png" /> </p>
+<h3>Solving dynamic programming problems with fixed linear transitions</h3>
+<p>Let’s take a look at another HackerEarth problem: <a href="https://www.hackerearth.com/problem/algorithm/pk-and-interesting-language/description/">PK and interesting language</a>. It goes like this:  </p>
+<blockquote>
+<p>Count the number of strings of length L with lowercase english
+letters, if some pairs of letters can not appear consequently in those
+strings. L is up to 10<sup>7</sup>, there are up to 100 inputs.</p>
+</blockquote>
+<p>The “<strong>banned</strong>” pairs are described in the input as matrix: banned[i][j] == 0 means that letter j can not go after letter i in a valid string. Otherwise, banned[i][j] == 1.  </p>
+<p>Let <strong>dp[n][last_letter]</strong> be the number of valid strings of length <strong>n</strong>, which have last letter equal to <strong>last_letter</strong>. Then we can recalculate dp in order of increasing n:  </p>
+<pre class="prettyprint"><code>dp[1][a] = dp[1][b] = … = dp[1][z] = 1
+for n = 2..L:
+  for last_letter = a..z:
+    for next_letter = a..z:
+      if banned[last_letter][next_letter] != 0:
+        dp[n + 1][next_letter] += dp[n][last_letter]
+</code></pre>
+<p>The logic behind this is such: if we have the number of valid strings for some <strong>n</strong> and <strong>last_letter</strong> (it is <strong>dp[n][last_letter]</strong>), then we can add some letter to the end of those strings. Let’s iterate over this new letter <strong>next_letter</strong> and see if it is OK to place it after <strong>last_letter</strong>. If it is, then adding <strong>next_letter</strong> will result in the string of length <strong>n + 1</strong> with last letter equal to <strong>next_letter</strong>. Thus, we add dp[n][last_letter] to dp[n + 1][next_letter].  </p>
+<p>The above approach works in Θ(L * 26<sup>2</sup>) time and won’t pass with L ~ 10<sup>7</sup>.  </p>
+<p>To speed things up, notice that inside the<br />
+for n = 2..L<br />
+loop <strong>nothing depends on n itself!</strong> Well, you could argue that writing “dp[n + 1][next_letter] += dp[n][last_letter]” and then saying “it does not depend on n” is nonsense. What I want to stress out is that <strong>transition from n to n + 1 happens in exactly the same way like, for example, from n + 100 to n + 101</strong>. The “banned” rules do not change over time! </p>
+<p>The second observation would be: transition formulas from n to n + 1 are <strong>linear</strong>. To compute dp[n + 1][next_letter], we sum up dp[n][letter] for some <em>letter</em>. We do not have something like<br />
+dp[n + 1][next_letter] += dp[n][letter] * dp[n][next_letter],<br />
+which would mean that transition is not linear.</p>
+<p>These two observations combined provide a useful property: there exists some matrix M, such that for any n ≥ 1
+<img alt="language_exists" src="https://he-s3.s3.amazonaws.com/media/uploads/9f7e2e6.png" /> </p>
+<p>By now you should be able to tell that <strong>M is a square matrix with size 26</strong> (which is number of letters in English alphabet). It contains 26 * 26 = 676 values - tough thing if you want to write them down manually!<br />
+Here is the easy way to understand, which values x<sub>ij</sub> must be in M, based on the above equation:  </p>
+<ol>
+<li>Call the left part <strong>initial</strong> and the right part <strong>result</strong>;</li>
+<li>By matrix multiplication definition we have: <br />
+<img alt="language_equation" src="https://he-s3.s3.amazonaws.com/media/uploads/f92b042.png" /> </li>
+<li>In other words, when you want to compute i-th value of the result, you take all x’s from i-th column and multiply them by corresponding initial’s;</li>
+<li>This means that x<sub>ki</sub> is the number, which tells “how many times we need to add initial<sub>1k</sub> to result<sub>1i</sub>”. Personally, I call it “impact of k-th value on i-th value of dp”.</li>
+</ol>
+<p>In this problem, M is conveniently given to you in input. Indeed, we could rewrite the transition loop to this:</p>
+<pre class="prettyprint"><code>for last_letter = a..z:
+  for next_letter = a..z:
+    dp[n + 1][next_letter] += dp[n][last_letter] * banned[last_letter][next_letter]
+</code></pre>
+<p>That’s because “banned” is given in binary form: 1 if letters can appear together, 0 in other case.<br />
+The states of dynamic programming here are letters, and matrix “banned” shows how one letter affect the other. The final solution is:<br />
+<img alt="language_solution" src="https://he-s3.s3.amazonaws.com/media/uploads/3af8bef.png" /><br />
+It works in <strong>O(26<sup>3</sup> * log(L))</strong>, which is significantly faster and passes time limit.  </p>
+<p>This way of speeding up dynamic programming is crucial to understand. <strong>Most of the problems tagged “Matrix exponentiation” on HackerEarth can be solved with this trick.</strong></p>
+<h2>Implementation</h2>
+<p>Generally, you’d want to express three functions in your code:</p>
+<ol>
+<li>Multiply two matrices of appropriate sizes;</li>
+<li>Create an identity matrix <strong>I<sub>n</sub></strong>;</li>
+<li>Raise a matrix to r-th power using fast exponentiation.
+Also you should consider a way to store your matrix.</li>
+</ol>
+<p>The most straight-forward approach is to store matrices as 2D-arrays:</p>
+<pre class="prettyprint"><code>int matrix_1[50][50];
+int matrix_2[50][50];
+</code></pre>
+<p>While the easiest way to perform multiplication is to use hard-coded operands:  </p>
+<pre class="prettyprint"><code>int mat_a[50][50], mat_b[50][50];
+
+void mul()
+{
+  // multiplies mat_a by mat_b
+}
+</code></pre>
+<p>For example, it could look like this:</p>
+<pre class="prettyprint"><code>const int MAX_SIZE = 50;
+const int MOD = 1e9 + 7;
+
+int a[MAX_SIZE][MAX_SIZE];
+int b[MAX_SIZE][MAX_SIZE];
+int tmp[MAX_SIZE][MAX_SIZE];
+
+void mul_mat(int n1, int m1, int n2, int m2)
+{   
+    // Instead of passing the matrices, we pass only their dimensions.
+    // Function multiplies a by b if 
+    //   a has n1 rows and m1 columns
+    //   b has n2 rows and m2 columns
+    // The result is stored in tmp matrix, then copied to a.
+    //
+    // Notice that the resulting matrix has n1 rows and m2 columns.
+
+    memset(tmp, 0, sizeof(tmp));
+    assert(m1 == n2); // according to definition of matrix multiplication
+
+    for(int i = 0; i &lt; n1; i++)
+        for(int j = 0; j &lt; m2; j++) {
+            for(int k = 0; k &lt; m1; k++) {
+                tmp[i][j] = (tmp[i][j] + a[i][k] * 1ll * b[k][j]) % MOD;
+            }
+        }
+
+    memcpy(a, tmp, sizeof(a));
+}
+
+void create_identity(int n)
+{   
+    // Creates identity matrix I_n and stores it in a.
+    for(int i = 0; i &lt; n; i++)
+        for(int j = 0; j &lt; n; j++)
+            if(i == j)
+                a[i][j] = 1;
+            else
+                a[i][j] = 0;
+}
+</code></pre>
+<p>The exponentiating function is tricky to write in such case. So, if I have enough time, I prefer to implement Matrix as a class in C++:</p>
+<pre class="prettyprint"><code>const int MOD = 1e9 + 7;
+
+struct Matrix
+{
+    vector&lt; vector&lt;int&gt; &gt; mat; // the contents of matrix as a 2D-vector
+    int n_rows, n_cols; // number of rows and columns
+
+    Matrix(vector&lt; vector&lt;int&gt; &gt; values): mat(values), n_rows(values.size()),
+        n_cols(values[0].size()) {}
+
+    static Matrix identity_matrix(int n)
+    {
+        // Return I_n - the identity matrix of size n.
+        // This function is static, because it creates a new Matrix instance
+        vector&lt; vector&lt;int&gt; &gt; values(n, vector&lt;int&gt;(n, 0));
+        for(int i = 0; i &lt; n; i++)
+            values[i][i] = 1;
+        return values;
+    }
+
+    Matrix operator*(const Matrix &amp;other) const 
+    {
+        int n = n_rows, m = other.n_cols;
+        vector&lt; vector&lt;int&gt; &gt; result(n_rows, vector&lt;int&gt;(m, 0));
+        for(int i = 0; i &lt; n; i++)
+            for(int j = 0; j &lt; m; j++) {
+                for(int k = 0; k &lt; n_cols; k++) {
+                    result[i][j] = (result[i][j] + mat[i][k] * 1ll * other.mat[k][j]) % MOD;
+                }
+            }
+        // Multiply matrices as usual, then return the result as the new Matrix
+        return Matrix(result);
+    }
+
+    inline bool is_square() const
+    {
+        return n_rows == n_cols;
+    }
+};
+
+Matrix fast_exponentiation(Matrix m, int power)
+{
+    assert(m.is_square());
+    Matrix result = Matrix::identity_matrix(m.n_rows);
+
+    while(power) {
+        if(power &amp; 1)
+            result = result * m;
+        m = m * m;
+        power &gt;&gt;= 1;
+    }
+
+    return result;
+}
+</code></pre>
+<p>Remember, this implementation is only meant for <strong>learning</strong> purposes. You may come up with better (faster, more readable, more C++-ish) approach.</p>
+<p>There are two tricks I want to mention, that speed up usual computations:</p>
+<ol>
+<li>If the modulo MOD in problem is such, that MOD<sup>2</sup> fits into long long, then you can <strong>reduce number of modulo operations to O(n<sup>2</sup>)</strong> (in case of multiplying two n x n matrices A and B).</li>
+<li>If you problem requires answering many queries of raising the same matrix M to some power, you can precalculate powers of two of M to get things done faster. My solution for Candy Distribution 3 using this trick (and some others): </li>
+</ol>
+<p> </p>
+<pre class="prettyprint"><code>const int MOD = 1e9 + 7;
+const long long MOD2 = static_cast&lt;long long&gt;(MOD) * MOD;
+const int MAX_K = 50;
+
+struct Matrix
+{
+    vector&lt; vector&lt;int&gt; &gt; mat;
+    int n_rows, n_cols;
+
+    Matrix() {}
+
+    Matrix(vector&lt; vector&lt;int&gt; &gt; values): mat(values), n_rows(values.size()),
+        n_cols(values[0].size()) {}
+
+    static Matrix identity_matrix(int n)
+    {
+        vector&lt; vector&lt;int&gt; &gt; values(n, vector&lt;int&gt;(n, 0));
+        for(int i = 0; i &lt; n; i++)
+            values[i][i] = 1;
+        return values;
+    }
+
+    Matrix operator*(const Matrix &amp;other) const 
+    {
+        int n = n_rows, m = other.n_cols;
+        vector&lt; vector&lt;int&gt; &gt; result(n_rows, vector&lt;int&gt;(n_cols, 0));
+        for(int i = 0; i &lt; n; i++)
+            for(int j = 0; j &lt; m; j++) {
+                long long tmp = 0;
+                for(int k = 0; k &lt; n_cols; k++) {
+                    tmp += mat[i][k] * 1ll * other.mat[k][j];
+                    while(tmp &gt;= MOD2)
+                        tmp -= MOD2;
+                }
+                result[i][j] = tmp % MOD;
+            }
+
+        return move(Matrix(move(result)));
+    }
+
+    inline bool is_square() const
+    {
+        return n_rows == n_cols;
+    }
+};
+
+// M_powers[i] is M, raised to 2^i-th power
+Matrix M_powers[55];
+
+void precalc_powers(Matrix M)
+{
+    assert(M.is_square());
+    M_powers[0] = M;
+
+    for(int i = 1; i &lt; 55; i++)
+        M_powers[i] = M_powers[i - 1] * M_powers[i - 1];
+}
+
+Matrix fast_exponentiation_with_precalc(int power)
+{
+    Matrix result = Matrix::identity_matrix(M_powers[0].mat.size());
+    int pointer = 0;
+    while(power) {
+        if(power &amp; 1)
+            result = result * M_powers[pointer];
+        pointer++;
+        power &gt;&gt;= 1;
+    }
+    return result;
+}
+
+inline int get_int()
+{
+    char c;
+    int ret = 0;
+    while(isdigit(c = getchar()))
+        ret = ret * 10 + c - '0';
+    return ret;
+}
+
+int main()
+{
+    int t;
+    Matrix M({ 
+            {4, 0, 0}, 
+            {2, 3, 0}, 
+            {0, 1, 2} });
+    precalc_powers(M);
+
+    Matrix initial({ {0, 1, 2} });
+    t = get_int();
+    for(int i = 0; i &lt; t; i++) {
+        int n = get_int();
+        cout &lt;&lt; (initial * fast_exponentiation_with_precalc(n - 1)).mat[0][0] &lt;&lt; "\n";
+    }
+}
+
+(however, it can not pass all tests, because the intended solution is pure precalculation).
+</code></pre>
+<p>The modulo trick alone:  </p>
+<pre class="prettyprint"><code>long long MOD2 = MOD * MOD;
+for(int i = 0; i &lt; n; i++)
+  for(int j = 0; j &lt; n; j++) {
+    long long tmp = 0;
+    for(int k = 0; k &lt; n; k++) {
+      // Since A and B are taken modulo MOD, the product A[i][k] * B[k][j] is
+      // not more than MOD * MOD.
+      tmp += A[i][k] * 1ll * B[k][j];
+      while(tmp &gt;= MOD2) // Taking modulo MOD2 is easy, because we can do it by subtraction
+       tmp -= MOD2;
+      }
+    result[i][j] = tmp % MOD; // One % operation per resulting element
+  }
+</code></pre>
+<p>In general, solutions using matrix multiplication are very short. The longest code I’ve written was 201 lines, and it was really tedious problem.</p>
+<h2>Practice problems</h2>
+<p>There are many beautiful problems on HackerEarth, that benefit from matrix exponentiation. My first encounter with this technique started with the problem “Tiles” from December Clash.</p>
+<p>Most problems here require a dynamic programming solution, which is later improved by fast exponentiation.</p>
+<ol>
+<li><a href="https://www.hackerearth.com/problem/algorithm/pk-and-interesting-language/description/">PK and interesting language</a><br />
+    Difficulty: easy<br />
+    Comment: problem is explained in this article, so you should be able to implement it right away.</li>
+<li><a href="https://www.hackerearth.com/problem/algorithm/tiles/">Tiles</a><br />
+    Difficulty: medium-hard<br />
+    Prerequisites: bitmask dynamic programming<br />
+    Comment: surprisingly, this problem does not have tag “Matrix exponentiation”.</li>
+<li><a href="https://www.hackerearth.com/problem/algorithm/abcd-strings/description/">ABCD strings</a><br />
+    Difficulty: medium-hard<br />
+    Comment: harder version of “PK and interesting language”. Here you have to come up with the matrix yourself. Mine was of size 16.  </li>
+<li><a href="https://www.hackerearth.com/problem/algorithm/mehta-and-the-difficult-task-3/">Mehta and the difficult task</a>, <a href="https://www.hackerearth.com/problem/algorithm/mehta-and-the-evil-strings/">Mehta and the evil strings</a><br />
+    Difficulty: medium<br />
+    Prerequisites: basics of bitmasking<br />
+    Comment: two similar problems from the same author. Once you solve either of them, the other one should be easy.</li>
+<li><a href="https://www.hackerearth.com/problem/algorithm/long-walks-from-office-to-home-sweet-home-1/">Long walks from office to home sweet home</a><br />
+    Difficulty: easy-medium<br />
+    Comment: somewhat similar to “PK and interesting language”. </li>
+</ol>
+    </div> <!-- end note-body -->
+
+    
+    <div class="social-share medium-margin content">
+        <!-- fb, twitter, g+ buttons -->
+        <!-- the urls are messed up because they were changed post launch -->
+        <div class="fb-like float-left medium-margin-right" data-href="https://www.hackerearth.com/practice/notes/matrix-exponentiation-1/" data-send="false" data-layout="button_count" data-width="100" data-show-faces="false" data-font="lucida grande"></div>
+        <div class="float-left medium-margin-right"><a href="https://twitter.com/share" class="twitter-share-button" data-url="https://www.hackerearth.com/practice/notes/matrix-exponentiation-1/" data-text="Matrix exponentiation via @HackerEarth" data-via="">Tweet</a></div>
+        <div class="float-left"><g:plusone href="https://www.hackerearth.com/practice/notes/matrix-exponentiation-1/" size="medium"></g:plusone></div>
+        <!-- end of social buttons -->
+        <div class="clear"></div>
+    </div> <!-- social-share -->
+    
+
+    
+    <div id="comments-320-629" class="pagelet-inview comments standard-margin" ajax="/comment-action/load-comments/629/320/with-voting/with-sort/" target="comments-320-629"></div>
+    
+</div> <!-- end notes-container -->
+
+        </div><!-- left -->
+
+        <div class="right medium-margin">
+            <div class="right-box">
+                <div class="title"><i class="fa fa-magic less-margin-bottom"></i> Author</div>
+                <hr class="hr-dashed"></hr>
+                        
+                <div class="content">
+                    <div class="notes-user-info ">
+                        <a href="/@misha" class="profile-pic inline-block medium-margin-right v-align-top">
+                            <img src="https://he-s3.s3.amazonaws.com/media/avatars/misha/resized/80/0e47b5cimg_20140706_164324.jpg" alt="misha" width="80" height="80" onerror="if(typeof handle_avatar_error=='function'){handle_avatar_error(this);}" />
+                        </a>
+                        <div class="inline-block user-info light small">
+                            <a href="/@misha" class="inline-block large dark weight-600 hover-link">Mike Koltsov</a>
+                            
+                            
+                            <div><i class="fa fa-map-marker small"></i> Saint Petersburg, Russia</div>
+                            
+                            <div><a href="/practice/notes/u/misha/" class="light weight-600"><i class="fa fa-file-text-o small"></i> 3 notes</a></div>
+                        </div> <!-- user-info -->
+                    </div> <!-- notes-user-info -->
+                </div> <!-- content -->
+            </div> <!-- right-box -->
+
+            <div class="right-box" id="0d1567d"></div>
+
+        </div> <!-- right -->
+        <div class="clear"></div>
+
+    </div> <!-- responsive-container -->
+</div> <!-- responsive-page -->
+
+
+    <!-- include modal window for login/signup -->
+    
+        
+
+<div id="login-modal" class="modal-window smaller-modal hidden">
+    <div class="modal-header">
+        <div class="login-form align-center larger heading">Log in</div>
+        <div class="signup-form-div hidden align-center larger heading">Sign Up</div>
+        <div class="password-reset hidden align-center larger heading">Reset Password</div>
+    </div>
+    <div class="modal-content">
+
+        <div class="login-form">
+            
+                
+
+
+<div class="modal-social-login align-center">
+    
+        <div class="social-auth-row">
+            
+                <a url='/zeus/facebook/login/?display=popup&next=%2Fsocial-login-complete%2F%3Forigin_protocol%3Dhttps%26origin_host%3Dwww.hackerearth.com%26redirect%3D/practice/notes/matrix-exponentiation-1/?fbclid=IwAR3bQEpoeE0RGsmNAczNbMiP_ftC_uHQPwg9DfLIK5VDijSf42nrjUE3eNE&update=facebook&source=practice&purpose=login' title="Facebook" class="button btn-facebook btn-medium show-popup inline-block margin-top-8 less-margin-right less-margin-bottom" minimal="true">
+            
+                <i class="fa fa-facebook"></i>
+                <span class="regular less-margin-left">
+                    Log in with Facebook
+                </span>
+            </a>
+
+            
+                <a url='/zeus/github/login/?next=%2Fsocial-login-complete%2F%3Forigin_protocol%3Dhttps%26origin_host%3Dwww.hackerearth.com%26redirect%3D/practice/notes/matrix-exponentiation-1/?fbclid=IwAR3bQEpoeE0RGsmNAczNbMiP_ftC_uHQPwg9DfLIK5VDijSf42nrjUE3eNE&update=github&source=practice&purpose=login' title="Github" class="button btn-github btn-medium show-popup inline-block margin-top-8 less-margin-right" minimal="true">
+            
+                <i class="fa fa-github"></i>
+                <span class="regular less-margin-left">
+                    Log in with Github
+                </span>
+            </a>
+        </div>
+        
+            <a url='/zeus/google/login/?next=%2Fsocial-login-complete%2F%3Forigin_protocol%3Dhttps%26origin_host%3Dwww.hackerearth.com%26redirect%3D/practice/notes/matrix-exponentiation-1/?fbclid=IwAR3bQEpoeE0RGsmNAczNbMiP_ftC_uHQPwg9DfLIK5VDijSf42nrjUE3eNE&update=google&source=practice&purpose=login' title="Google" class="button btn-google btn-medium show-popup margin-top-8 less-margin-right sign-up-btn-modified" minimal="true" style="display: block">
+        
+        <img src="https://static-fastly.hackerearth.com/static/hackerearth/images/google_logo.png" alt="Google" style="vertical-align: middle">
+        <span class="regular medium-margin-left roboto-font-family">
+            Sign in with Google
+        </span>
+        </a>
+    
+    <div class="clear"></div>
+</div>
+<div class="align-center standard-margin word-with-line-head">
+    <div class="word-with-line inline-block">
+        <span class="large light">or</span>
+    </div>
+</div>
+
+            
+            <form id="modal-login-form" name="login-form" method="POST" class="ajax-form medium-margin" ajax="/AJAX/login/">
+                
+
+
+
+
+    
+
+        
+
+        
+        <div class="wrapper small-wrapper">
+            
+            <input id="id_login" name="login" placeholder="Username or Email" type="text" required />
+        </div>
+        <div class="wrapper small-wrapper">
+            <input id="id_password" name="password" placeholder="Password" type="password" required />
+        </div>
+        
+    
+    <input type="hidden" name="next" value="/practice/notes/matrix-exponentiation-1/"/>
+     <div>
+         <a href="#" class="link-3 show-hide-many float-right" show="password-reset" hide="login-form">Forgot Password?</a>
+        <div class="clear"></div>
+    </div>
+    <div class="align-center medium-margin">
+        <input type="submit" name="submit" clicked="Logging In.." value="Log in &#xf0a9;" class="button btn-blue fontawesome btn-largest weight-600 large"/>
+    </div>
+
+    
+    <script type="text/javascript">
+        try{
+            grecaptcha.render('nocaptcha-recaptcha', {
+                'sitekey' : ''
+            });
+        }
+        catch(err){}
+    </script>
+    
+
+
+
+            </form>
+            
+            <div class="align-center dark regular standard-margin dont-have-account">
+                Don't have an account? <a href="#" class="link-13 show-hide-many regular" show="signup-form-div" hide="login-form"> Sign up</a>
+            </div>
+            
+        </div>
+
+        <div class="signup-form-div hidden">
+            
+                
+
+
+<div class="modal-social-signup align-center">
+    
+        <div class="social-auth-row">
+            
+                <a id="social-login-button-fb" url='/zeus/facebook/login/?display=popup&next=%2Fsocial-login-complete%2F%3Forigin_protocol%3Dhttps%26origin_host%3Dwww.hackerearth.com%26redirect%3D/practice/notes/matrix-exponentiation-1/?fbclid=IwAR3bQEpoeE0RGsmNAczNbMiP_ftC_uHQPwg9DfLIK5VDijSf42nrjUE3eNE&update=facebook&source=practice&purpose=signup' title="Facebook" class="button btn-facebook btn-medium show-popup inline-block margin-top-8 less-margin-right hidden" minimal="true">
+            
+                <i class="fa fa-facebook"></i>
+                <span class="regular weight-600 less-margin-left">
+                    Facebook
+                </span>
+            </a>
+            <a class="button btn-facebook btn-medium inline-block margin-top-8 less-margin-right less-margin-bottom social-login-button social-login-button-fb show-modal" target="gdpr-modal">
+                <i class="fa fa-facebook"></i>
+                <span class="regular less-margin-left">
+                    Sign up with Facebook
+                </span>
+            </a>
+
+            
+                <a id="social-login-button-github" url='/zeus/github/login/?next=%2Fsocial-login-complete%2F%3Forigin_protocol%3Dhttps%26origin_host%3Dwww.hackerearth.com%26redirect%3D/practice/notes/matrix-exponentiation-1/?fbclid=IwAR3bQEpoeE0RGsmNAczNbMiP_ftC_uHQPwg9DfLIK5VDijSf42nrjUE3eNE&update=github&source=practice&purpose=signup' title="Github" class="button btn-github btn-medium inline-block margin-top-8 less-margin-right show-popup hidden" minimal="true">
+            
+                <i class="fa fa-github"></i>
+                <span class="regular weight-600 less-margin-left">
+                    Github
+                </span>
+            </a>
+            <a class="button btn-github btn-medium inline-block margin-top-8 less-margin-right social-login-button social-login-button-github show-modal" target="gdpr-modal">
+                <i class="fa fa-github"></i>
+                <span class="regular less-margin-left">
+                    Sign up with Github
+                </span>
+            </a>
+        </div>
+
+        
+            <a id="social-login-button-g" url='/zeus/google/login/?next=%2Fsocial-login-complete%2F%3Forigin_protocol%3Dhttps%26origin_host%3Dwww.hackerearth.com%26redirect%3D/practice/notes/matrix-exponentiation-1/?fbclid=IwAR3bQEpoeE0RGsmNAczNbMiP_ftC_uHQPwg9DfLIK5VDijSf42nrjUE3eNE&update=google&source=practice&purpose=signup' title="Google" class="button btn-google btn-medium inline-block margin-top-8 less-margin-right show-popup hidden" minimal="true">
+        
+            <i class="fa fa-google-plus"></i>
+            <span class="regular weight-600 less-margin-left">
+                Google
+            </span>
+        </a>
+        <a class="button btn-google btn-medium margin-top-8 less-margin-right social-login-button social-login-button-g show-modal sign-up-btn-modified" style="display: block" target="gdpr-modal">
+            <img src="https://static-fastly.hackerearth.com/static/hackerearth/images/google_logo.png" alt="Google" style="vertical-align: middle">
+            <span class="regular medium-margin-left roboto-font-family">
+                Sign up with Google
+            </span>
+        </a>
+    
+    <div class="clear"></div>
+</div>
+<div class="align-center standard-margin word-with-line-head">
+    <div class="word-with-line inline-block">
+        <span class="large light">or</span>
+    </div>
+</div>
+
+            
+            
+            <form id="modal-signup-form" name="signup-form" method="POST" class="ajax-form medium-margin" ajax="/AJAX/hackerearth/signup/?source=practice&next=/practice/notes/matrix-exponentiation-1/">
+            
+                
+
+
+
+    
+        
+
+        
+        <div class="wrapper small-wrapper float-left">
+            <input id="id_first_name" maxlength="30" name="first_name" placeholder="First Name" type="text" required />
+        </div>
+
+        <div class="wrapper small-wrapper float-right">
+            <input id="id_last_name" maxlength="30" name="last_name" placeholder="Last Name" type="text" />
+        </div>
+
+        <div class="clear"></div>
+
+        <div class="wrapper small-wrapper">
+            <input id="id_email" maxlength="75" name="email" placeholder="Email" type="text" required />
+        </div>
+        <div class="wrapper small-wrapper">
+            <input id="id_password" name="password" placeholder="Password" type="password" required />
+        </div>
+    
+
+    <div class="align-center medium-margin">
+        <button id="signup-start-now" class="button btn-blue fontawesome btn-largest weight-600 large disabled" target="gdpr-modal">Start Now</button>
+    </div>
+
+    <style>
+  #gdpr-modal {
+    position: absolute;
+    bottom: 0;
+  }
+</style>
+<div id="gdpr-modal" class="modal-window smaller-modal hidden">
+  
+
+<style>
+  #gdpr-modal-content {
+    font-family: 'Open Sans', sans-serif;
+  }
+
+  #gdpr-modal-content .modal-header {
+    padding: 50px 55px 35px 55px;
+    font-size: 24px;
+    font-weight: 400;
+  }
+
+  #gdpr-modal-content .modal-footer {
+    padding: 25px 55px 90px;
+  }
+
+  #gdpr-modal-content .modal-content {
+    padding: 0 55px 5px;
+    font-size: 16px;
+    line-height: 22px;
+  }
+
+  #gdpr-modal-content .modal-footer .checkbox-row {
+    font-size: 16px;
+    display: inline-flex;
+  }
+
+  #gdpr-modal-content a {
+    color: #0099ff;
+  }
+  
+  #gdpr-modal-content .button.disabled {
+    background: #f5f6f6 !important;
+  }
+</style>
+
+<div id="gdpr-modal-content">
+  
+<div class="modal-header">HackerEarth’s Privacy Policy and Terms of Service</div>
+  <div class="modal-content">
+      We care about your data privacy. HackerEarth uses the information that you provide to contact you about relevant content, products, and services. <br /> <br />
+
+      Our <a href="/privacy/" target="_blank">Privacy Policy</a> and <a href="/terms-of-service/" target="_blank">Terms of Service</a> will help you understand that you are in control of your data at HackerEarth.
+  </div>
+  <div class="modal-footer">
+    <div class="margin-bottom-15 regular checkbox-row">
+      <input type="checkbox" name="gdpr-tnc" />
+      I have read and I agree.
+    </div>
+    <div class="">
+      <input type="submit" name="submit" value="Proceed" class="button btn-blue fontawesome btn-largest disabled large" id="gdpr-submit" />
+    </div>
+  </div>
+</div>
+
+</div>
+
+
+
+
+
+            </form>
+            <div class="align-center dark regular standard-margin dont-have-account">
+                Have an account? <a href="#" class="link-13 show-hide-many regular" show="login-form" hide="signup-form-div"> Log in</a>
+            </div>
+        </div>
+
+        <div class="password-reset hidden">
+            <form name="password-reset" method="POST" class="ajax-form" ajax="/AJAX/password/reset/?next=/practice/notes/matrix-exponentiation-1/">
+                
+
+
+
+
+    
+    <p class="dark large"> A password reset link will be sent to the following email id</p>
+    
+    <div class="wrapper">
+        
+        <input id="id_email" name="email" placeholder="Email" size="30" type="text" required />
+    </div>
+    
+    <div class="align-center medium-margin">
+        <input type="submit" name="submit" clicked="Sending.." value="Send Password Reset Link" class="button btn-blue btn-largest weight-600 large"/>
+    </div>
+
+
+            </form>
+        </div>
+
+    </div>
+    <div class="gdpr-modal-content hidden">
+        
+
+<style>
+  #gdpr-modal-content {
+    font-family: 'Open Sans', sans-serif;
+  }
+
+  #gdpr-modal-content .modal-header {
+    padding: 50px 55px 35px 55px;
+    font-size: 24px;
+    font-weight: 400;
+  }
+
+  #gdpr-modal-content .modal-footer {
+    padding: 25px 55px 90px;
+  }
+
+  #gdpr-modal-content .modal-content {
+    padding: 0 55px 5px;
+    font-size: 16px;
+    line-height: 22px;
+  }
+
+  #gdpr-modal-content .modal-footer .checkbox-row {
+    font-size: 16px;
+    display: inline-flex;
+  }
+
+  #gdpr-modal-content a {
+    color: #0099ff;
+  }
+  
+  #gdpr-modal-content .button.disabled {
+    background: #f5f6f6 !important;
+  }
+</style>
+
+<div id="gdpr-modal-content">
+  
+<div class="modal-header">HackerEarth’s Privacy Policy and Terms of Service</div>
+  <div class="modal-content">
+      We care about your data privacy. HackerEarth uses the information that you provide to contact you about relevant content, products, and services. <br /> <br />
+
+      Our <a href="/privacy/" target="_blank">Privacy Policy</a> and <a href="/terms-of-service/" target="_blank">Terms of Service</a> will help you understand that you are in control of your data at HackerEarth.
+  </div>
+  <div class="modal-footer">
+    <div class="margin-bottom-15 regular checkbox-row">
+      <input type="checkbox" name="gdpr-tnc" />
+      I have read and I agree.
+    </div>
+    <div class="">
+      <input type="submit" name="submit" value="Proceed" class="button btn-blue fontawesome btn-largest disabled large" id="gdpr-submit" />
+    </div>
+  </div>
+</div>
+
+    </div>
+</div>
+
+    
+
+    <!-- override this block where we do not want the footer -->
+    
+    
+        
+                
+
+
+
+
+
+<footer class="assessment-marketing-footer footer-large">
+    <div class="primary-footer">
+        <div class="standard-margin-bottom contact-wrapper">
+            <div class="standard-margin-bottom">
+                <img src="https://static-fastly.hackerearth.com/static/hackerearth/images/assessment_marketing/he-footer-logo.svg" />
+            </div>
+            <ul class="no-style">
+                <li>+1-650-461-4192</li>
+                <li>
+                    <a href="mailto:contact@hackerearth.com" target="_blank">
+                        contact@hackerearth.com
+                    </a>
+                </li>
+            </ul>
+            <ul class="social-links-container no-style">
+                <li>
+                    <a href="https://www.facebook.com/HackerEarth/" target="_blank">
+                        <img src="https://static-fastly.hackerearth.com/static/hackerearth/images/assessment_marketing/facebook-logo.svg" />
+                    </a>
+                </li>
+                <li>
+                    <a href="https://twitter.com/HackerEarth?ref_src=twsrc%5Egoogle%7Ctwcamp%5Eserp%7Ctwgr%5Eauthor" target="_blank">
+                        <img src="https://static-fastly.hackerearth.com/static/hackerearth/images/assessment_marketing/twitter-logo.svg" />
+                    </a>
+                </li>
+                <li>
+                    <a href="https://www.linkedin.com/company/hackerearth/?originalSubdomain=in" target="_blank">
+                        <img src="https://static-fastly.hackerearth.com/static/hackerearth/images/assessment_marketing/linkedin-logo.svg" />
+                    </a>
+                </li>
+                <li>
+                    <a href="https://www.youtube.com/channel/UCYU6nvKyRYnE5kiG9JXkXpA" target="_blank">
+                        <img src="https://static-fastly.hackerearth.com/static/hackerearth/images/assessment_marketing/youtube-logo.svg" />
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="standard-margin-bottom">
+            <h3 class="footer-heading">Resources</h3>
+            <ul class="no-style">
+                <li>
+                    <a href="https://www.hackerearth.com/blog/talent-assessment/" target="_blank">
+                        Tech Recruitment Blog
+                    </a>
+                </li>
+                <li>
+                    <a href="https://www.hackerearth.com/recruit/resources/guides/" target="_blank">
+                        Product Guides
+                    </a>
+                </li>
+                <li>
+                    <a href="https://www.hackerearth.com/recruit/how-to-hire/" target="_blank">
+                        Developer hiring guide
+                    </a>
+                </li>
+                <li>
+                    <a href="http://engineering.hackerearth.com/" target="_blank">
+                        Engineering Blog
+                    </a>
+                </li>
+                <li>
+                    <a href="https://www.hackerearth.com/blog/developers/" target="_blank">
+                        Developers Blog
+                    </a>
+                </li>
+                <li>
+                    <a href="https://www.hackerearth.com/docs/wiki/developers/solution-guide/" target="_blank">
+                        Developers Wiki
+                    </a>
+                </li>
+                <li>
+                    <a href="https://www.hackerearth.com/getstarted-competitive-programming/" target="_blank">
+                        Competitive Programming
+                    </a>
+                </li>
+                <li>
+                    <a href="https://www.hackerearth.com/university/" target="_blank">
+                        Start a Programming Club
+                    </a>
+                </li>
+                <li>
+                    <a href="https://www.hackerearth.com/practice/machine-learning/prerequisites-of-machine-learning/basic-probability-models-and-rules/tutorial/" target="_blank">
+                        Practice Machine Learning
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="standard-margin-bottom">
+            <h3 class="footer-heading">Solutions</h3>
+            <ul class="no-style">
+                <li>
+                    <a href="https://www.hackerearth.com/recruit/" target="_blank">
+                        Assess Developers
+                    </a>
+                </li>
+                <li>
+                    <a href="https://www.hackerearth.com/recruit/facecode/" target="_blank">
+                        Conduct Remote Interviews
+                    </a>
+                </li>
+                <li>
+                    <a href="https://www.hackerearth.com/recruit/hiring/university-hiring/" target="_blank">
+                        Assess University Talent
+                    </a>
+                </li>
+                <li>
+                    <a href="https://www.hackerearth.com/community-hackathons/" target="_blank">
+                        Organize Hackathons
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="standard-margin-bottom">
+            <h3 class="footer-heading">Company</h3>
+            <ul class="no-style">
+                <li>
+                    <a href="https://www.hackerearth.com/team/" target="_blank">
+                        About Us
+                    </a>
+                </li>
+                <li>
+                    <a href="https://www.hackerearth.com/press/" target="_blank">
+                        Press
+                    </a>
+                </li>
+                <li>
+                    <a href="https://www.hackerearth.com/companies/hackerearth/jobs/" target="_blank">
+                        Careers
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="standard-margin-bottom">
+            <h3 class="footer-heading">Service & Support</h3>
+            <ul class="no-style">
+                <li>
+                    <a href="https://support.hackerearth.com/hc/en-us" target="_blank">
+                        Technical Support
+                    </a>
+                </li>
+                <li>
+                    <a href="https://www.hackerearth.com/reach-us/" target="_blank">
+                        Contact Us
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <ul class="secondary-footer no-style">
+        <li>
+            <span>
+                <span>Site Language: </span>
+                <select id="global-locale-switcher" class="nice-select" ajax_url="/users/update-locale-setting/" page_url="/practice/notes/matrix-exponentiation-1/?fbclid=IwAR3bQEpoeE0RGsmNAczNbMiP_ftC_uHQPwg9DfLIK5VDijSf42nrjUE3eNE" onchange="changeUserLocale(this, 'en-us', false)">
+                        
+                        
+                        <option value="ru" url="/ru/practice/notes/matrix-exponentiation-1/?fbclid=IwAR3bQEpoeE0RGsmNAczNbMiP_ftC_uHQPwg9DfLIK5VDijSf42nrjUE3eNE">русский язык</option>
+                        
+                        
+                        
+                        <option value="fr" url="/fr/practice/notes/matrix-exponentiation-1/?fbclid=IwAR3bQEpoeE0RGsmNAczNbMiP_ftC_uHQPwg9DfLIK5VDijSf42nrjUE3eNE">Français</option>
+                        
+                        
+                        
+                        <option value="zh" url="/zh/practice/notes/matrix-exponentiation-1/?fbclid=IwAR3bQEpoeE0RGsmNAczNbMiP_ftC_uHQPwg9DfLIK5VDijSf42nrjUE3eNE">中文</option>
+                        
+                        
+                        
+                        <option value="en-us" selected="selected" url="/en-us/practice/notes/matrix-exponentiation-1/?fbclid=IwAR3bQEpoeE0RGsmNAczNbMiP_ftC_uHQPwg9DfLIK5VDijSf42nrjUE3eNE">English</option>
+                        
+                        
+                        
+                        <option value="pt-br" url="/pt-br/practice/notes/matrix-exponentiation-1/?fbclid=IwAR3bQEpoeE0RGsmNAczNbMiP_ftC_uHQPwg9DfLIK5VDijSf42nrjUE3eNE">Português</option>
+                        
+                        
+                        
+                        <option value="ja" url="/ja/practice/notes/matrix-exponentiation-1/?fbclid=IwAR3bQEpoeE0RGsmNAczNbMiP_ftC_uHQPwg9DfLIK5VDijSf42nrjUE3eNE">日本語</option>
+                        
+                        
+                </select>
+            </span>
+        </li>
+        <li>
+            
+            
+                &copy; 2019 HackerEarth All rights reserved
+            
+        </li>
+        <li>
+            <a href="https://www.hackerearth.com/terms-of-service/" target="_blank">
+                Terms of Service
+            </a>
+        </li>
+        <li>
+            <a href="https://www.hackerearth.com/privacy/" target="_blank">
+                Privacy Policy
+            </a>
+        </li>
+    </ul>
+</footer>
+        
+    
+    
+
+    <div class="expand-box" id="recruiter-box">
+        <div class="down-arrow"></div>
+        <ul class="no-margin">
+            
+            
+            
+            <a href="/logout/?next=/practice/notes/matrix-exponentiation-1/%3Ffbclid%3DIwAR3bQEpoeE0RGsmNAczNbMiP_ftC_uHQPwg9DfLIK5VDijSf42nrjUE3eNE"><li>Logout</li></a>
+        </ul>
+    </div>
+
+    
+
+    <!-- Include notifications box -->
+    
+
+
+
+<div class="expand-box" id="notifications-box">
+    <div class="down-arrow"></div>
+    <div class="notifications-title-container">
+        <div class="float-left weight-600">Notifications</div>
+        <div class="float-right">
+            <a href="#" ajax="https://www.hackerearth.com/notifications/AJAX/mark-all-read/" class="notif-mark-all-read link smaller clicky-ajax">Mark All as Read</a>
+        </div>
+        <div class="clear"></div>
+    </div> <!-- notifications-title-container -->
+
+    <div class="notifications-container nice-scrollbar" id="notifications-container">
+    </div> <!-- notifications-container -->
+
+    <div class="smaller caps weight-600 align-center less-margin-2 less-margin-2-bottom">
+        <a class="link" href="https://www.hackerearth.com/notifications/">View All Notifications</a>
+    </div>
+</div> <!-- notifications-box -->
+
+
+    <!-- Load notification icon with unread count -->
+    <div id="header-notif-icon-trigger" class="load-pagelet hidden" target="header-notif-icon" ajax="/notifications/pagelets/header-notif-icon-count/" show-loader="false"></div>
+
+    
+    <!-- Load live events widget -->
+    <div id="live-events-trigger" class="load-pagelet hidden" target="live-events-trigger-data" ajax="/AJAX/live_events_widget_count/" show-loader="false"></div>
+    
+
+    
+    
+    
+
+    
+
+    
+    
+
+        
+        
+
+        <!-- Store any json returned for bigpipe -->
+        <div id="bigpipe-json" class="hidden">
+            {&quot;0d1567d&quot;: &quot;/recommendation/pagelets/trending-card/?sensual=True&quot;}
+        </div>
+
+        <!-- Store any json returned for bigpipe -->
+        <div id="user-prompt-json" class="hidden">
+            
+        </div>
+
+        <!-- Store any html returned for feedback popup -->
+        <div id="user-feedback-popup" class="hidden"></div>
+
+
+        <!-- realtime host -->
+        <div id="realtime-host" class="hidden">realtime.hackerearth.com</div>
+        <!-- realtime port -->
+        <div id="realtime-port" class="hidden">80</div>
+
+        <!-- client name for updating parts of page in realtime -->
+        <div id="pusher-channel-name-0" class="hidden">6d338832bbcf84ca82aae8c903de4b532eb182b4</div>
+        
+
+        
+            <div id="common-notification">
+            </div>
+        
+        <!-- pusher app key -->
+        <div id="pusher-app-key" class="hidden">58a29e5cae2309f04b28</div>
+
+        <!-- pusher auth url -->
+        <div id="pusher-auth-url" class="hidden">/realtime/pusher/auth/</div>
+
+        <!-- ping url for user presence -->
+        <div id="ghost-ping-url" class="hidden" ajax="/ghost/ping/"></div>
+
+        
+        
+
+        <!-- url to get active lab features -->
+        
+
+        
+        <div id="external-link-modal" class="modal-window very-large-modal">
+            <div class="modal-content large dark align-left">
+                <div id="external-link-content-wrapper">
+                    <pre></pre>
+                </div>
+            </div>
+        </div>
+        
+
+        <!-- All the scripts go here -->
+        <script>
+            
+            var CURRENT_PATH = "https://www.hackerearth.com/practice/notes/matrix-exponentiation-1/?fbclid=IwAR3bQEpoeE0RGsmNAczNbMiP_ftC_uHQPwg9DfLIK5VDijSf42nrjUE3eNE";
+            var HISTORY = '';
+            var DEFAULT_REAL_NUMBER_PRECISION = 2;
+            var DECIMAL_PRECISION_ERROR_TEXT = "Only {decimal_limit} decimal places allowed";
+            var SOMETHING_WENT_WRONG_ERROR_TEXT = "Something went wrong. Please try again later.";
+
+            // Make code constants available globally in JS
+            var MAP_LANG_TO_NAME = {"SCALA_2118": "Scala 2.11.8", "LUA": "Lua", "PASCAL": "Pascal", "CSHARP": "C#", "CPP": "C++", "PYTHON3": "Python 3", "POSTGRESQL": "PostgreSQL", "KOTLIN": "Kotlin", "SCALA": "Scala", "PERL": "Perl", "HASKELL": "Haskell", "D": "D", "CPP14": "C++14", "R": "R(RScript)", "CPP11": "C++11", "GO": "Go", "RUBY": "Ruby", "BASH": "Bash", "GROOVY": "Groovy", "LOLCODE": "LOLCODE", "LISP": "Lisp", "Text": "Text", "WHENEVER": "Whenever", "MYSQL": "MySQL", "OBJECTIVEC": "Objective-C", "PHP": "PHP", "JAVASCRIPT_UI": "JavaScript", "PYTHON": "Python", "JAVASCRIPT": "JavaScript(Rhino)", "SWIFT_4_1": "Swift-4.1", "vp": "N/A", "TEXTFILE": "Text", "JAVA8": "Java 8", "JAVASCRIPT_NODE": "JavaScript(Node.js)", "RACKET": "Racket", "HTML": "HTML", "SWIFT": "Swift", "RUST": "Rust", "FSHARP": "F#", "C": "C", "TYPESCRIPT": "TypeScript", "ORACLE_DB": "Oracle_Db", "OCAML": "OCaml", "OCTAVE": "Octave", "CLOJURE": "Clojure", "BEFUNGE": "Befunge", "CSS": "CSS", "ERLANG": "Erlang", "JAVA": "Java", "LISP_SBCL": "Lisp (SBCL)", "JULIA": "Julia", "VB": "Visual Basic", "MSSQL": "MSSQL"};
+            var MAP_NAME_TO_LANG = {"Lisp (SBCL)": "LISP_SBCL", "TypeScript": "TYPESCRIPT", "Java": "JAVA", "Scala": "SCALA", "JavaScript": "JAVASCRIPT_UI", "Perl": "PERL", "Lua": "LUA", "JavaScript(Rhino)": "JAVASCRIPT", "MySQL": "MYSQL", "Erlang": "ERLANG", "LOLCODE": "LOLCODE", "HTML": "HTML", "C#": "CSHARP", "R(RScript)": "R", "C++14": "CPP14", "Rust": "RUST", "Octave": "OCTAVE", "Ruby": "RUBY", "Bash": "BASH", "Groovy": "GROOVY", "C": "C", "Python 3": "PYTHON3", "Lisp": "LISP", "Kotlin": "KOTLIN", "Oracle_Db": "ORACLE_DB", "F#": "FSHARP", "N/A": "vp", "C++": "CPP", "Racket": "RACKET", "Objective-C": "OBJECTIVEC", "Swift": "SWIFT", "CSS": "CSS", "D": "D", "Clojure": "CLOJURE", "Befunge": "BEFUNGE", "Java 8": "JAVA8", "Whenever": "WHENEVER", "PostgreSQL": "POSTGRESQL", "Text": "TEXTFILE", "Swift-4.1": "SWIFT_4_1", "OCaml": "OCAML", "Julia": "JULIA", "JavaScript(Node.js)": "JAVASCRIPT_NODE", "Python": "PYTHON", "Pascal": "PASCAL", "Haskell": "HASKELL", "Scala 2.11.8": "SCALA_2118", "C++11": "CPP11", "Go": "GO", "Visual Basic": "VB", "PHP": "PHP", "MSSQL": "MSSQL"};
+        </script>
+
+        
+
+        <!-- alljs: static_media/js/jquery-1.7.min.patched.js static_media/js/jquery.color.js static_media/js/jquery.elastic.js static_media/js/ajaxSend.js  static_media/js/jquery.inview.js  static_media/js/tooltip/jquery.tipTip.modified.js  static_media/offline/offline.min.js  static_media/js/watermark.min.js  static_media/history.js?v=0.1/scripts/bundled/html4html5/jquery.history.js  static_media/js/jquery.nicescroll.js  static_media/simplemodal/simplemodal.js static_media/js/jquery.sticky.js static_media/js/pusher.min.js static_media/js/ifvisible.min.js static_media/ghost/ghost.js static_media/feeds/feeds.js static_media/base/progress_bar.js -->
+        
+
+
+<script>
+    UPLOADING_TEXT = "Uploading";
+    UPLOADED_TEXT = "Uploaded";
+    SAVING_TEXT = "Saving..";
+    UPLOAD_SUCCESS_MESSAGE = "File saved successfully.";
+    UPLOAD_ERROR_MESSAGE = "An error occured while saving, please try again in sometime.";
+</script>
+<script type="text/javascript" src="https://static-fastly.hackerearth.com/static/js/alljs.js?vrsn=6" crossorigin="anonymous" ></script>
+        <script type="text/javascript" src="https://static-fastly.hackerearth.com/static/base/base1.0.1.js?vrsn=23" crossorigin="anonymous" ></script>
+        <script type="text/javascript" src="https://static-fastly.hackerearth.com/static/bigpipe/bigpipe.js?vrsn=6" crossorigin="anonymous" ></script>
+        
+
+
+<script type="text/javascript">
+var CONFIRM_COMMENT_DELETE = "Are you sure, you want to delete comment?";
+var COMMENT_NOT_DELETED = "Comment could not be deleted!";
+var CONFORM_COMMENT_MARK_SPAM = "Are you sure, you want to mark this comment as spam?";
+var COMMENT_NOT_MARKED_SPAM = "Comment could not be marked as spam!";
+var ENTER_15_CHARS = "Enter atleast 15 characters";
+var JUST_X_MORE = "Just {count} more to go";
+</script>
+        <script type="text/javascript" src="https://static-fastly.hackerearth.com/static/realtime/pusher_realtime.js?vrsn=2" crossorigin="anonymous" ></script>
+        <script type='text/javascript' src='https://static-fastly.hackerearth.com/static/user_prompts/userprompt.js?v=0.6' crossorigin="anonymous"></script>
+        <script type='text/javascript' src='https://static-fastly.hackerearth.com/static/base/history.js?v=0.4' crossorigin="anonymous"></script>
+        <script type="text/javascript" src="https://static-fastly.hackerearth.com/static/js/commentUtils.js?vrsn=1" crossorigin="anonymous" ></script>
+
+        
+        <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+        
+
+        
+        <script src="https://static-fastly.hackerearth.com/static/offline/offline.min.js?v=0.3" crossorigin="anonymous"></script>
+
+        <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS_SVG"></script>
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        messageStyle: "none",
+        jax: ["input/TeX", "output/SVG", "output/HTML-CSS"],
+        tex2jax: {
+            inlineMath: [['$$','$$'], ['\\(', '\\)']],
+            displayMath: [['$$$', '$$$'], ['\\[', '\\]']],
+            preview: "none"
+        },
+        SVG: {
+            useGlobalCache: false
+        },
+    });
+</script>
+<script type="text/javascript" src="https://static-fastly.hackerearth.com/static/js/mathjax.js?vrsn=0" crossorigin="anonymous" ></script>
+<script type="text/javascript">
+    window.addEventListener("load", function() {
+        MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    });
+</script>
+
+        <script>
+            Offline.options = {
+                interceptRequests: false,
+                requests: false,
+            };
+        </script>
+
+        
+
+        
+
+
+<script>
+
+$(document).ready(function (){
+    $('#header-notif-icon-trigger').click();
+
+    
+    $('#live-events-trigger').click();
+    
+
+    
+    
+    
+
+    
+
+    // show kone ge widget if not visited
+    
+
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function() {
+    
+    var m_links = {};
+    var m_elements = {
+        '#modal-login-form input[type=submit]': 'Modal Email Login',
+        '#modal-signup-form input[type=submit]': 'Modal Email Signup',
+        '.modal-social-login .btn-facebook': 'Modal Facebook Login',
+        '.modal-social-login .btn-google': 'Modal Google Login',
+        '.modal-social-signup .btn-facebook': 'Modal Facebook Signup',
+        '.modal-social-signup .btn-google': 'Modal Google Signup',
+        '.top-banner .login-banner a': 'Signup after banner click',
+    };
+    
+    for (var key in m_elements) {
+        $(key).live('click', {'key': key }, function(e) {
+            var key = e.data.key;
+            mixpanel.track('Click', {'name': m_elements[key]});
+        });
+    }
+    for (var key in m_links) {
+        mixpanel.track_links(key, 'Click', {'name': m_links[key]});
+    }
+});
+</script>
+
+
+
+
+<script type="text/javascript" src="https://static-fastly.hackerearth.com/static/search/search.1.0.js?vrsn=5" crossorigin="anonymous" defer></script>
+
+
+
+
+
+<script type='text/javascript' src='https://static-fastly.hackerearth.com/static/lab/lab.js?v=0.3' crossorigin="anonymous"></script>
+
+<script type="text/javascript" src="https://static-fastly.hackerearth.com/static/base/gdpr-modal.js?vrsn=1" crossorigin="anonymous" ></script>
+
+
+
+        <script>
+            // Used in search
+            var is_user_logged_in = false;
+        </script>
+
+        
+        <script type="text/javascript" src="https://static-fastly.hackerearth.com/static/js/detect_timezone.js?v=0.2" crossorigin="anonymous"></script>
+        <script>
+
+            function setTimezoneCookie(detected_user_tz) {
+                /* Sets the detected user timezone as a cookie in the browser.
+                   If someone changes it or removes it, a sanity check is
+                   performed and the cookie is reset.
+
+                   This cookie is set for ready availability of user timezone
+                   in the backend.
+                */
+
+                const USER_TIMEZONE_COOKIE = 'user_tz';
+                // Try to get the existing user timezone cookie stored
+                // in the browser.
+                user_tz = readCookie(USER_TIMEZONE_COOKIE);
+
+                // Flag to determine whether a new cookie has to be created.
+                create_cookie = false;
+
+                if(user_tz) {
+                    if(user_tz !== detected_user_tz) {
+                        // If someone has changed the cookie in some way, we
+                        // set a new cookie.
+                        eraseCookie(USER_TIMEZONE_COOKIE);
+                        create_cookie = true;
+                    }
+                } else {
+                    create_cookie = true;
+                }
+
+                // Create a new cookie if create_cookie flag is set.
+                createCookie(USER_TIMEZONE_COOKIE, detected_user_tz, 1);
+
+            }
+            $(document).ready(function(){
+                var timezone = jstz.determine_timezone(); // Now you have an instance of the TimeZone object.
+                // Set as a cookie in browser for easy access in backend.
+                setTimezoneCookie(timezone.name());
+
+                // Set as a js variable for easy access across frontend.
+                USER_TIMEZONE = timezone.name()
+
+                
+
+                
+
+                
+                
+                
+                
+                
+
+                
+
+                
+                    $.ajax({
+                        type: "POST",
+                        url:"/users/AJAX/set-timezone/",
+                        data: {
+                        'timezone': timezone.name(),
+                        },
+                    });
+                
+            });
+        </script>
+        
+        
+
+        <script type="text/javascript">
+            
+            $(document).ready(function(){
+                //mixpanel delegate links custom method
+                mixpanel.delegate_links = function (parent, selector, event_name, properties) {
+                    properties = properties || {};
+                    parent = parent || document.body;
+                    parent = $(parent);
+                    parent.on('click', selector, function (event) {
+                        var new_tab = event.which === 2 || event.metaKey || event.target.target === '_blank' || this.target === '_blank';
+                        properties.url = event.target.href || this.href;
+                        function callback() {
+                            if (new_tab) {
+                                return;
+                            }
+                            window.location = properties.url;
+                        }
+                        if (!new_tab) {
+                            event.preventDefault();
+                            setTimeout(callback, 300);
+                        }
+                        mixpanel.track(event_name, properties, callback);
+                    });
+                };
+            });
+            
+        </script>
+
+        
+<script type="text/javascript" src="https://static-fastly.hackerearth.com/static/google-code-prettify/prettifyall.js?v=0.9" crossorigin="anonymous"></script>
+<script type="text/javascript" src="https://static-fastly.hackerearth.com/static/notes/votes.js?v=0.2" crossorigin="anonymous"></script>
+<script type="text/javascript" src="https://static-fastly.hackerearth.com/static/tagging_autocomplete/tagging_autocomplete.js?v=0.2" crossorigin="anonymous"></script>
+
+<script>
+    $("#notes-title-bar").sticky({
+        bottomSpacing: 600,
+    });
+    $("#notes-title-bar").width($("#notes-left-container").width()+ 'px');
+</script>
+
+<script>
+$(document).ready(function() {
+    styleCode();
+});
+</script>
+
+
+        
+        <!-- mixpanel analytics start -->
+        <script type="text/javascript">(function(e,a){if(!a.__SV){var b=window;try{var c,l,i,j=b.location,g=j.hash;c=function(a,b){return(l=a.match(RegExp(b+"=([^&]*)")))?l[1]:null};g&&c(g,"state")&&(i=JSON.parse(decodeURIComponent(c(g,"state"))),"mpeditor"===i.action&&(b.sessionStorage.setItem("_mpcehash",g),history.replaceState(i.desiredHash||"",e.title,j.pathname+j.search)))}catch(m){}var k,h;window.mixpanel=a;a._i=[];a.init=function(b,c,f){function e(b,a){var c=a.split(".");2==c.length&&(b=b[c[0]],a=c[1]);b[a]=function(){b.push([a].concat(Array.prototype.slice.call(arguments,0)))}}var d=a;"undefined"!==typeof f?d=a[f]=[]:f="mixpanel";d.people=d.people||[];d.toString=function(b){var a="mixpanel";"mixpanel"!==f&&(a+="."+f);b||(a+=" (stub)");return a};d.people.toString=function(){return d.toString(1)+".people (stub)"};k="disable time_event track track_pageview track_links track_forms register register_once alias unregister identify name_tag set_config reset people.set people.set_once people.unset people.increment people.append people.union people.track_charge people.clear_charges people.delete_user".split(" ");for(h=0;h<k.length;h++)e(d,k[h]);a._i.push([b,c,f])};a.__SV=1.2;b=e.createElement("script");b.type="text/javascript";b.async=!0;b.src="undefined"!==typeof MIXPANEL_CUSTOM_LIB_URL?MIXPANEL_CUSTOM_LIB_URL:"file:"===e.location.protocol&&"//cdn.mxpnl.com/libs/mixpanel-2-latest.min.js".match(/^\/\//)?"https://cdn.mxpnl.com/libs/mixpanel-2-latest.min.js":"//cdn.mxpnl.com/libs/mixpanel-2-latest.min.js";c=e.getElementsByTagName("script")[0];c.parentNode.insertBefore(b,c)}})(document,window.mixpanel||[]);mixpanel.init("4c30b8635363027dfb780d5a61785112");
+        </script>
+        <!-- mixpanel analytics end -->
+        <script type="text/javascript">
+            
+                
+                    mixpanel.unregister("username");
+                    mixpanel.unregister("email");
+                    mixpanel.unregister("date_of_joining");
+                    mixpanel.unregister("user_bucket");
+                    mixpanel.unregister("company");
+                    mixpanel.unregister("is_recruiter");
+                    mixpanel.register({
+                        "url_path": "/practice/notes/matrix-exponentiation-1/"
+                    });
+                
+            
+        </script>
+        
+
+        
+        
+        <div id="fb-root"></div>
+        <script>
+            <!-- facebook button -->
+            (function(d, s, id) {
+                var js, fjs = d.getElementsByTagName(s)[0];
+                if (d.getElementById(id)) return;
+                js = d.createElement(s); js.id = id;
+                js.src = "//connect.facebook.net/en_US/all.js#xfbml=1";
+                fjs.parentNode.insertBefore(js, fjs);
+            }(document, 'script', 'facebook-jssdk'));
+
+            <!-- twitter button -->
+            !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
+
+            <!-- google+ button -->
+            (function() {
+                var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+                po.src = 'https://apis.google.com/js/plusone.js';
+                var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+            })();
+        </script>
+        
+        
+
+        
+            
+
+<link rel="stylesheet" href="https://static-fastly.hackerearth.com/static/cookie_consent/cookiebar.css?vrsn=1"/>
+
+<script type="text/javascript" src="https://static-fastly.hackerearth.com/static/cookie_consent/cookiebar.js?vrsn=1" crossorigin="anonymous" ></script>
+
+
+        
+
+        
+            
+        
+
+        
+            <!-- Hackerearth Zendesk Widget -->
+
+
+
+
+<link rel="stylesheet" href="https://static-fastly.hackerearth.com/static/base/customer-support-widget.css?vrsn=4"/>
+
+<script>
+    var COUNTRY_CODE = "PE";
+    var TRIAL_DAYS_LEFT =  0 ;
+    var INTERCOM_APP_ID = 'nofrzq7u';
+    var IS_INTERCOM_FEATUTRE_ENABLE = "True";
+
+    var isRecruiterDashboard = false;
+    var zESettingsRecruiterDashboard = {
+        webWidget: {
+            launcher: {
+                label: {
+                    "en-US": "",
+                    "*": "",
+                }
+            },
+            offset: {
+                horizontal: "-100px", /* To hide actual launcher widget */
+                vertical: "70px"
+            },
+            position: {
+                horizontal: 'right',
+                vertical: 'top'
+            }
+        }
+    };
+
+    var zESettingsDefault = {
+        webWidget: {
+            launcher: {
+                label: {
+                    "en-US": "",
+                    "*": "",
+                }
+            },
+            offset: {
+                horizontal: "-100px", /* To hide actual launcher widget */
+            }
+        }
+    };
+    if(isRecruiterDashboard) {
+       window.zESettings = zESettingsRecruiterDashboard;
+    } else {
+        window.zESettings = zESettingsDefault;
+    }
+    /*<![CDATA[*/window.zEmbed||function(e,t){var n,o,d,i,s,a=[],r=document.createElement("iframe");window.zEmbed=function(){a.push(arguments)},window.zE=window.zE||window.zEmbed,r.src="javascript:false",r.title="",r.role="presentation",(r.frameElement||r).style.cssText="display: none",d=document.getElementsByTagName("script"),d=d[d.length-1],d.parentNode.insertBefore(r,d),i=r.contentWindow,s=i.document;try{o=s}catch(e){n=document.domain,r.src='javascript:var d=document.open();d.domain="'+n+'";void(0);',o=s}o.open()._l=function(){var e=this.createElement("script");n&&(this.domain=n),e.id="js-iframe-async",e.src="https://assets.zendesk.com/embeddable_framework/main.js",this.t=+new Date,this.zendeskHost="hackerearth.zendesk.com",this.zEQueue=a,this.body.appendChild(e)},o.write('<body onload="document._l();">'),o.close()}();
+    /*]]>*/
+
+    var ZENDESK_LOCALE = "en-US";
+    var USER_EMAIL = "";
+    var USER_NAME = "";
+    var ATTACHMENT_LABEL = "Attachments (Optional)";
+    var DESCRIPTION_LABEL = "How can we help you, {name}?";
+
+    
+    var APP_ID = INTERCOM_APP_ID;
+
+    window.intercomSettings = {
+        app_id: APP_ID,
+        name: USER_NAME,
+        email: USER_EMAIL,
+        hide_default_launcher: true,
+    };
+
+    (function(){var w=window;var ic=w.Intercom;if(typeof ic==="function"){ic('reattach_activator');ic('update',w.intercomSettings);}else{var d=document;var i=function(){i.c(arguments);};i.q=[];i.c=function(args){i.q.push(args);};w.Intercom=i;var l=function(){var s=d.createElement('script');s.type='text/javascript';s.async=true;s.src='https://widget.intercom.io/widget/' + APP_ID;var x=d.getElementsByTagName('script')[0];x.parentNode.insertBefore(s, x);};if(document.readyState==='complete'){l();}else if(w.attachEvent){w.attachEvent('onload',l);}else{w.addEventListener('load',l,false);}}})();
+</script>
+<script type="text/javascript" src="https://static-fastly.hackerearth.com/static/base/customer-support-widget.js?vrsn=9" crossorigin="anonymous" defer></script>
+
+
+    <div class="customer-support-icon">
+        <p>?</p>
+    </div>
+
+
+        
+    </body>
+</html>

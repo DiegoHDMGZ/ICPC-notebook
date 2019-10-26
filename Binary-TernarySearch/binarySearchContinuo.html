@@ -1,0 +1,106 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+	<title>C:\Users\Diego\Desktop\Progra\algorithms\Binary-TernarySearch\binarySearchContinuo.cpp</title>
+	<meta http-equiv="content-type" content="text/html;charset=utf-8" />
+	<meta name="generator" content="Geany 1.35" />
+	<meta name="date" content="2019-10-23T23:42:48Hora est. Pacífico, Sudamérica" />
+	<style type="text/css">
+	body
+	{
+		font-family: Monospace, monospace;
+		font-size: 10pt;
+	}
+	.style_0
+	{
+		color: #000000;
+		background-color: #ffffff;
+	}
+	.style_2
+	{
+		color: #d00000;
+		background-color: #ffffff;
+	}
+	.style_4
+	{
+		color: #007f00;
+		background-color: #ffffff;
+	}
+	.style_5
+	{
+		color: #00007f;
+		background-color: #ffffff;
+		font-weight: bold;
+	}
+	.style_6
+	{
+		color: #ff8000;
+		background-color: #ffffff;
+	}
+	.style_9
+	{
+		color: #007f7f;
+		background-color: #ffffff;
+	}
+	.style_10
+	{
+		color: #301010;
+		background-color: #ffffff;
+	}
+	.style_11
+	{
+		color: #000000;
+		background-color: #ffffff;
+	}
+	.style_19
+	{
+		color: #0000d0;
+		background-color: #ffffff;
+		font-weight: bold;
+	}
+
+	</style>
+</head>
+
+<body>
+<p>
+<span class="style_9">#include&nbsp;</span><span class="style_6">&lt;bits/stdc++.h&gt;</span><br />
+<span class="style_9">#define&nbsp;</span><span class="style_11">debug</span><span class="style_10">(</span><span class="style_11">x</span><span class="style_10">)&nbsp;</span><span class="style_11">cout&nbsp;</span><span class="style_10">&lt;&lt;&nbsp;</span><span class="style_0">#</span><span class="style_11">x&nbsp;</span><span class="style_10">&lt;&lt;&nbsp;</span><span class="style_6">"&nbsp;=&nbsp;"&nbsp;</span><span class="style_10">&lt;&lt;&nbsp;</span><span class="style_11">x&nbsp;</span><span class="style_10">&lt;&lt;&nbsp;</span><span class="style_11">endl</span><span class="style_10">;</span><br />
+<br />
+<span class="style_5">using&nbsp;namespace&nbsp;</span><span class="style_11">std</span><span class="style_10">;</span><br />
+<br />
+<span class="style_5">typedef&nbsp;long&nbsp;double&nbsp;</span><span class="style_19">Double</span><span class="style_10">;</span><br />
+<br />
+<span class="style_5">const&nbsp;</span><span class="style_19">Double&nbsp;</span><span class="style_11">ERROR&nbsp;</span><span class="style_10">=&nbsp;</span><span class="style_4">1e-6</span><span class="style_10">;</span><br />
+<br />
+<span class="style_19">Double&nbsp;</span><span class="style_11">f</span><span class="style_10">(</span><span class="style_5">double&nbsp;</span><span class="style_11">x</span><span class="style_10">){</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_5">return&nbsp;</span><span class="style_11">x</span><span class="style_10">*</span><span class="style_11">x</span><span class="style_10">;</span><br />
+<span class="style_10">}</span><br />
+<br />
+<span class="style_5">bool&nbsp;</span><span class="style_11">check</span><span class="style_10">(</span><span class="style_19">Double&nbsp;</span><span class="style_11">med</span><span class="style_10">,&nbsp;</span><span class="style_19">Double&nbsp;</span><span class="style_11">x&nbsp;</span><span class="style_10">){</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_5">return&nbsp;</span><span class="style_11">f</span><span class="style_10">(</span><span class="style_11">med</span><span class="style_10">)&gt;=</span><span class="style_11">x</span><span class="style_10">;</span><br />
+<span class="style_10">}</span><br />
+<br />
+<span class="style_19">Double&nbsp;</span><span class="style_11">search&nbsp;</span><span class="style_10">(&nbsp;</span><span class="style_19">Double&nbsp;</span><span class="style_11">ini</span><span class="style_10">,&nbsp;</span><span class="style_19">Double&nbsp;</span><span class="style_11">fin</span><span class="style_10">,&nbsp;</span><span class="style_19">Double&nbsp;</span><span class="style_11">x</span><span class="style_10">){</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_2">//precision&nbsp;de&nbsp;10^(-6)</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_5">while</span><span class="style_10">(</span><span class="style_11">fin&nbsp;</span><span class="style_10">-&nbsp;</span><span class="style_11">ini&nbsp;</span><span class="style_10">&gt;&nbsp;</span><span class="style_11">ERROR</span><span class="style_10">){&nbsp;</span><span class="style_2">//REP(i,1000)</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_19">Double&nbsp;</span><span class="style_11">med</span><span class="style_10">=&nbsp;(&nbsp;</span><span class="style_11">ini&nbsp;</span><span class="style_10">+&nbsp;</span><span class="style_11">fin&nbsp;</span><span class="style_10">)&nbsp;/&nbsp;</span><span class="style_4">2.0</span><span class="style_10">;</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_5">if</span><span class="style_10">(</span><span class="style_11">check</span><span class="style_10">(&nbsp;</span><span class="style_11">med&nbsp;</span><span class="style_10">,&nbsp;</span><span class="style_11">x</span><span class="style_10">))&nbsp;</span><span class="style_11">fin&nbsp;</span><span class="style_10">=&nbsp;</span><span class="style_11">med</span><span class="style_10">;</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_5">else&nbsp;</span><span class="style_11">ini&nbsp;</span><span class="style_10">=&nbsp;</span><span class="style_11">med</span><span class="style_10">;</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_10">}</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_5">return&nbsp;</span><span class="style_11">fin</span><span class="style_10">;</span><br />
+<span class="style_10">}</span><br />
+<br />
+<span class="style_5">int&nbsp;</span><span class="style_11">main</span><span class="style_10">(){</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_5">return&nbsp;</span><span class="style_4">0</span><span class="style_10">;</span><br />
+<span class="style_10">}</span><br />
+<br />
+
+</p>
+</body>
+</html>
