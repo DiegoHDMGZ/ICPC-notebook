@@ -5,6 +5,7 @@ Build -> g++  -std=c++14 -o "%e" "%f"
 
 2.Editar-> Preferencias -> Editor -> Completado-> Desactivar autocompletar comentarios 
 
+3. Herramientas -> Administrar complementos -> Dividir ventana
 
 .conf :
 
