@@ -99,7 +99,6 @@ struct Graph {
 			}
 		}
 	}
-	
 } G;
  
  
