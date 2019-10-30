@@ -6,10 +6,10 @@ using namespace std;
 
 typedef long long Long;
 
-const Long MX = 1e5;
-vector<Long> b(MX); //b[i] es la longitud del borde m·s grande en la subcadena s[0...i]
+const Long MX = 1e7;
+vector<Long> b(MX); //b[i] es la longitud del borde m√°s grande en la subcadena s[0...i]
 
-void prefixFunction(string s){ //O(n)
+void prefixFunction(string &s){ //O(n)
 	Long n = s.size();
 	
 	for(Long i = 1; i < n; i++){
@@ -26,36 +26,37 @@ void prefixFunction(string s){ //O(n)
 	}
 }
 
-vector<Long> ans; //posiciones de la cadena en donde empieza una ocurrencia de un patrÛn
+vector<Long> ans; //posiciones de la cadena en donde empieza una ocurrencia de un patr√≥n
 
-void kmp(string p, string t){ //O(n+m)
+void kmp(string &p, string &t){ //O(n+m)
 //determina si el patron p aparece en t y enumera las posiciones de ocurrencia
 	Long n = p.size();
 	Long m = t.size();
-	
+	ans.clear();
 	string s = p + "#" + t;
 	
-	for(Long i = 1; i < (Long)s.size();i++){
-		Long j = b[i-1];
-		while(j > 0 && s[i] != s[j]){
-			j = b[j-1];
-		}
-		
-		if(s[i] == s[j]){
-			j++;
-		}
-		
-		b[i] = j;
-		
+	prefixFunction(s);
+	
+	for(Long i = 1; i < (Long)s.size(); i++){
 		if(b[i] == n){
-			ans.push_back(i- (n+1)-n+1);
+			ans.push_back(i - (n + 1) - n + 1);
 		}
-	}	
+	}
 }
 
-int main(){
 
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	cout.tie(NULL);
+	
+	string n;
+	while(cin >> n){
+		string p , t;
+		cin >> p >> t;
+		kmp(p, t);
+		for(Long u : ans) cout << u << endl;
+		cout << endl;
+	} 
 	return 0;
 }
-
-
