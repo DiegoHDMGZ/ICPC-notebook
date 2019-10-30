@@ -5,22 +5,20 @@ using namespace std;
 
 typedef long long Long;
 
-const Long MX = 100000;
-Long A[MX];
 
-bool check( Long med , Long x){
-	return A[ med ] >= x;
+bool check( Long med ){
+	return true;
 }
 
-Long search(  Long ini , Long fin , Long x){ //O(logn)
+Long search(  Long ini , Long fin ){ //O(logn)
 	// F F F... V V V
-	if(!check(fin,x)) return -1; //todos F
-	if(check(ini,x)) return ini; //todos V
+	if(!check(fin)) return -1; //todos F
+	if(check(ini)) return ini; //todos V
 	
 	while(fin - ini > 1){ // hay mas de 2 valores
 		Long med= ini + (fin - ini) / 2;
 		
-		if(check( med, x )){
+		if(check( med )){
 			fin = med;
 		} 
 		else {
@@ -32,15 +30,15 @@ Long search(  Long ini , Long fin , Long x){ //O(logn)
 	return fin;
 }
 
-/*Long search(  Long ini , Long fin , Long x){ //O(logn)
+/*Long search(  Long ini , Long fin ){ //O(logn)
 	// V V V ... F F F
-	if(check(fin,x)) return fin; //todos V
-	if(!check(ini,x)) return -1; //todos F
+	if(check(fin)) return fin; //todos V
+	if(!check(ini)) return -1; //todos F
 	
 	while(fin - ini > 1){ // hay mas de 2 valores
 		Long med= ini + (fin - ini) / 2;
 		
-		if(check( med, x )){
+		if(check( med )){
 			ini = med;
 		} 
 		else {
