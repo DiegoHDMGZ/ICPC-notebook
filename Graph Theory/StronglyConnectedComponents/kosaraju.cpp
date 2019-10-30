@@ -63,10 +63,11 @@ struct Graph {
 			Long u = order[N - 1 - i];
 			if(!vis2[u]) {
 				dfs2(u);
-				numComponent++;
-				REP(t , component.size()) {
-					scc[component[t]] = numComponent;
+				
+				for(Long v : component) {
+					scc[v] = numComponent;
 				}
+				numComponent++;
 				//all nodes in "component" form a scc
 				component.clear();
 			}
