@@ -2,10 +2,21 @@
 #define debug(x) cout << #x << " = " << x << endl
 #define REP(i,n) for(Long i = 0; i < (Long)n; i++)
 #define pb push_back
- 
 using namespace std;
- 
+
 typedef long long Long;
+
+mt19937_64  rng(chrono::steady_clock::now().time_since_epoch().count());
+
+Long random(Long a, Long b) {
+	return uniform_int_distribution<Long>(a , b)(rng);
+}
+
+void eraseTrailing(deque<Long> &v){
+	while(v.size() > 1 && v[0] == 0){
+		v.pop_front();
+	}
+}
  
 struct Big{
 	deque<Long> digits;
@@ -91,61 +102,36 @@ struct Big{
 	
 	friend ostream & operator << (ostream &out, const Big &c);
 	
-	Big operator +(const Big &x) const {
+	Big operator +(const Big &other) const {
 		deque<Long> ans;
 		deque<Long> a = digits;
-		deque<Long> b = x.digits;
-		if(sgn * x.sgn == 1){
+		deque<Long> b = other.digits;
+		if(sgn * other.sgn == 1){
 			Long carry = 0;
 			Long i = (Long)a.size( ) - 1, j = (Long)b.size() - 1;
-			
-			while(i >= 0 && j >= 0){
-				Long sum = a[i] + b[j]  + carry;
-				carry = 0;
-				if( sum >= 10){
-					carry = 1;
-					sum = sum % 10;
-				}
+			while(i >= 0 || j >= 0 || carry > 0){
+				Long x , y;
+				if(i >= 0) x = a[i];
+				else x = 0;
+		
+				if(j >= 0) y = b[j];
+				else y = 0;
+				
+				Long sum = x + y  + carry;
+				carry = sum >= 10;
+				if(carry) sum -= 10;
 				ans.push_front(sum);
 				i--;
 				j--;
 			}
-			
-			if( i >= 0 ){
-				for(Long k = i; k >= 0 ; k--){
-					Long sum = a[k] + carry;
-					carry = 0;
-					if( sum >= 10){
-						carry = 1;
-						sum = sum % 10;
-					}
-					ans.push_front(sum);
-				}
-			}
-			else{
-				for(Long k = j ; k >= 0; k--){
-					Long sum = b[k] + carry;
-					
-					carry = 0;
-					
-					if( sum >= 10){
-						carry = 1;
-						sum = sum % 10;
-					}
-					ans.push_front(sum);
-				}
-			}
-			
-			if( carry > 0 ){
-				ans.push_front(1);
-			}
+
 			return Big(ans , sgn);
 		} 
 
 		Long newSgn = sgn;
 		if(Big(a) < Big(b)) {
 			swap(a , b);
-			newSgn = x.sgn;
+			newSgn = other.sgn;
 		}
 		
 		Long i = (Long)a.size() - 1, j = (Long)b.size() - 1;
@@ -186,81 +172,83 @@ struct Big{
 		return (*this) + aux;
 	}
 	
-	Big operator *(const Long &c) const {
-		if(c == 0){
-			return Big(0);
-		}
-		
-		if(c == 1){
-			return Big(digits);
-		}
-		
-		deque<Long> ans;
-		Long carry = 0;
-		
-		for(Long i = digits.size() - 1; i >=0; i--){
-			Long mult = digits[i] * c + carry;
-			
-			carry = 0;
-			
-			if(mult >= 10){
-				carry = mult / 10;
-				mult = mult % 10;
-			}
-			
-			ans.push_front(mult);
-		}
-		
-		if(carry > 0){
-			ans.push_front(carry);
-		}
-		return Big(ans);
-	}
-
-	void mult10(Big &num, Long pot){
-		for(Long i = 0; i < pot; i++){
-			num.digits.push_back(0);
-		}
-	}
-	
 	Big operator *(const Big &b) const {
-		Big ans(0);
 		Big a = *this;
+		Big ans;
+		Long n = a.digits.size();
+		Long m = b.digits.size();
+		ans.digits.resize(n + m - 1 , 0);
 		
-		for(Long i = b.digits.size() - 1; i >= 0; i--){
-			Long pot = (Long)b.digits.size() - i - 1;
-			Big aux = a * b.digits[i];
-			for(Long i = 0; i < pot; i++){
-				aux.digits.pb(0);
+		for(Long i = n - 1; i >= 0; i--){
+			Long carry = 0;
+			for(Long j = m - 1; j >= 0; j--){
+				ans.digits[i + j] += a.digits[i] * b.digits[j] + carry;
+				carry = ans.digits[i + j] / 10;
+				ans.digits[i + j] %= 10;
 			}
-			ans = ans + aux;
+			if(i > 0 ){
+				ans.digits[i - 1] += carry;
+			} else {
+				while(carry > 0){
+					ans.digits.push_front(carry % 10);
+					carry /= 10;
+				}
+			}
 		}
+		eraseTrailing(ans.digits);
 		ans.sgn = sgn * b.sgn;
 		if(ans.digits.size() == 1 && ans.digits[0] == 0){
 			ans.sgn = 1;
 		}
 		return ans;
 	}
-
-
 };
 
 
-ostream & operator << (ostream &out, const Big &number)
-{
+
+string toString (const Big &number){
+	string s = "";
 	if(number.sgn == -1){
-		cout << "-";
+		s += "-";
 	}
 	for(Long i = 0; i < number.digits.size(); i++){
-		out << number.digits[i];
+		s+= number.digits[i] + '0';
 	}
-    return out;
+    return s;
 }
  
+string toString(Long x){
+	string s = "";
+	if(x == 0) return "0";
+	
+	Long aux = abs(x);
+	while(aux > 0){
+		char c = (aux % 10) + '0';
+		aux /= 10;
+		s += c;
+	}
+	if(x < 0) s += "-";
+	reverse(s.begin(), s.end());
+	return s;
+}
+
 int main() {
-	Long a ,b;
-	cin >> a >> b;
-	cout << Big(a) + Big(b) << endl;
-	cout << Big(a) * Big(b) << endl;
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	cout.tie(NULL);
+	
+	Long T = 100000;
+	REP(t , T){
+		Long a = random(-15, 15);
+		Long b = random(-15, 15);
+		string x = toString(a * b);
+		string y = toString(Big(a) * Big(b));
+		if(x != y){
+			debug(a);
+			debug(b);
+			cout << toString(Big(a) + Big(b)) << endl;
+			system("pause");
+		}
+	}
 	return 0;
 }
