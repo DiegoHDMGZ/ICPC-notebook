@@ -6,6 +6,9 @@ using namespace std;
 
 typedef long long Long;
 
+//https://www.hackerrank.com/challenges/primsmstsub/problem
+
+
 const Long MX = 1e5;
 const Long INF = 1e18;
 
@@ -66,18 +69,23 @@ struct Graph {
 		    if(selected[u]) {
 		    	continue;
 			}
+		    
 		    totalWeight += cur.w;
 		    selected[u] = true;
 		    totalNodes++;
+			
 			for(EndPoint e : adj[u]){
 				  Long v = e.node;
 				  if(e.w < minCost[v] && !selected[v]){
 		            minCost[v] = e.w;
 		            p[v] = u;
 					q.push( e );
-		        }       
+		        }
+		        
 			}
+	
 		}
+		
 		if(totalNodes != n) return -1;
 	    return totalWeight;
 	}
@@ -85,5 +93,17 @@ struct Graph {
 } G;
 
 int main() {
-    return 0;
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	cout.tie(NULL);
+	
+	Long n , m;
+	cin >> n >> m;
+	REP(i , m){
+		Long u , v , w;
+		cin >> u >> v >> w;
+		G.addEdge(u - 1 , v - 1 , w);
+	}
+	cout << G.MST(n) << endl;
+	return 0;
 }

@@ -18,10 +18,9 @@ struct DisjointSetUnion{
 	}
 	
 	Long find(Long v){ //O(log(N))
-		if(v==parent[v]){
+		if(v == parent[v]){
 			return v;
 		}
-		
 		return parent[v] = find(parent[v]);
 	}
 	
