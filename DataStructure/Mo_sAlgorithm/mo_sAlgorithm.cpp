@@ -24,7 +24,7 @@ struct Query{
 
 Long block;
 
-bool compara(const Query &x, const Query &y){
+bool cmp(const Query &x, const Query &y){
 	// queries are sorted in increasing order blocks and R values.
 	if (x.l / block != y.l / block) return x.l / block < y.l / block;
 	return x.r < y.r;
@@ -53,7 +53,7 @@ struct Mo{
 	void process(Long N) { //O((N + Q) sqrt(N) |F|)
 	    block = (Long)sqrt(N);
 	 
-	    sort(q.begin() , q.end(), compara);
+	    sort(q.begin() , q.end(), cmp);
 	    
 	    Long currL = 0, currR = 0;
 	    Long ans = 0;
