@@ -72,7 +72,7 @@ struct Treap{
 		}
 	}
 	
-	void insert(Long X){ //O(log N) . !warning : only different elements
+	void insert(Long X){ //O(log N) . !warning : complexity only works with different elements (it can be transform to a pair< value, frequency>)
 		Long r = random(0 , MAXINT);
 		pitem it = new Item(X , r);
 		insert(tree,it);

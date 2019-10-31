@@ -34,7 +34,7 @@ void updateVal(pitem it){
 	}
 }
 
-void split(pitem t,  pitem &l, pitem &r, Long key){
+void split(pitem t,  pitem &l, pitem &r, Long key){  //O(log N)
 	if(!t){
 		l = r = NULL;
 	}
@@ -47,7 +47,7 @@ void split(pitem t,  pitem &l, pitem &r, Long key){
 	updateVal(t);
 }
 
-void merge (pitem &t, pitem l , pitem r){
+void merge (pitem &t, pitem l , pitem r){  //O(log N)
 	if(!l || !r){
 		if(l) t=l;
 		else t = r;
@@ -72,7 +72,7 @@ Long random(Long a, Long b) {
 struct Treap{
 	pitem tree;
 	
-	void insert(pitem &t, pitem it){
+	void insert(pitem &t, pitem it){ //O(log N) 
 		if(!t){
 			t = it;
 		}
@@ -91,13 +91,13 @@ struct Treap{
 		updateVal(t);
 	}
 	
-	void insert(Long X, Long valor){
+	void insert(Long X, Long valor){ //O(log N) . !warning : complexity only works with different elements (it can be transform to a pair< value, frequency>)
 		Long r = random(0 , MAXINT);
 		pitem it = new Item(X, r, valor);
 		insert(tree,it);
 	}
 	
-	void erase(pitem &t, Long key){
+	void erase(pitem &t, Long key){  //O(log N)
 		if(!t){
 			return;
 		}
@@ -115,11 +115,11 @@ struct Treap{
 		updateVal(t);
 	}
 	
-	void erase(Long key){
+	void erase(Long key){  //O(log N)
 		erase(tree,key);
 	}
 	
-	Long query(Long A, Long B){
+	Long query(Long A, Long B){  //O(log N)
 		pitem T1,T2,T3;
 		split(tree,T1,T2,A);
 		split(T2,T2,T3,B+1);
