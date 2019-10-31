@@ -41,12 +41,12 @@ struct Graph {
 		tOut[u] = timer++;
 	}
 
-	void precalculate(int N, int root = 0){ //O(nlogn)
+	void precalculate(int n, int root = 0){ //O(nlogn)
 		anc[root][0] = -1;
 		height[root] = 0;
 		dfs(root);
-		for(int j = 1; (1 << j) < N; j++){
-			for(int i = 0; i < N; i++){
+		for(int j = 1; (1 << j) < n; j++){
+			for(int i = 0; i < n; i++){
 				if(anc[i][j-1] != -1){
 					anc[i][j] = anc[anc[i][j-1]][j-1];
 				} else {

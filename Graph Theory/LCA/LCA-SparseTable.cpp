@@ -77,7 +77,7 @@ struct Graph {
 		tOut[u] = timer++;
 	}
 
-	void precalculate(Long N, Long root = 0){ //O(nlogn)
+	void precalculate( Long root = 0){ //O(nlogn)
 		height[root] = 0;
 		dfs(root);
 		st.build(euler);

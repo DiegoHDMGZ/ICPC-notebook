@@ -9,44 +9,44 @@ typedef long long Long;
 
 //https://www.spoj.com/problems/DISQUERY/
 
-const Long MAX = 1e5;
+const Long MX = 1e5;
 const Long INF = 1e18;
-const Long loga = log2(MAX)+1;
+const Long loga = log2(MX)+1;
+
+struct EndPoint{
+	Long node, w;
+	EndPoint(){}
+	EndPoint(Long node, Long w) : node(node), w(w) {}
+};
 
 struct Graph{
-	vector<Long> adj [MAX];
-	vector<Long> cost[MAX];
+	vector<EndPoint> adj [MX];
 	
-	Long anc[MAX][loga]; //anc[i][j] : ancestor of i at distance 2^j
-	Long height[MAX]; 
-	pair<Long,Long> st[MAX][loga]; //st[i][j] : min/max edge starting at i and ending at anc[i][j]
-	int tIn[MAX];
-	int tOut[MAX];
+	Long anc[MX][loga]; //anc[i][j] : ancestor of i at distance 2^j
+	Long height[MX]; 
+	pair<Long,Long> st[MX][loga]; //st[i][j] : min/max edge starting at i and ending at anc[i][j]
+	int tIn[MX];
+	int tOut[MX];
 	int timer = 0;
 	
 	void clear(Long N) {
 		for(Long i = 0; i < N; i++) {
 			adj[i].clear();
-			cost[i].clear();
 		}
 		timer = 0;
 	}
 	
 	void addEdge(Long u , Long v, Long w) {
-		u--;
-		v--;
-		adj[u].push_back(v);
-		adj[v].push_back(u);
-		cost[u].push_back(w);
-		cost[v].push_back(w);
+		adj[u].push_back(EndPoint(v , w));
+		adj[v].push_back(EndPoint(u , w));
 	}
 	
 	void dfs(Long u = 0){ //O(n+m)
 		tIn[u] = timer++;
-
-		for ( Long i = 0; i < adj[u].size(); i++) {
-			Long v = adj[u][i];
-			Long w = cost[u][i];
+	
+		for(EndPoint e : adj[u]){
+			Long v = e.node;
+			Long w = e.w;
 			if(anc[u][0] != v){
 				anc[v][0] = u;
 				st[v][0] = {w, w};
@@ -79,7 +79,7 @@ struct Graph{
 		}
 	}
 	
-	pair<Long,Long> bestOnPath(Long u, Long v){ //O(logn)
+	pair<Long,Long> bestOnPath(Long u, Long v){ //O(logn) <min, max>
 		if(height[u] < height[v]){
 			swap(u,v);
 		}
@@ -109,7 +109,12 @@ struct Graph{
 		bestV = f(bestV , st[v][0]); 
 		return f( bestU, bestV );
 	}
+	
+	bool isAncestor(Long u, Long v){ //is u ancestor of v ?
+		return tIn[u] < tIn[v] && tOut[u] > tOut[v];
+	}	
 } G;
+
 
 int main(){
 	ios_base::sync_with_stdio(false);
@@ -122,7 +127,7 @@ int main(){
 	for(Long i = 0; i < n - 1; i++){
 		Long u , v , w;
 		cin >> u >> v >> w;
-		G.addEdge(u , v , w);
+		G.addEdge(u - 1 , v - 1 , w);
 	}
 	G.precalculate(n);
 	Long Q;

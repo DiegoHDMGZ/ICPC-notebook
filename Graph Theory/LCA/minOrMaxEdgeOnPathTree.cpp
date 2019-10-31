@@ -10,9 +10,14 @@ const Long MX = 1e5;
 const Long INF = 1e18;
 const Long loga = log2(MX)+1;
 
+struct EndPoint{
+	Long node, w;
+	EndPoint(){}
+	EndPoint(Long node, Long w) : node(node), w(w) {}
+};
+
 struct Graph{
-	vector<Long> adj [MX];
-	vector<Long> cost[MX];
+	vector<EndPoint> adj [MX];
 	
 	Long anc[MX][loga]; //anc[i][j] : ancestor of i at distance 2^j
 	Long height[MX]; 
@@ -21,27 +26,24 @@ struct Graph{
 	int tOut[MX];
 	int timer = 0;
 	
-	void clear(Long N) {
-		for(Long i = 0; i < N; i++) {
+	void clear(Long n) {
+		for(Long i = 0; i < n; i++) {
 			adj[i].clear();
-			cost[i].clear();
 		}
 		timer = 0;
 	}
 	
 	void addEdge(Long u , Long v, Long w) {
-		adj[u].push_back(v);
-		adj[v].push_back(u);
-		cost[u].push_back(w);
-		cost[v].push_back(w);
+		adj[u].push_back(EndPoint(v , w));
+		adj[v].push_back(EndPoint(u , w));
 	}
 	
 	void dfs(Long u = 0){ //O(n+m)
 		tIn[u] = timer++;
-
-		for ( Long i = 0; i < adj[u].size(); i++) {
-			Long v = adj[u][i];
-			Long w = cost[u][i];
+	
+		for(EndPoint e : adj[u]){
+			Long v = e.node;
+			Long w = e.w;
 			if(anc[u][0] != v){
 				anc[v][0] = u;
 				st[v][0] = {w, w};
@@ -57,13 +59,13 @@ struct Graph{
 	}
 	
 	
-	void precalculate(Long N, Long root = 0){ //O(nlogn)
+	void precalculate(Long n, Long root = 0){ //O(nlogn)
 		anc[root][0] = -1;
 		height[root] = 0;
 		dfs(root);
 		
-		for(int j = 1; (1 << j) < N; j++){
-			for(int i = 0; i < N; i++){
+		for(int j = 1; (1 << j) < n; j++){
+			for(int i = 0; i < n; i++){
 				if(anc[i][j-1] != -1){
 					anc[i][j] = anc[anc[i][j-1]][j-1];
 					st[i][j] = f(st[i][j-1],st[anc[i][j-1]][j-1]);
