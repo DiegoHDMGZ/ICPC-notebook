@@ -21,15 +21,16 @@ struct Graph{
 		}
 	}
 	
+	Graph(){
+		clear();
+	}
+	
 	void addEdge(Long u, Long v) {
 		adj[u].pb(v);
 		adj[v].pb(u);
 	}
 	
 	void bfs(Long s, Long n){ //O(n+m)
-		for(Long u = 0; u < n; u++){
-			d[u] = INF;
-		}
 		d[s] = 0;
 		deque<Long> Q;
 		Q.push_back(s);
