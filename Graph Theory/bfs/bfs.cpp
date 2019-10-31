@@ -7,7 +7,7 @@ using namespace std;
 
 typedef long long Long;
 
-const Long INF= 1e7;
+const Long INF = 1e18;
 const Long MX = 1e5;
 
 struct Graph{
@@ -26,7 +26,10 @@ struct Graph{
 		adj[v].pb(u);
 	}
 	
-	void bfs(Long s){ //O(n+m)
+	void bfs(Long s, Long n){ //O(n+m)
+		for(Long u = 0; u < n; u++){
+			d[u] = INF;
+		}
 		d[s] = 0;
 		deque<Long> Q;
 		Q.push_back(s);
@@ -46,26 +49,6 @@ struct Graph{
 
 }G;
 
-void doit(){
-	Long N;
-	cin >> N;
-	
-	REP(i , N) {
-		Long u,v;
-		cin >> u >> v;
-		G.addEdge(u , v);
-	}
-	
-	G.bfs(0);
-}
-
 int main() {
-	Long T = 1;
-	cin >> T;
-	while(T--){
-		doit();
-	}
 	return 0;
 }
-
-
