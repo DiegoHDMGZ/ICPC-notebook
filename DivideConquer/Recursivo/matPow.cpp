@@ -28,7 +28,6 @@ Matrix mult( Matrix &a,   Matrix &b , Long mod) { //O( n^3)
 	return c;
 }
 
-
 Matrix matPow( Matrix a, Long b , Long mod){ //O(n^3 log b) only square matrix
 	Long n = a.size();
 	if(b == 0){
