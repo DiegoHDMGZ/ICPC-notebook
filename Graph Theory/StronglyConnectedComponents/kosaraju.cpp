@@ -78,13 +78,5 @@ struct Graph {
 } G;
 
 int main() {
-	
-	Long N;
-	cin >> N;
-	
-	G.dfs1(0);
-	G.calculateSCC(N);
 	return 0;
 }
-
-
