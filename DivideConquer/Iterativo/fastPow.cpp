@@ -6,7 +6,10 @@
 using namespace std;
 typedef long long Long;
 
-// (a^x)% mod = (a^r) % mod. Donde r = x % (mod-1) , mod prime
+// (a^x)% mod = (a^r) % mod. 
+// If a, mod are coprimes
+//Fermat's little theorem : r = x % (mod-1) , mod prime
+// Euler's theorem : r = x % phi(mod) 
 
 Long mult(Long a, Long b, Long mod){
 	a %= mod;
@@ -26,16 +29,6 @@ Long fastPow(Long a, Long b , Long mod){ //O(logb)
 	return ans;
 }
 
-Long fermat(Long a, Long b , Long mod){ //O(logb) 
-	a = a %mod;
-	
-	b = b%(mod-1);
-	
-	return fastPow(a,b,mod);
-}
-
 int main() {
 	return 0;
 }
-
-
