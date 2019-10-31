@@ -30,5 +30,3 @@ int main() {
 	cout << fastMult(81 , 75 , 157) << endl;
 	return 0;
 }
-
-

@@ -37,5 +37,3 @@ Long fermat(Long a, Long b , Long mod){ //O(logb)
 int main() {
 	return 0;
 }
-
-
