@@ -8,22 +8,6 @@ using namespace std;
 typedef long long Long;
 typedef vector<vector<Long> > Matrix;
 
-Matrix add(const Matrix &a , const Matrix &b){ //O(n * m)
-	Long n = a.size();
-	Long m = a[0].size();
-	assert(a.size() == b.size() );
-	assert(a[0].size() == b[0].size());
-	
-	Matrix c(n , vector<Long> (m ));
-	
-	for(Long i = 0; i < n; i++){
-		for(Long j = 0; j <m; j++){
-			c[i][j] = a[i][j] + b[i][j];
-		}
-	}
-	return c;
-}
-
 Matrix mult( Matrix &a,   Matrix &b , Long mod) { //O( n^3)
 	Long n1 = a.size();
 	Long m1 = a[0].size();
