@@ -8,8 +8,10 @@ using namespace std;
 typedef long long Long;
 const Long MX = 1e5;
 
-//Una componente fuertemente conexa (SCC) es un subgrafo maximal en la que entre todo par de vertices u, v. u es alcanzable por v y viceversa
-//Se puede condensar el grafo en sus componentes conexas. Este grafo es un DAG
+//Una componente fuertemente conexa (SCC) es un subgrafo maximal 
+//en la que entre todo par de vertices son alcanzables entre si
+//Se puede condensar el grafo en sus componentes conexas -> DAG
+
 struct Graph {
 	vector <Long> adj[MX];
 	vector <Long> rev[MX];
