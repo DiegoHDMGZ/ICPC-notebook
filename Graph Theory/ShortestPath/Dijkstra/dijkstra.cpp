@@ -10,8 +10,7 @@ const Long INF = 1e18;
 
 struct Path{
 	Long node, weight;
-	Path(){
-	}
+	Path(){}
 	
 	Path(Long node,Long weight) : node(node) , weight(weight) {}
 
@@ -38,6 +37,10 @@ struct Graph{
 		}
 	}
 	
+	Graph(){
+		clear();
+	}
+	
 	void addEdge(Long u, Long v, Long w) {
 		adj[u].pb(Path(v , w) );
 		adj[v].pb(Path(u , w));
@@ -45,12 +48,6 @@ struct Graph{
 	
 	void dijkstra(Long root, Long N){ //O(nlogm + mlogn)
 		priority_queue<Path> q;
-		REP(i , N){
-			d[i] = INF;
-			vis[i] = false;
-			parent[i] = -1;
-		}
-
 		d[root] = 0;
 	
 		q.push(Path(root , d[root]));
@@ -81,6 +78,22 @@ struct Graph{
 				}
 			}
 		}
+	}
+	
+	void retrievePath(Long v){
+		if(parent[v] == -1){
+			cout << -1 << endl;
+			return;
+		}
+		deque<Long> q;
+		while(v != -1){
+			q.push_front(v);
+			v = parent[v];
+		}
+		REP(i , q.size()){
+			cout << q[i] + 1 << " ";
+		}
+		cout << endl;
 	}
 } G;
 

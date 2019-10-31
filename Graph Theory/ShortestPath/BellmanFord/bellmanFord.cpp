@@ -10,12 +10,8 @@ const Long INF = 1e18;
 
 struct Edge{
 	Long u,v,cost;
-	
-	Edge(){
-	}
-	Edge(Long u, Long v, Long cost) : u(u) , v(v) , cost(cost) {
-	}
-	
+	Edge(){}
+	Edge(Long u, Long v, Long cost) : u(u) , v(v) , cost(cost) {}
 };
 
 struct Graph{
@@ -25,12 +21,16 @@ struct Graph{
 	
 	deque<Long> path;
 	
-	void clear(Long N) {
+	void clear(Long N = MX) {
 		REP(i , N) {
 			d[i] = INF;
 			p[i] = -1;
 		}
 		E.clear();
+	}
+	
+	Graph(){
+		clear();
 	}
 	
 	void addEdge(Long u, Long v, Long w) {
@@ -52,10 +52,6 @@ struct Graph{
 	}
 	
 	bool beLongmanFord(Long n, Long m, Long root = 0){ //O(nm)
-		REP(i , n) {
-			d[i] = INF;
-			p[i] = -1;
-		}
 		d[root] = 0;
 	
 		Long x;

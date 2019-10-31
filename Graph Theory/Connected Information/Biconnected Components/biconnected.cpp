@@ -51,10 +51,10 @@ struct Graph{
 	int timer;
 	stack<Edge> edges;
 	bool isArticulation[MX];
-	unordered_map<int,bool> isBridge[MX];
+	map<int,bool> isBridge[MX];
 	
 	int bcn[MX]; //biconnected component of node. Articulation are considered separated
-	unordered_map<int,int> bce[MX]; //biconnected component of edge
+	map<int,int> bce[MX]; //biconnected component of edge
 	vector<int> articulation;
 	vector<Edge> bridge;
 	int lastComponent[MX];

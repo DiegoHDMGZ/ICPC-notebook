@@ -7,30 +7,30 @@ using namespace std;
 typedef long long Long;
 typedef long double Double;
 
-const Long MAX = 1e4;
+const Long MX = 1e4;
 const Double INF = 1e18;
 const Double ERROR = 1e-6;	
 
 struct Edge{
 	Long u,v,cost;
-	
-	Edge(){
-	}
-	Edge(Long u, Long v, Long cost) : u(u) , v(v) , cost(cost) {
-	}
+	Edge(){}
+	Edge(Long u, Long v, Long cost) : u(u) , v(v) , cost(cost) {}
 };
 
 struct Graph {
 	vector<Edge> E;
-	Double d[MAX];
+	Double d[MX];
 	
-	void clear(Long N = MAX-1) {
+	void clear(Long N = MX-1) {
 		REP(i , N+1) {
 			d[i] = INF;
 		}
 		E.clear();
 	}
 	
+	Graph(){
+		clear();
+	}
 	void addEdge(Long u, Long v, Long w) {
 		E.pb(Edge(u, v , w));
 	}

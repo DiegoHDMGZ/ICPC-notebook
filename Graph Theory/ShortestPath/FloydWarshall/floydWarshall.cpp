@@ -14,7 +14,7 @@ struct Graph {
 	Long p[MX][MX];
 	vector<Long> path;
 	
-	void clean( Long N) {
+	void clear( Long N) {
 		REP(i , N) {
 			REP( j , N) {
 				d[i][j] = INF;
@@ -24,7 +24,7 @@ struct Graph {
 	}
 	
 	Graph(){
-		clean(MX);
+		clear(MX);
 	}
 	
 	void addEdge(Long u, Long v, Long cost) {

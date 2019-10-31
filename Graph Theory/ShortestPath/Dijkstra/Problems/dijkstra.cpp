@@ -28,8 +28,8 @@ struct Path{
 struct Graph{
 	vector<Path> adj[MX];
 	bool vis[MX];
-	Long parent[MX];
 	Long d[MX];
+	Long parent[MX];
 	
 	void clear(Long N = MX) {
 		REP( i , N) {
@@ -40,20 +40,17 @@ struct Graph{
 		}
 	}
 	
+	Graph(){
+		clear();
+	}
+	
 	void addEdge(Long u, Long v, Long w) {
-		u--;
-		v--;
 		adj[u].pb(Path(v , w) );
 		adj[v].pb(Path(u , w));
 	}
 	
 	void dijkstra(Long root, Long N){ //O(nlogm + mlogn)
 		priority_queue<Path> q;
-		REP(i , N){
-			d[i] = INF;
-			vis[i] = false;
-		}
-
 		d[root] = 0;
 	
 		q.push(Path(root , d[root]));
@@ -85,7 +82,6 @@ struct Graph{
 			}
 		}
 	}
-	
 	void retrievePath(Long v){
 		if(parent[v] == -1){
 			cout << -1 << endl;
@@ -113,7 +109,7 @@ int main() {
 	REP( i , m){
 		Long u , v , w;
 		cin >> u >> v >> w;
-		G.addEdge(u , v , w);
+		G.addEdge(u - 1 , v - 1 , w);
 	}
 	G.dijkstra(0, n);
 
