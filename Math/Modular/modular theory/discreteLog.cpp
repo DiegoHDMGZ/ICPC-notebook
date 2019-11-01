@@ -13,15 +13,22 @@ typedef long long Long;
 // f1(p) = f2(q)
 // k = sqrt(m) lead to the best complexity time
 
-Long fastPow(Long a, Long b , Long c){ //O(logb)
-	if(b == 0) return 1LL;
-	
-	Long temp = fastPow(a,b/2,c);
-	
-	temp = (temp*temp)%c;
-	if(b%2==0) return temp;
-	
-	return (a*temp)%c;
+Long mult(Long a, Long b, Long mod){
+	a %= mod;
+	b %= mod;
+	return (a * b ) % mod;
+}
+
+Long fastPow(Long a, Long b , Long mod){ //O(logb)
+	Long ans = 1;
+	while(b > 0){
+		if(b & 1 == 1){ //b % 2 == 1
+			ans = mult(ans ,a , mod);
+		}
+		a = mult(a , a  , mod);
+		b >>= 1; //b /= 2;
+	}
+	return ans;
 }
 
 Long search(  vector<pair<Long, Long> > &v , Long x ){ //O(logn)

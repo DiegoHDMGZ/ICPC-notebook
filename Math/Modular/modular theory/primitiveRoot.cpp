@@ -49,24 +49,29 @@ Long euler(Long n) { //O(log n)
 	return ans;
 }*/
 
-Long fastPow(Long a, Long b , Long c){ //O(logb)
-	if(b == 0) return 1LL;
-	
-	Long temp = fastPow(a,b/2,c);
-	
-	temp = (temp*temp)%c;
-	if(b%2==0) return temp;
-	
-	return (a*temp)%c;
+Long mult(Long a, Long b, Long mod){
+	a %= mod;
+	b %= mod;
+	return (a * b ) % mod;
+}
+
+Long fastPow(Long a, Long b , Long mod){ //O(logb)
+	Long ans = 1;
+	while(b > 0){
+		if(b & 1 == 1){ //b % 2 == 1
+			ans = mult(ans ,a , mod);
+		}
+		a = mult(a , a  , mod);
+		b >>= 1; //b /= 2;
+	}
+	return ans;
 }
 
 
 Long primitiveRoot(Long mod) { //O( mod log n log phi(n) )  
 	Long phi = mod - 1; // phi = euler(mod) for not prime mods
 	//if( mod < 1e7 ) we can use extended Sieve to factorize
-	
 	Long n = phi;
-	
 	Long i = 2;
 	vector<Long> v;
 	while(i * i <= n ) {
@@ -76,7 +81,6 @@ Long primitiveRoot(Long mod) { //O( mod log n log phi(n) )
 				n /= i;
 			}
 		}
-		
 		i++;
 	}
 	
@@ -97,7 +101,6 @@ Long primitiveRoot(Long mod) { //O( mod log n log phi(n) )
 		}
 	}
 	return -1;
-	
 }
 
 int main() {
