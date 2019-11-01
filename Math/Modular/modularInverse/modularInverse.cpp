@@ -6,25 +6,29 @@ using namespace std;
 
 typedef long long Long;
 
-Long fastPow(Long a, Long b, Long c){ //O(logb)
-	if(b == 0){
-		return 1;
-	}
-	
-	Long temp = fastPow(a,b/2,c);
-	
-	temp = (temp*temp)%c;
-	
-	return (b%2 == 0)? temp : (a%c*temp)%c;
+Long mult(Long a, Long b, Long mod){
+	a %= mod;
+	b %= mod;
+	return (a * b ) % mod;
 }
 
-Long modInverse(Long a, Long m){ //O(logm)
-	//m prime
+Long fastPow(Long a, Long b , Long mod){ //O(logb)
+	Long ans = 1;
+	while(b > 0){
+		if(b & 1 == 1){ //b % 2 == 1
+			ans = mult(ans ,a , mod);
+		}
+		a = mult(a , a  , mod);
+		b >>= 1; //b /= 2;
+	}
+	return ans;
+}
+
+Long modInverse(Long a, Long m){ //O(logm) , m prime , a , m coprimes
 	return fastPow(a,m-2,m);
 }
 
 Long gcd (Long a, Long b, Long & x, Long & y) { //O(max(loga,logb))
-
     if (a == 0) {
         x = 0;
         y = 1;
