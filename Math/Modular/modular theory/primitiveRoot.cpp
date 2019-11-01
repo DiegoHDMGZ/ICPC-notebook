@@ -7,47 +7,18 @@ using namespace std;
 typedef long long Long;
 
 //https://napocaro.files.wordpress.com/2015/02/david_m-_burton_elementary_number_theory_sixth_bookfi-org.pdf
-//If g is primitive root modulo n, then gcd(a, n) = 1 and "a" is of order phi(n)
+
+//g is a primitive root modulo n if and only if for any integer "a" such that gcd(a,n)=1, there exists an integer k such that:
+// (g ^ k) ≡ a (mod n).
+
+//Definition : Let n > 1 and gcd(a , n) = 1. The order of "a" modulo "n" is the smallest positive integer
+//k such that (a ^ k) = 1 (mod n). 
+
+//If g is primitive root modulo n, then gcd(g, n) = 1 and "g" is of order phi(n)
 //Hence, to know if a number is a primitive root modulo n, we must check that there is no such a "p" (p < phi(n) ) that a ^ p = 1 (mod n)
-//Additionally, if this "p" exists, it have to be a divisor of phi(n)
-//We just have to check all of divisors of form  phi(n) / pi  [pi prime factor of phi(n)] 
+//Additionally, if this "p" exists, it has to be a divisor of phi(n)
+//Hence , we just have to check all the divisors of the form  phi(n) / pi  [pi prime factor of phi(n)] 
 //because other divisor d satisfy : d |  phi(n) / pi
-
-/*const Long MX = 1e7;
-bool isPrime[MX];
-Long fact[MX];
-vector<Long> primes;
-
-void extSieve(){ //O(MX)
-	//x = i * p. p is the smallest prime factor
-	fill(isPrime, isPrime + MX , true);
-	isPrime[1] = false;
-	for(Long i = 2; i  < MX; i++){
-		if(isPrime[i]) {
-			primes.pb(i);
-			fact[i] = i;
-		}
-		for(Long j = 0 ; j < primes.size() && i * primes[j] < MX; j++){
-			isPrime[i * primes[j]] = false;
-			fact[i * primes[j]] = primes[j];
-			if(i % primes[j] == 0) {
-				break;
-			}
-		}
-	}
-}
-
-Long euler(Long n) { //O(log n)
-	Long ans = n;
-	while(n > 1){
-		Long f = fact[n];
-		while(n % f == 0){
-			n /= f;
-		}
-		ans -= ans / f;
-	}
-	return ans;
-}*/
 
 Long mult(Long a, Long b, Long mod){
 	a %= mod;
@@ -68,7 +39,7 @@ Long fastPow(Long a, Long b , Long mod){ //O(logb)
 }
 
 
-Long primitiveRoot(Long mod) { //O( mod log n log phi(n) )  
+Long primitiveRoot(Long mod) { //O( mod log mod log phi(mod) + sqrt(mod))  
 	Long phi = mod - 1; // phi = euler(mod) for not prime mods
 	//if( mod < 1e7 ) we can use extended Sieve to factorize
 	Long n = phi;
