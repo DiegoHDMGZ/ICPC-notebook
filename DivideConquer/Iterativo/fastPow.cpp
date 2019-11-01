@@ -12,8 +12,6 @@ typedef long long Long;
 // Euler's theorem : r = x % phi(mod) 
 
 Long mult(Long a, Long b, Long mod){
-	a %= mod;
-	b %= mod;
 	return (a * b ) % mod;
 }
 
