@@ -24,8 +24,6 @@ Long mult(Long a, Long b, Long m){
 	return (a * b) % m;
 }
 
-
-
 Matrix add(const Matrix &a , const Matrix &b){ //O(n * m)
 	Long n = a.size();
 	Long m = a[0].size();
@@ -74,21 +72,19 @@ void print(Matrix &a , string nombre){
 	}
 }
 
-Long fastPow(Long a, Long b, Long c){ //O(logb)
-	if(b == 0){
-		return 1;
+Long fastPow(Long a, Long b , Long mod){ //O(logb)
+	Long ans = 1;
+	while(b > 0){
+		if(b & 1 == 1){ //b % 2 == 1
+			ans = mult(ans ,a , mod);
+		}
+		a = mult(a , a  , mod);
+		b >>= 1; //b /= 2;
 	}
-	
-	Long temp = fastPow(a,b/2,c);
-	
-	temp = (temp*temp)%c;
-	
-	return (b%2 == 0)? temp : (a%c*temp)%c;
+	return ans;
 }
 
-Long modInverse(Long a, Long m){ //O(logm)
-	//m debe ser primo
-	//if(__gcd(a,m) != 1) return -1;
+Long modInverse(Long a, Long m){ //O(logm) , m prime , a , m coprimes
 	return fastPow(a,m-2,m);
 }
 
@@ -115,7 +111,6 @@ Long determinant(Matrix M, Long mod){
 			M[i][j] = mult(M[i][j] , x, mod);
 		}
 		
-		
 		for(Long j = i + 1; j < n; j++){
 			if(M[j][i] != 0){
 				for(Long k = i + 1; k < n; k++){
@@ -136,10 +131,6 @@ Long determinant(Matrix M, Long mod){
 3 9 8 1 3 2 1
 -5 0 5 6 7 8 9
 Rpta = 987646945
-
-
-
-
 */
 
 int main(){
