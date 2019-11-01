@@ -7,7 +7,7 @@ using namespace std;
 typedef long long Long;
 
 // (a ^ x ) % m  = r , gcd(a , m) = 1. Where x is the smallest solution
-// because of Euler's theorem, x < m
+// because of Euler's theorem, x < phi(m)
 // x = kp - q
 // a ^ (kp) % m = (r * a ^ q ) % m  (using inverse modular)
 // f1(p) = f2(q)
@@ -77,7 +77,8 @@ Long discreteLog(Long a , Long r , Long mod) {  //O(sqrt (mod) log mod)
 		Long cur = (r * fastPow(a , q , mod)) % mod;
 		Long p = search(f1 , cur);
 		if(p != -1) {
-			return p * k - q;
+			return p * k - q; //solution could not be the smallest
+			//if the smallest is needed, use modulo phi(mod)
 		}
 	}
 	return -1;
