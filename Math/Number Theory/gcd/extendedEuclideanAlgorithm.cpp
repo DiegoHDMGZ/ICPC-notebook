@@ -6,8 +6,8 @@ using namespace std;
 
 typedef long long Long;
 
+//ax + by = gcd(a , b)
 Long gcd (Long a, Long b, Long & x, Long & y) { //O(max(loga,logb))
-
     if (a == 0) {
         x = 0;
         y = 1;
