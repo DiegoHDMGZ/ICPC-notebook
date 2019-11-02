@@ -39,9 +39,11 @@ vector<Long> sortCyclic(string &s) { //O(n log n)
 		c[p[i]] = classes - 1;
 	}
 	
-	//in each iteration "k", it sorts for all substrings of length 2 ^ k
-	// radix sort
-	// we first sort the second substring of length 2 ^ ( k - 1) and then by the first
+//in each iteration "k", we sort all substrings of length 2 ^ k
+// radix sort
+// we first sort by the second substring of length
+// 2 ^ ( k - 1) and then by the first
+
 	vector<Long> pAux(n) , cAux(n);
 	for(Long k = 0; (1LL << k) < n ; k++ ) {
 
