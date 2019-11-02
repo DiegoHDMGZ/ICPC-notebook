@@ -7,25 +7,32 @@ using namespace std;
 
 typedef long long Long;
 
+//Luchas Theorem :
+//For non-negative integers m and n, and a prime integer p
+//C(m , n) = Prod (mi, ni) (mod p)
+//where mi , ni are the p-expansions of m and n respectively.
+
 const Long MX = 100;
 Long fact[MX];
 Long inv[MX];
 
-Long fastPow(Long a, Long b, Long c){ //O(logb)
-	if(b == 0){
-		return 1;
-	}
-	
-	Long temp = fastPow(a,b/2,c);
-	
-	temp = (temp*temp)%c;
-	
-	return (b%2 == 0)? temp : (a%c*temp)%c;
+Long mult(Long a, Long b, Long mod){
+	return (a * b ) % mod;
 }
 
-Long modInverse(Long a, Long m){ //O(logm)
-	//m debe ser primo
-	//if(__gcd(a,m) != 1) return -1;
+Long fastPow(Long a, Long b , Long mod){ //O(logb)
+	Long ans = 1;
+	while(b > 0){
+		if(b & 1 == 1){ //b % 2 == 1
+			ans = mult(ans ,a , mod);
+		}
+		a = mult(a , a  , mod);
+		b >>= 1; //b /= 2;
+	}
+	return ans;
+}
+
+Long modInverse(Long a, Long m){ //O(logm) , m prime , a , m coprimes
 	return fastPow(a,m-2,m);
 }
 
@@ -45,8 +52,6 @@ Long comb(Long N, Long M, Long mod) { //O(1)
 	}
 	return ( (fact[N] * inv[M]) % mod ) * inv[N-M] % mod; 
 }
-
-
 
 Long lucas(Long N, Long M, Long mod) { //O(log N + log M)
 	//mod is prime
