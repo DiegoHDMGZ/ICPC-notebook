@@ -69,7 +69,6 @@ vector<Long> getDivisors(Long x) {
 				ans.pb(num * ans[i]);
 			}
 		}
-		
 	}
 	//sort(ans.begin(), ans.end());
 	return ans;

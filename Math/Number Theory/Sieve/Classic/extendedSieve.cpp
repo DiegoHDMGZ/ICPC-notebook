@@ -29,6 +29,51 @@ void sieve(){ //O(MX log log MX)
 	}
 }
 
+struct Factor{
+	Long base,exp;
+	Factor(){
+	}
+	Factor(Long b, Long e){
+		base = b;
+		exp = e;
+	}
+};
+deque<Factor> factores;
+
+void factorize(Long x){ //O(log x)
+	factores.clear();
+	while(x > 1){
+		Long f = fact[x];
+		Long exp = 0;
+		while(x % f == 0){
+			x /= f;
+			exp++;
+		}
+		factores.push_front(Factor(f,exp));
+	}
+	
+}
+
+vector<Long> getDivisors(Long x) {
+	vector<Long> ans = {1};
+	while(x > 1) {
+		Long f = fact[x];
+		Long num = 1;
+		Long sz = ans.size();
+		while(x % f == 0) {
+			num *= f;
+			x /= f;
+			
+			for(Long i = 0; i < sz; i++) {
+				ans.pb(num * ans[i]);
+			}
+		}
+	}
+	//sort(ans.begin(), ans.end());
+	return ans;
+}
+
+
 int main() {
 	sieve();
 	return 0;
