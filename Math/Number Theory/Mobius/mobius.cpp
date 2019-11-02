@@ -33,7 +33,11 @@ void extSieve(){ //O(MX)
 }
 
 Long mu[MX];
-void mobius() {
+//mu[x] = 0 if x is not square free (divisible by a square factor)
+//mu[x] = 1 if x is square free with even number of prime factors
+//mu[x] = -1 if x is square free with odd number of prime factors
+
+void mobius() { //O(MX)
     mu[1] = 1;
     for(Long i = 2 ;i < MX; i ++) {
         if(fact[i] == i) {
