@@ -14,7 +14,9 @@ Long getBit(Long x, Long i){
 	return (x >> i) & 1LL;
 }
 
-Long multiplos(Long N , vector<Long> &v) { //todos los multiplos de v[i] (en el rango del 1 al N) para todo i
+Long multiplos(Long N , vector<Long> &v) { 
+//Count the numbers of integers in [1 , N] that are multiples of at least
+//one of the v[i]
 	Long sz = v.size();
 	Long resp = 0;
 	for(Long mask = 1; mask < (1LL << sz); mask++ ) {
