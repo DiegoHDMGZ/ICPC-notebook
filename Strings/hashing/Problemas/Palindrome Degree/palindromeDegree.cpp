@@ -1,11 +1,12 @@
 #include <bits/stdc++.h>
-#define REP(i , n) for(Long i = 0; i < (Long)n; i++)
-#define debug(x) cout << #x << " = " << x << endl;
+#define debug(x) cout << #x << " = " << x << endl
+#define REP(i,n) for(Long i = 0; i < (Long)n; i++)
 #define pb push_back
-
 using namespace std;
- 
+
 typedef long long Long;
+
+//https://codeforces.com/contest/7/problem/D
 
 Long mult(Long a, Long b, Long mod){
 	return (a * b) % mod;
@@ -19,20 +20,20 @@ Long subs(Long a , Long b, Long mod){
 	return (a - b + mod) % mod;
 }
 
-Long minChar = (Long)'0';
-
-const Long MX = 1e6;
+const Long MX = 5e6 + 2;
 struct Hashing{
 	Long MOD;
 	Long B;
+	Long minChar;
 
-	Long pot[MX];
-	Long hPref[MX];
-	Long hSuf[MX];
+	int pot[MX];
+	int hPref[MX];
+	int hSuf[MX];
 	
 	Hashing(){
-		MOD = 1e9 + 7; //1e9 + 1269
+		MOD = 1e9 + 7;
 		B = 67;
+		minChar = (Long)'0';
 	}
 	
 	void setData(Long b, Long mod){
@@ -74,13 +75,48 @@ struct Hashing{
 			hSuf[i] = add(mult( hSuf[i + 1] , B, MOD) ,  s[i] - minChar + 1 , MOD);
 		}
 	}
-}hs;
- 
-int main(){
-	ios_base::sync_with_stdio(NULL);
+}hs1 , hs2;
+
+Long dp[MX];
+bool used[MX];
+
+Long kPalindrome(Long endPos){
+	if(used[endPos]){
+		return dp[endPos];
+	}
+	used[endPos] = true;
+	Long i = 0;
+	Long j = endPos;
+	Long limInf = (j - i - 1) / 2;
+	Long limSup = (j - i + 1) % 2 == 0 ? limInf + 1 : limInf + 2;
+	
+	if(!hs1.isPalindrome(0 , endPos) || !hs2.isPalindrome(0 , endPos)) {
+		return dp[endPos] = 0;
+	}
+	
+	Long nextPos = (endPos - 1 ) / 2;
+	
+	return dp[endPos] = 1 + kPalindrome(nextPos);
+}
+
+
+int main() {
+	ios_base::sync_with_stdio(false);
 	cin.tie(NULL);
 	cout.tie(NULL);
-
 	
+	string s;
+	cin >> s;
+	hs2.setData(67 , 1e9 + 1269);
+	hs1.precalc();
+	hs1.precalc(s);
+	hs2.precalc();
+	hs2.precalc(s);
+	
+	Long ans = 0;
+	REP(i , s.size()){
+		ans += kPalindrome(i);
+	}
+	cout << ans << endl;
 	return 0;
 }
