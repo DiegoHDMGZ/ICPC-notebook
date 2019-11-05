@@ -4,8 +4,6 @@
 #define pb push_back
 
 using namespace std;
-
-//incompleto
  
 typedef long long Long;
 
@@ -29,9 +27,9 @@ typedef vector<vector<char>> Matrix;
 struct Hashing{
 	Long MOD;
 	Long B;
-
-	Long pot[MX * MX];
-	Long hPref[MX][MX];
+ 
+	int pot[MX * MX];
+	int hPref[MX][MX];
 	
 	Hashing(){
 		MOD = 1e9 + 7; //1e9 + 1269
@@ -43,36 +41,43 @@ struct Hashing{
 		MOD = mod;
 	}
 	
-	Long hSub(Long x, Long y){
+	Long hSub(Long x, Long y){ //O(1)
 		if(x < 0 || y < 0) return 0;
 		return hPref[x][y];
 	}
 	
 	Long hSub(Long x1, Long y1, Long x2 , Long y2){ //O(1)
-		Long ans = subs( hSub(x2 , y2) , hSub(x2, y1 - 1) , MOD); 
-		ans = subs(ans , mult( hSub(x1 - 1 , y2) , pot[(x2 - x1 + 1) * (y2 - y1)], MOD) , MOD  );
-		ans = add(ans , mult( hSub(x1 - 1 , y1 - 1) , pot[(x2 - x1 + 1) * y1] , MOD) , MOD);
+		Long ans = hSub(x2 , y2);
+		ans = subs(ans , mult(hSub(x2, y1 - 1) , pot[y2 - y1 + 1] , MOD)  , MOD); 
+		ans = subs(ans , mult( hSub(x1 - 1 , y2) , pot[MX * (x2 - x1 + 1)], MOD) , MOD  );
+		ans = add(ans , mult( hSub(x1 - 1 , y1 - 1) , pot[MX * (x2 - x1 + 1) + (y2 - y1 + 1)] , MOD) , MOD);
 		return ans;
 	}
-
-	void precalc(){
+ 
+	void precalc(){ //O(MX * MX)
 		pot[0]= 1;
 		for(int i = 1; i<MX * MX;i++){
 			pot[i] = mult(pot[i - 1] , B , MOD);
 		}
 	}
-
-	void precalc(Matrix &A){ //O(size)
+ 
+	void precalc(Matrix &A){ //O(n * m)
 		Long n = A.size();
 		Long m = A[0].size();
+		
 		REP(i , n) {
-			Long acum = 0;
 			REP(j , m){
-				acum = add( mult(acum , B , MOD) , A[i][j] - minChar + 1 , MOD);
 				
-				hPref[i][j] = acum;
+				hPref[i][j] = A[i][j] - minChar + 1;
+				
 				if(i > 0) {
-					hPref[i][j] = add(hPref[i][j] , mult(hPref[i - 1][j] , pot[j + 1] , MOD) , MOD);
+					hPref[i][j] = add(hPref[i][j] , mult(hPref[i - 1][j] , pot[MX] , MOD) , MOD);
+				}
+				if(j > 0){
+					hPref[i][j] = add(hPref[i][j] , mult(hPref[i][j - 1] , B, MOD) , MOD);
+				}
+				if(i > 0 && j > 0){
+					hPref[i][j] = subs(hPref[i][j] , mult(mult(B , pot[MX] , MOD), hPref[i - 1][j - 1] , MOD) , MOD);
 				}
 			}
 		}

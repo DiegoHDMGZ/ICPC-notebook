@@ -1,13 +1,12 @@
 #include <bits/stdc++.h>
-#define debug(x) cout << #x << " = " << x << endl
-#define REP(i,n) for(Long i = 0; i < (Long)n; i++)
+#define REP(i , n) for(Long i = 0; i < (Long)n; i++)
+#define debug(x) cout << #x << " = " << x << endl;
 #define pb push_back
+ 
 using namespace std;
-
+ 
 typedef long long Long;
-
-//https://codeforces.com/gym/100783
-
+ 
 Long mult(Long a, Long b, Long mod){
 	return (a * b) % mod;
 }
@@ -19,22 +18,22 @@ Long add(Long a, Long b, Long mod){
 Long subs(Long a , Long b, Long mod){
 	return (a - b + mod) % mod;
 }
-
-Long minChar = 0;
-
-const Long MX = 1e3;
-
+ 
+Long minChar = (Long)'0';
+ 
+const Long MX = 2e3 + 20;
+ 
 typedef vector<vector<char>> Matrix;
 struct Hashing{
 	Long MOD;
 	Long B;
-
-	Long pot[MX * MX];
-	Long hPref[MX][MX];
+ 
+	int pot[MX * MX];
+	int hPref[MX][MX];
 	
 	Hashing(){
 		MOD = 1e9 + 7; //1e9 + 1269
-		B = 13;
+		B = 67;
 	}
 	
 	void setData(Long b, Long mod){
@@ -42,50 +41,80 @@ struct Hashing{
 		MOD = mod;
 	}
 	
-	Long hSub(Long x, Long y){
+	Long hSub(Long x, Long y){ //O(1)
 		if(x < 0 || y < 0) return 0;
 		return hPref[x][y];
 	}
 	
 	Long hSub(Long x1, Long y1, Long x2 , Long y2){ //O(1)
-		Long ans = subs( hSub(x2 , y2) , mult( hSub(x2, y1 - 1) , pot[y2 - y1 + 1], MOD) , MOD); 
-		ans = subs(ans , mult( hSub(x1 - 1 , y2) , pot[(x2 - x1 + 1) * y2], MOD) , MOD  );
-		ans = add(ans , mult( hSub(x1 - 1 , y1 - 1) , pot[(y2 - y1 + 1) * (x2 - x1 + 1) * y2] , MOD) , MOD);
+		Long ans = hSub(x2 , y2);
+		ans = subs(ans , mult(hSub(x2, y1 - 1) , pot[y2 - y1 + 1] , MOD)  , MOD); 
+		ans = subs(ans , mult( hSub(x1 - 1 , y2) , pot[MX * (x2 - x1 + 1)], MOD) , MOD  );
+		ans = add(ans , mult( hSub(x1 - 1 , y1 - 1) , pot[MX * (x2 - x1 + 1) + (y2 - y1 + 1)] , MOD) , MOD);
 		return ans;
 	}
-
-	void precalc(){
+ 
+	void precalc(){ //O(MX * MX)
 		pot[0]= 1;
 		for(int i = 1; i<MX * MX;i++){
 			pot[i] = mult(pot[i - 1] , B , MOD);
 		}
 	}
-
-	void precalc(Matrix &A){ //O(size)
+ 
+	void precalc(Matrix &A){ //O(n * m)
 		Long n = A.size();
 		Long m = A[0].size();
+		
 		REP(i , n) {
-			Long acum = 0;
 			REP(j , m){
-				acum = add( mult(acum , B , MOD) , A[i][j] - minChar + 1 , MOD);
 				
-				hPref[i][j] = acum;
+				hPref[i][j] = A[i][j] - minChar + 1;
+				
 				if(i > 0) {
-					hPref[i][j] = add(hPref[i][j] , mult(hPref[i - 1][j] , pot[j + 1] , MOD) , MOD);
+					hPref[i][j] = add(hPref[i][j] , mult(hPref[i - 1][j] , pot[MX] , MOD) , MOD);
+				}
+				if(j > 0){
+					hPref[i][j] = add(hPref[i][j] , mult(hPref[i][j - 1] , B, MOD) , MOD);
+				}
+				if(i > 0 && j > 0){
+					hPref[i][j] = subs(hPref[i][j] , mult(mult(B , pot[MX] , MOD), hPref[i - 1][j - 1] , MOD) , MOD);
 				}
 			}
 		}
 	}
-}hs11 , hs12 , hs21, hs22;
+}hs11, hs12, hs21, hs22;
  
-
-int main() {
-	ios_base::sync_with_stdio(false);
+mt19937_64  rng(chrono::steady_clock::now().time_since_epoch().count());
+ 
+Long random(Long a, Long b) {
+	return uniform_int_distribution<Long>(a , b)(rng);
+}
+ 
+ 
+int main(){
+	ios_base::sync_with_stdio(NULL);
 	cin.tie(NULL);
 	cout.tie(NULL);
 	
-	Long n1,m1,n2,m2;
+	Long n1 , m1 , n2 , m2;
 	cin >> n1 >> m1 >> n2 >> m2;
+	
+	Long MOD1 = 1e9 + 7;
+	Long MOD2 = 1e9 + 1269;
+	Long B1 = random(3, MOD1 - 1);
+	Long B2 = random(3, MOD2 - 1);
+	hs11.setData( B1, MOD1 );
+	hs12.setData(B2 , MOD2);
+	hs21.setData(B1 , MOD1);
+	hs22.setData(B2 , MOD2);
+	
+	hs11.precalc();
+	hs12.precalc();
+	hs21.precalc();
+	hs22.precalc();
+	
+	
+	
 	
 	Matrix A;
 	REP(i , n1){
@@ -93,13 +122,14 @@ int main() {
 		REP(j , m1){
 			char c;
 			cin >> c;
-			if(c == 'x') v.pb('0');
-			else v.pb('1');
+			if(c == 'x') v.pb('1');
+			else v.pb('0');
 		}
 		cin.ignore();
 		A.pb(v);
 	}
-	
+	hs11.precalc(A);
+	hs12.precalc(A);
 	
 	Matrix B;
 	REP(i , n2){
@@ -107,48 +137,25 @@ int main() {
 		REP(j , m2){
 			char c;
 			cin >> c;
-			if(c == 'x') v.pb('0');
-			else v.pb('1');
+			if(c == 'x') v.pb('1');
+			else v.pb('0');
 		}
 		cin.ignore();
 		B.pb(v);
 	}
-	hs11.setData(13, 1e9 + 7);
-	hs12.setData(7 ,1e9 + 1269 );
-	
-	hs21.setData(13, 1e9 + 7);
-	hs22.setData(7 ,1e9 + 1269 );
-	
-	hs11.precalc();
-	hs12.precalc( );
-	hs21.precalc();
-	hs22.precalc( );
-	
-	hs11.precalc(A);
-	hs12.precalc(A);
 	hs21.precalc(B);
 	hs22.precalc(B);
 	
 	Long ans = 0;
-	for(Long i = 0; i + n1 - 1 < B.size(); i++){
-		for(Long j = 0; j + m1 - 1 < B[i].size(); j++){
-			bool ok1 = false;
-			if(hs21.hSub(i , j , i + n1 - 1, j + m1 - 1) == hs11.hSub(0, 0 , n1 - 1, m1 - 1) ){
-				ok1 = true;
-			}
-			bool ok2 = false;
-			if(hs22.hSub(i , j , i + n1 - 1, j + m1 - 1) == hs12.hSub(0, 0 , n1 - 1, m1 - 1) ){
-				ok2 = true;
-			}
-			if(ok1 && ok2){
+	for(Long i = 0; i + n1 - 1 < n2; i++){
+		for(Long j = 0; j + m1 - 1 < m2; j++){
+			if(hs11.hSub(0 , 0 , n1 - 1, m1 - 1) == hs21.hSub(i , j , i + n1 -1, j + m1 - 1) && hs12.hSub(0 , 0 , n1 - 1, m1 - 1) == hs22.hSub(i , j , i + n1 -1, j + m1 - 1) ){
 				ans++;
 			}
 		}
 	}
 	
-	
 	cout << ans << endl;
 	
-
 	return 0;
 }
