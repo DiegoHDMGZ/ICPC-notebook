@@ -6,6 +6,8 @@
 using namespace std;
  
 typedef long long Long;
+
+//https://codeforces.com/gym/100783
  
 Long mult(Long a, Long b, Long mod){
 	return (a * b) % mod;
