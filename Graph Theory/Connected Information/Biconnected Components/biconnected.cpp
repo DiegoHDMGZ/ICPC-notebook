@@ -28,7 +28,7 @@ struct Edge{
 const int MX = 1e5;
 const int MX2 = 2 * MX;
 
-struct BCT{
+struct BlockCutTree{
 	vector<int> adj[MX2];
 	
 	void addEdge(int u , int v){
@@ -59,7 +59,7 @@ struct Graph{
 	vector<Edge> bridge;
 	int lastComponent[MX];
 	
-	BCT bct;
+	BlockCutTree bct;
 	int numComponent;
 	
 	void clear(int N){
