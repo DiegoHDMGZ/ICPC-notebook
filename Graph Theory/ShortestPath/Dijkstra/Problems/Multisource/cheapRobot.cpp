@@ -6,7 +6,6 @@ using namespace std;
 
 typedef long long Long;
 
-//https://codeforces.com/contest/1253/problem/F
  
 const Long MX = 3e5;
 bool used[MX];
@@ -219,10 +218,7 @@ struct Graph{
 			Path p = q.top();
 			q.pop();
 			Long u = p.node;
-			//debug(u);
-			if(reachedBy[u] != p.ini){
-				G2.addEdge(reachedBy[u] , p.ini , d[u] + p.weight);
-			}
+	
 			if(vis[u]) {
 				continue;
 			}
@@ -230,7 +226,6 @@ struct Graph{
 			vis[u] = true;
 			for(Path x : adj[u]){
 				Long v = x.node;
-				//debug(v);
 				if(p.ini != reachedBy[v] && reachedBy[v] != -1){
 					G2.addEdge(reachedBy[v] , p.ini , x.weight + d[v] + p.weight);
 				}

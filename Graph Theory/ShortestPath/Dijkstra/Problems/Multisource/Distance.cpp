@@ -59,10 +59,7 @@ struct Graph{
 			Path p = q.top();
 			q.pop();
 			Long u = p.node;
-			//debug(u);
-			if(reachedBy[u] != p.ini){
-				ans = min(ans , 3 * (d[u] + p.weight));
-			}
+		
 			if(vis[u]) {
 				continue;
 			}

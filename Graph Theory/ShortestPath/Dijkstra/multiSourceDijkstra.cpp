@@ -73,9 +73,6 @@ struct Graph{
 			Path p = q.top();
 			q.pop();
 			Long u = p.node;
-			if(reachedBy[u] != p.ini){
-				G2.addEdge(reachedBy[u] , p.ini , d[u] + p.weight);
-			}
 			if(vis[u]) {
 				continue;
 			}
