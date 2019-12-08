@@ -7,7 +7,7 @@ typedef long long Long;
 
 using namespace std;
 
-const Long MX = 100000;
+const Long MX = 1e5;
 const Long EXTRA = 6;
 struct FenwickTree{
 	Long tree[MX+EXTRA];
