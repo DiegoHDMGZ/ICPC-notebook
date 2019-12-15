@@ -194,7 +194,7 @@ struct Big{
 
 ostream & operator << (ostream &out, const Big &number){
 	if(number.sgn == -1){
-		cout << "-";
+		out << "-";
 	}
 	for(Long i = 0; i < number.digits.size(); i++){
 		out << number.digits[i];

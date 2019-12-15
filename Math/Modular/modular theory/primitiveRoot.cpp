@@ -77,7 +77,7 @@ Long primitiveRoot(Long mod) { //O( mod log mod log phi(mod) + sqrt(mod))
 int main() {
 	ios_base::sync_with_stdio(false);
 	cin.tie(NULL);
-	debug(primitiveRoot(9  ));
+	debug(primitiveRoot(16  ));
 	return 0;
 }
 
