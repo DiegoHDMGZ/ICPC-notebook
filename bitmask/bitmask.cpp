@@ -23,7 +23,7 @@ void changeBit(Long &x, Long i){
 	x = x ^ (1LL << i);
 }
 
-//__builtin__popcount() : number of bits on
+//__builtin_popcount() : number of bits on
 
 int main() {
 	Long n = 8;
