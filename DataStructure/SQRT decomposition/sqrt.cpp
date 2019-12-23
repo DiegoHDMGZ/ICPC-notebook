@@ -34,11 +34,11 @@ struct SQRT{
 		return min(lowerLim(i) + sq - 1 , n - 1);
 	}
 	
-	void clear(Long N){
+	void clear(){
 		if(n == 0){
 			return;
 		}
-		for(Long i = 0; i < N; i++){
+		for(Long i = 0; i < n; i++){
 			A[i] = 0;
 			ans[block(i)] = 0;
 			lazy[block(i)] = 0;
@@ -72,9 +72,9 @@ struct SQRT{
 		}
 		update(l , upperLim(l) , x);
 		update(lowerLim(r) , r , x);
-		l = upperLim(l) + 1;
-		r = lowerLim(r) - 1 ;
-		for(Long i = l; i <= r; i+= sq){
+		Long l2 = upperLim(l) + 1;
+		Long r2 = lowerLim(r) - 1 ;
+		for(Long i = l2; i <= r2; i+= sq){
 			ans[block(i)] += x * (upperLim(i) - lowerLim(i) + 1);
 			lazy[block(i)] += x;
 		} 
