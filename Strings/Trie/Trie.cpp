@@ -14,14 +14,14 @@ struct Trie{
 	bool term[MX]; //indica si es nodo terminal
 	Long nodos = 1;
 	
-	void init(Long cnt){
-		nodos = 1;
-		for(Long i = 0; i < cnt; i++){
+	void init(){
+		for(Long i = 0; i < nodos; i++){
 			term[i] = 0;
 			for(int j = 0; j < ALPH; j++){
 				memo[i][j] = 0;
 			}
 		}
+		nodos = 1;
 	}
 	
 	void addWord(string &s){

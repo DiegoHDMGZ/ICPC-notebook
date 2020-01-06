@@ -26,13 +26,26 @@ Long editDistance(Long n = (Long)a.size()  , Long m = (Long)b.size() ){
 	}
 }
 
+void clear(){
+	Long n = a.size();
+	Long m = b.size();
+	REP(i , n + 1){
+		REP(j , m + 1){
+			used[i][j] = false;
+		}
+	}
+}
 int main() {
 	ios_base::sync_with_stdio(false);
 	cin.tie(NULL);
 	cout.tie(NULL);
 	
-	cin >> a >> b;
+	a = "aabba";
+	while(cin  >> b){
+		cout << editDistance() << endl;
+		clear();
+	}
 	
-	cout << editDistance() << endl;
+	
 	return 0;
 }
