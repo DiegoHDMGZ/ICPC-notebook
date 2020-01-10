@@ -30,8 +30,8 @@ Long segmentUnion(const vector<pair <Long,Long> > &a){ //O(nlogn)
 			result += (x[i].first - x[i - 1].first);
 		}
 		
-		if(x[i].second) c++;
-		else c--;
+		if(x[i].second) c--;
+		else c++;
 	}
 
 	return result;
