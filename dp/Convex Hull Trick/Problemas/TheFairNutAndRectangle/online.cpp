@@ -6,14 +6,17 @@ using namespace std;
 
 typedef long long Long;
 
-/*
-We have "n" linear functions yi = mi x + bi
-There are queries for the maximum y for a given x among all the functions. 
+//https://codeforces.com/contest/1083/problem/E
 
-For minimum just put the negative of mi and bi.
-*/
+const Long MX = 2e6;
+struct Point{
+	Long x, y , a;
+}P[MX];
 
-const Long MX = 2e5;
+bool cmp(const Point &P1, const Point &P2){
+	return P1.x < P2.x;
+}
+
 struct Line{
 	mutable Long m , b , rInter;
 	Line(){}
@@ -48,6 +51,7 @@ struct CHT{
 	
 	bool bad(Line l1, Line l2, Line l3){
 		//tells if l2 is bad an can be eliminated by l3
+		//intersection of l2 , l3 left of intersection of l1, l2
 		return intersect(l2 , l3) <= intersect(l1, l2);
 	}
 	
@@ -104,6 +108,31 @@ struct CHT{
 	
 }cht;
 
+Long dp[MX];
+
 int main() {
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	cout.tie(NULL);
+	
+	Long n;
+	cin >> n;
+	REP(i , n){
+		cin >> P[i].x >> P[i].y >> P[i].a;
+	}
+	sort(P, P + n, cmp);
+	
+	cht.addLine(Line(0, 0));
+	for(Long i = 0; i < n; i++){
+		dp[i] = P[i].x * P[i].y - P[i].a;
+		Long best = cht.maxY(P[i].y);
+		dp[i] += best;
+		cht.addLine(Line(-P[i].x , dp[i]));
+	}
+	Long ans = 0;
+	for(Long i = 0; i < n; i++){
+		ans = max(ans , dp[i]);
+	}
+	cout << ans << endl;
 	return 0;
 }

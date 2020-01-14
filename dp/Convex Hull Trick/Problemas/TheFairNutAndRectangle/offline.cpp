@@ -6,15 +6,7 @@ using namespace std;
 
 typedef long long Long;
 
-/*
-We have "n" linear functions yi = mi x + bi
-There are queries for the maximum y for a given x among all the functions. 
-
-For minimum just put the negative of mi and bi.
-Or change the comparator sign in cmp, and in check and in same slope case
-*/
-
-const Long MX = 2e5;
+const Long MX = 2e6;
 struct Line{
 	Long m , b;
 	Line(){}
@@ -112,12 +104,39 @@ struct CHT{
 	}
 	
 }cht;
+struct Point{
+	Long x, y , a;
+}P[MX];
+
+Long dp[MX];
+
+bool cmp(const Point &P1, const Point &P2){
+	return P1.x < P2.x;
+}
 
 int main() {
 	ios_base::sync_with_stdio(false);
 	cin.tie(NULL);
 	cout.tie(NULL);
 	
+	Long n;
+	cin >> n;
+	REP(i , n){
+		cin >> P[i].x >> P[i].y >> P[i].a;
+	}
+	sort(P, P + n, cmp);
 	
+	cht.addLine(Line(0, 0));
+	for(Long i = 0; i < n; i++){
+		dp[i] = P[i].x * P[i].y - P[i].a;
+		Long best = cht.maxY(-P[i].y);
+		dp[i] += best;
+		cht.addLine(Line(P[i].x , dp[i]));
+	}
+	Long ans = 0;
+	for(Long i = 0; i < n; i++){
+		ans = max(ans , dp[i]);
+	}
+	cout << ans << endl;
 	return 0;
 }

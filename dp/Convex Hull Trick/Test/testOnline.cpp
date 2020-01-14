@@ -42,14 +42,13 @@ struct CHT{
 		return a / b - ((a ^ b) < 0 && a % b); 
 	}
 	
-	bool bad(Line l1, Line l2, Line l3){
-		//tells if l2 is bad an can be eliminated by l3
-		//intersection of l2 , l3 left of intersection of l1, l2
-		return (l3.b - l2.b) * (l1.m - l2.m) <= (l2.b - l1.b) * (l2.m - l3.m);
-	}
-	
 	Long intersect(Line l1, Line l2){
 		return div(l1.b - l2.b , l2.m - l1.m );
+	}
+	
+	bool bad(Line l1, Line l2, Line l3){
+		//tells if l2 is bad an can be eliminated by l3
+		return intersect(l2 , l3) <= intersect(l1, l2);
 	}
 	
 	void addLine(Line L){
@@ -135,15 +134,15 @@ int main() {
 	cout.tie(NULL);
 	
 	Long n;
-	n = random(141,150);
+	n = random(300,300);
 
 	vector<Line> L;
 	Long Q = 100000 / n;
 
 	REP(i , n){
 		Line Li;
-		Li.m = random(-1, 1);
-		Li.b = random(-2,2);
+		Li.m = random(1e12, 1e13);
+		Li.b = random(1e11,2e11);
 		L.pb(Li);
 	
 		cht.addLine(Li);

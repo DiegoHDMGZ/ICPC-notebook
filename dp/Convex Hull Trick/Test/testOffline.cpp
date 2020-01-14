@@ -19,30 +19,27 @@ struct Line{
 	Long m , b;
 	Line(){}
 	Line(Long m , Long b) : m(m), b(b){}
-};
-
-bool cmp(const Line &L1, const Line &L2){
-	if(L1.m == L2.m){
-		return L1.b < L2.b;
+	
+	bool operator < (const Line &L1) const {
+		return m < L1.m;
 	}
-	return L1.m < L2.m;
-}
+	
+	Long val(Long x){
+		return m * x + b;
+	}
+};
 
 struct CHT{
 	vector<Line> envelope;
 	
-	Long f(Long pos , Long x){
-		return envelope[pos].m * x + envelope[pos].b;
-	}
-
 	bool check( Long med, Long x ){
-		return f(med + 1, x) - f(med , x ) <= 0;
+		return envelope[med + 1].val(x) - envelope[med].val(x) <= 0;
 	}
 
 	Long search(  Long ini , Long fin, Long x ){ //O(logn)
 		// F F F... V V V
-		if(!check(fin - 1, x)) return f(fin, x); //todos F
-		if(check(ini, x)) return f(ini, x); //todos V
+		if(!check(fin - 1, x)) return envelope[fin].val(x); //todos F
+		if(check(ini, x)) return envelope[ini].val(x); //todos V
 		while(fin - ini > 1){ // hay mas de 2 valores
 			Long med= ini + (fin - ini) / 2;
 			
@@ -54,13 +51,21 @@ struct CHT{
 			}
 		}
 		//hay 2 valores ini es F y fin es V
-		return f(fin, x);
+		return envelope[fin].val(x);
 	}
-
+	
+	Long div(Long a, Long b){ //floored division
+		assert(b != 0);
+		return a / b - ((a ^ b) < 0 && a % b); 
+	}
+	
+	Long intersect(Line l1, Line l2){
+		return div(l1.b - l2.b , l2.m - l1.m );
+	}
+	
 	bool bad(Line l1, Line l2, Line l3){
 		//tells if l2 is bad an can be eliminated by l3
-		//intersection of l1 , l3 left of intersection of l1, l2
-		return (l3.b - l1.b) *(l1.m - l2.m)  <=  (l2.b - l1.b) * (l1.m - l3.m);
+		return intersect(l2 , l3) <= intersect(l1, l2);
 	}
 
 	void addLine(Line l3){
@@ -68,35 +73,34 @@ struct CHT{
 			envelope.push_back(l3);
 			return;
 		}
-		if(envelope.size() == 1) {
-			if(l3.m == envelope[0].m){
-				if(l3.b > envelope[0].b){
-					envelope = {l3};
-				}
+		if(l3.m == envelope.back().m){
+			if(l3.b > envelope.back().b){
+				envelope.pop_back();
 			} else {
-				envelope.push_back(l3);
+				return;
 			}
+		}
+		if(envelope.size() <= 1) {
+			envelope.push_back(l3);
 			return;
 		}
-		
 		Long sz = envelope.size();
 		Line l1 = envelope[sz - 2];
 		Line l2 = envelope[sz - 1];
 		while(bad(l1 , l2 , l3) ) {
-			
 			envelope.pop_back();
-			sz = envelope.size();
-			l1 = envelope[sz - 2];
-			l2 = envelope[sz - 1];
 			if(envelope.size() == 1) {
 				break;
 			}
+			sz = envelope.size();
+			l1 = envelope[sz - 2];
+			l2 = envelope[sz - 1];
 		}
 		envelope.push_back(l3);
 	}
 
 	void build(vector<Line> &lines){ //O(n log n)
-		sort(lines.begin(), lines.end() , cmp);
+		sort(lines.begin(), lines.end() );
 		for(Line l : lines){
 			addLine(l);
 		}
@@ -145,8 +149,8 @@ int main() {
 	cout << "L = " << endl;
 	REP(i , n){
 		//cin >> L[i].m >> L[i].b;
-		L[i].m = random(-20,20);
-		L[i].b = random(-100,100);
+		L[i].m = random(-30,30);
+		L[i].b = random(-20,20);
 		cout << L[i].m << " " << L[i].b << endl;
 	}
 	cout << "--------------" << endl;
@@ -156,7 +160,7 @@ int main() {
 	/*Long q;
 	cin >> q;*/
 	REP(i , q){
-		Long x = random(-100 , 2);
+		Long x = random(-100 , 100);
 		/*Long x;
 		cin >> x;
 		debug(brute(L , x));
