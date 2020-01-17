@@ -8,6 +8,7 @@ using namespace std;
 typedef long long Long;
 
 const int MAXINT = 1e9;
+const Long INF = 1e18;
  
 mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
  
@@ -24,25 +25,21 @@ struct Item{
 
 typedef Item * pitem;
 
-Long cnt(pitem it) {
+Long getCnt(pitem it) {
 	return it ? it -> cnt : 0;
 }
 
-void updCnt(pitem it) {
-	if(it) {
-		it -> cnt = cnt(it -> l) + cnt(it -> r) + 1;
-	}
-}
-
-Long val(pitem it){
+Long getVal(pitem it){
 	return it ? it->value + it->add : 0;
 }
 
-void updateVal(pitem it){
-	if(it){
-		it->add =  val(it->l) + val(it->r);
+void updateNode(pitem it) {
+	if(it) {
+		it -> cnt = getCnt(it -> l) + getCnt(it -> r) + 1;
+		it->add =  getVal(it->l) + getVal(it->r);
 	}
 }
+
 
 void merge (pitem &t, pitem l , pitem r){ //O(log N)
 	if(!l || !r){
@@ -61,8 +58,7 @@ void merge (pitem &t, pitem l , pitem r){ //O(log N)
 		merge(r -> l, l , r->l);
 		t = r;
 	}
-	updCnt(t);
-	updateVal(t);
+	updateNode(t);
 }
 
 void split(pitem t,  pitem &l, pitem &r, Long key, Long add = 0){ //O(log N)
@@ -71,22 +67,19 @@ void split(pitem t,  pitem &l, pitem &r, Long key, Long add = 0){ //O(log N)
 		return;
 	}
 	
-	Long curKey = add + cnt(t -> l); // implicit key
+	Long curKey = add + getCnt(t -> l); // implicit key
 	
 	if(key <= curKey){
 		split(t -> l, l , t -> l , key , add);
 		r = t;
 	}
 	else{
-		split(t -> r, t -> r , r ,key , add + 1 + cnt(t -> l));
+		split(t -> r, t -> r , r ,key , add + 1 + getCnt(t -> l));
 		l = t;
 	}
 	
-	updCnt(t);
-	updateVal(t);
+	updateNode(t);
 }
-
-const Long INF = 1e18;
 
 struct Treap{
 	pitem tree;
@@ -105,7 +98,7 @@ struct Treap{
 			return;
 		}
 		
-		Long curKey = add + cnt(t -> l);
+		Long curKey = add + getCnt(t -> l);
 		if(curKey == key){
 			merge(t, t -> l , t -> r);
 		}
@@ -114,11 +107,10 @@ struct Treap{
 				erase(t -> l, key, add);
 			}
 			else{
-				erase(t -> r, key , add + 1 + cnt(t -> l) );
+				erase(t -> r, key , add + 1 + getCnt(t -> l) );
 			}
 		}
-		updCnt(t);
-		updateVal(t);
+		updateNode(t);
 	}
 	
 	void erase(Long key){ //O(log N)
@@ -130,7 +122,7 @@ struct Treap{
 		split(tree,T1,T2,A);
 		split(T2,T2,T3,B - A +1);
 		
-		Long resp = val(T2);
+		Long resp = getVal(T2);
 	
 		merge(tree,T1,T2);
 		merge(tree,tree,T3);

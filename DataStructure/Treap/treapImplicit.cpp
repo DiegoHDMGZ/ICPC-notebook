@@ -7,6 +7,7 @@ using namespace std;
 typedef long long Long;
 
 const int MAXINT = 1e9;
+const Long INF = 1e18;
 
 mt19937_64  rng(chrono::steady_clock::now().time_since_epoch().count());
 
@@ -16,26 +17,43 @@ Long random(Long a, Long b) {
 
 struct Item{
 	Long value,prior , cnt;
+	bool rev;
 	Item *l, *r;
 	Item(){
 	}
 	
-	Item(Long value, Long prior) : value(value) , prior(prior), l (NULL), r(NULL) , cnt(0){}
+	Item(Long value, Long prior) : value(value) , prior(prior), l (NULL), r(NULL) , cnt(0), rev(false){}
 };
 
 typedef Item * pitem;
 
-Long cnt(pitem it) {
+Long getCnt(pitem it) {
 	return it ? it -> cnt : 0;
 }
 
-void updCnt(pitem it) {
+void updateNode(pitem it) {
 	if(it) {
-		it -> cnt = cnt(it -> l) + cnt(it -> r) + 1;
+		it -> cnt = getCnt(it -> l) + getCnt(it -> r) + 1;
 	}
 }
 
+void push(pitem it){
+	if(it && it->rev){
+		swap(it->l , it->r);
+		if(it->l){
+			it->l->rev ^= true;
+		}
+		if(it->r){
+			it->r->rev ^= true;
+		}
+		it->rev = false;
+	}
+}
+
+
 void merge (pitem &t, pitem l , pitem r){ //O(log N)
+	push(l);
+	push(r);
 	if(!l || !r){
 		if(l){
 			t=l;
@@ -52,7 +70,7 @@ void merge (pitem &t, pitem l , pitem r){ //O(log N)
 		merge(r -> l, l , r->l);
 		t = r;
 	}
-	updCnt(t);
+	updateNode(t);
 }
 
 void split(pitem t,  pitem &l, pitem &r, Long key, Long add = 0){ //O(log N)
@@ -60,22 +78,20 @@ void split(pitem t,  pitem &l, pitem &r, Long key, Long add = 0){ //O(log N)
 		l = r = NULL;
 		return;
 	}
-	
-	Long curKey = add + cnt(t -> l); //implicit key
+	push(t);
+	Long curKey = add + getCnt(t -> l); //implicit key
 	
 	if(key <= curKey){
 		split(t -> l, l , t -> l , key , add);
 		r = t;
 	}
 	else{
-		split(t -> r, t -> r , r ,key , add + 1 + cnt(t -> l));
+		split(t -> r, t -> r , r ,key , add + 1 + getCnt(t -> l));
 		l = t;
 	}
 	
-	updCnt(t);
+	updateNode(t);
 }
-
-const Long INF = 1e18;
 
 struct Treap{
 	pitem tree;
@@ -94,7 +110,8 @@ struct Treap{
 			return;
 		}
 		
-		Long curKey = add + cnt(t -> l);
+		push(t);
+		Long curKey = add + getCnt(t -> l);
 		if(curKey == key){
 			merge(t, t -> l , t -> r);
 		}
@@ -103,10 +120,10 @@ struct Treap{
 				erase(t -> l, key, add);
 			}
 			else{
-				erase(t -> r, key , add + 1 + cnt(t -> l) );
+				erase(t -> r, key , add + 1 + getCnt(t -> l) );
 			}
 		}
-		updCnt(t);
+		updateNode(t);
 	}
 	
 	void erase(Long key){ //O(log N)
@@ -118,7 +135,8 @@ struct Treap{
 			return -INF;
 		}
 		
-		Long curKey = add + cnt(t -> l);
+		push(t);
+		Long curKey = add + getCnt(t -> l);
 		if(curKey == key){
 			return t->value;
 		}
@@ -127,7 +145,7 @@ struct Treap{
 				return search(t->l, key , add);
 			}
 			else{
-				return search(t->r ,key, add + 1 + cnt(t -> l) );
+				return search(t->r ,key, add + 1 + getCnt(t -> l) );
 			}
 		}
 	}
@@ -141,7 +159,8 @@ struct Treap{
 			return;
 		}
 		
-		Long curKey = add + cnt(t -> l);
+		push(t);
+		Long curKey = add + getCnt(t -> l);
 		if(curKey == key){
 			t -> value = val;
 		}
@@ -150,7 +169,7 @@ struct Treap{
 				replace(t->l, key , val , add);
 			}
 			else{
-				replace(t->r ,key, val , add + 1 + cnt(t -> l) );
+				replace(t->r ,key, val , add + 1 + getCnt(t -> l) );
 			}
 		}
 	}
@@ -158,6 +177,18 @@ struct Treap{
 	void replace(Long key, Long val){ //O(log N)
 		return replace(tree,key, val);
 	}
+	
+	void reverse(Long l, Long r){
+		if(l > r) return;
+		pitem t1, t2 , t3;
+		split(tree , t1 , t2, l);
+		split(t2, t2 , t3, r - l  + 1);
+		
+		t2->rev ^= true;
+		merge(tree, t1 , t2);
+		merge(tree, tree, t3);
+	}
+	
 	
 }tp;
 

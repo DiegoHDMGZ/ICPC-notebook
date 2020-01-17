@@ -9,6 +9,12 @@ typedef long long Long;
 
 const int MAXINT = 1e9;
 
+mt19937_64  rng(chrono::steady_clock::now().time_since_epoch().count());
+
+Long random(Long a, Long b) {
+	return uniform_int_distribution<Long>(a , b)(rng);
+}
+
 struct Item{
 	Long key,prior;
 	Item *l, *r;
@@ -43,12 +49,6 @@ void merge (pitem &t, pitem l , pitem r){ //O(log N)
 		merge(r -> l, l , r->l);
 		t = r;
 	}
-}
-
-mt19937_64  rng(chrono::steady_clock::now().time_since_epoch().count());
-
-Long random(Long a, Long b) {
-	return uniform_int_distribution<Long>(a , b)(rng);
 }
 
 struct Treap{
