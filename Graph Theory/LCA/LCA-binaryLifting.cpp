@@ -79,7 +79,7 @@ struct Graph {
 	}
 	
 	bool isAncestor(Long u, Long v){ //is u ancestor of v ?
-		return tIn[u] < tIn[v] && tOut[u] > tOut[v];
+		return tIn[u] <= tIn[v] && tOut[u] >= tOut[v];
 	}	
 	
 	bool onPath(int A, int B, int C) { //is C on AB path ?
