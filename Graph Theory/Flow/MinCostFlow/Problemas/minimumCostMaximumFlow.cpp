@@ -6,6 +6,8 @@ using namespace std;
 
 typedef long long Long;
 
+//https://codeforces.com/group/Ohoz9kAFjS/contest/266572/problem/G
+
 const Long MX = 5000;
 const Long INF = 1e18;
 
@@ -126,10 +128,10 @@ struct Graph{
 			y = p[y]->from; //go back n times just in case
 			//There is no loss as this is a cycle
 		}
-		Long minCap = INF;
+		Long cf = INF;
 		Long cur = y;
 		while(true ){
-			minCap = min(minCap , p[cur]->cap - p[cur]->flow);
+			cf = min(cf , p[cur]->cap - p[cur]->flow);
 			cur = p[cur]->from;
 			if(cur == y){
 				break;
@@ -138,9 +140,9 @@ struct Graph{
 		cur = y;
 		Long cost = 0;
 		while(true ){
-			cost += minCap * p[cur]->cost;
-			p[cur]->flow += minCap;
-			p[cur]->rev->flow -= minCap;
+			cost += cf * p[cur]->cost;
+			p[cur]->flow += cf;
+			p[cur]->rev->flow -= cf;
 			cur = p[cur]->from;
 			if(cur == y){
 				break;
@@ -150,8 +152,7 @@ struct Graph{
 	}
 	
 	Long bellmanFord(Long n, Long root = 0){ //O(nm)
-		vector<Long> d(n, INF);
-		d[root] = 0;
+		vector<Long> d(n, 0);
 		Long m = E.size();
 		Long negaCycle; //negative cycle flag
 		
@@ -178,14 +179,14 @@ struct Graph{
 	
 	}
 	
-	pair<Long,Long> minCostFlow(Long s, Long t, Long n){
+	pair<Long,Long> minCostFlow(Long s, Long t, Long n){ //O(m^2 * n * W * C)
 		//<maxFlow, minCost>
 		pair<Long,Long> ans = maxFlow(s, t , n);
 		Long inc;
 		do{
 			inc = bellmanFord(n , s);
 			ans.second += inc;
-		}while(inc > 0);
+		}while(inc < 0);
 		return ans;
 	}
 } G;
@@ -194,6 +195,18 @@ int main() {
 	ios_base::sync_with_stdio(false);
 	cin.tie(NULL);
 	cout.tie(NULL);
-
+	
+	Long n , m;
+	cin >> n >> m;
+	REP(i , m){
+		Long u , v, w , c;
+		cin >> u >> v >> w >> c;
+		u--;
+		v--;
+		
+		G.addEdge(u , v , w , c , true);
+	}
+	Long s = 0, t = n - 1; 
+	cout << G.minCostFlow(s , t , t + 1).second;
 	return 0;
 }

@@ -52,7 +52,7 @@ struct Graph{
 		}
 	}
 	
-	bool beLongmanFord(Long n, Long m, Long root = 0){ //O(nm)
+	bool bellmanFord(Long n, Long m, Long root = 0){ //O(nm)
 		d[root] = 0;
 	
 		Long negaCycle; //negative cycle flag
