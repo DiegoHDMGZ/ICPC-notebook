@@ -83,7 +83,7 @@ struct Graph {
 		st.build(euler);
 	}
 	
-	Long lca(Long u, Long v){ //O(logn)
+	Long lca(Long u, Long v){ //O(1)
 		return st.query(min(first[u] , first[v]) , max(first[u] , first[v]));
 	}
 	

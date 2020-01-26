@@ -10,11 +10,15 @@ typedef long long Long;
 const Long MX = 5000;
 const Long INF = 1e18;
 
+struct Edge{
+	Long to, cap, flow;
+	Edge *rev;
+	Edge(): rev(NULL) {}
+	Edge(Long to, Long cap) : to(to), cap(cap), flow(0), rev(NULL) {}
+};
+
 struct Graph{
-	vector<Long> adj[MX];
-	Long cap[MX][MX]; 
-	Long flow[MX][MX];
-	bool added[MX][MX];
+	vector<Edge*> adj[MX];
 	Long level[MX];
 	Long nextEdge[MX];
 	
@@ -23,39 +27,40 @@ struct Graph{
 			adj[i].clear();
 			level[i] = -1;
 			nextEdge[i] = 0;
-			for(Long j = 0; j < N; j++) {
-				cap[i][j] = 0;
-				flow[i][j] = 0;
-				added[i][j] = false;
-			}
 		}
 	}
 	
 	void addEdge(Long u, Long v, Long w, bool dir){
-		if(!added[min(u, v)][max(u , v)]) {
-			adj[u].push_back(v);
-			adj[v].push_back(u);
-		}
-		added[min(u , v)][max(u , v)] = true;
-		cap[u][v] += w;
+		Edge *forward = new Edge(v , w);
+		Edge *backward = new Edge(u , 0);
+		forward->rev = backward;
+		backward->rev = forward;
+
+		adj[u].pb(forward);
+		adj[v].pb(backward);
+
 		if(!dir){
-			cap[v][u] += w;
+			forward = new Edge(u , w);
+			backward = new Edge(v , 0);
+			forward->rev = backward;
+			backward->rev = forward;
+			adj[v].pb(forward);
+			adj[u].pb(backward);
 		}
 	}
 	
 	Long dfs(Long u, Long t ,Long f){ 
 		if(u == t) return f;
-		
 		for(Long &i = nextEdge[u]; i < adj[u].size(); i++){
-			Long v = adj[u][i];
-			Long cf = cap[u][v] - flow[u][v];
+			Edge *e = adj[u][i];
+			Long v = e->to;
+			Long cf = e->cap - e->flow;
 			if(cf == 0 || level[v] != level[u] + 1) continue;
 			
 			Long ret = dfs(v, t, min(f, cf) );
-			
 			if(ret > 0){
-				flow[u][v] += ret;
-				flow[v][u] -= ret;
+				e->flow += ret;
+				e->rev->flow -= ret;
 				return ret;
 			}
 		}
@@ -69,8 +74,9 @@ struct Graph{
 		while(!q.empty()){
 			Long u = q.front();
 			q.pop_front();
-			for(Long v : adj[u]){
-				Long cf = cap[u][v] - flow[u][v];
+			for(Edge *e: adj[u]){
+				Long v = e->to;
+				Long cf = e->cap - e->flow;
 				if(level[v] == -1 && cf > 0){
 					level[v] = level[u] + 1;
 					q.push_back(v);
@@ -100,7 +106,6 @@ struct Graph{
 		return ans;
 	}
 } G;
-
 
 
 int main(){

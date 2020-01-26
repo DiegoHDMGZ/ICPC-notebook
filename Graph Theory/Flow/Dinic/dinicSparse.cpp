@@ -7,16 +7,13 @@ using namespace std;
 
 typedef long long Long;
 
-
 const Long MX = 5000;
 const Long INF = 1e18;
 
 struct Edge{
 	Long to, cap, flow;
 	Edge *rev;
-	Edge(){
-		rev = NULL;
-	}
+	Edge(): rev(NULL) {}
 	Edge(Long to, Long cap) : to(to), cap(cap), flow(0), rev(NULL) {}
 };
 
@@ -43,25 +40,24 @@ struct Graph{
 		adj[v].pb(backward);
 
 		if(!dir){
-			Edge forward = Edge(u , w);
-			Edge backward = Edge(v , 0);
-			adj[v].pb(&forward);
-			adj[u].pb(&backward);
+			forward = new Edge(u , w);
+			backward = new Edge(v , 0);
+			forward->rev = backward;
+			backward->rev = forward;
+			adj[v].pb(forward);
+			adj[u].pb(backward);
 		}
 	}
 	
 	Long dfs(Long u, Long t ,Long f){ 
-		
 		if(u == t) return f;
-		
 		for(Long &i = nextEdge[u]; i < adj[u].size(); i++){
-			Edge * e = adj[u][i];
+			Edge *e = adj[u][i];
 			Long v = e->to;
 			Long cf = e->cap - e->flow;
 			if(cf == 0 || level[v] != level[u] + 1) continue;
 			
 			Long ret = dfs(v, t, min(f, cf) );
-			
 			if(ret > 0){
 				e->flow += ret;
 				e->rev->flow -= ret;
@@ -111,38 +107,11 @@ struct Graph{
 	}
 } G;
 
+
 int main(){
 	ios_base::sync_with_stdio(false);
 	cin.tie(NULL);
 	cout.tie(NULL);
-	
-	Long Q;
-	cin >> Q;
-	REP(q , Q){
-		Long n , m , v , maxT;
-		cin >> n >> m >> v >> maxT;
-		vector<pair<Long,Long> > person(n);
-		vector<pair<Long,Long> > taxi(m);
-		Long s = 0;
-		Long t = n + m + 1;
-		G.clear(t + 1);
-		REP(i , n){
-			G.addEdge(m + i + 1 , t ,1 , true );
-			cin >> person[i].first >> person[i].second;
-		}
-		REP(i , m){
-			G.addEdge(s , i + 1, 1 , true);
-			cin >> taxi[i].first >> taxi[i].second;
-		}
-		REP(i , m){
-			REP(j , n){
-				if(( abs(taxi[i].first - person[j].first) + abs(taxi[i].second - person[j].second) ) * 200 <= maxT * v){
-					G.addEdge(i + 1 , j + m + 1 , 1 , true);
-				}
-			}
-		}
-		cout << G.maxFlow(s , t , t + 1) << endl;
-	}
 	
 	return 0;
 }

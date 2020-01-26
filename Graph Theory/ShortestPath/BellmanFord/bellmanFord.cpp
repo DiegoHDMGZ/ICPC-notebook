@@ -39,7 +39,8 @@ struct Graph{
 	
 	void retrieveCycle(Long y, Long n){
 		REP ( i , n) {
-			y = p[y]; //retrocedemos por si acaso n veces. No hay perdida porque es un ciclo
+			y = p[y]; //go back n times just in case
+			//There is no loss as this is a cycle
 		}
 		
 		path.clear();
@@ -54,31 +55,28 @@ struct Graph{
 	bool beLongmanFord(Long n, Long m, Long root = 0){ //O(nm)
 		d[root] = 0;
 	
-		Long x;
+		Long negaCycle; //negative cycle flag
 		REP(i , n) {
-			x = -1; //indicador de ciclo negativo
-			bool mejora = false;
+			negaCycle = -1; 
 			REP ( j , m ) {
 				if (d[E[j].u] < INF) {
 					if (d[E[j].v] > d[E[j].u] + E[j].cost) {
-						d[E[j].v] = max(-INF,d[E[j].u] + E[j].cost); //para evitar el overflow
+						d[E[j].v] = max(-INF,d[E[j].u] + E[j].cost); //avoiding overflow
 						p[E[j].v] = E[j].u;
-						x = E[j].v;
-						mejora = true;
+						negaCycle = E[j].v;
 					}
 				}
 			}
-			
-			if(!mejora) break;
+			if(negaCycle == -1) break;
 		}
 		
-		if(x == -1){
-			return false; //no hay ciclo negativo
+		if(negaCycle == -1){
+			return false; //no negative cycle
 		}
 		else{
 			return true;
 		
-			retrieveCycle(x, n);
+			retrieveCycle(negaCycle, n);
 		}
 	
 	}

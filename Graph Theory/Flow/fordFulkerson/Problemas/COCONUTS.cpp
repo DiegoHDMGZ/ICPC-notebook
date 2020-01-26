@@ -10,36 +10,41 @@ typedef long long Long;
 const Long MX = 5000;
 const Long INF = 1e18;
 
+struct Edge{
+	Long to, cap, flow;
+	Edge *rev;
+	Edge(): rev(NULL) {}
+	Edge(Long to, Long cap) : to(to), cap(cap), flow(0), rev(NULL) {}
+};
+
 struct Graph{
-	vector<Long> adj[MX];
-	Long cap[MX][MX]; 
-	Long flow[MX][MX];
+	vector<Edge *> adj[MX];
 	bool vis[MX];
-	bool added[MX][MX];
 	
 	void clear(Long N = MX){
 		for(Long i = 0 ; i < N; i++){
 			adj[i].clear();
 			vis[i] = false;
-			for(Long j = 0; j < N; j++) {
-				cap[i][j] = 0;
-				flow[i][j] = 0;
-				added[i][j] = false;
-			}
 		}
 	}
 	
 	void addEdge(Long u, Long v, Long w, bool dir ){
-		if(!added[min(u, v)][max(u , v)]) {
-			adj[u].push_back(v);
-			adj[v].push_back(u);
-		}
-		added[min(u , v)][max(u , v)] = true;
-		cap[u][v] += w;
+		Edge *forward = new Edge(v , w);
+		Edge *backward = new Edge(u , 0);
+		forward->rev = backward;
+		backward->rev = forward;
+
+		adj[u].pb(forward);
+		adj[v].pb(backward);
+
 		if(!dir){
-			cap[v][u] += w;
+			forward = new Edge(u , w);
+			backward = new Edge(v , 0);
+			forward->rev = backward;
+			backward->rev = forward;
+			adj[v].pb(forward);
+			adj[u].pb(backward);
 		}
-		
 	}
 	
 	Long dfs(Long u, Long t ,Long f){ //O(E)
@@ -47,15 +52,16 @@ struct Graph{
 		if(vis[u]) return 0;
 		vis[u] = true;
 		
-		for( Long v : adj[u] ) {
-			Long cf = cap[u][v] - flow[u][v];
+		for( Edge * e : adj[u] ) {
+			Long v = e->to;
+			Long cf = e->cap - e->flow;
 			if(cf == 0) continue;
 			
 			Long ret = dfs(v, t, min(f, cf) );
 			
 			if(ret > 0){
-				flow[u][v] += ret;
-				flow[v][u] -= ret;
+				e->flow += ret;
+				e->rev->flow -= ret;
 				return ret;
 			}
 		}
