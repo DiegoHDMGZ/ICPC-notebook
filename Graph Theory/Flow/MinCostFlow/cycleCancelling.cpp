@@ -178,7 +178,8 @@ struct Graph{
 	
 	}
 	
-	pair<Long,Long> minCostFlow(Long s, Long t, Long n){
+	pair<Long,Long> minCostFlow(Long s, Long t, Long n){ 
+		//O(dinic + nm * # cycles) = O(dinic + nm * (mUC)) 
 		//<maxFlow, minCost>
 		pair<Long,Long> ans = maxFlow(s, t , n);
 		Long inc;
