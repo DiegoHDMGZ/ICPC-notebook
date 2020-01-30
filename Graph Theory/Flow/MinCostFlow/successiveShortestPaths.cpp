@@ -6,8 +6,6 @@ using namespace std;
 
 typedef long long Long;
 
-//https://codeforces.com/group/Ohoz9kAFjS/contest/266572/problem/G
-
 const Long MX = 5000;
 const Long INF = 1e18;
 
@@ -112,7 +110,7 @@ struct Graph{
 	}
 	
 	pair<Long,Long> minCostFlow(Long s, Long t, Long n){ 
-		//O( n * m * |f| )
+		//O(n * m |f| )
 		//<maxFlow, minCost>
 		pair<Long,Long> inc;
 		pair<Long,Long> ans = {0,0};
@@ -127,21 +125,5 @@ struct Graph{
 } G;
 
 int main() {
-	ios_base::sync_with_stdio(false);
-	cin.tie(NULL);
-	cout.tie(NULL);
-	
-	Long n , m;
-	cin >> n >> m;
-	REP(i , m){
-		Long u , v, w , c;
-		cin >> u >> v >> w >> c;
-		u--;
-		v--;
-		
-		G.addEdge(u , v , w , c , true);
-	}
-	Long s = 0, t = n - 1; 
-	cout << G.minCostFlow(s , t , t + 1).second;
 	return 0;
 }
