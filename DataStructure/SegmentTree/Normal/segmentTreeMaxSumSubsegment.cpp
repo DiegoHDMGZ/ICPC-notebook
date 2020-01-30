@@ -80,7 +80,7 @@ struct SegmentTree {
 	
 	Data query(Long l , Long r) {
 		assert(maxN > 0);
-		return query(l , r, 0 , 1 , maxN - 1);
+		return query(l , r, 1 , 0 , maxN - 1);
 	}
 
 	void update(Long pos, Long valor, Long v, Long tl, Long tr) { //O(logn)
