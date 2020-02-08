@@ -39,10 +39,9 @@ struct Factor{
 		exp = e;
 	}
 };
-deque<Factor> factores;
 
-void factorize(Long x){ //O(log x)
-	factores.clear();
+vector<Factor> factorize(Long x){ //O(log x)
+	vector<Factor> factors;
 	while(x > 1){
 		Long f = fact[x];
 		Long exp = 0;
@@ -50,9 +49,9 @@ void factorize(Long x){ //O(log x)
 			x /= f;
 			exp++;
 		}
-		factores.push_front(Factor(f,exp));
+		factors.push_back(Factor(f,exp));
 	}
-	
+	return factors;
 }
 
 vector<Long> getDivisors(Long x) {
@@ -70,7 +69,6 @@ vector<Long> getDivisors(Long x) {
 			}
 		}
 	}
-	//sort(ans.begin(), ans.end());
 	return ans;
 }
 
