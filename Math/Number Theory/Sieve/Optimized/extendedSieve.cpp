@@ -63,12 +63,12 @@ vector<Long> getDivisors(Long x) {
 		while(x % f == 0) {
 			num *= f;
 			x /= f;
-			
 			for(Long i = 0; i < sz; i++) {
 				ans.pb(num * ans[i]);
 			}
 		}
 	}
+	//sort(ans.begin(), ans.end());
 	return ans;
 }
 
