@@ -24,7 +24,7 @@ Long gcd(Long a, Long b, Long &x, Long &y) { //O(min(loga,logb))
 }
 
 //ax + by = c
-bool diophantine(Long a, Long b, Long c, Long &x, Long &y, Long &g) { //O(min(loga,logb))
+bool diophantine(Long a, Long b, Long c, Long &x, Long &y, Long &g) { //O(min(loga,logb) + #solutions)
     if(a == 0 && b == 0){
 		if(c != 0) return false;
 		else{
@@ -33,7 +33,7 @@ bool diophantine(Long a, Long b, Long c, Long &x, Long &y, Long &g) { //O(min(lo
 		}
 	}
     g = gcd(a, b, x, y);
-    if (c % g) {
+    if (c % g != 0) {
         return false;
     }
 
@@ -42,43 +42,60 @@ bool diophantine(Long a, Long b, Long c, Long &x, Long &y, Long &g) { //O(min(lo
     return true;
 }
 
-void shiftSolution(Long & x, Long & y, Long a, Long b, Long cnt) { //O(1)
-    x += cnt * b;
-    y -= cnt * a;
+Long divDown(Long a, Long b){
+    Long d = abs(a) / abs(b);
+    if((a > 0 && b > 0) || (a < 0 && b < 0)){
+        return d;
+    } else {
+        if(a % b == 0){
+            return -d;
+        } else {
+            return -d - 1;
+        }
+    }
+}
+ 
+Long divUp(Long a, Long b){
+    Long d = abs(a) / abs(b);
+    if((a > 0 && b > 0) || (a < 0 && b < 0)){
+        if(a % b == 0) return d;
+        else return d + 1;
+    } else {
+        return -d;
+    }
 }
 
-Long find_all_solutions(Long a, Long b, Long c, Long minx, Long maxx, Long miny, Long maxy) { //O(max(loga,logb))
-    Long x, y, g;
-    if (! diophantine(a, b, c, x, y, g)) return 0;
-    a /= g;  b /= g;
+vector<pair<Long,Long> > getAllSolutions(Long a, Long b, Long c, Long lx, Long rx, Long ly, Long ry) { //O(min(loga,logb))
+    Long x0, y0, g;
+    if (!diophantine(a, b, c, x0, y0, g)) return {};
 
-    Long sign_a = a>0 ? +1 : -1;
-    Long sign_b = b>0 ? +1 : -1;
-
-    shiftSolution (x, y, a, b, (minx - x) / b);
-    if (x < minx) shiftSolution (x, y, a, b, sign_b);
-    if (x > maxx) return 0;
-    Long lx1 = x;
-
-    shiftSolution (x, y, a, b, (maxx - x) / b);
-    if (x > maxx) shiftSolution (x, y, a, b, -sign_b);
-    Long rx1 = x;
-
-    shiftSolution (x, y, a, b, - (miny - y) / a);
-    if (y < miny) shiftSolution (x, y, a, b, -sign_a);
-    if (y > maxy) return 0;
-    Long lx2 = x;
-
-    shiftSolution (x, y, a, b, - (maxy - y) / a);
-    if (y > maxy) shiftSolution (x, y, a, b, sign_a);
-    Long rx2 = x;
-
-    if (lx2 > rx2) swap (lx2, rx2);
-    Long lx = max (lx1, lx2);
-    Long rx = min (rx1, rx2);
-
-    if (lx > rx) return 0;
-    return (rx - lx) / abs(b) + 1;
+	Long kMinX, kMaxX;
+    if(b > 0){
+        kMinX = divUp((lx - x0) * g , b);
+        kMaxX = divDown((rx - x0) * g , b);
+    } else {
+        kMinX = divUp((rx - x0) * g , b);
+        kMaxX = divDown((lx - x0) * g , b);
+    }
+    Long kMinY, kMaxY;
+    if(a > 0){
+        kMinY = divUp((y0 - ry) * g , a);
+        kMaxY = divDown((y0 - ly) * g , a);
+    } else {
+        kMinY = divUp((y0 - ly) * g , a);
+        kMaxY = divDown((y0 - ry) * g , a);
+    }
+ 
+    Long kMin = max(kMinX, kMinY);
+    Long kMax = min(kMaxX, kMaxY);
+	
+	if(kMin > kMax) return {};
+	
+	vector<pair<Long,Long>> ans;
+	for(Long k = kMin; k <= kMax; k++){
+		ans.push_back({x0 + k * (b / g) , y0 - k * (b / g)});
+	}
+	return ans;
 }
 
 int main() {

@@ -26,7 +26,7 @@ Long gcd(Long a, Long b, Long &x, Long &y) { //O(min(loga,logb))
 }
 
 //ax + by = c
-bool diophantine(Long a, Long b, Long c, Long &x, Long &y, Long &g) { //O(max(loga,logb))
+bool diophantine(Long a, Long b, Long c, Long &x, Long &y, Long &g) { //O(min(loga,logb))
     if(a == 0 && b == 0){
 		if(c != 0) return false;
 		else{
@@ -35,7 +35,7 @@ bool diophantine(Long a, Long b, Long c, Long &x, Long &y, Long &g) { //O(max(lo
 		}
 	}
     g = gcd(a, b, x, y);
-    if (c % g) {
+    if (c % g != 0) {
         return false;
     }
 
