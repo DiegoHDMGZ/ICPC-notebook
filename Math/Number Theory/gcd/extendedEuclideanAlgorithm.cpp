@@ -9,7 +9,11 @@ typedef long long Long;
 //ax + by = gcd(a , b)
 Long gcd (Long a, Long b, Long & x, Long & y) { //O(min(loga,logb))
 	if(b == 0){
-		x = 1;
+		if(a >= 0) {
+			x = 1;
+		} else {
+			x = -1;
+		}
 		y = 0;
 		return abs(a);
 	}
