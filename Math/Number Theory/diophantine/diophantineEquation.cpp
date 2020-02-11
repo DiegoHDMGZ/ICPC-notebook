@@ -68,6 +68,35 @@ Long divUp(Long a, Long b){
 vector<pair<Long,Long> > getAllSolutions(Long a, Long b, Long c, Long lx, Long rx, Long ly, Long ry) { //O(min(loga,logb))
     Long x0, y0, g;
     if (!diophantine(a, b, c, x0, y0, g)) return {};
+    
+    vector<pair<Long,Long>> ans;
+	if(a == 0){
+        if(b == 0){
+			for(Long i = lx; i <= rx; i++){
+				for(Long j = ly; j <= ry; j++){
+					ans.push_back({i , j });
+				}
+			}
+        } else {
+            if((ly <= c / b) && (c / b <= ry)){
+				for(Long i = lx ; i <= rx; i++){
+					ans.push_back({i , c / b});
+				}
+            } else {
+                return {};
+            }
+        }
+        return ans;
+    } else if(b == 0){
+        if((lx <= c / a) && (c / a <= rx)){
+			for(Long i = ly; i <= ry; i++){
+				ans.push_back({c / a , i});
+			}
+        } else {
+            return {};
+        }
+        return ans;
+    }
 
 	Long kMin, kMax;
     if(b > 0){
@@ -87,7 +116,6 @@ vector<pair<Long,Long> > getAllSolutions(Long a, Long b, Long c, Long lx, Long r
 	
 	if(kMin > kMax) return {};
 	
-	vector<pair<Long,Long>> ans;
 	for(Long k = kMin; k <= kMax; k++){
 		ans.push_back({x0 + k * (b / g) , y0 - k * (b / g)});
 	}
