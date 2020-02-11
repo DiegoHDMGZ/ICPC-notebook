@@ -87,25 +87,21 @@ Long getAllSolutions(Long a, Long b, Long c, Long lx, Long rx, Long ly, Long ry)
         }
     }
    
-    Long kMinX, kMaxX;
+	Long kMin, kMax;
     if(b > 0){
-        kMinX = divUp((lx - x0) * g , b);
-        kMaxX = divDown((rx - x0) * g , b);
+        kMin = divUp((lx - x0) * g , b);
+        kMax = divDown((rx - x0) * g , b);
     } else {
-        kMinX = divUp((rx - x0) * g , b);
-        kMaxX = divDown((lx - x0) * g , b);
+        kMin = divUp((rx - x0) * g , b);
+        kMax = divDown((lx - x0) * g , b);
     }
-    Long kMinY, kMaxY;
     if(a > 0){
-        kMinY = divUp((y0 - ry) * g , a);
-        kMaxY = divDown((y0 - ly) * g , a);
+        kMin = max(kMin , divUp((y0 - ry) * g , a));
+        kMax = min(kMax, divDown((y0 - ly) * g , a) );
     } else {
-        kMinY = divUp((y0 - ly) * g , a);
-        kMaxY = divDown((y0 - ry) * g , a);
+        kMin = max(kMin, divUp((y0 - ly) * g , a));
+        kMax = min(kMax, divDown((y0 - ry) * g , a));
     }
- 
-    Long kMin = max(kMinX, kMinY);
-    Long kMax = min(kMaxX, kMaxY);
    
     if(kMin > kMax) return 0;
    
