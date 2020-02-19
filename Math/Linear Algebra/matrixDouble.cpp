@@ -78,7 +78,8 @@ Double determinant(Matrix M){
 	return det;
 }
 
-void print(Matrix &a){
+void print(Matrix &a, string name){
+	cout << name << " = " << endl;
 	Long n = a.size();
 	Long m = a[0].size();
 	for(Long i = 0; i < n; i++){
@@ -87,6 +88,58 @@ void print(Matrix &a){
 		}
 		cout << endl;
 	}
+	cout << endl;
+}
+
+Matrix inverse(Matrix M){
+	assert(M.size() == M[0].size());
+	Long n = M.size();
+	Matrix ans(n , vector<Double>(n, 0));
+	for(Long i = 0; i < n; i++){
+		ans[i][i] = 1;
+	}
+	
+	for(Long i = 0; i < n; i++){
+		Long pivot = i;
+		//heuristic to find pivot
+		for(Long j = i + 1; j < n; j++){
+			if(fabs(M[j][i]) > fabs(M[pivot][i]) ){
+				pivot = j;
+			} 
+		}
+	
+		if(i != pivot){
+			swap(M[i] , M[pivot]);
+			swap(ans[i], ans[pivot]);
+		}
+		assert(fabs(M[i][i]) > EPS);
+		double c = M[i][i];
+		for(Long j = 0; j < n; j++){
+			M[i][j] /= c;
+			ans[i][j] /= c;
+		}
+		for(Long j = i + 1; j < n; j++){
+			if(fabs(M[j][i]) >= EPS){
+				double c = M[j][i];
+				for(Long k = 0; k < n; k++){
+					M[j][k] -= M[i][k] * c   ;
+					ans[j][k] -= ans[i][k] * c; 
+				}
+			}
+		}
+	}
+	
+	for(Long i = n - 2; i >= 0; i--){
+		for(Long j = i + 1; j < n; j++){
+			Double c = M[i][j];
+			for(Long k = 0; k < n; k++){
+				M[i][k] -= M[j][k] * c;
+				ans[i][k] -= ans[j][k] * c;
+			}
+		}
+	}
+	
+	return ans;
 }
 
 int main(){
@@ -103,6 +156,6 @@ int main(){
 			cin >> a[i][j];
 		}
 	}
-	cout << fixed << setprecision(3) << determinant(a) << endl;
+	Matrix inv = inverse(a);
 	return 0;
 }
