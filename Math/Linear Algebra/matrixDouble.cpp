@@ -11,7 +11,7 @@ typedef long double Double;
 const Double EPS = 1e-6;
 typedef vector<vector<Double> > Matrix;
 
-Matrix add(const Matrix &a , const Matrix &b){ //O(n * m)
+Matrix operator +(const Matrix &a , const Matrix &b){ //O(n * m)
 	Long n = a.size();
 	Long m = a[0].size();
 	assert(a.size() == b.size() );
@@ -27,7 +27,7 @@ Matrix add(const Matrix &a , const Matrix &b){ //O(n * m)
 	return c;
 }
 
-Matrix mult(const Matrix &a, const Matrix &b){ //O( n^3)
+Matrix operator *(const Matrix &a, const Matrix &b){ //O( n^3)
 	Long n1 = a.size();
 	Long m1 = a[0].size();
 	Long n2 = b.size();
@@ -78,13 +78,18 @@ Double determinant(Matrix M){
 	return det;
 }
 
-void print(Matrix &a, string name){
+void print(Matrix a, string name){
 	cout << name << " = " << endl;
 	Long n = a.size();
 	Long m = a[0].size();
 	for(Long i = 0; i < n; i++){
 		for(Long j = 0; j < m; j++){
-			cout << a[i][j] << " ";
+			if(fabs(a[i][j]) < EPS) {
+				cout << 0 << " ";
+			} else {
+				cout << a[i][j] << " ";
+			}
+			
 		}
 		cout << endl;
 	}
@@ -112,7 +117,7 @@ Matrix inverse(Matrix M){
 			swap(M[i] , M[pivot]);
 			swap(ans[i], ans[pivot]);
 		}
-		assert(fabs(M[i][i]) > EPS);
+		assert(fabs(M[i][i]) >= EPS);
 		double c = M[i][i];
 		for(Long j = 0; j < n; j++){
 			M[i][j] /= c;
@@ -131,10 +136,12 @@ Matrix inverse(Matrix M){
 	
 	for(Long i = n - 2; i >= 0; i--){
 		for(Long j = i + 1; j < n; j++){
-			Double c = M[i][j];
-			for(Long k = 0; k < n; k++){
-				M[i][k] -= M[j][k] * c;
-				ans[i][k] -= ans[j][k] * c;
+			if(fabs(M[i][j]) >= EPS){
+				Double c = M[i][j];
+				for(Long k = 0; k < n; k++){
+					M[i][k] -= M[j][k] * c;
+					ans[i][k] -= ans[j][k] * c;
+				}
 			}
 		}
 	}
@@ -157,5 +164,7 @@ int main(){
 		}
 	}
 	Matrix inv = inverse(a);
+	print(a * inv, "I");
+
 	return 0;
 }

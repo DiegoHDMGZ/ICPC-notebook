@@ -24,7 +24,7 @@ Long mult(Long a, Long b, Long m){
 	return (a * b) % m;
 }
 
-Matrix add(const Matrix &a , const Matrix &b){ //O(n * m)
+Matrix operator +(const Matrix &a , const Matrix &b){ //O(n * m)
 	Long n = a.size();
 	Long m = a[0].size();
 	assert(a.size() == b.size() );
@@ -40,7 +40,7 @@ Matrix add(const Matrix &a , const Matrix &b){ //O(n * m)
 	return c;
 }
 
-Matrix mult(const Matrix &a, const Matrix &b){ //O( n^3)
+Matrix operator *(const Matrix &a, const Matrix &b){ //O( n^3)
 	Long n1 = a.size();
 	Long m1 = a[0].size();
 	Long n2 = b.size();
@@ -60,7 +60,7 @@ Matrix mult(const Matrix &a, const Matrix &b){ //O( n^3)
 	return c;
 }
 
-void print(Matrix &a , string nombre){
+void print(Matrix a , string nombre){
 	cout << nombre << " = " << endl;
 	Long n = a.size();
 	Long m = a[0].size();
