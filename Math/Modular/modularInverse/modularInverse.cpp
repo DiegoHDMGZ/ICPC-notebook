@@ -43,7 +43,7 @@ Long gcd(Long a, Long b, Long & x, Long & y) { //O(min(loga,logb))
 	return g;
 }
 
-Long modInverse(Long a, Long mod){ //O(max(loga,logb))
+Long modInverse(Long a, Long mod){ //O(min(loga,logb))
 	//a , m coprime
 	Long x,y;
 	Long g = gcd(a, mod ,x,y);
