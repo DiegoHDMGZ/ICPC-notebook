@@ -22,28 +22,33 @@ Long fastPow(Long a, Long b , Long mod){ //O(logb)
 	return ans;
 }
 
-Long modInverse(Long a, Long m){ //O(logm) , m prime , a , m coprimes
-	return fastPow(a,m-2,m);
+Long modInverse(Long a, Long mod){ //O(logm) , m prime , a , m coprimes
+	return fastPow(a,mod - 2,mod);
 }
 
-Long gcd (Long a, Long b, Long & x, Long & y) { //O(max(loga,logb))
-    if (a == 0) {
-        x = 0;
-        y = 1;
-        return b;
-    }
-    Long x1, y1;
-    Long d = gcd (b % a, a, x1, y1);
-    x = y1 - (b / a) * x1;
-    y = x1;
-    return d;
+Long gcd(Long a, Long b, Long & x, Long & y) { //O(min(loga,logb))
+	if(b == 0){
+		if(a >= 0) {
+			x = 1;
+		} else {
+			x = -1;
+		}
+		y = 0;
+		return abs(a);
+	}
+	Long x2, y2;
+	Long g = gcd(b, a % b , x2, y2);
+	x = y2;
+	y = x2 - (a / b) * y2;
+	return g;
 }
 
-Long modInverseGCD(Long a, Long m){ //O(max(loga,logb))
+Long modInverseGCD(Long a, Long mod){ //O(max(loga,logb))
 //a , m coprime
 	Long x,y;
-	Long g = gcd(a,m,x,y);
-	return (x%m+m)%m;
+	Long g = gcd(a, mod ,x,y);
+	if(x >= 0) return x;
+	else return x + mod;
 }
 
 int main() {
