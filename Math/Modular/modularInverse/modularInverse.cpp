@@ -22,7 +22,7 @@ Long fastPow(Long a, Long b , Long mod){ //O(logb)
 	return ans;
 }
 
-/*Long modInverse(Long a, Long mod){ //O(logm) , m prime , a , m coprimes
+/*Long modInverse(Long a, Long mod){ //O(log mod) , mod prime , (a , mod) coprimes
 	return fastPow(a,mod - 2,mod);
 }*/
 
@@ -43,8 +43,8 @@ Long gcd(Long a, Long b, Long & x, Long & y) { //O(min(loga,logb))
 	return g;
 }
 
-Long modInverse(Long a, Long mod){ //O(min(loga,logb))
-	//a , m coprime
+Long modInverse(Long a, Long mod){ //O(min(log a,log mod))
+	//a , mod coprime
 	Long x,y;
 	Long g = gcd(a, mod ,x,y);
 	
