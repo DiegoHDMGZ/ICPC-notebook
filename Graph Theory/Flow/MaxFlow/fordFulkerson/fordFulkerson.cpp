@@ -61,7 +61,7 @@ struct Graph{
 		return 0;
 	}
 	
-	Long maxFlow(Long s, Long t, Long n){ //O((E |F|)
+	Long maxFlow(Long s, Long t, Long n){ //O(E |F|) = O(E * nU)
 		Long ans = 0;
 		while(true){ // O(|F|) iterations
 			fill(vis, vis + n, false);
