@@ -1,4 +1,3 @@
-	
 #include <bits/stdc++.h>
 #define debug(x) cout << #x << " = " << x << endl
 #define REP(i,n) for(Long i = 0; i < (Long)n; i++)
@@ -15,7 +14,7 @@ struct Edge{
 	Edge(){}
 	Edge(Long from , Long to, Long cap, Long cost) : from(from) , to(to), cap(cap), flow(0), cost(cost) {}
 };
-
+ 
  
 struct Graph{
 	vector<Long> adj[MX];
@@ -24,7 +23,7 @@ struct Graph{
 	Long flow[MX][MX];
 	Long parent[MX];
 	Long pot[MX];
-	vector<Edge> E;
+	bool inQ[MX];
 	
 	void addEdge(Long u, Long v, Long w, Long c, bool dir){
 		adj[u].push_back(v);
@@ -32,33 +31,34 @@ struct Graph{
 		cap[u][v] += w;
 		cost[u][v] = c;
 		cost[v][u] = -c;
-		E.pb(Edge(u , v , w, c));
 	}
 	
-	void bellmanFord(Long s , Long t, Long n){ //O(nm)
-		vector<Long> d(n, INF);
+	void bellmanFord(Long s, Long t, Long n){
+		vector<Long> d(n , INF);
 		d[s] = 0;
-		Long m = E.size();
-		Long negaCycle; //negative cycle flag
-		
-		REP(i , n) {
-			negaCycle = -1; 
-			REP ( j , m ) {
-				if (d[E[j].from] < INF && E[j].cap - E[j].flow > 0) {
-					if (d[E[j].to] > d[E[j].from] + E[j].cost) {
-						d[E[j].to] = max(-INF ,d[E[j].from] + E[j].cost); //avoiding overflow
-						negaCycle = E[j].to;
-					}
+		queue<int> Q;
+		for (Q.push(s), inQ[s] = 1; !Q.empty(); Q.pop())
+		{
+			vector<int> :: iterator it;
+			int u = Q.front();
+			inQ[u] = 0;
+		   
+			for (Long v : adj[u]){
+				if (cap[u][v] - flow[u][v] > 0 && d[u] + cost[u][v] < d[v]){
+					d[v] = d[u] + cost[u][v];
+					if (inQ[v])
+						continue;
+	 
+					inQ[v] = true;
+					Q.push(v);
 				}
 			}
-			if(negaCycle == -1) break;
+				
 		}
 		for(Long i = 0; i < n; i++){
 			pot[i] = d[i];
 		}
-		assert(negaCycle == -1); //(!) algorithm doesnt apply
 	}
-	
 	
 	
 	bool dijkstra(Long s, Long t, Long n, Long &ans){ //O(nlogm + mlogn)
@@ -130,7 +130,7 @@ struct Graph{
 		return ans;
 	}
 } G;
-
+ 
 int main() {
 	ios_base::sync_with_stdio(false);
 	cin.tie(NULL);
