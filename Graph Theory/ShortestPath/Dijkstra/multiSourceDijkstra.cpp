@@ -19,7 +19,7 @@ struct Path{
 	Long node, weight, ini;
 	Path(){}
 	Path(Long node , Long weight, Long ini) : node(node), weight(weight) , ini(ini){}
-	bool operator < (const Path &P) const{
+	bool operator > (const Path &P) const{
 		if(weight == P.weight){
 			return node > P.node;
 		}
@@ -62,7 +62,7 @@ struct Graph{
 	}
 	
 	void dijkstra(vector<Long> &root ){
-		priority_queue<Path> q;
+		priority_queue<Path, vector<Path>, greater<Path>> q;
 
 		for(Long u  : root){
 			d[u] = 0;

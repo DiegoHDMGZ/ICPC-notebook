@@ -10,14 +10,13 @@ const Long INF = 1e18;
 
 //https://codeforces.com/contest/20/problem/C
 
-struct Path{
+struct Endpoint{
 	Long node, weight;
-	Path(){
-	}
+	Endpoint(){}
 	
-	Path(Long node,Long weight) : node(node) , weight(weight) {}
+	Endpoint(Long node, Long weight) : node(node) , weight(weight) {}
 
-	bool operator <(const Path &P) const{
+	bool operator >(const Endpoint &P) const{
 		if(weight == P.weight){
 			return node > P.node;
 		}
@@ -26,7 +25,7 @@ struct Path{
 };
 
 struct Graph{
-	vector<Path> adj[MX];
+	vector<Endpoint> adj[MX];
 	bool vis[MX];
 	Long d[MX];
 	Long parent[MX];
@@ -45,18 +44,18 @@ struct Graph{
 	}
 	
 	void addEdge(Long u, Long v, Long w) {
-		adj[u].pb(Path(v , w) );
-		adj[v].pb(Path(u , w));
+		adj[u].pb(Endpoint(v , w) );
+		adj[v].pb(Endpoint(u , w));
 	}
 	
 	void dijkstra(Long root, Long N){ //O(nlogm + mlogn)
-		priority_queue<Path> q;
+		priority_queue<Endpoint, vector<Endpoint>, greater<Endpoint>> q;
 		d[root] = 0;
 	
-		q.push(Path(root , d[root]));
+		q.push(Endpoint(root , d[root]));
 		
 		while(!q.empty()){
-			Path p = q.top();
+			Endpoint p = q.top();
 			q.pop();
 			int u = p.node;
 			if(vis[u]){
@@ -67,8 +66,7 @@ struct Graph{
 			}
 	
 			vis[u] = true;
-			for( Long i = 0; i < adj[u].size(); i++){
-				Path x = adj[u][i];
+			for( Endpoint x : adj[u]){
 				Long v = x.node;
 				if(vis[v]){
 					continue;
@@ -76,12 +74,13 @@ struct Graph{
 				
 				if(d[u] + x.weight < d[v]){
 					d[v] = d[u] + x.weight;
-					q.push(Path(v , d[v]));
+					q.push(Endpoint(v , d[v]));
 					parent[v] = u;
 				}
 			}
 		}
 	}
+	
 	void retrievePath(Long v){
 		if(parent[v] == -1){
 			cout << -1 << endl;
