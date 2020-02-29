@@ -102,36 +102,61 @@ struct Big{
 	
 	friend ostream & operator << (ostream &out, const Big &c);
 	
+	friend Big operator +(const Big &other);
+	friend Big operator -(const Big &x);
+	
 	Big operator +(const Big &other) const {
 		deque<Long> ans;
 		deque<Long> a = digits;
 		deque<Long> b = other.digits;
-		if(sgn * other.sgn == 1){
-			Long carry = 0;
-			Long i = (Long)a.size( ) - 1, j = (Long)b.size() - 1;
-			while(i >= 0 || j >= 0 || carry > 0){
-				Long x , y;
-				if(i >= 0) x = a[i];
-				else x = 0;
-		
-				if(j >= 0) y = b[j];
-				else y = 0;
-				
-				Long sum = x + y  + carry;
-				carry = sum >= 10;
-				if(carry) sum -= 10;
-				ans.push_front(sum);
-				i--;
-				j--;
+		if(sgn * other.sgn == -1){
+			if(sgn == -1){
+				return other - Big(digits , 1);
+			} else {
+				return (*this) - Big(other.digits, 1);
 			}
+			
+		}
 
-			return Big(ans , sgn);
-		} 
+		Long carry = 0;
+		Long i = (Long)a.size( ) - 1, j = (Long)b.size() - 1;
+		while(i >= 0 || j >= 0 || carry > 0){
+			Long x , y;
+			if(i >= 0) x = a[i];
+			else x = 0;
+	
+			if(j >= 0) y = b[j];
+			else y = 0;
+			
+			Long sum = x + y  + carry;
+			carry = sum >= 10;
+			if(carry) sum -= 10;
+			ans.push_front(sum);
+			i--;
+			j--;
+		}
 
+		return Big(ans , sgn);
+	}
+	
+	Big operator -(const Big &other) const {
+		if(sgn * other.sgn == -1){
+			if(sgn == 1){
+				return (*this) + Big(other.digits , 1);
+			} else {
+				Big ans = Big(digits, 1) + Big(other.digits, 1);
+				ans.sgn = -1;
+				return ans;
+			}
+		}
+		deque<Long> ans;
+		deque<Long> a = digits;
+		deque<Long> b = other.digits;
 		Long newSgn = sgn;
 		if(Big(a) < Big(b)) {
+			newSgn = -other.sgn;
+			
 			swap(a , b);
-			newSgn = other.sgn;
 		}
 		
 		Long i = (Long)a.size() - 1, j = (Long)b.size() - 1;
@@ -160,16 +185,7 @@ struct Big{
 			ans.push_front(a[j]);
 		}
     
-		return Big(ans , newSgn);	
-	}
-	
-	Big operator -(const Big &x) const {
-		Big aux = x;
-		if(aux.digits.size() > 1 || aux.digits[0] != 0){
-			aux.sgn *= -1;
-		}
-		
-		return (*this) + aux;
+		return Big(ans , newSgn);
 	}
 	
 	Big operator *(const Big &b) const {
@@ -182,18 +198,21 @@ struct Big{
 		for(Long i = n - 1; i >= 0; i--){
 			Long carry = 0;
 			for(Long j = m - 1; j >= 0; j--){
-				ans.digits[i + j] += a.digits[i] * b.digits[j] + carry;
-				carry = ans.digits[i + j] / 10;
-				ans.digits[i + j] %= 10;
+				ans.digits[i + j] += a.digits[i] * b.digits[j] ;
 			}
-			if(i > 0 ){
+		}
+		for(Long i = (Long)ans.digits.size() - 1; i >= 1; i--){
+			Long carry = ans.digits[i] / 10;
+			if(carry > 0) {
 				ans.digits[i - 1] += carry;
-			} else {
-				while(carry > 0){
-					ans.digits.push_front(carry % 10);
-					carry /= 10;
-				}
+				ans.digits[i] %= 10;
 			}
+		}
+		while(ans.digits[0] >= 10){
+			Long carry = ans.digits[0] / 10;
+			ans.digits[0] %= 10;
+			ans.digits.push_front(carry);
+			
 		}
 		eraseTrailing(ans.digits);
 		ans.sgn = sgn * b.sgn;
@@ -239,14 +258,15 @@ int main() {
 	
 	Long T = 100000;
 	REP(t , T){
-		Long a = random(-15, 15);
-		Long b = random(-15, 15);
-		string x = toString(a * b);
-		string y = toString(Big(a) * Big(b));
+		Long a = random(-100, 100);
+		Long b = random(-100, 100);
+		string x = toString(a - b);
+		string y = toString(Big(a) - Big(b));
 		if(x != y){
 			debug(a);
 			debug(b);
-			cout << toString(Big(a) + Big(b)) << endl;
+			debug(x);
+			debug(y);
 			system("pause");
 		}
 	}
