@@ -33,7 +33,6 @@ struct Graph {
 	}
 	
 	void retrievePath(Long i, Long j, bool clean = true){ //O(n)
-		
 		if(clean){
 			path.clear();
 			clean = false;
