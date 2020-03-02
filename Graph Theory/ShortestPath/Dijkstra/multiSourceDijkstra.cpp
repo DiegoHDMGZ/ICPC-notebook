@@ -46,9 +46,7 @@ struct Graph{
  
 	void clear(Long n = MX){
 		REP(i , n){
-			d[i] = INF;
-			vis[i] = false;
-			reachedBy[i] = -1;
+			adj[i].clear();
 		}
 	}
 	
@@ -61,7 +59,12 @@ struct Graph{
 		adj[v].pb(Path(u, w, -1));
 	}
 	
-	void dijkstra(vector<Long> &root ){
+	void dijkstra(vector<Long> &root, Long n ){
+		for(Long i = 0; i < n; i++){
+			d[i] = INF;
+			vis[i] = false;
+			reachedBy[i] = -1;
+		}
 		priority_queue<Path, vector<Path>, greater<Path>> q;
 
 		for(Long u  : root){

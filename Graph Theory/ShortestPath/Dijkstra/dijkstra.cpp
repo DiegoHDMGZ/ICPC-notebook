@@ -32,8 +32,6 @@ struct Graph{
 		REP( i , N) {
 			adj[i].clear();
 			vis[i] = false;
-			d[i] = INF;
-			parent[i] = -1;
 		}
 	}
 	
@@ -46,7 +44,12 @@ struct Graph{
 		adj[v].pb(Endpoint(u , w));
 	}
 	
-	void dijkstra(Long root, Long N){ //O(nlogm + mlogn)
+	void dijkstra(Long root, Long n){ //O(nlogm + mlogn)
+		for(Long i = 0; i < n; i++){
+			vis[i] = false;
+			parent[i] = -1;
+			d[i] = INF;
+		}
 		priority_queue<Endpoint, vector<Endpoint>, greater<Endpoint>> q;
 		d[root] = 0;
 	

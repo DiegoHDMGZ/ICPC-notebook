@@ -8,21 +8,25 @@ typedef long long Long;
 const Long MX = 1e4;
 const Long INF = 1e18;
 
-struct Edge{
-	Long u,v,weight;
-	Edge(){}
-	Edge(Long u, Long v, Long weight) : u(u) , v(v) , weight(weight) {}
+struct EndPoint{
+	Long node, weight;
+	EndPoint(){}
+	EndPoint(Long node, Long weight) : node(node) , weight(weight) {}
 };
 
 struct Graph{
-	vector<Edge> E;
+	vector<EndPoint> adj[MX];
 	Long d[MX];
-	Long parent[MX];
+	Long p[MX];
 	
 	deque<Long> path;
 	
 	void clear(Long N = MX) {
-		E.clear();
+		REP(i , N) {
+			d[i] = INF;
+			p[i] = -1;
+			adj[i].clear();
+		}
 	}
 	
 	Graph(){
@@ -30,17 +34,18 @@ struct Graph{
 	}
 	
 	void addEdge(Long u, Long v, Long w) {
-		E.pb(Edge(u, v , w));
+		adj[u].push_back(EndPoint(v, w));
+		adj[v].push_back(EndPoint(u , w));
 	}
 	
 	void retrieveCycle(Long y, Long n){
 		REP ( i , n) {
-			y = parent[y]; //go back n times just in case
+			y = p[y]; //go back n times just in case
 			//There is no loss as this is a cycle
 		}
 		
 		path.clear();
-		for(Long actual = y; ; actual = parent[actual]){
+		for(Long actual = y; ; actual = p[actual]){
 			path.push_front(actual);
 			if(actual == y && path.size() > 1){
 				break;
@@ -49,10 +54,6 @@ struct Graph{
 	}
 	
 	bool bellmanFord(Long n, Long m, Long root = 0){ //O(nm)
-		for(Long i = 0; i < n; i++){
-			d[i] = INF;
-			parent[i] = -1;
-		}
 		d[root] = 0;
 	
 		Long negaCycle; //negative cycle flag
@@ -60,15 +61,16 @@ struct Graph{
 			negaCycle = -1; 
 			REP ( j , m ) {
 				if (d[E[j].u] < INF) {
-					if (d[E[j].v] > d[E[j].u] + E[j].weight) {
-						d[E[j].v] = max(-INF,d[E[j].u] + E[j].weight); //avoiding overflow
-						parent[E[j].v] = E[j].u;
+					if (d[E[j].v] > d[E[j].u] + E[j].cost) {
+						d[E[j].v] = max(-INF,d[E[j].u] + E[j].cost); //avoiding overflow
+						p[E[j].v] = E[j].u;
 						negaCycle = E[j].v;
 					}
 				}
 			}
 			if(negaCycle == -1) break;
 		}
+		
 		if(negaCycle == -1){
 			return false; //no negative cycle
 		}

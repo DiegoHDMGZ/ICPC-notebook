@@ -9,7 +9,6 @@ const Long MX = 1e5;
 const Long INF = 1e18;
 
 //https://codeforces.com/contest/20/problem/C
-
 struct Endpoint{
 	Long node, weight;
 	Endpoint(){}
@@ -34,8 +33,6 @@ struct Graph{
 		REP( i , N) {
 			adj[i].clear();
 			vis[i] = false;
-			d[i] = INF;
-			parent[i] = -1;
 		}
 	}
 	
@@ -48,7 +45,12 @@ struct Graph{
 		adj[v].pb(Endpoint(u , w));
 	}
 	
-	void dijkstra(Long root, Long N){ //O(nlogm + mlogn)
+	void dijkstra(Long root, Long n){ //O(nlogm + mlogn)
+		for(Long i = 0; i < n; i++){
+			vis[i] = false;
+			parent[i] = -1;
+			d[i] = INF;
+		}
 		priority_queue<Endpoint, vector<Endpoint>, greater<Endpoint>> q;
 		d[root] = 0;
 	
@@ -97,6 +99,7 @@ struct Graph{
 		cout << endl;
 	}
 } G;
+
 
 int main() {
 	ios_base::sync_with_stdio(false);
