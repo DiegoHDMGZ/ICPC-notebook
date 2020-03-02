@@ -17,14 +17,12 @@ struct EndPoint{
 struct Graph{
 	vector<EndPoint> adj[MX];
 	Long d[MX];
-	Long p[MX];
+	Long parent[MX];
 	
 	deque<Long> path;
 	
 	void clear(Long N = MX) {
 		REP(i , N) {
-			d[i] = INF;
-			p[i] = -1;
 			adj[i].clear();
 		}
 	}
@@ -40,12 +38,12 @@ struct Graph{
 	
 	void retrieveCycle(Long y, Long n){
 		REP ( i , n) {
-			y = p[y]; //go back n times just in case
+			y = parent[y]; //go back n times just in case
 			//There is no loss as this is a cycle
 		}
 		
 		path.clear();
-		for(Long actual = y; ; actual = p[actual]){
+		for(Long actual = y; ; actual = parent[actual]){
 			path.push_front(actual);
 			if(actual == y && path.size() > 1){
 				break;
@@ -53,32 +51,36 @@ struct Graph{
 		}
 	}
 	
-	bool bellmanFord(Long n, Long m, Long root = 0){ //O(nm)
+	bool spfa(Long n, Long m, Long root = 0){ //O(nm)
+		for(Long i = 0; i < n; i++){
+			d[i] = INF;
+			parent[i] = -1;
+		}
+		queue<Long> q;
+		vector<bool> inQueue(n , false);
+		vector<Long> cnt(n, 0);
 		d[root] = 0;
-	
-		Long negaCycle; //negative cycle flag
-		REP(i , n) {
-			negaCycle = -1; 
-			REP ( j , m ) {
-				if (d[E[j].u] < INF) {
-					if (d[E[j].v] > d[E[j].u] + E[j].cost) {
-						d[E[j].v] = max(-INF,d[E[j].u] + E[j].cost); //avoiding overflow
-						p[E[j].v] = E[j].u;
-						negaCycle = E[j].v;
+		inQueue[root] = true;
+		while(!q.empty()){
+			Long u = q.front();
+			q.pop();
+			inQueue[u] = false;
+			cnt[u]++;
+			if(cnt[u] >= n){
+				return true;
+			}
+			for(EndPoint e : adj[u]){
+				Long v = e.node;
+				if(d[u] + e.weight < d[v]){
+					d[v] = d[u] + e.weight;
+					if(!inQueue[v]){
+						q.push(v);
 					}
+					inQueue[v] = true;
 				}
 			}
-			if(negaCycle == -1) break;
 		}
-		
-		if(negaCycle == -1){
-			return false; //no negative cycle
-		}
-		else{
-			return true;
-			retrieveCycle(negaCycle, n);
-		}
-	
+		return false;
 	}
 } G;
 
