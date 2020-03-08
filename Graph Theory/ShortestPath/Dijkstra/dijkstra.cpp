@@ -31,12 +31,7 @@ struct Graph{
 	void clear(Long N = MX) {
 		REP( i , N) {
 			adj[i].clear();
-			vis[i] = false;
 		}
-	}
-	
-	Graph(){
-		clear();
 	}
 	
 	void addEdge(Long u, Long v, Long w) {
@@ -82,20 +77,16 @@ struct Graph{
 		}
 	}
 	
-	void retrievePath(Long v){
+	deque<Long> retrievePath(Long v){
 		if(parent[v] == -1){
-			cout << -1 << endl;
-			return;
+			return {};
 		}
-		deque<Long> q;
+		deque<Long> path;
 		while(v != -1){
-			q.push_front(v);
+			path.push_front(v);
 			v = parent[v];
 		}
-		REP(i , q.size()){
-			cout << q[i] + 1 << " ";
-		}
-		cout << endl;
+		return path;
 	}
 } G;
 

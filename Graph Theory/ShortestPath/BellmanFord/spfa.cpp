@@ -19,16 +19,10 @@ struct Graph{
 	Long d[MX];
 	Long parent[MX];
 	
-	deque<Long> path;
-	
 	void clear(Long N = MX) {
 		REP(i , N) {
 			adj[i].clear();
 		}
-	}
-	
-	Graph(){
-		clear();
 	}
 	
 	void addEdge(Long u, Long v, Long w) {
@@ -36,19 +30,31 @@ struct Graph{
 		adj[v].push_back(EndPoint(u , w));
 	}
 	
-	void retrieveCycle(Long y, Long n){
+	deque<Long> retrieveCycle(Long v, Long n){
 		REP ( i , n) {
-			y = parent[y]; //go back n times just in case
-			//There is no loss as this is a cycle
+			v = parent[v]; //go back n times just in case
 		}
 		
-		path.clear();
-		for(Long actual = y; ; actual = parent[actual]){
+		deque<Long> path;
+		for(Long actual = v; ; actual = parent[actual]){
 			path.push_front(actual);
-			if(actual == y && path.size() > 1){
+			if(actual == v && path.size() > 1){
 				break;
 			}
 		}
+		return path;
+	}
+	
+	deque<Long> retrievePath(Long v){
+		if(parent[v] == -1){
+			return {};
+		}
+		deque<Long> path;
+		while(v != -1){
+			path.push_front(v);
+			v = parent[v];
+		}
+		return path;
 	}
 	
 	bool spfa(Long n, Long m, Long root = 0){ //O(nm)
@@ -61,6 +67,7 @@ struct Graph{
 		vector<Long> cnt(n, 0);
 		d[root] = 0;
 		inQueue[root] = true;
+		q.push(root);
 		while(!q.empty()){
 			Long u = q.front();
 			q.pop();
@@ -73,6 +80,7 @@ struct Graph{
 				Long v = e.node;
 				if(d[u] + e.weight < d[v]){
 					d[v] = d[u] + e.weight;
+					parent[v] = u;
 					if(!inQueue[v]){
 						q.push(v);
 					}

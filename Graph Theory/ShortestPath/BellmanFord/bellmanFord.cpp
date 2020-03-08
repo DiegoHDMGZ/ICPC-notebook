@@ -19,33 +19,39 @@ struct Graph{
 	Long d[MX];
 	Long parent[MX];
 	
-	deque<Long> path;
-	
 	void clear(Long N = MX) {
 		E.clear();
 	}
-	
-	Graph(){
-		clear();
-	}
-	
+
 	void addEdge(Long u, Long v, Long w) {
 		E.pb(Edge(u, v , w));
 	}
 	
-	void retrieveCycle(Long y, Long n){
+	deque<Long> retrieveCycle(Long v, Long n){
 		REP ( i , n) {
-			y = parent[y]; //go back n times just in case
-			//There is no loss as this is a cycle
+			v = parent[v]; //go back n times just in case
 		}
 		
-		path.clear();
-		for(Long actual = y; ; actual = parent[actual]){
+		deque<Long> path;
+		for(Long actual = v; ; actual = parent[actual]){
 			path.push_front(actual);
-			if(actual == y && path.size() > 1){
+			if(actual == v && path.size() > 1){
 				break;
 			}
 		}
+		return path;
+	}
+	
+	deque<Long> retrievePath(Long v){
+		if(parent[v] == -1){
+			return {};
+		}
+		deque<Long> path;
+		while(v != -1){
+			path.push_front(v);
+			v = parent[v];
+		}
+		return path;
 	}
 	
 	bool bellmanFord(Long n, Long m, Long root = 0){ //O(nm)
@@ -74,7 +80,7 @@ struct Graph{
 		}
 		else{
 			return true;
-			retrieveCycle(negaCycle, n);
+			//retrieveCycle(negaCycle, n);
 		}
 	
 	}

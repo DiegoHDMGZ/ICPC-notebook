@@ -83,20 +83,16 @@ struct Graph{
 		}
 	}
 	
-	void retrievePath(Long v){
+	deque<Long> retrievePath(Long v){
 		if(parent[v] == -1){
-			cout << -1 << endl;
-			return;
+			return {};
 		}
-		deque<Long> q;
+		deque<Long> path;
 		while(v != -1){
-			q.push_front(v);
+			path.push_front(v);
 			v = parent[v];
 		}
-		REP(i , q.size()){
-			cout << q[i] + 1 << " ";
-		}
-		cout << endl;
+		return path;
 	}
 } G;
 
@@ -115,6 +111,14 @@ int main() {
 	}
 	G.dijkstra(0, n);
 
-	G.retrievePath(n - 1);
+	deque<Long> path = G.retrievePath(n - 1);
+	if(path.empty()){
+		cout << -1 << endl;
+	} else {
+		for(Long u : path){
+			cout << u + 1 << " ";
+		}
+		cout << endl;
+	}
 	return 0;
 }

@@ -43,15 +43,10 @@ struct Graph{
 	Long reachedBy[MX];
 	Long d[MX];
 	
- 
 	void clear(Long n = MX){
 		REP(i , n){
 			adj[i].clear();
 		}
-	}
-	
-	Graph(){
-		clear();
 	}
 	
 	void addEdge(Long u, Long v, Long w ){
