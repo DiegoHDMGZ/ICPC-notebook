@@ -57,7 +57,7 @@ struct Graph{
 		return path;
 	}
 	
-	bool spfa(Long n, Long m, Long root = 0){ //O(nm)
+	bool spfa(Long n, Long root = 0){ //O(nm)
 		for(Long i = 0; i < n; i++){
 			d[i] = INF;
 			parent[i] = -1;

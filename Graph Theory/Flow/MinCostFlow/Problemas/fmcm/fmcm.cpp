@@ -3,7 +3,8 @@
 #define REP(i,n) for(Long i = 0; i < (Long)n; i++)
 #define pb push_back
 using namespace std;
- 
+
+//https://www.infoarena.ro/problema/fmcm
 typedef int Long;
  
 const Long MX = 350;
@@ -23,7 +24,7 @@ struct Graph{
 	Long flow[MX][MX];
 	Long parent[MX];
 	Long pot[MX];
-	bool inQ[MX];
+	bool inQueue[MX];
 	
 	void addEdge(Long u, Long v, Long w, Long c, bool dir){
 		adj[u].push_back(v);
@@ -33,30 +34,27 @@ struct Graph{
 		cost[v][u] = -c;
 	}
 	
-	void bellmanFord(Long s, Long t, Long n){
-		vector<Long> d(n , INF);
-		d[s] = 0;
-		queue<int> Q;
-		for (Q.push(s), inQ[s] = 1; !Q.empty(); Q.pop())
-		{
-			vector<int> :: iterator it;
-			int u = Q.front();
-			inQ[u] = 0;
-		   
-			for (Long v : adj[u]){
-				if (cap[u][v] - flow[u][v] > 0 && d[u] + cost[u][v] < d[v]){
-					d[v] = d[u] + cost[u][v];
-					if (inQ[v])
-						continue;
-	 
-					inQ[v] = true;
-					Q.push(v);
+	void spfa(Long s, Long t , Long n){ //O(nm)
+		for(Long i = 0; i < n; i++){
+			pot[i] = INF;
+		}
+		queue<Long> q;
+		pot[s] = 0;
+		inQueue[s] = true;
+		q.push(s);
+		while(!q.empty()){
+			Long u = q.front();
+			q.pop();
+			inQueue[u] = false;
+			for(Long v : adj[u]){
+				if (cap[u][v] - flow[u][v] > 0 && pot[u] + cost[u][v] < pot[v]){
+					pot[v] = pot[u] + cost[u][v];
+					if(!inQueue[v]){
+						q.push(v);
+					}
+					inQueue[v] = true;
 				}
 			}
-				
-		}
-		for(Long i = 0; i < n; i++){
-			pot[i] = d[i];
 		}
 	}
 	
@@ -117,7 +115,7 @@ struct Graph{
 	Long minCostFlow(Long s, Long t, Long n){ 
 		//O(m log n *  |f| ) = O(m log n *(nU))
 		//<maxFlow, minCost>
-		bellmanFord(s , t , n); //not necessary if there is no negative edges
+		spfa(s , t , n); //not necessary if there is no negative edges
 		Long ans = 0;
 		while(true){
 			Long c;
