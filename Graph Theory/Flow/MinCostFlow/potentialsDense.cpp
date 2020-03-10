@@ -4,12 +4,11 @@
 #define pb push_back
 using namespace std;
 
-//https://www.infoarena.ro/problema/fmcm
-typedef int Long;
- 
+typedef long long Long;
+
 const Long MX = 350;
 const Long INF = 1e9;
- 
+
 struct Graph{
 	vector<Long> adj[MX];
 	Long cap[MX][MX];
@@ -52,39 +51,41 @@ struct Graph{
 	}
 	
 	
-	bool dijkstra(Long s, Long t, Long n, Long &ans){ //O(nlogm + mlogn)
+	pair<Long,Long> dijkstra(Long s, Long t, Long n){ //O(nlogm + mlogn)
 		//<flow, cost>
-		priority_queue<pair<Long,Long> ,vector<pair<Long,Long>> , greater<pair<Long,Long>>> q;
 		
 		vector<Long> d(n , INF);
+		vector<bool> vis(n , false);
 		vector<Long> residualCap(n, 0);
 		d[s] = 0;
 		residualCap[s] = INF;
-		q.push({d[s], s});
 		
-		while(!q.empty()){
-			
-			pair<Long,Long> p = q.top();
-			q.pop();
-			int u = p.second;
-			if(p.first != d[u]){
-				continue;
+		for(Long i = 0; i < n; i++){
+			Long u = -1;
+			for(Long j = 0; j < n; j++){
+				if(!vis[j] && (u == -1 || d[j] < d[u])){
+					u = j;
+				}
 			}
-	
-			for( Long v: adj[u]){
+			if(u == -1 || d[u] == INF){
+				break;
+			}
+			
+			vis[u] = true;
+			for(Long v : adj[u]){
 				Long cf = cap[u][v] - flow[u][v];
 				Long c = cost[u][v] + pot[u] - pot[v];
 				
 				if(cf > 0 && d[u] + c < d[v]){
 					d[v] = d[u] + c;
-					q.push({d[v], v});
 					residualCap[v] = min(residualCap[u], cf);
 					parent[v] = u;
 				}
 			}
 		}
+		
 		if(d[t] == INF){
-			return false;
+			return {0,0};
 		}
 		for(Long i = 0; i < n; i++){
 			pot[i] += d[i];
@@ -100,23 +101,21 @@ struct Graph{
 				break;
 			}
 		}
-		ans = pot[t] * cf;
-		return true;
+		return {cf,pot[t] * cf} ;
 	}
 	
 	
-	Long minCostFlow(Long s, Long t, Long n){ 
+	pair<Long,Long> minCostFlow(Long s, Long t, Long n){ 
 		//O(m log n *  |f| ) = O(m log n *(nU))
 		//<maxFlow, minCost>
 		spfa(s , t , n); //not necessary if there is no negative edges
-		Long ans = 0;
-		while(true){
-			Long c;
-			bool x = dijkstra(s , t , n , c );
-			if(!x) break;
-			
-			ans += c;
-		}
+		pair<Long,Long> inc;
+		pair<Long,Long> ans = {0,0};
+		do{
+			inc = dijkstra(s , t , n );
+			ans.first += inc.first;
+			ans.second += inc.second;
+		}while(inc.first > 0);
 		
 		return ans;
 	}
@@ -126,22 +125,6 @@ int main() {
 	ios_base::sync_with_stdio(false);
 	cin.tie(NULL);
 	cout.tie(NULL);
-	
-	freopen("fmcm.in", "r", stdin);
-	freopen("fmcm.out", "w", stdout);
-	Long n, m , s, t;
-	cin >> n >> m >> s >> t;
-	
-	s--;
-	t--;
-	REP(i , m){
-		Long u , v , w , c;
-		cin >> u >> v >> w >> c;
-		u--;
-		v--;
-		G.addEdge(u , v , w , c, true);
-	}
-	cout << G.minCostFlow(s , t , n) << endl;
- 
+
 	return 0;
 }
