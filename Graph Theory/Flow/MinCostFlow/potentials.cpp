@@ -43,9 +43,6 @@ struct Graph{
 		}
 	}
 	
-	Graph(){
-		clear();
-	}
 	void addEdge(Long u, Long v, Long w, Long cost, bool dir){
 		Edge *forward = new Edge(u , v , w, cost);
 		Edge *backward = new Edge(v , u , 0, -cost);

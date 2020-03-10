@@ -74,6 +74,7 @@ struct Graph{
 			inQueue[u] = false;
 			cnt[u]++;
 			if(cnt[u] >= n){
+				//continue
 				return true;
 			}
 			for(EndPoint e : adj[u]){

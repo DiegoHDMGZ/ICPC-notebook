@@ -10,38 +10,26 @@ typedef long long Long;
 
 const Long MX = 1e5;
 const Long INF = 1e18;
+
+
 struct Edge{
 	Long from , to, cap, flow, cost;
 	Edge *rev;
 	Edge(): rev(NULL) {}
 	Edge(Long from , Long to, Long cap, Long cost) : from(from) , to(to), cap(cap), flow(0), cost(cost), rev(NULL) {}
 };
-struct Path{
-	Long node, weight;
-	Path(){}
-	
-	Path(Long node,Long weight) : node(node) , weight(weight) {}
- 
-	bool operator <(const Path &P) const{
-		if(weight == P.weight){
-			return node > P.node;
-		}
-		return weight > P.weight;
-	}
-};
- 
+
 struct Graph{
 	vector<Edge*> adj[MX];
 	Edge *parent[MX];
-	Long pot[MX];
-	bool inQueue[MX];
+	vector<Edge*> E;
 	
 	void clear(Long N = MX){
 		for(Long i = 0 ; i < N; i++){
 			adj[i].clear();
 			parent[i] = NULL;
-			pot[i] = 0;
 		}
+		E.clear();
 	}
 	
 	void addEdge(Long u, Long v, Long w, Long cost, bool dir){
@@ -49,8 +37,11 @@ struct Graph{
 		Edge *backward = new Edge(v , u , 0, -cost);
 		forward->rev = backward;
 		backward->rev = forward;
+
 		adj[u].pb(forward);
 		adj[v].pb(backward);
+		E.pb(forward);
+		E.pb(backward);
 		
 		if(!dir){
 			forward = new Edge(v , u , w, cost);
@@ -59,74 +50,54 @@ struct Graph{
 			backward->rev = forward;
 			adj[v].pb(forward);
 			adj[u].pb(backward);
+			E.pb(forward);
+			E.pb(backward);
 		}
 	}
 	
-	void spfa(Long s, Long t , Long n){ //O(nm)
-		for(Long i = 0; i < n; i++){
-			pot[i] = INF;
-		}
+	pair<Long,Long> spfa(Long s , Long t, Long n){ //O(nm)
+		vector<Long> d(n, INF);
+		vector<Long> cnt(n , 0);
+		vector<bool> inQueue(n , false);
+		d[s] = 0;
 		queue<Long> q;
-		pot[s] = 0;
 		inQueue[s] = true;
 		q.push(s);
 		while(!q.empty()){
 			Long u = q.front();
 			q.pop();
 			inQueue[u] = false;
+			cnt[u]++;
+			assert(cnt[u] < n);
 			for(Edge *e : adj[u]){
 				Long v = e->to;
-				if (e->cap - e->flow > 0 && pot[u] + e->cost < pot[v]){
-					pot[v] = pot[u] + e->cost;
+				if (e->cap - e->flow > 0 && d[u] + e->cost < d[v]){
+					d[v] = d[u] + e->cost;
 					if(!inQueue[v]){
 						q.push(v);
 					}
+					parent[v] = e;
 					inQueue[v] = true;
 				}
 			}
 		}
-	}
-	
-	pair<Long,Long> dijkstra(Long s, Long t, Long n){ //O(nlogm + mlogn)
-		//<flow, cost>
-		priority_queue<Path> q;
 		
-		vector<Long> d(n , INF);
-		vector<Long> residualCap(n, 0);
-		d[s] = 0;
-		residualCap[s] = INF;
-		q.push(Path(s , d[s]));
+		if(d[t] == INF) return {0,0};
 		
-		while(!q.empty()){
-			Path p = q.top();
-			q.pop();
-			int u = p.node;
-			if(p.weight != d[u]){
-				continue;
-			}
-	
-			for( Edge *e : adj[u]){
-				Long v = e->to;
-				Long cf = e->cap - e->flow;
-				Long cost = e->cost + pot[u] - pot[v];
-				
-				if(cf > 0 && d[u] + cost < d[v]){
-					d[v] = d[u] + cost;
-					q.push(Path(v , d[v]));
-					residualCap[v] = min(residualCap[u], cf);
-					parent[v] = e;
-				}
-			}
-		}
-		if(d[t] == INF){
-			return {0,0};
-		}
-		for(Long i = 0; i < n; i++){
-			pot[i] += d[i];
-		}
-		Long cf = residualCap[t];
+		Long cf = INF;
 		Long cur = t;
 		while(true ){
+			cf = min(cf , parent[cur]->cap - parent[cur]->flow);
+			cur = parent[cur]->from;
+			if(cur == s){
+				break;
+			}
+		}
+		
+		cur = t;
+		Long cost = 0;
+		while(true ){
+			cost += cf * parent[cur]->cost;
 			parent[cur]->flow += cf;
 			parent[cur]->rev->flow -= cf;
 			cur = parent[cur]->from;
@@ -134,18 +105,17 @@ struct Graph{
 				break;
 			}
 		}
-		return {cf , pot[t] * cf};
+		
+		return {cf , cost};
+	
 	}
-	
-	
 	pair<Long,Long> minCostFlow(Long s, Long t, Long n){ 
-		//O(m log n *  |f| ) = O(m log n *(nU))
+		//O(n * m |f| ) = O(n * m * (nU))
 		//<maxFlow, minCost>
-		//spfa(s , t , n); //not necessary if there is no negative edges
 		pair<Long,Long> inc;
 		pair<Long,Long> ans = {0,0};
 		do{
-			inc = dijkstra(s , t , n );
+			inc = spfa(s , t , n );
 			ans.first += inc.first;
 			ans.second += inc.second;
 		}while(inc.first > 0);
@@ -153,7 +123,6 @@ struct Graph{
 		return ans;
 	}
 } G;
-
 
 Long enter(Long u){
 	return 2 * u + 1;

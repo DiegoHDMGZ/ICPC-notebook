@@ -6,8 +6,11 @@ using namespace std;
 
 typedef long long Long;
 
+//https://codeforces.com/group/Ohoz9kAFjS/contest/266572/problem/G
+
 const Long MX = 5000;
 const Long INF = 1e18;
+
 
 struct Edge{
 	Long from , to, cap, flow, cost;
@@ -21,7 +24,6 @@ struct Graph{
 	Long level[MX];
 	Long nextEdge[MX];
 	Edge * parent[MX];
-	vector<Edge*> E;
 	
 	void clear(Long N = MX){
 		for(Long i = 0 ; i < N; i++){
@@ -30,7 +32,6 @@ struct Graph{
 			nextEdge[i] = 0;
 			parent[i] = NULL;
 		}
-		E.clear();
 	}
 	
 	void addEdge(Long u, Long v, Long w, Long cost, bool dir){
@@ -41,8 +42,7 @@ struct Graph{
 
 		adj[u].pb(forward);
 		adj[v].pb(backward);
-		E.pb(forward);
-		E.pb(backward);
+
 		
 		if(!dir){
 			forward = new Edge(v , u , w, cost);
@@ -51,8 +51,6 @@ struct Graph{
 			backward->rev = forward;
 			adj[v].pb(forward);
 			adj[u].pb(backward);
-			E.pb(forward);
-			E.pb(backward);
 		}
 	}
 	
@@ -145,33 +143,38 @@ struct Graph{
 		}
 		return cost;
 	}
+
 	
-	Long bellmanFord(Long n){ //O(nm)
+	Long spfa( Long n){ //O(nm)
 		vector<Long> d(n, 0);
-		Long m = E.size();
-		Long negaCycle; //negative cycle flag
-		
-		REP(i , n) {
-			negaCycle = -1; 
-			REP ( j , m ) {
-				if (d[E[j]->from] < INF && E[j]->cap - E[j]->flow > 0) {
-					if (d[E[j]->to] > d[E[j]->from] + E[j]->cost) {
-						d[E[j]->to] = max(-INF ,d[E[j]->from] + E[j]->cost); //avoiding overflow
-						parent[E[j]->to] = E[j];
-						negaCycle = E[j]->to;
+		vector<Long> cnt(n, 0);
+		vector<bool> inQueue(n, true);
+		queue<Long> q;
+		for(Long i = 0; i < n; i++){
+			q.push(i);
+		}
+
+		while(!q.empty()){
+			Long u = q.front();
+			q.pop();
+			inQueue[u] = false;
+			cnt[u]++;
+			if(cnt[u] == n + 1){
+				return costCycle(u , n);			
+			}
+			for(Edge *e : adj[u]){
+				Long v = e->to;
+				if (e->cap - e->flow > 0 && d[u] + e->cost < d[v]){
+					d[v] = d[u] + e->cost;
+					if(!inQueue[v]){
+						q.push(v);
 					}
+					parent[v] = e;
+					inQueue[v] = true;
 				}
 			}
-			if(negaCycle == -1) break;
 		}
-		
-		if(negaCycle == -1){
-			return 0; //no negative cycle
-		}
-		else{
-			return costCycle(negaCycle, n);
-		}
-	
+		return 0;
 	}
 	
 	pair<Long,Long> minCostFlow(Long s, Long t, Long n){ 
@@ -180,7 +183,7 @@ struct Graph{
 		pair<Long,Long> ans = maxFlow(s, t , n);
 		Long inc;
 		do{
-			inc = bellmanFord(n );
+			inc = spfa(n );
 			ans.second += inc;
 		}while(inc < 0);
 		return ans;
@@ -188,10 +191,23 @@ struct Graph{
 } G;
 
 
+
 int main() {
 	ios_base::sync_with_stdio(false);
 	cin.tie(NULL);
 	cout.tie(NULL);
-
+	
+	Long n , m;
+	cin >> n >> m;
+	REP(i , m){
+		Long u , v, w , c;
+		cin >> u >> v >> w >> c;
+		u--;
+		v--;
+		
+		G.addEdge(u , v , w , c , true);
+	}
+	Long s = 0, t = n - 1; 
+	cout << G.minCostFlow(s , t , t + 1).second;
 	return 0;
 }
