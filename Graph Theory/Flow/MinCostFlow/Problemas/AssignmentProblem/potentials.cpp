@@ -4,7 +4,7 @@
 #define pb push_back
 using namespace std;
 
-typedef unsigned int Long;
+typedef long long Long;
 
 const Long MX = 1000;
 const Long INF = 3e9 + 2;
