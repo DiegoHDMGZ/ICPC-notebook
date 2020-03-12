@@ -24,6 +24,8 @@ Long mult(Long a, Long b, Long m){
 	return (a * b) % m;
 }
 
+const Long MOD = 1e9 + 7;
+
 Matrix operator +(const Matrix &a , const Matrix &b){ //O(n * m)
 	Long n = a.size();
 	Long m = a[0].size();
@@ -34,7 +36,7 @@ Matrix operator +(const Matrix &a , const Matrix &b){ //O(n * m)
 	
 	for(Long i = 0; i < n; i++){
 		for(Long j = 0; j <m; j++){
-			c[i][j] = a[i][j] + b[i][j];
+			c[i][j] = add(a[i][j] , b[i][j], MOD );
 		}
 	}
 	return c;
@@ -53,7 +55,7 @@ Matrix operator *(const Matrix &a, const Matrix &b){ //O( n^3)
 	for(Long i = 0; i < n; i++){
 		for(Long j = 0; j < m; j++){
 			for(Long k = 0; k < m1; k++){
-				c[i][j] += a[i][k] * b[k][j];
+				c[i][j] = add(c[i][j] , mult(a[i][k] , b[k][j], MOD), MOD);
 			}
 		}
 	}
