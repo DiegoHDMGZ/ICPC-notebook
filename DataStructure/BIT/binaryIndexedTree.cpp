@@ -3,7 +3,7 @@
 typedef long long Long;
 // Binary Indexed Tree
 // tree[i] = f[i - 2^r + 1] + ... + f[i]
-//ultimo bit encendido = x & -x;
+//last significant bit = x & -x;
 
 using namespace std;
 
@@ -18,21 +18,21 @@ struct FenwickTree{
 		}
 	}
 	
-	Long query(Long i){ //O(log n)
-		i += EXTRA;
+	Long query(Long x){ //O(log n)
+		x += EXTRA;
 		Long sum = 0;
-		while(i > 0){
-			sum += tree[i];
-			i -= (i & -i);
+		while(x > 0){
+			sum += tree[x];
+			x -= (x & -x);
 		}
 		return sum;
 	}
 	
-	void update(Long i , Long delta){ //O(log MX)
-		i += EXTRA;
-		while(i < MX + EXTRA){
-			tree[i] += delta;
-			i += (i & -i);
+	void update(Long x , Long delta){ //O(log MX)
+		x += EXTRA;
+		while(x < MX + EXTRA){
+			tree[x] += delta;
+			x += (x & -x);
 		}
 	}
 	
