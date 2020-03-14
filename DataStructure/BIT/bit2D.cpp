@@ -33,10 +33,6 @@ struct BIT2D{
 		return sum;
 	}
 	
-	Long query(Long x1, Long y1,Long x2, Long y2){
-		return query(x2 , y2) - query(x2 , y1 - 1) - query(x1 - 1 , y2) + query(x1 - 1 , y1 - 1);
-	}
-	
 	void update(Long x, Long y, Long add){ // O((log n)^2)
 		x += EXTRA;
 		y += EXTRA;
@@ -48,7 +44,19 @@ struct BIT2D{
 			}
 			x += (x & -x);
 		}
-	}		
+	}
+	
+	//you can only use one of this range implementations
+	Long query(Long x1, Long y1,Long x2, Long y2){
+		return query(x2 , y2) - query(x2 , y1 - 1) - query(x1 - 1 , y2) + query(x1 - 1 , y1 - 1);
+	}
+	
+	void update(Long x1, Long y1, Long x2 , Long y2, Long add){
+		update(x1 , y1 , add);
+		update(x2 + 1 , y1, -add);
+		update(x1, y2 + 1 , -add);
+		update(x2 + 1 , y2 + 1 , add);
+	}	
 }ft;
 
 int main() {
