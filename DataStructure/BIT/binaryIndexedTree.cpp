@@ -9,7 +9,7 @@ using namespace std;
 
 const Long MX = 1e5;
 const Long EXTRA = 6;
-struct FenwickTree{
+struct BIT{
 	Long tree[MX+EXTRA];
 	
 	void clear(Long n){ //O(n)
@@ -28,17 +28,17 @@ struct FenwickTree{
 		return sum;
 	}
 	
-	void update(Long x , Long delta){ //O(log MX)
+	void update(Long x , Long add){ //O(log n)
 		x += EXTRA;
 		while(x < MX + EXTRA){
-			tree[x] += delta;
+			tree[x] += add;
 			x += (x & -x);
 		}
 	}
 	
-	void update(Long l , Long r, Long delta){
-		update(l , delta);
-		update(r + 1 , -delta);
+	void update(Long l , Long r, Long add){
+		update(l , add);
+		update(r + 1 , -add);
 	}		
 } ft;
 

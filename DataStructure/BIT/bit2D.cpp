@@ -3,12 +3,12 @@ using namespace std;
 
 typedef long long Long;
 
-const Long MXX = 1000;
-const Long MXY = 1000;
+const Long MX_X = 1000;
+const Long MX_Y = 1000;
 const Long EXTRA = 6;
 
-struct FenwickTree2D{
-	Long tree[MXX+EXTRA][MXY+EXTRA];
+struct BIT2D{
+	Long tree[MX_X + EXTRA][MX_Y + EXTRA];
 	
 	void clear(Long n, Long m){ //O(n * m)
 		for(Long i = 0; i< n + EXTRA; i++){
@@ -18,17 +18,17 @@ struct FenwickTree2D{
 		}
 	}
 	
-	Long query(Long i, Long j){ // O(log i * log j)
-		i += EXTRA;
-		j += EXTRA;
+	Long query(Long x, Long y){ // O((log n)^2)
+		x += EXTRA;
+		y += EXTRA;
 		Long sum = 0;
-		while(i > 0){
-			Long _j = j;
-			while(_j > 0){
-				sum += tree[i][_j];
-				_j -= (_j & -_j);
+		while(x > 0){
+			Long j = y;
+			while(j > 0){
+				sum += tree[x][j];
+				j -= (j & -j);
 			}
-			i -= (i & -i);
+			x -= (x & -x);
 		}
 		return sum;
 	}
@@ -37,16 +37,16 @@ struct FenwickTree2D{
 		return query(x2 , y2) - query(x2 , y1 - 1) - query(x1 - 1 , y2) + query(x1 - 1 , y1 - 1);
 	}
 	
-	void update(Long i, Long j, Long delta){ //O(log MXX * log MXY)
-		i += EXTRA;
-		j += EXTRA;
-		while(i < MXX + EXTRA){
-			Long _j = j;
-			while(_j < MXY + EXTRA){
-				tree[i][_j] += delta;
-				_j += (_j & -_j);
+	void update(Long x, Long y, Long add){ // O((log n)^2)
+		x += EXTRA;
+		y += EXTRA;
+		while(x < MX_X + EXTRA){
+			Long j = y;
+			while(j < MX_Y + EXTRA){
+				tree[x][j] += add;
+				j += (j & -j);
 			}
-			i += (i & -i);
+			x += (x & -x);
 		}
 	}		
 }ft;
