@@ -77,7 +77,7 @@ Long discreteLog(Long a , Long r , Long mod) {  //O(sqrt (mod) log mod)
 		Long cur = (r * fastPow(a , q , mod)) % mod;
 		Long p = search(f1 , cur);
 		if(p != -1) {
-			return p * k - q; //solution could not be the smallest
+			return p * k - q; //solution is not necessary the smallest
 			//if the smallest is needed, use modulo phi(mod)
 		}
 	}

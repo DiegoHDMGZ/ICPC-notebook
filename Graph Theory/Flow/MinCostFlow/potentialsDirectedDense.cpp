@@ -18,7 +18,7 @@ struct Graph{
 	Long pot[MX];
 	bool inQueue[MX];
 	
-	void addEdge(Long u, Long v, Long w, Long c, bool dir){
+	void addEdge(Long u, Long v, Long w, Long c){
 		adj[u].push_back(v);
 		adj[v].push_back(u);
 		cap[u][v] += w;
@@ -51,7 +51,7 @@ struct Graph{
 	}
 	
 	
-	pair<Long,Long> dijkstra(Long s, Long t, Long n){ //O(nlogm + mlogn)
+	pair<Long,Long> dijkstra(Long s, Long t, Long n){ //O(n^2)
 		//<flow, cost>
 		
 		vector<Long> d(n , INF);
@@ -106,7 +106,7 @@ struct Graph{
 	
 	
 	pair<Long,Long> minCostFlow(Long s, Long t, Long n){ 
-		//O(m log n *  |f| ) = O(m log n *(nU))
+		//O(n^2 *  |f| ) = O(n^2 *(nU))
 		//<maxFlow, minCost>
 		spfa(s , t , n); //not necessary if there is no negative edges
 		pair<Long,Long> inc;
