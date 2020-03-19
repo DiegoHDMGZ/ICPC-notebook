@@ -2,6 +2,7 @@
 
 Compile -> g++  -std=c++14 -c "%f"
 Build -> g++  -std=c++14 -o "%e" "%f"
+Exec -> "./%e"
 
 2.Editar-> Preferencias -> Editor -> Completado-> Desactivar autocompletar comentarios 
 
