@@ -24,7 +24,7 @@ Long gcd(Long a, Long b, Long &x, Long &y) { //O(min(loga,logb))
 }
 
 //ax + by = c
-bool diophantine(Long a, Long b, Long c, Long &x, Long &y, Long &g) { //O(min(loga,logb) + #solutions)
+bool diophantine(Long a, Long b, Long c, Long &x, Long &y, Long &g) { //O(min(loga,logb))
     if(a == 0 && b == 0){
 		if(c != 0) return false;
 		else{
@@ -65,7 +65,7 @@ Long divUp(Long a, Long b){
     }
 }
 
-vector<pair<Long,Long> > getAllSolutions(Long a, Long b, Long c, Long lx, Long rx, Long ly, Long ry) { //O(min(loga,logb))
+vector<pair<Long,Long> > getAllSolutions(Long a, Long b, Long c, Long lx, Long rx, Long ly, Long ry) { //O(min(loga,logb)+ #solutions)
     Long x0, y0, g;
     if (!diophantine(a, b, c, x0, y0, g)) return {};
     
