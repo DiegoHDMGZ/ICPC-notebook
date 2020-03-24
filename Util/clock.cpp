@@ -7,7 +7,7 @@ using namespace std;
 
 typedef long long Long;
 
-Long getTime(){
+long double getTime(){
 	return chrono::steady_clock::now().time_since_epoch().count() / 1e6;
 }
 

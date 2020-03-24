@@ -4,9 +4,10 @@
 #define pb push_back
 using namespace std;
 
-//source : https://www.youtube.com/watch?v=ZMnDVv67wug
-
 typedef long long Long;
+
+//https://icpcarchive.ecs.baylor.edu/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=1277
+
 typedef vector<vector<Long>> Matrix;
 const Long INF = 1e18;
 const Long MX = 1e3;
@@ -108,11 +109,59 @@ struct Hungarian{
 		return ans;
 	}	
 }hg;
-   
+
 int main() {
 	ios_base::sync_with_stdio(false);
 	cin.tie(NULL);
 	cout.tie(NULL);
+	
+	Long n;
+	Long cnt = 1;
+	bool first = true;
+	while(cin >> n){
+		if(n == 0) break;
+		if(first) first = false;
+		else cout << "\n";
+		vector<pair<Long,Long>> v(n);
+		REP(i , n){
+			cin >> v[i].first >> v[i].second;
+			v[i].first--;
+			v[i].second--;
+		}
+		Long ans = INF;
+		
+		Matrix A(n , vector<Long>(n));
+		for(Long row = 0; row < n; row++){
+			REP(i , n){
+				REP(j , n){
+					A[i][j] = abs(v[i].first - row) + abs(v[i].second - j);
+				}
+			}
+			ans = min(ans , hg.assign(A));
+		}
+		
+		for(Long col = 0; col < n; col++){
+			REP(i , n){
+				REP(j , n){
+					A[i][j] = abs(v[i].first - j) + abs(v[i].second - col);
+				}
+			}
+			ans = min(ans , hg.assign(A));
+		}
+		
+		for(Long diag = 0; diag < n; diag++){
+			REP(i , n){
+				A[i][diag] = abs(v[i].first - diag) + abs(v[i].second - diag);
+			}
+			ans = min(ans , hg.assign(A));
+			REP(i , n){
+				A[i][diag] = abs(v[i].first - diag) + abs(v[i].second - (n - diag - 1));
+			}
+			ans = min(ans , hg.assign(A));
+		}
+		cout << "Board " << cnt << ": " << ans << " moves required.\n"; 
+		cnt++;
+	}
 
 	return 0;
 }

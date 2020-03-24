@@ -15,7 +15,6 @@ const Long dummy = INF / 2;
 
 /*if the objective function is max , change dummy for -INF
 and multiply the matrix by -1*/
-
 struct Hungarian{
 	Long matchRow[MX];
 	Long matchCol[MX];
@@ -35,7 +34,9 @@ struct Hungarian{
 		Long m = A[0].size();
 		if(n > m){
 			makeSquare(A);
+			m = n;
 		}
+
 		vector<Long> colAdd(m, 0);
 		vector<Long> rowAdd(n , 0);
 		fill(matchRow, matchRow + n, -1); //match for i-th row
@@ -100,14 +101,14 @@ struct Hungarian{
 		Long ans = 0;
 		for(Long i = 0; i < n; i++){
 			Long j = matchRow[i];
-			if(A[i][j] != dummy){
+			if(j != -1 && A[i][j] < dummy / 2 ){
 				ans += A[i][j];
 			}
 		}
 		return ans;
 	}	
 }hg;
-   
+
 int main() {
 	ios_base::sync_with_stdio(false);
 	cin.tie(NULL);
