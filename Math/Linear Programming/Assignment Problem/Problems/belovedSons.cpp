@@ -2,9 +2,10 @@
 #define debug(x) cout << #x << " = " << x << endl
 #define REP(i,n) for(Long i = 0; i < (Long)n; i++)
 #define pb push_back
+#define Mat(a , b) Matrix(a , vector<Long>(n , 0)) 
 using namespace std;
 
-//source : https://www.youtube.com/watch?v=ZMnDVv67wug
+//https://codeforces.com/problemsets/acmsguru/problem/99999/210
 
 typedef long long Long;
 typedef vector<vector<Long>> Matrix;
@@ -108,11 +109,42 @@ struct Hungarian{
 		return ans;
 	}	
 }hg;
-   
+
 int main() {
 	ios_base::sync_with_stdio(false);
 	cin.tie(NULL);
 	cout.tie(NULL);
-
+	
+	Long n;
+	cin >> n;
+	vector<Long> val(n);
+	REP(i , n) {
+		Long x;
+		cin >> x;
+		val[i] = -x * x;
+	}
+	Matrix A = Mat(n , n);
+	REP(i , n){
+		Long k;
+		cin >> k;
+		REP(j , k){
+			Long x;
+			cin >> x;
+			x--;
+			A[i][x] = val[i];
+		}
+	}
+	
+	hg.assign(A);
+	
+	REP(i , n){
+		Long j = hg.matchRow[i];
+		Long val = A[i][j];
+		if(val == 0){
+			cout << 0 << " ";
+		} else {
+			cout << j + 1 << " ";
+		}
+	}
 	return 0;
 }

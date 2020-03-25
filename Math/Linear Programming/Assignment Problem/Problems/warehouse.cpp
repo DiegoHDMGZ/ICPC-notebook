@@ -2,15 +2,18 @@
 #define debug(x) cout << #x << " = " << x << endl
 #define REP(i,n) for(Long i = 0; i < (Long)n; i++)
 #define pb push_back
+#define Mat(a, b) Matrix(a , vector<Long>(b))
 using namespace std;
 
-//source : https://www.youtube.com/watch?v=ZMnDVv67wug
+//https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=1829
 
 typedef long long Long;
 typedef vector<vector<Long>> Matrix;
+typedef string string;
+
 const Long INF = 1e18;
-const Long MX = 1e3;
-const Long dummy = 1e10; 
+const Long MX = 1603;
+const Long dummy = INF / 2; 
 
 /*if the objective function is max , change dummy for -INF
 and multiply the matrix by -1*/
@@ -108,11 +111,101 @@ struct Hungarian{
 		return ans;
 	}	
 }hg;
-   
+
+struct Graph{
+	vector<Long> adj[MX];
+	vector<Long> d;
+	
+	void clear(Long n){
+		REP(i , n){
+			adj[i].clear();
+		}
+	}
+	
+	void addEdge(Long u , Long v){
+		adj[u].pb(v);
+	}
+	
+	void bfs(Long s , Long n){
+		d = vector<Long>(n, INF);
+		queue<Long> q;
+		q.push(s);
+		d[s] = 0;
+		
+		while(!q.empty()){
+			Long u = q.front();
+			q.pop();
+			for(Long v : adj[u]){
+				if(d[v] == INF){
+					d[v] = d[u] + 1;
+					q.push(v);
+				}
+			}
+		}
+	}
+}G;
+
+Long n , m;
+
+Long conv(Long i , Long j){
+	return i * m + j;
+}
+
+bool valid(Long i , Long j){
+	return i >= 0 && j >= 0 && i < n && j < m;
+}
+
 int main() {
 	ios_base::sync_with_stdio(false);
 	cin.tie(NULL);
 	cout.tie(NULL);
+	
+	Long T;
+	cin >> T;
+	
+	REP(t, T){
+		cin >> n >> m;
+		G.clear(n * m);
+		vector<string> A(n);
+		REP(i , n){
+			cin >> A[i];
+		}
+		vector<Long> box;
+		vector<Long> target;
+		REP(i , n){
+			REP(j , m){
+				if(A[i][j] != '#'){
+					for(Long a = -1; a <= 1; a++){
+						for(Long b = -1; b <= 1; b++){
+							if(abs(a) + abs(b) == 1 && valid(i + a , j + b)){
+								if(A[i + a][j + b] != '#'){
+									G.addEdge(conv(i , j), conv(i +a , j + b));
+								}
+							}
+						}
+					}
+					
+					if(A[i][j] == 'B'){
+						box.pb(conv(i, j ));
+					}
+					if(A[i][j] == 'X'){
+						target.pb(conv(i, j ));
+					}
+				}
+			}
+		}
+		Matrix C = Mat(box.size(), target.size());
+		
+		for(Long i = 0; i < box.size(); i++){
+			G.bfs(box[i] , n * m);
+			for(Long j = 0; j < target.size(); j++){
+				C[i][j] = G.d[target[j]];
+			}
+		}
+		
+		cout << hg.assign(C) << "\n";
+		
+	}
 
 	return 0;
 }
