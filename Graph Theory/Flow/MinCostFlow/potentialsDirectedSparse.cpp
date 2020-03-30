@@ -5,9 +5,19 @@
 using namespace std;
 
 typedef long long Long;
+const Long MX = 2005;
+const Long INF = 1e18;
 
-const Long MX = 350;
-const Long INF = 1e9;
+struct Path{
+	Long node, weight;
+	Path(){}
+	
+	Path(Long node,Long weight) : node(node) , weight(weight) {}
+ 
+	bool operator >(const Path &P) const{
+		return weight > P.weight;
+	}
+};
 
 struct Graph{
 	vector<Long> adj[MX];
@@ -51,33 +61,31 @@ struct Graph{
 	}
 	
 	
-	pair<Long,Long> dijkstra(Long s, Long t, Long n){ //O(n^2)
+	pair<Long,Long> dijkstra(Long s, Long t, Long n){ //O(m log n)
 		//<flow, cost>
-		
+		priority_queue<Path , vector<Path> , greater<Path>> q;
 		vector<Long> d(n , INF);
-		vector<bool> vis(n , false);
 		vector<Long> residualCap(n, 0);
 		d[s] = 0;
 		residualCap[s] = INF;
+		q.push(Path(s , d[s]));
 		
-		for(Long i = 0; i < n; i++){
-			Long u = -1;
-			for(Long j = 0; j < n; j++){
-				if(!vis[j] && (u == -1 || d[j] < d[u])){
-					u = j;
-				}
+		while(!q.empty()){
+			Path p = q.top();
+			q.pop();
+			int u = p.node;
+			if(p.weight != d[u]){
+				continue;
 			}
-			if(u == -1 || d[u] == INF){
-				break;
-			}
-			
-			vis[u] = true;
-			for(Long v : adj[u]){
+	
+			for( Long v : adj[u]){
 				Long cf = cap[u][v] - flow[u][v];
 				Long c = cost[u][v] + pot[u] - pot[v];
 				
 				if(cf > 0 && d[u] + c < d[v]){
+					assert(c >= 0);
 					d[v] = d[u] + c;
+					q.push(Path(v , d[v]));
 					residualCap[v] = min(residualCap[u], cf);
 					parent[v] = u;
 				}
@@ -106,9 +114,9 @@ struct Graph{
 	
 	
 	pair<Long,Long> minCostFlow(Long s, Long t, Long n){ 
-		//O(n^2 *  |f| ) = O(n^2 *(nU))
+		//O(m log n *  |f| ) = O(m log n *(nU))
 		//<maxFlow, minCost>
-		spfa(s  , n); //not necessary if there is no negative edges
+		spfa(s , n); //not necessary if there is no negative edges
 		pair<Long,Long> inc;
 		pair<Long,Long> ans = {0,0};
 		do{
@@ -120,11 +128,7 @@ struct Graph{
 		return ans;
 	}
 } G;
- 
-int main() {
-	ios_base::sync_with_stdio(false);
-	cin.tie(NULL);
-	cout.tie(NULL);
 
+int main() {
 	return 0;
 }

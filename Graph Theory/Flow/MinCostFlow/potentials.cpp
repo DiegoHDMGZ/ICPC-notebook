@@ -21,10 +21,7 @@ struct Path{
 	
 	Path(Long node,Long weight) : node(node) , weight(weight) {}
  
-	bool operator <(const Path &P) const{
-		if(weight == P.weight){
-			return node > P.node;
-		}
+	bool operator >(const Path &P) const{
 		return weight > P.weight;
 	}
 };
@@ -61,7 +58,7 @@ struct Graph{
 		}
 	}
 	
-	void spfa(Long s, Long t , Long n){ //O(nm)
+	void spfa(Long s , Long n){ //O(nm)
 		for(Long i = 0; i < n; i++){
 			pot[i] = INF;
 		}
@@ -88,7 +85,7 @@ struct Graph{
 	
 	pair<Long,Long> dijkstra(Long s, Long t, Long n){ //O(nlogm + mlogn)
 		//<flow, cost>
-		priority_queue<Path> q;
+		priority_queue<Path , vector<Path> , greater<Path>> q;
 		
 		vector<Long> d(n , INF);
 		vector<Long> residualCap(n, 0);
@@ -140,7 +137,7 @@ struct Graph{
 	pair<Long,Long> minCostFlow(Long s, Long t, Long n){ 
 		//O(m log n *  |f| ) = O(m log n *(nU))
 		//<maxFlow, minCost>
-		spfa(s , t , n); //not necessary if there is no negative edges
+		spfa(s , n); //not necessary if there is no negative edges
 		pair<Long,Long> inc;
 		pair<Long,Long> ans = {0,0};
 		do{
