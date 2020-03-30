@@ -7,15 +7,14 @@ using namespace std;
 
 typedef long long Long;
 
-const Long MAX = 1e5 + 2;
-const Long MAXVAL = 1e6 + 2;
-const Long MAXQUERY = 2e5;
+const Long MX = 1e5 ;
+const Long MAXVAL = 1e6 + 1;
 const Long EXTRA = 6;
 struct FenwickTree{
-	Long tree[MAX+EXTRA + 1];
+	Long tree[MX + EXTRA];
 	
 	void clean(Long n){ //O(nlogn)
-		for(Long i = 0; i < n; i++){
+		for(Long i = 0; i < n + EXTRA; i++){
 			tree[i] = 0;
 		}
 	}
@@ -32,7 +31,7 @@ struct FenwickTree{
 	
 	void update(Long i , Long delta){ //O(log MAX)
 		i += EXTRA;
-		while(i <= MAX){
+		while(i < MX + EXTRA){
 			tree[i] += delta;
 			i += (i & -i);
 		}
@@ -76,8 +75,6 @@ void dquery(vector<Long> &v , vector<Query> &queries){
 	}
 }
 
-Long ans[MAXQUERY];
-
 int main(){
 	ios_base::sync_with_stdio(false);
 	cin.tie(NULL);
@@ -103,6 +100,7 @@ int main(){
 	
 	dquery(v , queries);
 	
+	vector<Long> ans(q);
 	REP(i , q){
 		ans[queries[i].pos] = queries[i].ans;
 	}
