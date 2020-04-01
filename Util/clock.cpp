@@ -8,7 +8,7 @@ using namespace std;
 typedef long long Long;
 
 long double getTime(){
-	return chrono::duration_cast<chrono::seconds>(chrono::steady_clock::now().time_since_epoch()).count();
+	return chrono::duration_cast<chrono::milliseconds>(chrono::steady_clock::now().time_since_epoch()).count();
 }
 int main(){
 	ios_base::sync_with_stdio(false);
