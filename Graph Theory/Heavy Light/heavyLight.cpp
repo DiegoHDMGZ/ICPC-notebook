@@ -15,6 +15,10 @@ Long segmentTreeQuery(Long pos1 , Long pos2) {
 	return 0;
 }
 
+void segmentTreeUpdate(Long pos, Long v){
+	return;
+}
+
 struct Graph {
 	vector <Long> adj[MX];
 	Long parent[MX];
@@ -73,12 +77,15 @@ struct Graph {
 		}
 	}
 	
-	void build(Long root = 0){
+	void build(vector<Long> &v , Long root = 0){
 		curPos = 0;
 		depth[root] = 0;
 		parent[root] = -1;
 		dfs(root);
 		decompose(root , root);
+		for(Long i = 0; i < v.size(); i++){
+			segmentTreeUpdate(pos[i] , v[i]);
+		}
 	}
 	
 	Long query(Long u , Long v) {	//O( O( data query) log N)
@@ -106,6 +113,7 @@ struct Graph {
 		ans = max(ans, lastMax);
 		return ans;
 	}
+
 } G;
 
 int main() {
