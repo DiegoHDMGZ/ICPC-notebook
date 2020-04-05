@@ -18,7 +18,7 @@ struct BIT2D{
 		}
 	}
 	
-	Long query(Long x, Long y){ // O((log n)^2)
+	Long query(Long x, Long y){ // O(log n log m)
 		x += EXTRA;
 		y += EXTRA;
 		Long sum = 0;
@@ -33,7 +33,7 @@ struct BIT2D{
 		return sum;
 	}
 	
-	void update(Long x, Long y, Long add){ // O((log n)^2)
+	void update(Long x, Long y, Long add){ // O(log n log m)
 		x += EXTRA;
 		y += EXTRA;
 		while(x < MX_X + EXTRA){
