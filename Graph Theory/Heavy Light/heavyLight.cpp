@@ -73,12 +73,12 @@ struct Graph {
 		}
 	}
 	
-	void decompose(Long u = 0){
+	void build(Long root = 0){
 		curPos = 0;
-		depth[u] = 0;
-		parent[u] = -1;
-		dfs(u);
-		decompose(u , u);
+		depth[root] = 0;
+		parent[root] = -1;
+		dfs(root);
+		decompose(root , root);
 	}
 	
 	Long query(Long u , Long v) {	//O( O( data query) log N)
@@ -109,7 +109,6 @@ struct Graph {
 } G;
 
 int main() {
-	G.decompose();
 	return 0;
 }
 
