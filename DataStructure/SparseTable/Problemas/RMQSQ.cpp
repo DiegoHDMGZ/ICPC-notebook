@@ -2,10 +2,11 @@
 #define debug(x) cout << #x << " = " << x << endl
 #define REP(i,n) for(Long i = 0; i < (Long)n; i++)
 #define pb push_back
-
 using namespace std;
 
 typedef long long Long;
+
+//https://www.spoj.com/problems/RMQSQ/
 
 const Long MX = 1e6;
 const Long loga = (Long)log2(MX)+1;
@@ -34,7 +35,7 @@ struct SparseTable{
 		}
 	}
 	
-	/*Long query(Long l, Long r){ //O(log n)
+	Long query(Long l, Long r){ //O(log n)
 		Long ans = st[l][0];
 		if(l == r) return ans;
 		l++;
@@ -49,18 +50,33 @@ struct SparseTable{
 		}
 		
 		return ans;
-	}*/
+	}
 	
-	Long query(Long L, Long R){ //O(|f|)
+	Long queryFast(Long L, Long R){ //O(|f|)
 		//special cases : idempotent(  min, max, gcd)
 		Long T = R - L + 1;
 		Long lg = 31 - (__builtin_clz(T));
 		return f(st[L][lg], st[R- (1LL << lg) + 1][lg]);
 	}
+	
 }st;
-
-
 int main() {
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	cout.tie(NULL);
+	
+	Long n, q;
+	cin >> n;
+	vector<Long> v(n);
+	for(Long i = 0; i < n; i++){
+		cin >> v[i];
+	}
+	st.build(v);
+	cin >> q;
+	for(Long i = 0; i < q; i++){
+		Long l , r;
+		cin >> l >> r;
+		cout << st.query(l , r) << endl;
+	}
 	return 0;
 }
-
