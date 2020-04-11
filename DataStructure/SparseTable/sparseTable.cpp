@@ -17,7 +17,7 @@ struct SparseTable{
 		return min(a , b);
 	}
 
-	void build(vector<Long> &A){ // O(n log n)
+	void build(vector<Long> &A){ // O(|f| n log n)
 		Long n = A.size();
 		for(Long i = 0; i < n; i++){
 			st[i][0] = A[i];
