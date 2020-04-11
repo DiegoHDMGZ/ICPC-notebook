@@ -30,7 +30,7 @@ struct SparseTable{
 		}
 	}
 	
-	/*Long query(Long l, Long r){ //O(log n)
+	/*Long query(Long l, Long r){ //O(|f| log n)
 		Long ans = st[l][0];
 		if(l == r) return ans;
 		l++;
