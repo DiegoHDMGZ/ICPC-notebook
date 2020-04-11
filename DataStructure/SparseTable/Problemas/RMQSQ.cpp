@@ -58,7 +58,6 @@ struct SparseTable{
 		Long lg = 31 - (__builtin_clz(T));
 		return f(st[L][lg], st[R- (1LL << lg) + 1][lg]);
 	}
-	
 }st;
 int main() {
 	ios_base::sync_with_stdio(false);

@@ -17,14 +17,10 @@ struct SparseTable{
 		return min(a , b);
 	}
 
-	Long f(Long a){
-		return a;
-	}
-	
 	void build(vector<Long> &A){ // O(n log n)
 		Long n = A.size();
 		for(Long i = 0; i < n; i++){
-			st[i][0] = f(A[i]);
+			st[i][0] = A[i];
 		}
 		
 		for(Long j = 1; (1 << j) <= n; j++){
