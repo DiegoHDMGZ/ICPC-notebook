@@ -8,8 +8,8 @@ typedef long long Long;
 
 //https://www.spoj.com/problems/RMQSQ/
 
-const Long MX = 1e6;
-const Long loga = (Long)log2(MX)+1;
+const Long MX = 1e5;
+const Long loga = 32 - __builtin_clz(MX);
 
 struct SparseTable{
 	Long st[MX][loga];

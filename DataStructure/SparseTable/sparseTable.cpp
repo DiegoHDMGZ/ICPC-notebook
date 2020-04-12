@@ -8,7 +8,7 @@ using namespace std;
 typedef long long Long;
 
 const Long MX = 1e6;
-const Long loga = (Long)log2(MX)+1;
+const Long loga = 32 - __builtin_clz(MX);
 
 struct SparseTable{
 	Long st[MX][loga];
