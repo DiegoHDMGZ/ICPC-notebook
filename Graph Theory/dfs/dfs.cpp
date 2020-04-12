@@ -37,8 +37,7 @@ struct Graph {
 		for(Long v : adj[u]){
 			if(!vis[v]){
 				dfs(v); //tree edge
-			}
-			else{
+			}else{
 				if(tOut[v] == 0){
 					//back edge
 				} else if(tIn[u] < tIn[v]){
