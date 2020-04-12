@@ -5,49 +5,47 @@ using namespace std;
 
 typedef long long Long;
 
-
-bool check( Long med ){
+bool check( Long mid ){
 	return true;
 }
 
-Long search(  Long ini , Long fin ){ //O(logn)
+Long search(  Long low , Long high ){ //O(logn)
 	// F F F... V V V
-	if(!check(fin)) return -1; //todos F
-	if(check(ini)) return ini; //todos V
+	if(!check(high)) return -1; //all F
+	if(check(low)) return low; //all V
 	
-	while(fin - ini > 1){ // hay mas de 2 valores
-		Long med= ini + (fin - ini) / 2;
+	while(high - low > 1){
+		Long mid= low + (high - low) / 2;
 		
-		if(check( med )){
-			fin = med;
+		if(check( mid )){
+			high = mid;
 		} 
 		else {
-			ini = med;
+			low = mid;
 		}
 	}
 
-	//hay 2 valores ini es F y fin es V
-	return fin;
+	//2 values low -> F and high->V
+	return high;
 }
 
-/*Long search(  Long ini , Long fin ){ //O(logn)
+/*Long search(  Long low , Long high ){ //O(logn)
 	// V V V ... F F F
-	if(check(fin)) return fin; //todos V
-	if(!check(ini)) return -1; //todos F
+	if(check(high)) return high; //all V
+	if(!check(low)) return -1; //all F
 	
-	while(fin - ini > 1){ // hay mas de 2 valores
-		Long med= ini + (fin - ini) / 2;
+	while(high - low > 1){ 
+		Long mid= low + (high - low) / 2;
 		
-		if(check( med )){
-			ini = med;
+		if(check( mid )){
+			low = mid;
 		} 
 		else {
-			fin = med;
+			high = mid;
 		}
 	}
-
-	//hay 2 valores ini es V y fin es F
-	return ini;
+	//2 values low -> V and high-> F
+	return low;
 }*/
 
 int main(){

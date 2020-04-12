@@ -14,20 +14,20 @@ Long f(Long i){
 	return A[i];
 }
 
-Long ternarySearch(Long ini, Long fin){ //O(log x)
-	while(fin - ini > 2){
-		Long m1 = ini + (fin-ini)/3;
-		Long m2 = fin - (fin-ini)/3;
-		if(f(m1) < f(m2)){ //si piden minimo se invierte
-			ini = m1;
+Long ternarySearch(Long low, Long high){ //O(log n)
+	while(high - low > 2){
+		Long m1 = low + (high-low)/3;
+		Long m2 = high - (high-low)/3;
+		if(f(m1) < f(m2)){ //if minimum is needed, change to >
+			low = m1;
 		}
 		else{
-			fin = m2;
+			high = m2;
 		}
 	}
-	Long maxi = f(ini); 
-	for(int i = ini; i <= fin; i++){
-		maxi = max(maxi,f(i)); //si piden minimo se cambia
+	Long maxi = f(low); 
+	for(int i = low; i <= high; i++){
+		maxi = max(maxi,f(i)); //if minimum is needed, change to min
 	}
 	return maxi;
 }

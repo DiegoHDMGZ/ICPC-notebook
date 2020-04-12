@@ -5,27 +5,27 @@ using namespace std;
 
 typedef long double Double;
 
-const Double ERROR = 1e-6;
+const Double EPS = 1e-6;
 
 Double f(double x){
 	return x*x;
 }
 
-bool check(Double med, Double x ){
-	return f(med)>=x;
+bool check(Double mid, Double x ){
+	return f(mid)>=x;
 }
 
-Double search ( Double ini, Double fin, Double x){
-	//precision de 10^(-6)
+Double search ( Double low, Double high, Double x){
+	//precision 10^(-6)
 	
-	while(fin - ini > ERROR){ //REP(i,1000)
-		Double med= ( ini + fin ) / 2.0;
+	while(high - low > EPS){ //REP(i,1000)
+		Double mid= ( high + low ) / 2.0;
 		
-		if(check( med , x)) fin = med;
-		else ini = med;
+		if(check( mid , x)) high = mid;
+		else low = mid;
 	}
 	
-	return fin;
+	return high;
 }
 
 int main(){

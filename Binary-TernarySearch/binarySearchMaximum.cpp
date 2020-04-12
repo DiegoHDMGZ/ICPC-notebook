@@ -10,30 +10,30 @@ typedef long long Long;
 const Long MX = 1e5;
 Long A[MX];
 
-Long f(Long med){
-	return A[med];
+Long f(Long mid){
+	return A[mid];
 }
 
-bool check( Long med ){
-	return f(med + 1) - f(med ) <= 0;
+bool check( Long mid ){
+	return f(mid + 1) - f(mid ) <= 0;
 }
 
-Long search(  Long ini , Long fin ){ //O(logn)
+Long search(  Long low , Long high ){ //O(logn)
 	// F F F... V V V
-	if(!check(fin - 1)) return f(fin); //todos F
-	if(check(ini)) return f(ini); //todos V
-	while(fin - ini > 1){ // hay mas de 2 valores
-		Long med= ini + (fin - ini) / 2;
+	if(!check(high - 1)) return f(high); //all F
+	if(check(low)) return f(low); //all V
+	while(high - low > 1){ 
+		Long mid= low + (high - low) / 2;
 		
-		if(check( med )){
-			fin = med;
+		if(check( mid )){
+			high = mid;
 		} 
 		else {
-			ini = med;
+			low = mid;
 		}
 	}
-	//hay 2 valores ini es F y fin es V
-	return f(fin);
+	//2 values low -> F and high -> V
+	return f(high);
 }
 
 int main(){
