@@ -119,7 +119,8 @@ struct Graph{
 		indegree[v]++;
 	}
 	
-	Long maxAntiChain(Long n){ //O(V ^ 3/2 )
+	Long maxAntiChain(Long n){ 
+		//O(V ^ 5/2 ) - could be less depending on E in Flow Graph
 		Long s = 0;
 		Long t = 2 * n + 1;
 		deque<Long> q;
