@@ -6,9 +6,10 @@ typedef long long Long;
 
 //Credits : https://www.geeksforgeeks.org/mos-algorithm-query-square-root-decomposition-set-1-introduction/
 //For a good explanation check : https://www.hackerearth.com/practice/notes/mos-algorithm/
+//And check : https://cp-algorithms.com/data_structures/sqrt_decomposition.html
 
 const Long MX = 1e5;
-
+const Long block = 400;
 //Conditions
 //1) No update
 //2) Offline
@@ -18,26 +19,34 @@ const Long MX = 1e5;
 struct Query{
     Long id, l, r;
     Query(){}
-    Query(Long id, Long l, Long r): l(l) , r(r), id(id){}
-
+    Query(Long id, Long l, Long r): id(id), l(l) , r(r){}
 };
 
-Long block;
-
 bool cmp(const Query &x, const Query &y){
-	// queries are sorted in increasing order blocks and R values.
-	if (x.l / block != y.l / block) return x.l / block < y.l / block;
-	return x.r < y.r;
+	// queries are sorted in increasing order blocks 
+	Long bx = x.l / block ;
+	Long by = y.l / block;
+	if (bx != by) return bx < by;
+	
+	//in the same blocks, if the block is odd sort in ascending order
+	//otherwise, in descending order, in order to be more efficient
+	if(bx & 1 == 1){
+		return x.r < y.r;
+	} else{
+		return x.r > y.r;
+	}
 }
 
 struct Mo{
 	vector<Query> q;
 	Long answer[MX];
 	Long A[MX];
+	
+	void clear(){
+		q.clear();
+	}
 
 	void addQuery(Long l , Long r) {
-		l--;
-		r--;
 		Long id = q.size();
 		q.push_back( Query(id ,l , r));
 	}
@@ -46,13 +55,11 @@ struct Mo{
 		ans += A[x];
 	}
 	
-	void subs(Long x, Long &ans){
+	void remove(Long x, Long &ans){
 		ans -= A[x];
 	}
 	
 	void process(Long N) { //O((N + Q) sqrt(N) |F|)
-	    block = (Long)sqrt(N);
-	 
 	    sort(q.begin() , q.end(), cmp);
 	    
 	    Long currL = 0, currR = 0;
@@ -71,12 +78,12 @@ struct Mo{
 				add(currL , ans);
 			}
 			while(currL < l){ // f(l + 1 , r)
-				subs(currL , ans);
+				remove(currL , ans);
 				currL++;
 			}
 			while(currR > r + 1){ //f(l , r - 1)
 				currR--;
-				subs(currR , ans);
+				remove(currR , ans);
 			}
 			answer[q[i].id] = ans;
 	    }
@@ -88,7 +95,6 @@ struct Mo{
 	
 }mo;
  
-
 int main(){
 	ios_base::sync_with_stdio(false);
 	cin.tie(NULL);
@@ -110,4 +116,3 @@ int main(){
 	}
     return 0;
 }
-
