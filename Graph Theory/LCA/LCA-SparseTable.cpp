@@ -7,7 +7,7 @@ using namespace std;
 typedef long long Long;
 
 const Long MX = 1e5;
-const Long loga = log2(MX)+1;
+const Long loga = 32 - __builtin_clz(MX);
 
 struct SparseTable{
 	pair<Long,Long> st[2 * MX][loga + 1]; //<min height , node>
@@ -15,15 +15,11 @@ struct SparseTable{
 	pair<Long,Long> f(pair<Long,Long> a, pair<Long,Long> b){
 		return min(a , b);
 	}
-
-	pair<Long,Long> f(pair<Long,Long> a){
-		return a;
-	}
 	
 	void build(vector<pair<Long,Long>> &A){ // O(n log n)
 		Long n = A.size();
 		for(Long i = 0; i < n; i++){
-			st[i][0] = f(A[i]);
+			st[i][0] = A[i];
 		}
 		
 		for(Long j = 1; (1 << j) <= n; j++){

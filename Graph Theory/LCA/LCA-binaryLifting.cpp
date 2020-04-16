@@ -7,7 +7,7 @@ using namespace std;
 typedef long long Long;
 
 const Long MX = 1e5;
-const Long loga = log2(MX)+1;
+const Long loga = 32 - __builtin_clz(MX);
 
 struct Graph {
 	vector<int> adj[MX];

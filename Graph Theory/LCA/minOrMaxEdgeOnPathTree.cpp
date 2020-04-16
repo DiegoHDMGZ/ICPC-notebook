@@ -8,7 +8,7 @@ typedef long long Long;
 
 const Long MX = 1e5;
 const Long INF = 1e18;
-const Long loga = log2(MX)+1;
+const Long loga = 32 - __builtin_clz(MX);
 
 struct EndPoint{
 	Long node, w;
