@@ -6,6 +6,8 @@ using namespace std;
 
 typedef long long Long;
 
+//https://www.spoj.com/problems/ELIS/
+
 const Long INF = 1e18;
 
 Long LIS(vector<Long> &A){
@@ -16,7 +18,7 @@ Long LIS(vector<Long> &A){
 	
 	Long best = 0;
 	for(Long i = 0; i < n; i++){
-		Long pos = upper_bound(B.begin(), B.end(), A[i]) - B.begin(); 
+		Long pos = lower_bound(B.begin(), B.end(), A[i]) - B.begin(); 
 		//change to lower for strictly increasing 
 		L[i] = pos;
 		best = max(best , L[i]);
@@ -26,19 +28,18 @@ Long LIS(vector<Long> &A){
 	return best;
 }
 
+
 int main() {
 	ios_base::sync_with_stdio(false);
 	cin.tie(NULL);
 	cout.tie(NULL);
 	
-
-	vector<Long> A;
-	Long x;
-	while(cin >> x){
-		A.pb(x);
+	Long n;
+	cin >> n;
+	vector<Long> A(n);
+	for(Long i = 0; i < n ; i++){
+		cin >> A[i];
 	}
-
-	cout << A.size() - LIS(A) << endl;
-
+	cout << LIS(A) << endl;
 	return 0;
 }

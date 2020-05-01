@@ -6,6 +6,8 @@ using namespace std;
 
 typedef long long Long;
 
+//https://blog.asarkar.org/assets/docs/algorithms-curated/Longest%20Increasing%20Subsequence%20-%20Jan.pdf
+
 const Long INF = 1e18;
 
 Long LIS(vector<Long> &A){
@@ -16,7 +18,7 @@ Long LIS(vector<Long> &A){
 	
 	Long best = 0;
 	for(Long i = 0; i < n; i++){
-		Long pos = lower_bound(B.begin(), B.end(), A[i]) - B.begin(); 
+		Long pos = upper_bound(B.begin(), B.end(), A[i]) - B.begin(); 
 		//change to lower for strictly increasing 
 		L[i] = pos;
 		best = max(best , L[i]);
@@ -26,18 +28,34 @@ Long LIS(vector<Long> &A){
 	return best;
 }
 
+void solve(){
+	Long n;
+	cin >> n;
+	vector<pair<Long,Long>> A(n);
+	
+	for(Long i = 0 ; i < n ; i++){
+		cin >> A[i].first;
+	}
+	for(Long i = 0; i < n ; i++){
+		cin >> A[i].second;
+	}
+	sort(A.begin(), A.end());
+	vector<Long> B;
+	for(Long i = 0; i < n; i++){
+		B.push_back(A[i].second);
+	}
+	cout << LIS(B) << "\n";
+}
 
 int main() {
 	ios_base::sync_with_stdio(false);
 	cin.tie(NULL);
 	cout.tie(NULL);
 	
-	Long n;
-	cin >> n;
-	vector<Long> A(n);
-	for(Long i = 0; i < n ; i++){
-		cin >> A[i];
-	}
-	cout << LIS(A) << endl;
+	Long T;
+	cin >> T;
+	REP(t, T )solve();
+
+
 	return 0;
 }
