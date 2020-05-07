@@ -6,22 +6,22 @@ using namespace std;
 
 typedef long long Long;
 
-const Long MX = 1e5; //Suma de caracteres de todas las palabras + 1 : cantidad maxima de nodos
-const Long ALPH = 26; // tamaño del alfabeto
+const Long MX = 1e5; //sum of length of all words + 1 
+const Long ALPH = 26; // alphabet size
 
 struct Trie{
 	Long memo[MX][ALPH];
-	bool term[MX]; //indica si es nodo terminal
-	Long nodos = 1;
+	bool term[MX]; //terminal node
+	Long nodes = 1;
 	
 	void init(){
-		for(Long i = 0; i < nodos; i++){
+		for(Long i = 0; i < nodes; i++){
 			term[i] = 0;
 			for(int j = 0; j < ALPH; j++){
 				memo[i][j] = 0;
 			}
 		}
-		nodos = 1;
+		nodes = 1;
 	}
 	
 	void addWord(string &s){
@@ -31,7 +31,7 @@ struct Trie{
 		for(Long i = 0; i < sz; i++){
 			Long c = s[i] - 'a';
 			if(memo[u][c] == 0){
-				memo[u][c] = nodos++;
+				memo[u][c] = nodes++;
 			}
 			u = memo[u][c];
 		}
@@ -63,7 +63,7 @@ struct Trie{
 			}
 			u = memo[u][c];
 		}
-		return term[u]; //validar si es nodo terminal
+		return term[u]; 
 	}
 		
 }trie;
