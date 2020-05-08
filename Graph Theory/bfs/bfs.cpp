@@ -17,12 +17,7 @@ struct Graph{
 	void clear(Long N = MX) {
 		REP(i , N) {
 			adj[i].clear();
-			d[i] = INF;
 		}
-	}
-	
-	Graph(){
-		clear();
 	}
 	
 	void addEdge(Long u, Long v) {
@@ -31,6 +26,9 @@ struct Graph{
 	}
 	
 	void bfs(Long s, Long n){ //O(n+m)
+		for(Long i = 0; i < n; i++){
+			d[i] = INF;
+		}
 		d[s] = 0;
 		deque<Long> Q;
 		Q.push_back(s);

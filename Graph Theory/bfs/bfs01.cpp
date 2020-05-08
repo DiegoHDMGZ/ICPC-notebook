@@ -22,14 +22,8 @@ struct Graph{
 	
 	void clear(Long N = MX) {
 		REP(i, N) {
-			used[i] = false;
 			adj[i].clear();
-			d[i] = INF;
 		}
-	}
-	
-	Graph(){
-		clear();
 	}
 	
 	void addEdge(Long u , Long v, Long w) {
@@ -38,6 +32,10 @@ struct Graph{
 	}
 	
 	void bfs01(Long s, Long n){ //O(n+m)
+		for(Long i = 0; i < n; i++){
+			d[i] = INF;
+			used[i] = false;
+		}
 		d[s] = 0;
 		deque<Long> Q;
 		Q.pb(s);
