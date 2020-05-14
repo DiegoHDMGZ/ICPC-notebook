@@ -26,7 +26,7 @@ Long ternarySearch(Long low, Long high){ //O(log n)
 		}
 	}
 	Long maxi = f(low); 
-	for(int i = low; i <= high; i++){
+	for(Long i = low; i <= high; i++){
 		maxi = max(maxi,f(i)); //if minimum is needed, change to min
 	}
 	return maxi;
