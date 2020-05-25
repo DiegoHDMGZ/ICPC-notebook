@@ -8,8 +8,9 @@ typedef long long Long;
 
 const Long MX = 1e5;
 
+
 struct SegmentTree{
-	Long t[4 * MX];
+	Long t[2 * MX];
 	Long maxN;
 	
 	void clear(Long n) {
@@ -24,9 +25,11 @@ struct SegmentTree{
 			t[id] = a[tl];
 		}else{
 			Long tm = (tl + tr) / 2;
-			build(a , 2 * id , tl , tm);
-			build(a , 2 * id + 1 , tm + 1 , tr);
-			t[id] = t[2 * id] + t[2 * id + 1];
+			Long left = id + 1;
+			Long right = id + 2 * (tm - tl + 1) ;
+			build(a , left , tl , tm);
+			build(a , right , tm + 1 , tr);
+			t[id] = t[left] + t[right];
 		}
 	}
 	
@@ -45,10 +48,12 @@ struct SegmentTree{
 			return tl;
 		}
 		Long tm= (tl + tr) / 2;
-		if(t[2 * id] >= sum){
-			return findInd(sum , 2 * id , tl , tm);
+		Long left = id + 1;
+		Long right = id + 2 * (tm - tl + 1) ;
+		if(t[left] >= sum){
+			return findInd(sum , left , tl , tm);
 		}else{
-			return findInd(sum - t[2 * id] , 2 * id + 1, tm + 1 ,tr);
+			return findInd(sum - t[left] , right, tm + 1 ,tr);
 		}
 	}
 	
@@ -62,12 +67,14 @@ struct SegmentTree{
 			t[id] = val;
 		}else{
 			Long tm = (tl + tr) / 2;
+			Long left = id + 1;
+			Long right = id + 2 * (tm - tl + 1) ;
 			if(pos <= tm){
-				update(pos, val ,2 * id, tl, tm);
+				update(pos, val , left , tl, tm);
 			}else{
-				update(pos, val, 2 * id + 1 , tm + 1, tr);
+				update(pos, val, right , tm + 1, tr);
 			}
-			t[id] = t[2 * id] + t[2 * id + 1];
+			t[id] = t[left] + t[right];
 		}
 	}
 	
@@ -118,7 +125,7 @@ void solve(){
 	cout << endl;*/
 	brute.build(v);
 	st.build(v);
-	Long q = 1e5 / n;
+	Long q = 1e7 / n;
 	for(Long i = 0; i < q; i++){
 		Long pos , val;
 		pos = random(0 , n - 1);

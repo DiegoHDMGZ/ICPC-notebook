@@ -1,7 +1,8 @@
 #include <bits/stdc++.h>
 #define debug(x) cout << #x << " = " << x << endl
-#define REP(i, n) for (Long i = 0; i < (Long)n; i++)
+#define REP(i,n) for(Long i = 0; i < (Long)n; i++)
 #define pb push_back
+#define getMatrix(n , m) vector<vector<Long>>(n , vector<Long>(m, 0))
 using namespace std;
 
 typedef long long Long;
@@ -12,6 +13,8 @@ Long combine(Long x , Long y) {
 	return x + y;
 }
 
+Long cntQuery;
+Long cntUpdate;
 struct SegmentTree{
 	Long t[4 * MX];
 	
@@ -43,6 +46,7 @@ struct SegmentTree{
 	}
 
 	Long query(Long l, Long r, Long id , Long tl , Long tr ) { //O(logn)
+		cntQuery++;
 		if (l <= tl && tr <= r) {
 			return t[id];
 		}
@@ -67,6 +71,7 @@ struct SegmentTree{
 	}
 	
 	void update(Long pos, Long val, Long id, Long tl , Long tr) { //O(logn)
+		cntUpdate++;
 		if (tl == tr) {
 			t[id] = val;
 		}else{
@@ -88,6 +93,57 @@ struct SegmentTree{
 	}
 } st;
 
-int main(){
+
+mt19937_64  rng(chrono::steady_clock::now().time_since_epoch().count());
+
+Long random(Long a, Long b) {
+	return uniform_int_distribution<Long>(a , b)(rng);
+}
+
+long double getTime(){
+	return chrono::duration_cast<chrono::milliseconds>(chrono::steady_clock::now().time_since_epoch()).count();
+}
+
+void solve(){
+	Long n = random(1024 ,1024);
+	vector<Long> A(n);
+	for(Long i = 0; i < n; i++){
+		A[i]= random(-10, 10);
+	}
+	st.build(A);
+	
+	Long q = 1;
+
+	REP(i , q){
+		Long pos , val;
+		pos = random(0 , n - 1);
+		val = random(-100, 100);
+		cntUpdate = 0;
+
+		st.update(pos, val);
+		
+		debug(cntUpdate);
+		
+		assert(cntUpdate <= (ceil(log2(n) + 1) ));
+		
+		Long l = 1, r = n - 2;
+
+		cntQuery = 0;
+		Long stQuery = st.query(l , r);
+
+		debug(cntQuery);
+		assert(cntQuery <= 4 * (ceil(log2(n))) - 3  );
+	}
+
+}
+
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	cout.tie(NULL);
+	
+	Long T = 1;
+	REP(t , T) solve();
+
 	return 0;
 }

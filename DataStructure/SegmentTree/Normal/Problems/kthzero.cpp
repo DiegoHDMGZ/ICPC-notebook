@@ -9,9 +9,8 @@ typedef long long Long;
 //https://www.hackerrank.com/contests/stryker-codesprint/challenges/kth-zero/problem
 
 const Long MX = 1e5;
-
 struct SegmentTree{
-	Long t[4 * MX];
+	Long t[2 * MX];
 	Long maxN;
 	
 	void clear(Long n) {
@@ -22,17 +21,15 @@ struct SegmentTree{
 	}
 	
 	void build(vector<Long> &a , Long id , Long tl  , Long tr) { //O(n)
-		if(tl > a.size()){
-			return;
-		}
 		if (tl == tr){
 			a[tl] == 0 ? t[id] = 1 : t[id] = 0;
-		}
-		else{
+		}else{
 			Long tm = (tl + tr) / 2;
-			build(a, 2 * id, tl, tm);
-			build(a, 2 * id + 1, tm + 1, tr);
-			t[id] = t[2 * id] + t[2 * id + 1];
+			Long left = id + 1;
+			Long right = id + 2 * (tm - tl + 1) ;
+			build(a, left, tl, tm);
+			build(a, right, tm + 1, tr);
+			t[id] = t[left] + t[right];
 		}
 	}
 	
@@ -47,18 +44,19 @@ struct SegmentTree{
 			return t[id];
 		}
 		Long tm = (tl + tr) / 2;
+		Long left = id + 1;
+		Long right = id + 2 * (tm - tl + 1) ;
 		if(tm < l){
 			//only right child
-			return countZeros(l , r, 2 * id + 1 , tm + 1 , tr); 
+			return countZeros(l , r, right , tm + 1 , tr); 
 		} else if(r < tm + 1){
 			//only left child
-			return countZeros(l , r , 2 * id , tl , tm);
+			return countZeros(l , r , left , tl , tm);
 		} else{
 			//both children
-			return countZeros(l, r, 2 * id, tl, tm) + countZeros(l, r, 2 * id + 1, tm + 1, tr);
+			return countZeros(l, r, left, tl, tm) + countZeros(l, r, right, tm + 1, tr);
 		}
 	}
-	
 	
 	Long countZeros(Long l , Long r) {
 		assert(maxN > 0);
@@ -66,7 +64,7 @@ struct SegmentTree{
 	}
 
 	Long find_kth(Long k, Long id, Long tl, Long tr) { //(O(logn)
-		//k-th zero
+		//k-th zero , 1-indexed
 		if (k > t[id]) {
 			return -1;
 		}
@@ -74,15 +72,17 @@ struct SegmentTree{
 			return tl;
 		}
 		Long tm = (tl + tr) / 2;
-		if (t[2 * id] >= k) {
-			return find_kth(k, 2 * id, tl, tm);
-		}
-		else {
-			return find_kth(k - t[2 * id], 2 * id + 1, tm + 1, tr);
+		Long left = id + 1;
+		Long right = id + 2 * (tm - tl + 1) ;
+		if (t[left] >= k) {
+			return find_kth(k, left, tl, tm);
+		}else {
+			return find_kth(k - t[left], right, tm + 1, tr);
 		}
 	}
 	
 	Long find_kth(Long k) {
+		assert(k > 0);
 		assert(maxN > 0);
 		return find_kth(k , 1 , 0 , maxN - 1);
 	}
@@ -91,16 +91,16 @@ struct SegmentTree{
 	void update(Long pos, Long val, Long id , Long tl , Long tr ) { //O(logn)
 		if (tl == tr) {
 			val == 0 ? t[id] = 1 : t[id] = 0;
-		}
-		else {
+		}else {
 			Long tm = (tl + tr) / 2;
+			Long left = id + 1;
+			Long right = id + 2 * (tm - tl + 1) ;
 			if (pos <= tm) {
-				update(pos, val, 2 * id, tl, tm);
+				update(pos, val, left, tl, tm);
+			}else {
+				update(pos, val, right, tm + 1, tr);
 			}
-			else {
-				update(pos, val, 2 * id + 1, tm + 1, tr);
-			}
-			t[id] = t[2 * id] + t[2 * id + 1];
+			t[id] = t[left] + t[right];
 		}
 	}
 	
@@ -109,6 +109,8 @@ struct SegmentTree{
 		update(pos , val , 1 , 0 , maxN - 1);
 	}
 } st;
+
+
 int main() {
 	ios_base::sync_with_stdio(false);
 	cin.tie(NULL);

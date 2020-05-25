@@ -26,11 +26,11 @@ Data combine(Data p1, Data p2) {
 }
 
 struct SegmentTree {
-	Data t[4 * MX]; 
+	Data t[2 * MX]; 
 	Long maxN;
 	
 	void clear(Long n) {
-		for(Long i = 0; i < 4 * n; i++) {
+		for(Long i = 0; i < 2 * n; i++) {
 			t[i] = Data(0, 0);
 		}
 		maxN = n;
@@ -41,9 +41,11 @@ struct SegmentTree {
 			t[id] = Data(a[tl]);
 		}else {
 			Long tm = (tl + tr) / 2;
-			build(a, 2 * id, tl, tm);
-			build(a, 2 * id + 1, tm + 1, tr);
-			t[id] = combine(t[2 * id], t[2 * id + 1]);
+			Long left = id + 1;
+			Long right = id + 2 * (tm - tl + 1) ;
+			build(a, left, tl, tm);
+			build(a, right, tm + 1, tr);
+			t[id] = combine(t[left], t[right]);
 		}
 	}
 	
@@ -58,15 +60,17 @@ struct SegmentTree {
 			return t[id];
 		}
 		Long tm = (tl + tr) / 2;
-		if(tm < l){
-			//only right child
-			return query(l , r, 2 * id + 1 , tm + 1 , tr); 
-		} else if(r < tm + 1){
+		Long left = id + 1;
+		Long right = id + 2 * (tm - tl + 1) ;
+		if(r < tm + 1){
 			//only left child
-			return query(l , r , 2 * id , tl , tm);
-		} else{
+			return query(l , r , left , tl , tm);
+		} else if(tm < l){
+			//only right child
+			return query(l , r, right , tm + 1 , tr); 
+		} else {
 			//both children
-			return combine(query(l, r, 2 * id, tl, tm) , query(l, r, 2 * id + 1, tm + 1, tr));
+			return combine(query(l, r, left , tl, tm) , query(l, r, right, tm + 1, tr));
 		}
 	}
 	
@@ -81,12 +85,14 @@ struct SegmentTree {
 		}
 		else {
 			Long tm = (tl + tr) / 2;
+			Long left = id + 1;
+			Long right = id + 2 * (tm - tl + 1) ;
 			if (pos <= tm) {
-				update(pos, val, 2 * id, tl, tm);
+				update(pos, val, left, tl, tm);
 			}else {
-				update(pos, val, 2 * id + 1, tm + 1, tr);
+				update(pos, val, right, tm + 1, tr);
 			}
-			t[id] = combine(t[2 * id], t[2 * id + 1]);
+			t[id] = combine(t[left], t[right]);
 		}
 	}
 	

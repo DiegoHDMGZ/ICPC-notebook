@@ -14,6 +14,7 @@ Long combine(Long x , Long y) {
 	return x + y;
 }
 
+
 struct SegmentTree{
 	Long t[2 * MX];
 	
@@ -27,7 +28,6 @@ struct SegmentTree{
 	}
 	
 	void build(vector<Long> &a, Long id , Long tl , Long tr) { //O(n)
-		assert(id < 2 * maxN);
 		if (tl == tr){
 			t[id] = a[tl];
 		} else{
@@ -46,19 +46,18 @@ struct SegmentTree{
 	}
 
 	Long query(Long l, Long r, Long id , Long tl , Long tr ) { //O(logn)
-		assert(id < 2 * maxN);
 		if (l <= tl && tr <= r) {
 			return t[id];
 		}
 		Long tm = (tl + tr) / 2;
 		Long left = id + 1;
 		Long right = id + 2 * (tm - tl + 1) ;
-		if(tm < l){
-			//only right child
-			return query(l , r, right , tm + 1 , tr); 
-		} else if(r < tm + 1){
+		if(r < tm + 1){
 			//only left child
 			return query(l , r , left , tl , tm);
+		}else if(tm < l){
+			//only right child
+			return query(l , r, right , tm + 1 , tr); 
 		} else{
 			//both children
 			return combine(query(l, r, left, tl, tm) , query(l, r, right, tm + 1, tr));
@@ -71,7 +70,6 @@ struct SegmentTree{
 	}
 	
 	void update(Long pos, Long val, Long id, Long tl , Long tr) { //O(logn)
-		assert(id < 2 * maxN);
 		if (tl == tr) {
 			t[id] = val;
 		}else{

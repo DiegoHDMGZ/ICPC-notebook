@@ -1,18 +1,22 @@
 #include <bits/stdc++.h>
 #define debug(x) cout << #x << " = " << x << endl
-#define REP(i, n) for (Long i = 0; i < (Long)n; i++)
+#define REP(i,n) for(Long i = 0; i < (Long)n; i++)
 #define pb push_back
-
+#define getMatrix(n , m) vector<vector<Long>>(n , vector<Long>(m, 0))
 using namespace std;
 
 typedef long long Long;
+typedef vector<vector<Long>> Matrix;
 
-const Long MXX = 1000;
-const Long MXY = 1000;
+const Long MXX = 5000;
+const Long MXY = 5000;
 Long combine(Long x , Long y) {
 	return x + y;
 }
 
+Long cntUpdate;
+Long cntQuery1;
+Long cntQuery2;
 struct SegmentTree{
 	Long t[2 * MXX][2 * MXY];
 	Long maxN, maxM;
@@ -66,6 +70,7 @@ struct SegmentTree{
 	}
 
 	Long queryY(Long idX, Long lY, Long rY, Long idY , Long tlY , Long trY ) {
+		cntQuery1++;
 		if (lY <= tlY && trY <= rY) {
 			return t[idX][idY];
 		}
@@ -89,6 +94,7 @@ struct SegmentTree{
 		if (lX <= tlX && trX <= rX) {
 			return queryY(idX, lY, rY, 1 , 0 , trY);
 		}
+		cntQuery2++;
 		Long tmX = (tlX + trX) / 2;
 		Long leftX = idX + 1;
 		Long rightX = idX + 2 * (tmX - tlX + 1) ;
@@ -109,6 +115,7 @@ struct SegmentTree{
 	}
 
 	void updateY(Long posX, Long posY, Long val, Long idX, Long tlX, Long trX ,Long idY, Long tlY , Long trY) {
+		cntUpdate++;
 		if (tlY == trY) {
 			if(tlX == trX){
 				t[idX][idY] = val;
@@ -151,54 +158,158 @@ struct SegmentTree{
 	}
 } st;
 
-int main(){
+const Long MX_X = 5000;
+const Long MX_Y = 5000;
+const Long EXTRA = 6;
+
+struct BIT2D{
+	Long tree[MX_X + EXTRA][MX_Y + EXTRA];
+	
+	void clear(Long n, Long m){ //O(n * m)
+		for(Long i = 0; i< n + EXTRA; i++){
+			for(Long j = 0; j < m + EXTRA; j++){
+				tree[i][j] = 0;	
+			}
+		}
+	}
+	
+	Long query(Long x, Long y){ // O(log n log m)
+		x += EXTRA;
+		y += EXTRA;
+		Long sum = 0;
+		while(x > 0){
+			Long j = y;
+			while(j > 0){
+				sum += tree[x][j];
+				j -= (j & -j);
+			}
+			x -= (x & -x);
+		}
+		return sum;
+	}
+	
+	void update(Long x, Long y, Long add){ // O(log n log m)
+		x += EXTRA;
+		y += EXTRA;
+		while(x < MX_X + EXTRA){
+			Long j = y;
+			while(j < MX_Y + EXTRA){
+				tree[x][j] += add;
+				j += (j & -j);
+			}
+			x += (x & -x);
+		}
+	}
+	
+	//you can only use one of this range implementations
+	Long query(Long x1, Long y1,Long x2, Long y2){
+		return query(x2 , y2) - query(x2 , y1 - 1) - query(x1 - 1 , y2) + query(x1 - 1 , y1 - 1);
+	}
+	
+	void update(Long x1, Long y1, Long x2 , Long y2, Long add){
+		update(x1 , y1 , add);
+		update(x2 + 1 , y1, -add);
+		update(x1, y2 + 1 , -add);
+		update(x2 + 1 , y2 + 1 , add);
+	}	
+}ft;
+
+mt19937_64  rng(chrono::steady_clock::now().time_since_epoch().count());
+
+Long random(Long a, Long b) {
+	return uniform_int_distribution<Long>(a , b)(rng);
+}
+
+long double getTime(){
+	return chrono::duration_cast<chrono::milliseconds>(chrono::steady_clock::now().time_since_epoch()).count();
+}
+
+void solve(){
+	Long n = 4096;
+	Long m = 4096;
+	Matrix A = getMatrix(n , m);
+
+	ft.clear(n , m);
+	for(Long i = 0; i < n; i++){
+		for(Long j = 0; j < m; j++){
+			A[i][j] = random(-10, 10);
+			ft.update(i , j , A[i][j]);
+		}
+	}
+	st.build(A);
+	
+	Long q = 1;
+	long double updateTimeFT = 0;
+	long double updateTimeST = 0;
+	long double queryTimeFT = 0;
+	long double queryTimeST = 0;
+	
+	REP(i , q){
+		Long posX, posY , val;
+		posX = random(0 , n - 1);
+		posY = random(0 , m - 1);
+		val = random(-100, 100);
+		cntUpdate = 0;
+		long double low = getTime();
+		st.update(posX, posY, val);
+		long double  high = getTime();
+		
+		assert(cntUpdate <= (ceil(log2(n) + 1) * ceil(log2(m) + 1)));
+		updateTimeST += high - low;
+		
+		
+		Long cur = ft.query(posX, posY, posX, posY);
+		low = getTime();
+		ft.update(posX, posY, val - cur);
+		high = getTime();
+		updateTimeFT += high - low;
+		
+		Long x1, y1 , x2 , y2;
+		/*x1 = random(0, n - 1);
+		x2 = random(x1 , n - 1);
+		y1 = random(0 , m - 1);
+		y2 = random(y1 , m - 1);*/
+		x1 = 1;
+		x2 = n - 2;
+		y1 = 1;
+		y2 = m - 2;
+		
+		low = getTime();
+		Long ftQuery = ft.query(x1 , y1 , x2 , y2);
+		high = getTime();
+		queryTimeFT += high - low;
+		
+		cntQuery1 = cntQuery2 = 0;
+		low = getTime();
+		Long stQuery = st.query(x1, x2, y1 , y2);
+		high = getTime();
+		debug(cntQuery1);
+		debug(cntQuery2);
+		Long cntQuery = cntQuery1 + cntQuery2;
+		assert(cntQuery <= 7 * (ceil(log2(n) ) * ceil(log2(m) )));
+		
+		queryTimeST += high - low;
+		assert( ftQuery == stQuery);
+		
+	}
+	updateTimeFT /= q;
+	updateTimeST /= q;
+	queryTimeFT /= q;
+	queryTimeST /= q;
+
+	/*debug(updateTimeFT);
+	debug(updateTimeST);
+	debug(queryTimeFT);
+	debug(queryTimeST);*/
+}
+
+int main() {
 	ios_base::sync_with_stdio(false);
 	cin.tie(NULL);
-
-/*
-2 2
-1 8
-50 300
-Q 0 0 1 1
-Q 1 0 1 0
------------
-5 3
-5 1 3
-2 7 -1
-8 2 -2
-9 -4 2
-0 3 1    
-
-*/
-	Long n,m;
-	cin >> n >> m;
-
-	vector< vector< Long > > a (n , vector<Long> (m));
+	cout.tie(NULL);
 	
-	REP(i, n){
-		REP(j, m){
-			cin >> a[i][j];
-		}
-	}
-
-	st.build(a);
-
-	while (true){
-		char c;
-		cin >> c;
-		if (c == 'Q'){
-			Long x1, y1, x2, y2;
-			cin >> x1 >> y1 >> x2 >> y2;
-
-			cout << st.query(x1, x2, y1, y2) << endl;
-		}
-		else{
-			Long posX, posY, valor;
-			cin >> posX >> posY >> valor;
-
-			st.update(posX, posY, valor);
-		}
-	}
+	Long T = 1;
+	REP(t , T) solve();
 
 	return 0;
 }

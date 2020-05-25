@@ -9,11 +9,11 @@ typedef long long Long;
 const Long MX = 1e5;
 
 struct SegmentTree{
-	Long t[4 * MX];
+	Long t[2 * MX];
 	Long maxN;
 	
 	void clear(Long n) {
-		for(Long i = 0; i < 4 * n; i++) {
+		for(Long i = 0; i < 2 * n; i++) {
 			t[i] = 0;
 		}
 		maxN = n;
@@ -24,9 +24,11 @@ struct SegmentTree{
 			a[tl] == 0 ? t[id] = 1 : t[id] = 0;
 		}else{
 			Long tm = (tl + tr) / 2;
-			build(a, 2 * id, tl, tm);
-			build(a, 2 * id + 1, tm + 1, tr);
-			t[id] = t[2 * id] + t[2 * id + 1];
+			Long left = id + 1;
+			Long right = id + 2 * (tm - tl + 1) ;
+			build(a, left, tl, tm);
+			build(a, right, tm + 1, tr);
+			t[id] = t[left] + t[right];
 		}
 	}
 	
@@ -41,15 +43,17 @@ struct SegmentTree{
 			return t[id];
 		}
 		Long tm = (tl + tr) / 2;
-		if(tm < l){
-			//only right child
-			return countZeros(l , r, 2 * id + 1 , tm + 1 , tr); 
-		} else if(r < tm + 1){
+		Long left = id + 1;
+		Long right = id + 2 * (tm - tl + 1) ;
+		if(r < tm + 1){
 			//only left child
-			return countZeros(l , r , 2 * id , tl , tm);
+			return countZeros(l , r , left , tl , tm);
+		}else if(tm < l){
+			//only right child
+			return countZeros(l , r, right , tm + 1 , tr); 
 		} else{
 			//both children
-			return countZeros(l, r, 2 * id, tl, tm) + countZeros(l, r, 2 * id + 1, tm + 1, tr);
+			return countZeros(l, r, left, tl, tm) + countZeros(l, r, right, tm + 1, tr);
 		}
 	}
 	
@@ -67,10 +71,12 @@ struct SegmentTree{
 			return tl;
 		}
 		Long tm = (tl + tr) / 2;
-		if (t[2 * id] >= k) {
-			return find_kth(k, 2 * id, tl, tm);
+		Long left = id + 1;
+		Long right = id + 2 * (tm - tl + 1) ;
+		if (t[left] >= k) {
+			return find_kth(k, left, tl, tm);
 		}else {
-			return find_kth(k - t[2 * id], 2 * id + 1, tm + 1, tr);
+			return find_kth(k - t[left], right, tm + 1, tr);
 		}
 	}
 	
@@ -86,12 +92,14 @@ struct SegmentTree{
 			val == 0 ? t[id] = 1 : t[id] = 0;
 		}else {
 			Long tm = (tl + tr) / 2;
+			Long left = id + 1;
+			Long right = id + 2 * (tm - tl + 1) ;
 			if (pos <= tm) {
-				update(pos, val, 2 * id, tl, tm);
+				update(pos, val, left, tl, tm);
 			}else {
-				update(pos, val, 2 * id + 1, tm + 1, tr);
+				update(pos, val, right, tm + 1, tr);
 			}
-			t[id] = t[2 * id] + t[2 * id + 1];
+			t[id] = t[left] + t[right];
 		}
 	}
 	

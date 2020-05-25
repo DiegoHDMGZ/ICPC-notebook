@@ -49,12 +49,12 @@ struct SegmentTree{
 		Long tm = (tl + tr) / 2;
 		Long left = id + 1;
 		Long right = id + 2 * (tm - tl + 1) ;
-		if(tm < l){
-			//only right child
-			return query(l , r, right , tm + 1 , tr); 
-		} else if(r < tm + 1){
+		if(r < tm + 1){
 			//only left child
 			return query(l , r , left , tl , tm);
+		}else if(tm < l){
+			//only right child
+			return query(l , r, right , tm + 1 , tr); 
 		} else{
 			//both children
 			return combine(query(l, r, left, tl, tm) , query(l, r, right, tm + 1, tr));
