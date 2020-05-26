@@ -35,7 +35,7 @@ struct SegmentTree {
 			Long right = 2 * id + 1;
 			build(a, left, tl, tm);
 			build(a, right, tm + 1, tr);
-			t[id] = max(t[left], t[right]);
+			t[id] = combine(t[left], t[right]);
 		}
 	}
 	
