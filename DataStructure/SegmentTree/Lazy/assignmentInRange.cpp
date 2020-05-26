@@ -11,7 +11,7 @@ const Long MX = 1e5;
 
 struct SegmentTree{
 	Long lazy[4 * MX];
-	
+	bool marked[4 * MX];
 	Long maxN;
 	
 	void clear(Long n) {
@@ -42,7 +42,6 @@ struct SegmentTree{
 		build(a , 1 , 0 , maxN - 1);
 	}
 	
-	bool marked[4 * MX];
 	void push(Long id){ //O(1)
 		if(marked[id]){
 			Long left = 2 * id;

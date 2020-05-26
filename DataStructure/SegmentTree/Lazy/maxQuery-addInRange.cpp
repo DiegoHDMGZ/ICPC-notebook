@@ -48,8 +48,9 @@ struct SegmentTree {
 		Long left = 2 * id;
 		Long right = 2 * id + 1;
 		t[left] += lazy[id];
-		lazy[left] += lazy[id];
 		t[right] += lazy[id];
+		
+		lazy[left] += lazy[id];
 		lazy[right] += lazy[id];
 		lazy[id] = 0;
 	}
