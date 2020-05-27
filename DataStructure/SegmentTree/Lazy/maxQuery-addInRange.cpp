@@ -47,11 +47,15 @@ struct SegmentTree {
 	void push(Long id) { //O(1)
 		Long left = 2 * id;
 		Long right = 2 * id + 1;
-		t[left] += lazy[id];
-		t[right] += lazy[id];
+		//Apply the lazy value of the node to the children
+		t[left] += lazy[id]; 
+		t[right] += lazy[id]; 
 		
+		//aggregate the lazy value of the node to the lazy value of the children
 		lazy[left] += lazy[id];
 		lazy[right] += lazy[id];
+		
+		//restart lazy node of the node
 		lazy[id] = 0;
 	}
 

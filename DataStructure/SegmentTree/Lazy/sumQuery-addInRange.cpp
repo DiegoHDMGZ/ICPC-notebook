@@ -50,10 +50,15 @@ struct SegmentTree {
 		Long tm = (tl + tr) / 2;
 		Long szLeft = tm - tl + 1;
 		Long szRight = tr - tm;
+		//Apply the lazy value of the node to the children
 		t[left] += lazy[id] * szLeft;
-		lazy[left] += lazy[id];
 		t[right] += lazy[id] * szRight;
+		
+		//aggregate the lazy value of the node to the lazy value of the children
+		lazy[left] += lazy[id];
 		lazy[right] += lazy[id];
+		
+		//restart lazy node of the node
 		lazy[id] = 0;
 	}
 
