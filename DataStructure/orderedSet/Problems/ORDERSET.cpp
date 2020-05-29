@@ -13,6 +13,7 @@ typedef long long Long;
 
 typedef tree<Long, null_type, less<Long> , rb_tree_tag, tree_order_statistics_node_update> ordered_set;
 
+//https://www.spoj.com/problems/ORDERSET/en/
 
 int main() {
 	ios_base::sync_with_stdio(false);
