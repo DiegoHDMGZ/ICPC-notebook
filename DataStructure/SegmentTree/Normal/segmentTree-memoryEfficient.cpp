@@ -14,7 +14,6 @@ Long combine(Long x , Long y) {
 
 struct SegmentTree{
 	Long t[2 * MX];
-	
 	Long maxN;
 	
 	void clear(Long n) {
