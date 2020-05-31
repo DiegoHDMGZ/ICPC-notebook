@@ -8,6 +8,10 @@ typedef long long Long;
 const Long INF = 1e18;
 const Long MX = 1e5;
 
+Long combine(Long x, Long y){
+	return min(x , y);
+}
+
 struct SegmentTree {
 	multiset<Long> t[2 * MX]; //O(nlogn)
 	Long curVal[MX];
@@ -47,7 +51,7 @@ struct SegmentTree {
 		if(tr < l || tl > r){
 			return INF;
 		}
-	
+
 		if (l <= tl && tr <= r) {
 			auto it = t[id].lower_bound(x);
 			if (it != t[id].end()) {
@@ -60,7 +64,7 @@ struct SegmentTree {
 		Long left = id + 1;
 		Long right = id + 2 * (tm - tl + 1) ;
 
-		return min(query(l, r, x , left, tl, tm) , query(l, r, x , right, tm + 1, tr));
+		return combine(query(l, r, x , left, tl, tm) , query(l, r, x , right, tm + 1, tr));
 	}
 	
 	Long query(Long l , Long r , Long x) {
@@ -69,7 +73,11 @@ struct SegmentTree {
 	}
 
 	void update(Long pos, Long val , Long id , Long tl, Long tr ) { //O(log²n)
-		if (tl != tr) {
+		t[id].erase(t[id].find(curVal[pos]));
+		t[id].insert(val);
+		if(tl == tr){
+			curVal[pos] = val;
+		}else{
 			Long tm = (tl + tr) / 2;
 			Long left = id + 1;
 			Long right = id + 2 * (tm - tl + 1) ;
@@ -79,17 +87,14 @@ struct SegmentTree {
 				update(pos, val , right, tm + 1, tr);
 			}
 		} 
-		assert(curVal[pos] != INF);
-		t[id].erase(t[id].lower_bound(curVal[pos]));
-		t[id].insert(val);
 	}
 	
 	void update(Long pos , Long val) {
 		assert(maxN > 0);
 		update(pos , val , 1 , 0 , maxN - 1);
-		curVal[pos] = val;
 	}
 } st;
+
 
 struct Brute{
 	vector<Long> a;

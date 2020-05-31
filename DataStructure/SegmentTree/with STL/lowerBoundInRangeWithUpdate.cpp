@@ -73,7 +73,11 @@ struct SegmentTree {
 	}
 
 	void update(Long pos, Long val , Long id , Long tl, Long tr ) { //O(log²n)
-		if (tl != tr) {
+		t[id].erase(t[id].find(curVal[pos]));
+		t[id].insert(val);
+		if(tl == tr){
+			curVal[pos] = val;
+		}else{
 			Long tm = (tl + tr) / 2;
 			Long left = id + 1;
 			Long right = id + 2 * (tm - tl + 1) ;
@@ -83,14 +87,11 @@ struct SegmentTree {
 				update(pos, val , right, tm + 1, tr);
 			}
 		} 
-		t[id].erase(t[id].find(curVal[pos]));
-		t[id].insert(val);
 	}
 	
 	void update(Long pos , Long val) {
 		assert(maxN > 0);
 		update(pos , val , 1 , 0 , maxN - 1);
-		curVal[pos] = val;
 	}
 } st;
 
