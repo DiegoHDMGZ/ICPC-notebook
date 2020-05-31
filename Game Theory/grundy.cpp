@@ -7,11 +7,14 @@ using namespace std;
 
 typedef long long Long;
 
-//grundy(A + B) = grundy(A) xor grundy(B)
-//Cualquier estado "v" en el juego, el cual puede alcanzar varios estados "vi"
-//es equivalente al juego del nim con una pila de tamaño igual al mex del conjunto de todos los vi
 
-//Una posicion es ganadora si y solo si grundy(pos) > 0, caso contrario es perdedora
+//In any impartial game , let define an state "v" in the game that can reach other states "vi"
+//this is equivalent to the game of Nim with one pile of size mex(set of vi)
+//this number is call grundy
+
+//A position is a winner position iff grundy(pos) > 0
+
+//For sum of games : grundy(A + B) = grundy(A) xor grundy(B)
 
 Long mex(set<Long> &s){
 	Long ans = 0;
@@ -26,10 +29,10 @@ Long mex(set<Long> &s){
 
 Long grundy(Long n) { //O(N + M log M)
 	set<Long> s;
-	for(todas las transaciones de estado){
+	for(all transitions){
 		Long g = 0;
-		for(todos la suma de juegos de ese estado){
-			g = g xor grundy(juego);
+		for(all splitted games){
+			g = g xor grundy(game);
 		}
 		s.insert(g);
 	}
