@@ -6,6 +6,8 @@ using namespace std;
 
 typedef long long Long;
 
+//https://www.spoj.com/problems/HORRIBLE/
+
 const Long MX = 1e5;
 
 Long combine(Long x, Long y){

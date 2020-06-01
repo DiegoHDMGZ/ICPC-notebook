@@ -57,24 +57,24 @@ struct SegmentTree {
 		return query(pos , 1 , 0 , maxN - 1);
 	}
 
-	void update(Long l, Long r, Long add, Long id, Long tl , Long tr ) { //O(logn)
+	void update(Long l, Long r, Long val, Long id, Long tl , Long tr ) { //O(logn)
 		if(tr < l || tl > r){
 			return;
 		}
 		if (l <= tl && tr <= r) {
-			t[id] += add;
+			t[id] += val;
 		}else {
 			Long tm = (tl + tr) / 2;
 			Long left = id + 1;
 			Long right = id + 2 * (tm - tl + 1) ;
-			update(l, r, add , left, tl, tm);
-			update(l, r, add , right, tm + 1, tr);
+			update(l, r, val , left, tl, tm);
+			update(l, r, val , right, tm + 1, tr);
 		}
 	}
 	
-	void update(Long l , Long r, Long add) {
+	void update(Long l , Long r, Long val) {
 		assert(maxN > 0);
-		update(l , r, add, 1 , 0 , maxN - 1);
+		update(l , r, val, 1 , 0 , maxN - 1);
 	}
 } st;
 
