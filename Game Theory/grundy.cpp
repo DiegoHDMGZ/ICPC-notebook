@@ -7,7 +7,6 @@ using namespace std;
 
 typedef long long Long;
 
-
 //In any impartial game , let define an state "v" in the game that can reach other states "vi"
 //this is equivalent to the game of Nim with one pile of size mex(set of vi)
 //this number is call grundy
@@ -16,7 +15,7 @@ typedef long long Long;
 
 //For sum of games : grundy(A + B) = grundy(A) xor grundy(B)
 
-Long mex(set<Long> &s){
+/*Long mex(set<Long> &s){
 	Long ans = 0;
 	for(Long x : s){
 		if(ans != x){
@@ -25,16 +24,29 @@ Long mex(set<Long> &s){
 		ans++;
 	}
 	return ans;
+}*/
+
+Long mex(vector<Long> &s){
+	Long n = s.size();
+	vector<bool> marked(n , false);
+	for(Long i = 0; i < s.size(); i++){
+		if(s[i] < n) marked[s[i]] = true;
+	}
+	for(Long x = 0; x < n; x++){
+		if(!marked[x]) return x;
+	}
+	return n;
 }
 
-Long grundy(Long n) { //O(N + M log M)
-	set<Long> s;
+Long grundy(Long n) { 
+	//dp
+	vector<Long> s;
 	for(all transitions){
 		Long g = 0;
 		for(all splitted games){
 			g = g xor grundy(game);
 		}
-		s.insert(g);
+		s.push_back(g);
 	}
 	return mex(s);
 }

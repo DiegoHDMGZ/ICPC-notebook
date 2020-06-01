@@ -6,7 +6,8 @@ using namespace std;
 
 typedef long long Long;
 
-const Long MAX = 4e5;
+//https://codeforces.com/contest/87/problem/C
+const Long MX = 4e5;
 vector<Long> getDivisors(Long n) {
 	vector<Long> v;
 	for(Long i = 1; i * i <= n; i++) {
@@ -22,27 +23,22 @@ vector<Long> getDivisors(Long n) {
 		}
 	}
 	sort(v.begin() , v.end());
-	/*debug(n);
-	cout << "v = ";
-	REP(i ,v.size()) {
-		cout << v[i] << " ";
-	}
-	cout << endl;*/
 	return v;
 }
 
-bool used[MAX];
-Long dp[MAX];
+bool used[MX];
+Long dp[MX];
 
-Long mex(set<Long> &s){
-	Long ans = 0;
-	for(Long x : s){
-		if(ans != x){
-			return ans;
-		}
-		ans++;
+Long mex(vector<Long> &s){
+	Long n = s.size();
+	vector<bool> marked(n , false);
+	for(Long i = 0; i < s.size(); i++){
+		if(s[i] < n) marked[s[i]] = true;
 	}
-	return ans;
+	for(Long x = 0; x < n; x++){
+		if(!marked[x]) return x;
+	}
+	return n;
 }
 
 Long grundy(Long x) {
@@ -61,24 +57,19 @@ Long grundy(Long x) {
 		return dp[x] = 0;
 	}
 	
-	set<Long> s;
+	vector<Long> s;
 	for(Long n : v) {
 		Long g = 0;
 		if((2 * x / n + 1 - n) > 0 && (2 * x / n + 1 - n) % 2 == 0) {
-			
 			Long a =(2 * x / n + 1 - n) / 2;
 			if(a == 0) {
 				continue;
 			}
-
 			for(Long i = 0; i < n; i++) {
 				g = g xor grundy(a + i);
 			}
-
-			s.insert(g);
-			
+			s.push_back(g);
 		}
-		
 	}
 	return dp[x] = mex(s);
 } 
