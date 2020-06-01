@@ -6,8 +6,6 @@ using namespace std;
 
 typedef long long Long;
 
-const Long MX = 1e5;
-
 struct Node{
 	Long sum;
 	Long lazy;
