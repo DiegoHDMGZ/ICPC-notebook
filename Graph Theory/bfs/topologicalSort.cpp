@@ -11,7 +11,7 @@ const Long INF = 1e18;
 
 struct Graph {
 	vector<Long> adj[MX];
-	Long indegree[MX]; //indegree #nodos que terminan en ese nodo
+	Long indegree[MX]; 
 	
 	void clear(Long N = MX) {
 		REP(i , N){
