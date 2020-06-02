@@ -34,7 +34,7 @@ struct SegmentTree {
 	}
 	
 	void push(Node *node, Long tl, Long tr) { //O(1)
-		//Create childre if they are NULL
+		//Create children if they are NULL
 		if(!node->left){
 			node->left = new Node();
 			node->right = new Node();
@@ -50,7 +50,7 @@ struct SegmentTree {
 		node->left->lazy  += node->lazy;
 		node->right->lazy += node->lazy;
 		
-		//restart lazy node of the node
+		//restart the lazy value
 		node->lazy = 0;
 	}
 

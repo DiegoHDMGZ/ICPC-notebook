@@ -58,7 +58,7 @@ struct SegmentTree {
 		lazy[left] += lazy[id];
 		lazy[right] += lazy[id];
 		
-		//restart lazy node of the node
+		//restart the lazy value
 		lazy[id] = 0;
 	}
 

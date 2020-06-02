@@ -22,10 +22,12 @@ struct SegmentTree {
 	void push(Long id){
 		Long left = 2 * id;
 		Long right = 2 * id + 1;
+		
 		//aggregate the lazy value of the node to the lazy value of the children
 		lazy[left] += lazy[id];
 		lazy[right] += lazy[id];
-		//restart lazy node of the node
+		
+		//restart the lazy value
 		lazy[id] = 0;
 	}
 	
