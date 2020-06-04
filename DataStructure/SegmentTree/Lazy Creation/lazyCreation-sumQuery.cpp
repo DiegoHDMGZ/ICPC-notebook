@@ -14,8 +14,31 @@ struct Node{
 	
 	Node(){
 		sum = lazy = 0;
-		left = right = NULL;
+		left = right = nullptr;
 	}
+	
+	void push(Long tl, Long tr) { //O(1)
+		//Create children if they are NULL
+		if(!left){
+			left = new Node();
+			right = new Node();
+		}
+		Long tm = (tl + tr) / 2;
+		Long szLeft = tm - tl + 1;
+		Long szRight = tr - tm;
+		//Apply the lazy value of the node to the children
+		left->sum += lazy * szLeft;
+		right->sum += lazy * szRight;
+		
+		//aggregate the lazy value of the node to the lazy value of the children
+		left->lazy  += lazy;
+		right->lazy += lazy;
+		
+		//restart the lazy value
+		lazy = 0;
+	}
+	
+	
 };
 
 Long combine(Long x, Long y){
@@ -32,27 +55,6 @@ struct SegmentTree {
 		root = new Node();
 		maxN = n;
 	}
-	
-	void push(Node *node, Long tl, Long tr) { //O(1)
-		//Create children if they are NULL
-		if(!node->left){
-			node->left = new Node();
-			node->right = new Node();
-		}
-		Long tm = (tl + tr) / 2;
-		Long szLeft = tm - tl + 1;
-		Long szRight = tr - tm;
-		//Apply the lazy value of the node to the children
-		node->left->sum += node->lazy * szLeft;
-		node->right->sum += node->lazy * szRight;
-		
-		//aggregate the lazy value of the node to the lazy value of the children
-		node->left->lazy  += node->lazy;
-		node->right->lazy += node->lazy;
-		
-		//restart the lazy value
-		node->lazy = 0;
-	}
 
 	Long query(Long l, Long r, Node *node ,  Long tl, Long tr ) { //O(logn)
 		if(!node) return 0;
@@ -61,7 +63,7 @@ struct SegmentTree {
 			return node->sum;
 		}
 		Long tm = (tl + tr) / 2;
-		push(node , tl , tr);
+		node->push(tl , tr);
 		if(r < tm + 1){
 			return query(l , r, node->left  , tl , tm);
 		}else if(tm < l){
@@ -86,7 +88,7 @@ struct SegmentTree {
 			node->lazy += val;
 		}else{
 			Long tm = (tl + tr) / 2;
-			push(node, tl , tr);
+			node->push(tl , tr);
 			update(l, r, val , node->left, tl, tm);
 			update(l, r, val , node->right, tm + 1, tr);
 			node->sum = combine(node->left->sum, node->right->sum);
