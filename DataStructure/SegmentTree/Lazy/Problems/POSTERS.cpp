@@ -133,6 +133,18 @@ void solve(){
 	cout << posters.size() << endl;
 }
 
+/*
+1
+6
+1 3
+4 6
+6 7
+8 10
+1 2
+3 4
+output = 5
+*/
+
 int main() {
 	ios_base::sync_with_stdio(false);
 	cin.tie(NULL);
