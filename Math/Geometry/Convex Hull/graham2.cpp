@@ -39,52 +39,56 @@ struct Point{
 	}
 };
 
-Point center;
-
-Long squareDist(Point P1 , Point P2) {
-	return (P1.x - P2.x) * (P1.x - P2.x) + (P1.y - P2.y) * (P1.y - P2.y);
-}
-
 bool cmp(const Point &P1 , const Point &P2) {
-	if(center.cross(P1 , P2) == 0) {
-		return squareDist(center, P1) < squareDist(center, P2);
+	if(P1.x == P2.x){
+		return P1.y < P2.y;
 	}
-	return center.cross(P1 , P2) > 0;
+	return P1.x < P2.x;
 }
 
 vector<Point> convexHull(vector<Point> &v) { //O( n log n)
 //gives the convex hull in counter clockwise order
-	center = v[0];
 	Long n = v.size();
-	REP(i , n) {
-		if( make_pair(v[i].y , v[i].x) < make_pair(center.y , center.x) ) {
-			center = v[i];
-		}
-	}
 	sort(v.begin(),v.end(), cmp);
+	
 	auto it = unique(v.begin(), v.end());
 	v.resize(distance(v.begin(),it));
 	n = v.size();
-	vector<Point> hull;
 	
 	if(n < 3) {
 		return v;
 	}
-	hull.pb(v[0]);
-	hull.pb(v[1]);
-	for(Long i = 2 ; i < n; i++) {
-		Long sz = hull.size();
-		Point prev1 = hull[sz - 1];
-		Point prev2 = hull[sz - 2];
-		while(prev1.cross(v[i] , prev2) <= 0) {
-			hull.pop_back();
-			sz--;
-			if(sz < 2) break;
-			prev1 = hull[sz - 1];
-			prev2 = hull[sz - 2];
+	
+	vector<Point> hull; //lower envelope at the beginning
+	vector<Point> upperEnv;
+	
+	Point A = v[0];
+	Point B = v.back();
+	
+	hull.push_back(A);
+	upperEnv.push_back(A);
+	for(Long i = 1 ; i < n; i++) {
+		if(i == n - 1 || v[i].cross(A , B) > 0){
+			//upper
+			Long sz = upperEnv.size();
+			while(sz >= 2 && upperEnv[sz - 1].cross(upperEnv[sz - 2] , v[i]) <= 0){
+				upperEnv.pop_back();
+				sz--;
+			}
+			upperEnv.push_back(v[i]);
+		} 
+		if(i == n - 1 || v[i].cross(A , B) < 0){
+			//lower
+			Long sz = hull.size();
+			while(sz >= 2 && hull[sz - 1].cross(hull[sz - 2] , v[i]) >= 0){
+				hull.pop_back();
+				sz--;
+			}
+			hull.push_back(v[i]);
 		}
-		hull.pb(v[i]);
 	}
+
+	for(Long i = (Long)upperEnv.size() - 2; i >= 1; i--) hull.push_back(upperEnv[i]);
 	return hull;
 }
 
