@@ -19,13 +19,15 @@ struct Edge{
 struct Graph {
 	vector <Long> adj[MX];
 	bool vis[MX];
-	Long tIn[MX];//tiempo de entrada al nodo
-	Long low[MX];//minimo tiempo al que puede ir ese nodo o uno de sus descendientes por medio de cualquier arista(tree o back edge) 
+	Long tIn[MX];//entry time
+	Long low[MX];
+	//if S[u] = {Set of this node and all of its sucessors} 
+	//low[u] = min entry time of S[u] U {all parents of S[u]}
 	Long timer = 0;
 	vector<Edge> bridge;
 	vector<Long> articulation;
 	bool isArticulation[MX];
-	unordered_map<Long,bool> isBridge[MX];
+	map<Long,bool> isBridge[MX];
 	
 	void clear(Long N = MX) {
 		REP( i , N) {
