@@ -5,10 +5,7 @@
 
 using namespace std;
 
-typedef long double Double;
 typedef long long Long;
-const Double EPS = 1e-10;
-const Double INF = 1e17;
 
 Long sgn(Long val) {
 	if(val > 0) {
@@ -23,42 +20,21 @@ Long sgn(Long val) {
 struct Point{
 	Long x,y;
 	
-	Point(){
-		x = 0;
-		y = 0;
-	}
-	Point(Long _x, Long _y){
-		x = _x, y = _y;
-	}
+	Point() : x(0), y(0){}
+	Point(Long x, Long y) : x(x), y(y) {}
 
-	Point operator += (const Point &t){
-		x += t.x;
-		y += t.y;
-		return *this;
-	}
 	Point operator -= (const Point &t){
 		x -= t.x;
 		y -= t.y;
 		return *this;
 	}
-	Point operator *= (Long t){
-		x *= t;
-		y *= t;
-		return *this;
-	}
-	Point operator +(const Point &t) const {
-		return Point(*this) += t;
-	}
+
 	Point operator - (const Point &t) const{
 		return Point(*this) -= t;
 	}
 	
 	bool operator == (const Point &P) const {
 		return P.x == x && P.y == y;
-	}
-	
-	bool operator != (const Point &P) const {
-		return !(P == Point(*this));
 	}
 
 	Long cross(const Point &P) const {
@@ -119,26 +95,26 @@ struct Point{
 			return -1;
 		}
 	
-		Long ini = 2;
-		Long fin = n - 1;
-		if(poly[0].cross(poly[ini], P) <= 0){
-			fin = ini;
+		Long low = 2;
+		Long high = n - 1;
+		if(poly[0].cross(poly[low], P) <= 0){
+			high = low;
 		} else {
-			while(fin - ini > 1){ // hay mas de 2 valores
-				Long med= (ini + fin) / 2;
+			while(high - low > 1){ 
+				Long mid= (low + high) / 2;
 				
-				if(poly[0].cross(poly[med] , P) <= 0){
-					fin=med;
+				if(poly[0].cross(poly[mid] , P) <= 0){
+					high = mid;
 				} 
 				else {
-					ini = med;
+					low = mid;
 				}
 			}
 		}
-		if(!P.inTriangle(poly[0] , poly[fin - 1] , poly[fin])) {
+		if(!P.inTriangle(poly[0] , poly[high - 1] , poly[high])) {
 			return -1;
 		}
-		if(P.inSegment(poly[fin - 1] , poly[fin] )) {
+		if(P.inSegment(poly[high - 1] , poly[high] )) {
 			return 0;
 		}
 		if(P.inSegment(poly[0] , poly[1] )) {
@@ -158,11 +134,12 @@ struct Point{
 
 
 void prepare(vector<Point> &poly) {
+	//make sure the first point have minimum x (minimum y in case of ties)
 	Long sz = poly.size();
 	Long pos = 0;
 	
 	for(Long i = 1; i < sz; i++) {
-		if(poly[i].y < poly[pos].y || (poly[i].y == poly[pos].y && poly[i].x < poly[pos].x) ) {
+		if(make_pair(poly[i].x , poly[i].y) < make_pair(poly[pos].x , poly[pos].y) ) {
 			pos = i;
 		}
 	}
