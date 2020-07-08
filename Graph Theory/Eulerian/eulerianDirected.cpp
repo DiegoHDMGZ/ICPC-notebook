@@ -55,35 +55,44 @@ struct Graph{
     }
     
 	vector<Long> getEulerianCycle(Long n){
-        //it has to be strongly connected
+        //it has to be weakly connected
         //in all vertices, indegree = outdegree
         for(Long u = 0; u < n; u++){
-            assert(indegree[u] == outdegree[u]);
+			if(indegree[u] != outdegree[u]){
+				return {}; //no cycle
+			}
         }
         return hierholzer(n);
     }
     
 	vector<Long> getEulerianPath(Long n){
-		//it has to be strongly connected
+		//it has to be weakly connected
         //in all vertices, indegree = outdegree except for two vertices. 
         //The first with outdegree - indegree = 1
         //The last with indegree - outdegree = 1
         Long first = -1;
         Long last = -1;
         for(Long u = 0; u < n; u++){
-			assert(abs(outdegree[u] - indegree[u]) <= 2);
+			if(abs(outdegree[u] - indegree[u]) >= 2){
+				return {};
+			}
             if(outdegree[u] - indegree[u] == 1){
-				assert(first == -1);
+				if(first != -1){
+					return {};
+				}
 				first = u;
             }
             if(indegree[u] - outdegree[u] == 1){
-				assert(last == -1);
+				if(last != -1){
+					return {};
+				}
 				last = u;
             }
         }
-
+		if(last == -1 || first == -1){
+			return {};
+		}
         vector<Long> path = hierholzer(n , first);
-        assert(path.back() == last);
         return path;
 	}
 }G;

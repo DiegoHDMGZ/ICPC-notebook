@@ -63,7 +63,9 @@ struct Graph{
         //it has to be connected 
         //all vertices have to have even degree
         for(Long u = 0; u < n; u++){
-            assert((adj[u].size() & 1)== 0);
+			if((adj[u].size() & 1) != 0) {
+				return {}; //no cycle
+			}
         }
         return hierholzer(n);
     }
@@ -77,7 +79,8 @@ struct Graph{
                 odd.push_back(u);
             }
         }
-        assert(odd.size() == 2);
+        if(odd.size() != 2) return {}; //no path
+        
         vector<Long> path = hierholzer(n , odd[0]);
         return path;
 	}
