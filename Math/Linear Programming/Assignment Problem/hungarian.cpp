@@ -12,6 +12,12 @@ const Long INF = 1e18;
 const Long MX = 1e3;
 const Long dummy = 1e10; 
 
+/*
+Problem : You are given an integer matrix. You should choose n cells in 
+such a way that each row and each column contain exactly one chosen cell,
+and the sum of values of all chosen cells is as small as possible.
+*/
+
 /*if the objective function is max , change dummy for -INF
 and multiply the matrix by -1*/
 
