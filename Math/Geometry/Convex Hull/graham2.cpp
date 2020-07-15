@@ -59,23 +59,23 @@ vector<Point> convexHull(vector<Point> &v) { //O( n log n)
 		return v;
 	}
 	
-	vector<Point> hull; //lower envelope at the beginning
-	vector<Point> upperEnv;
+	vector<Point> hull; //lower hull at the beginning
+	vector<Point> upperHull;
 	
 	Point A = v[0];
 	Point B = v.back();
 	
 	hull.push_back(A);
-	upperEnv.push_back(A);
+	upperHull.push_back(A);
 	for(Long i = 1 ; i < n; i++) {
 		if(i == n - 1 || v[i].cross(A , B) > 0){
 			//upper
-			Long sz = upperEnv.size();
-			while(sz >= 2 && upperEnv[sz - 1].cross(upperEnv[sz - 2] , v[i]) <= 0){
-				upperEnv.pop_back();
+			Long sz = upperHull.size();
+			while(sz >= 2 && upperHull[sz - 1].cross(upperHull[sz - 2] , v[i]) <= 0){
+				upperHull.pop_back();
 				sz--;
 			}
-			upperEnv.push_back(v[i]);
+			upperHull.push_back(v[i]);
 		} 
 		if(i == n - 1 || v[i].cross(A , B) < 0){
 			//lower
@@ -88,7 +88,7 @@ vector<Point> convexHull(vector<Point> &v) { //O( n log n)
 		}
 	}
 
-	for(Long i = (Long)upperEnv.size() - 2; i >= 1; i--) hull.push_back(upperEnv[i]);
+	for(Long i = (Long)upperHull.size() - 2; i >= 1; i--) hull.push_back(upperHull[i]);
 	return hull;
 }
 
