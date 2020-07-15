@@ -10,9 +10,9 @@ bool check( Long mid ){
 }
 
 Long search(  Long low , Long high ){ //O(logn)
-	// F F F... V V V
+	// F F F... T T T
 	if(!check(high)) return -1; //all F
-	if(check(low)) return low; //all V
+	if(check(low)) return low; //all T
 	
 	while(high - low > 1){
 		Long mid= low + (high - low) / 2;
@@ -25,13 +25,13 @@ Long search(  Long low , Long high ){ //O(logn)
 		}
 	}
 
-	//2 values low -> F and high->V
+	//2 values low -> F and high-> T
 	return high;
 }
 
 /*Long search(  Long low , Long high ){ //O(logn)
-	// V V V ... F F F
-	if(check(high)) return high; //all V
+	// T T T ... F F F
+	if(check(high)) return high; //all T
 	if(!check(low)) return -1; //all F
 	
 	while(high - low > 1){ 
@@ -44,7 +44,7 @@ Long search(  Long low , Long high ){ //O(logn)
 			high = mid;
 		}
 	}
-	//2 values low -> V and high-> F
+	//2 values low -> T and high-> F
 	return low;
 }*/
 

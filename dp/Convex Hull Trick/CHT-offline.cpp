@@ -37,10 +37,10 @@ struct CHT{
 	}
 
 	Long search(  Long ini , Long fin, Long x ){ //O(logn)
-		// F F F... V V V
-		if(!check(fin - 1, x)) return envelope[fin].val(x); //todos F
-		if(check(ini, x)) return envelope[ini].val(x); //todos V
-		while(fin - ini > 1){ // hay mas de 2 valores
+		// F F F... T T T
+		if(!check(fin - 1, x)) return envelope[fin].val(x); //all F
+		if(check(ini, x)) return envelope[ini].val(x); //all T
+		while(fin - ini > 1){ 
 			Long med= ini + (fin - ini) / 2;
 			
 			if(check( med , x )){
@@ -50,7 +50,7 @@ struct CHT{
 				ini = med;
 			}
 		}
-		//hay 2 valores ini es F y fin es V
+		//2 values low -> F and high-> T
 		return envelope[fin].val(x);
 	}
 	
