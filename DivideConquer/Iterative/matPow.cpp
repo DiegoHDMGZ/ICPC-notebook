@@ -8,7 +8,24 @@ using namespace std;
 typedef long long Long;
 typedef vector<vector<Long> > Matrix;
 
-Matrix mult( Matrix &a,   Matrix &b , Long mod) { //O( n^3)
+const Long MOD = 1e9 + 7;
+Long add(Long a , Long b ){
+	return (a + b) % MOD;
+}
+
+Long subs(Long a, Long b){
+	return (a - b + MOD) % MOD;
+}
+
+Long mult(Long a, Long b){
+	if(a * b < 0){
+		return subs( 0 , abs(a * b) % MOD );
+	}
+	return (a * b) % MOD;
+}
+
+
+Matrix operator *(const Matrix &a, const Matrix &b){ //O( n^3)
 	Long n1 = a.size();
 	Long m1 = a[0].size();
 	Long n2 = b.size();
@@ -21,8 +38,7 @@ Matrix mult( Matrix &a,   Matrix &b , Long mod) { //O( n^3)
 	for(Long i = 0; i < n; i++){
 		for(Long j = 0; j < m; j++){
 			for(Long k = 0; k < m1; k++){
-				c[i][j] += a[i][k] * b[k][j];
-				c[i][j] %= mod;
+				c[i][j] = add(c[i][j] , mult(a[i][k] , b[k][j]));
 			}
 		}
 	}
@@ -30,7 +46,7 @@ Matrix mult( Matrix &a,   Matrix &b , Long mod) { //O( n^3)
 }
 
 
-Matrix matPow( Matrix a, Long b , Long mod){ //O(n^3 log b) only square matrix
+Matrix matPow( Matrix a, Long b ){ //O(n^3 log b) only square matrix
 	Long n = a.size();
 	Matrix ans = Matrix(n , vector<Long>(n , 0));
 	for(Long i = 0; i < n; i++){
@@ -38,9 +54,9 @@ Matrix matPow( Matrix a, Long b , Long mod){ //O(n^3 log b) only square matrix
 	}
 	while(b > 0){
 		if(b & 1 == 1){ //b % 2 == 1
-			ans = mult(ans , a , mod);
+			ans = ans * a;
 		}
-		a = mult(a , a , mod);
+		a = a * a;
 		b >>= 1; //b /= 2;
 	}
 	return ans;
@@ -71,7 +87,7 @@ int main(){
 		}
 	}
 	
-	Matrix c = matPow(a , b , mod);
+	Matrix c = matPow(a , b );
 	print(c);
 	return 0;
 }

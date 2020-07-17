@@ -9,22 +9,22 @@ typedef long long Long;
 
 typedef vector<vector<Long> > Matrix;
 
-Long add(Long a , Long b , Long m){
-	return (a + b) % m;
-}
-
-Long sub(Long a, Long b, Long m){
-	return (a - b + m) % m;
-}
-
-Long mult(Long a, Long b, Long m){
-	if(a * b < 0){
-		return sub( 0 , abs(a * b) % m , m);
-	}
-	return (a * b) % m;
-}
-
 const Long MOD = 1e9 + 7;
+
+Long add(Long a , Long b ){
+	return (a + b) % MOD;
+}
+
+Long subs(Long a, Long b){
+	return (a - b + MOD) % MOD;
+}
+
+Long mult(Long a, Long b){
+	if(a * b < 0){
+		return subs( 0 , abs(a * b) % MOD );
+	}
+	return (a * b) % MOD;
+}
 
 Matrix operator +(const Matrix &a , const Matrix &b){ //O(n * m)
 	Long n = a.size();
@@ -36,7 +36,7 @@ Matrix operator +(const Matrix &a , const Matrix &b){ //O(n * m)
 	
 	for(Long i = 0; i < n; i++){
 		for(Long j = 0; j <m; j++){
-			c[i][j] = add(a[i][j] , b[i][j], MOD );
+			c[i][j] = add(a[i][j] , b[i][j] );
 		}
 	}
 	return c;
@@ -55,7 +55,7 @@ Matrix operator *(const Matrix &a, const Matrix &b){ //O( n^3)
 	for(Long i = 0; i < n; i++){
 		for(Long j = 0; j < m; j++){
 			for(Long k = 0; k < m1; k++){
-				c[i][j] = add(c[i][j] , mult(a[i][k] , b[k][j], MOD), MOD);
+				c[i][j] = add(c[i][j] , mult(a[i][k] , b[k][j]));
 			}
 		}
 	}
@@ -74,23 +74,23 @@ void print(Matrix a , string nombre){
 	}
 }
 
-Long fastPow(Long a, Long b , Long mod){ //O(logb)
+Long fastPow(Long a, Long b ){ //O(logb)
 	Long ans = 1;
 	while(b > 0){
 		if(b & 1 == 1){ //b % 2 == 1
-			ans = mult(ans ,a , mod);
+			ans = mult(ans ,a );
 		}
-		a = mult(a , a  , mod);
+		a = mult(a , a  );
 		b >>= 1; //b /= 2;
 	}
 	return ans;
 }
 
-Long modInverse(Long a, Long m){ //O(logm) , m prime , a , m coprimes
-	return fastPow(a,m-2,m);
+Long modInverse(Long a){ //O(logm) , m prime , a , m coprimes
+	return fastPow(a, MOD - 2);
 }
 
-Long determinant(Matrix M, Long mod){
+Long determinant(Matrix M){
 	assert(M.size() == M[0].size());
 	Long n = M.size();
 	Long det = 1;
@@ -99,7 +99,7 @@ Long determinant(Matrix M, Long mod){
 			for(Long j = i + 1; j < n; j++){
 				if(M[j][i] != 0 ){
 					swap(M[i], M[j]);
-					det = mult(det, -1 , mod);
+					det = mult(det, -1 );
 					break;
 				} 
 			}
@@ -107,16 +107,16 @@ Long determinant(Matrix M, Long mod){
 		if(M[i][i] == 0) {
 			return 0;
 		}
-		det = mult(det , M[i][i] , mod);
-		Long x = modInverse(M[i][i], mod);
+		det = mult(det , M[i][i] );
+		Long x = modInverse(M[i][i]);
 		for(Long j = i + 1; j < n; j++){
-			M[i][j] = mult(M[i][j] , x, mod);
+			M[i][j] = mult(M[i][j] , x);
 		}
 		
 		for(Long j = i + 1; j < n; j++){
 			if(M[j][i] != 0){
 				for(Long k = i + 1; k < n; k++){
-					M[j][k] = sub(M[j][k] , mult(M[i][k] , M[j][i] , mod) , mod);
+					M[j][k] = subs(M[j][k] , mult(M[i][k] , M[j][i] ) );
 				}
 			}
 		}
@@ -124,7 +124,7 @@ Long determinant(Matrix M, Long mod){
 	return det;
 }
 /*
-7 1000000007
+7 
 5 6 -5 9 12 38 18
 20 69 -2 3 15 22 17
 1 -2 0 3 47 -38 -12
@@ -141,14 +141,14 @@ int main(){
 	cout.tie(NULL);
 
 	
-	Long n , mod;
-	cin >> n >> mod;
+	Long n ;
+	cin >> n;
 	Matrix a(n , vector<Long> (n , 0));
 	REP(i , n){
 		REP(j , n){
 			cin >> a[i][j];
 		}
 	}
-	cout << determinant(a, mod) << endl;
+	cout << determinant(a) << endl;
 	return 0;
 }
