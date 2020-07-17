@@ -2,7 +2,7 @@
 #define debug(x) cout << #x << " = " << x << endl
 #define REP(i , n) for(Long i = 0; i < (Long)n ; i++)
 #define pb push_back
-#define getMatrix(n , m) Matrix(n , vector<Long>(m))
+#define getMatrix(n , m) Matrix(n , vector<Long>(m, 0))
 using namespace std;
 
 typedef long long Long;
