@@ -4,7 +4,7 @@ using namespace std;
 typedef long long Long;
 
 struct MaxQueue{
-	stack<pair<Long,Long>> s1,s2; // ( valor , maximo)
+	stack<pair<Long,Long>> s1,s2; // ( valor , maximum)
 	
 	Long f(Long a, Long b){
 		return max(a,b);
