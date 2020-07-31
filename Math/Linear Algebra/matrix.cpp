@@ -124,6 +124,61 @@ Long determinant(Matrix M){
 	}
 	return det;
 }
+
+Matrix identity(Long n){
+	Matrix ans = getMatrix(n , n);
+	for(Long i = 0; i < n; i++) ans[i][i] = 1;
+	return ans;
+}
+
+Matrix inverse(Matrix M){
+	assert(M.size() == M[0].size());
+	Long n = M.size();
+	Matrix ans = identity(n);
+	
+	for(Long i = 0; i < n; i++){
+		if(M[i][i] == 0){
+			for(Long j = i + 1; j < n; j++){
+				if(M[j][i] != 0 ){
+					swap(M[i], M[j]);
+					swap(ans[i], ans[j]);
+					break;
+				} 
+			}
+		}
+		assert(M[i][i] != 0);
+		Long x = modInverse(M[i][i]);
+		for(Long j = 0; j < n; j++){
+			M[i][j] = mult(M[i][j] , x);
+			ans[i][j] = mult(ans[i][j] , x);
+		}
+		
+		for(Long j = i + 1; j < n; j++){
+			if(M[j][i] != 0){
+				Long c = M[j][i];
+				for(Long k = 0; k < n; k++){
+					M[j][k] = subs(M[j][k] , mult(M[i][k] , c ) );
+					ans[j][k] = subs(ans[j][k] , mult(ans[i][k] , c));
+				}
+			}
+		}
+	}
+	
+	for(Long i = n - 2; i >= 0; i--){
+		for(Long j = i + 1; j < n; j++){
+			if(M[i][j] != 0){
+				Long c = M[i][j];
+				for(Long k = 0; k < n; k++){
+					M[i][k] = subs(M[i][k] , mult(M[j][k] , c));
+					ans[i][k] = subs(ans[i][k] , mult(ans[j][k] , c));
+				}
+			}
+		}
+	}
+	
+	return ans;
+}
+
 /*
 7 
 5 6 -5 9 12 38 18
