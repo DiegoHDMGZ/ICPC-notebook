@@ -1,3 +1,3 @@
-#ICPC Notebook#
+# ICPC Notebook
 
 Algorithms for competitive programming
