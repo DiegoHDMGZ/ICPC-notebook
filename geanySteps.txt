@@ -1,7 +1,7 @@
 1.Construir -> Establecer comandos de construccion
 
-Compile -> g++  -std=c++14 -c "%f"
-Build -> g++  -std=c++14 -o "%e" "%f"
+Compile -> g++ -Wl,--stack=268435456 -std=c++14 -c "%f"
+Build -> g++ -Wl,--stack=268435456 -std=c++14 -o "%e" "%f"
 Exec -> "./%e"
 
 2.Editar-> Preferencias -> Editor -> Completado-> Desactivar autocompletar comentarios 
