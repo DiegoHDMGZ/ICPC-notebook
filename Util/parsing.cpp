@@ -6,15 +6,14 @@ using namespace std;
 
 typedef long long Long;
 
-vector<Long> v;
-
-void parsing( string &s ){
+vector<Long> parsing( string &s ){
 	Long tokens;  
-	stringstream entrada( s );
-	
-	while( entrada >> tokens ){
-		v.push_back(tokens);
+	stringstream in( s );
+	vector<Long> out;
+	while( in >> tokens ){
+		out.push_back(tokens);
 	}
+	return out;
 }
 
 int main() {
