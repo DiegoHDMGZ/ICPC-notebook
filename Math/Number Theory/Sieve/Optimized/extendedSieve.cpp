@@ -11,7 +11,7 @@ bool isPrime[MX];
 Long fact[MX];
 vector<Long> primes;
 
-void extSieve(){ //O(MX)
+void sieve(){ //O(MX)
 	//x = i * p. p is the smallest prime factor
 	fill(isPrime, isPrime + MX , true);
 	isPrime[1] = false;
@@ -75,7 +75,7 @@ vector<Long> getDivisors(Long x) {
 
 
 int main() {
-	extSieve();
+	sieve();
 	return 0;
 }
 

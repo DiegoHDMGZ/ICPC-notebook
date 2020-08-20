@@ -12,7 +12,7 @@ typedef long long Long;
 
 const Long MOD = 998244353; //MOD = 2^23 * 19 + 1
 
-const Long root = 3;//primitve root of MOD
+const Long root = 3;//primitive root of MOD
 const Long rootInv = 332748118;//inverse modular of root
 
 struct Field{
