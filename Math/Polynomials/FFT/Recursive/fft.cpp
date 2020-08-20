@@ -59,7 +59,7 @@ polynomial operator *(const polynomial &a, const polynomial &b) {
 	fft(fa, true);
 	
 	polynomial ans(a.size() + b.size() - 1);
-	for(Long i = 0; i < n; i++){
+	for(Long i = 0; i < ans.size(); i++){
 		ans[i] = round(fa[i].real());
 	}
 	return ans;
