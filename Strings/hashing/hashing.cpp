@@ -69,8 +69,8 @@ struct Hashing{
 		}
 		
 		hSuf[sz] = 0;
-		hSuf[sz-1] = s[sz - 1]- minChar + 1;
-		for(int i = s.size()-2; i>=0; i--){
+		hSuf[sz - 1] = s[sz - 1]- minChar + 1;
+		for(int i = sz - 2; i >= 0; i--){
 			hSuf[i] = add(mult( hSuf[i + 1] , B, MOD) ,  s[i] - minChar + 1 , MOD);
 		}
 	}
