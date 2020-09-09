@@ -15,7 +15,7 @@ Long add(Long a, Long b, Long mod){
 	return (a + b) % mod;
 }
  
-Long subs(Long a , Long b, Long mod){
+Long sub(Long a , Long b, Long mod){
 	return (a - b + mod) % mod;
 }
 
@@ -42,11 +42,11 @@ struct Hashing{
 	
 	Long hSub(Long i, Long j){ //O(1)
 		if(i == 0) return hPref[j];
-		return subs(hPref[j] , mult(hPref[i - 1] , pot[j - i + 1], MOD) , MOD);
+		return sub(hPref[j] , mult(hPref[i - 1] , pot[j - i + 1], MOD) , MOD);
 	}
 
 	Long hSub2(Long i, Long j){ //O(1)
-		return subs(hSuf[i] , mult(hSuf[j + 1] , pot[j - i + 1], MOD) , MOD);
+		return sub(hSuf[i] , mult(hSuf[j + 1] , pot[j - i + 1], MOD) , MOD);
 	}
 
 

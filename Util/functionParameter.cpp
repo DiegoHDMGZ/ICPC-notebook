@@ -10,7 +10,7 @@ Long add(Long a, Long b) {
 	return a + b;
 }
 
-Long subs(Long a, Long b) {
+Long sub(Long a, Long b) {
 	return a - b;
 }
 
@@ -24,7 +24,7 @@ int main() {
 	cout.tie(NULL);
 	
 	cout << oper(5, 7 , add) << endl;
-	cout << oper(5 , 7 , subs) << endl;
+	cout << oper(5 , 7 , sub) << endl;
 
 	return 0;
 }

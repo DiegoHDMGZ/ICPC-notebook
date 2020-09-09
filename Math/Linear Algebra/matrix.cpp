@@ -16,13 +16,13 @@ Long add(Long a , Long b ){
 	return (a + b) % MOD;
 }
 
-Long subs(Long a, Long b){
+Long sub(Long a, Long b){
 	return (a - b + MOD) % MOD;
 }
 
 Long mult(Long a, Long b){
 	if(a * b < 0){
-		return subs( 0 , abs(a * b) % MOD );
+		return sub( 0 , abs(a * b) % MOD );
 	}
 	return (a * b) % MOD;
 }
@@ -117,7 +117,7 @@ Long determinant(Matrix M){
 		for(Long j = i + 1; j < n; j++){
 			if(M[j][i] != 0){
 				for(Long k = i + 1; k < n; k++){
-					M[j][k] = subs(M[j][k] , mult(M[i][k] , M[j][i] ) );
+					M[j][k] = sub(M[j][k] , mult(M[i][k] , M[j][i] ) );
 				}
 			}
 		}
@@ -157,8 +157,8 @@ Matrix inverse(Matrix M){
 			if(M[j][i] != 0){
 				Long c = M[j][i];
 				for(Long k = 0; k < n; k++){
-					M[j][k] = subs(M[j][k] , mult(M[i][k] , c ) );
-					ans[j][k] = subs(ans[j][k] , mult(ans[i][k] , c));
+					M[j][k] = sub(M[j][k] , mult(M[i][k] , c ) );
+					ans[j][k] = sub(ans[j][k] , mult(ans[i][k] , c));
 				}
 			}
 		}
@@ -169,8 +169,8 @@ Matrix inverse(Matrix M){
 			if(M[i][j] != 0){
 				Long c = M[i][j];
 				for(Long k = 0; k < n; k++){
-					M[i][k] = subs(M[i][k] , mult(M[j][k] , c));
-					ans[i][k] = subs(ans[i][k] , mult(ans[j][k] , c));
+					M[i][k] = sub(M[i][k] , mult(M[j][k] , c));
+					ans[i][k] = sub(ans[i][k] , mult(ans[j][k] , c));
 				}
 			}
 		}

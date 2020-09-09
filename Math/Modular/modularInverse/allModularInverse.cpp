@@ -17,7 +17,7 @@ Long mult(Long a, Long b){
 	return (a * b ) % MOD;
 }
 
-Long subs(Long a, Long b){
+Long sub(Long a, Long b){
 	a %= MOD;
 	b %= MOD;
 	return (a - b + MOD) % MOD;
@@ -29,7 +29,7 @@ void precalc(){
 	inv[0] = 0;
 	inv[1] = 1;
 	for(Long i = 2; i < MOD; i++){
-		inv[i] = subs(0 , mult(MOD / i , inv[MOD % i] ) );
+		inv[i] = sub(0 , mult(MOD / i , inv[MOD % i] ) );
 	}
 }
 

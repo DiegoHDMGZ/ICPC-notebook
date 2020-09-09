@@ -13,13 +13,13 @@ Long add(Long a , Long b ){
 	return (a + b) % MOD;
 }
 
-Long subs(Long a, Long b){
+Long sub(Long a, Long b){
 	return (a - b + MOD) % MOD;
 }
 
 Long mult(Long a, Long b){
 	if(a * b < 0){
-		return subs( 0 , abs(a * b) % MOD );
+		return sub( 0 , abs(a * b) % MOD );
 	}
 	return (a * b) % MOD;
 }

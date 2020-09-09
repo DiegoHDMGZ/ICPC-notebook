@@ -15,7 +15,7 @@ Long add(Long a, Long b, Long mod){
 	return (a + b) % mod;
 }
  
-Long subs(Long a , Long b, Long mod){
+Long sub(Long a , Long b, Long mod){
 	return (a - b + mod) % mod;
 }
 
@@ -48,8 +48,8 @@ struct Hashing{
 	
 	Long hSub(Long x1, Long y1, Long x2 , Long y2){ //O(1)
 		Long ans = hSub(x2 , y2);
-		ans = subs(ans , mult(hSub(x2, y1 - 1) , pot[y2 - y1 + 1] , MOD)  , MOD); 
-		ans = subs(ans , mult( hSub(x1 - 1 , y2) , pot[MX * (x2 - x1 + 1)], MOD) , MOD  );
+		ans = sub(ans , mult(hSub(x2, y1 - 1) , pot[y2 - y1 + 1] , MOD)  , MOD); 
+		ans = sub(ans , mult( hSub(x1 - 1 , y2) , pot[MX * (x2 - x1 + 1)], MOD) , MOD  );
 		ans = add(ans , mult( hSub(x1 - 1 , y1 - 1) , pot[MX * (x2 - x1 + 1) + (y2 - y1 + 1)] , MOD) , MOD);
 		return ans;
 	}
@@ -77,7 +77,7 @@ struct Hashing{
 					hPref[i][j] = add(hPref[i][j] , mult(hPref[i][j - 1] , B, MOD) , MOD);
 				}
 				if(i > 0 && j > 0){
-					hPref[i][j] = subs(hPref[i][j] , mult(mult(B , pot[MX] , MOD), hPref[i - 1][j - 1] , MOD) , MOD);
+					hPref[i][j] = sub(hPref[i][j] , mult(mult(B , pot[MX] , MOD), hPref[i - 1][j - 1] , MOD) , MOD);
 				}
 			}
 		}
