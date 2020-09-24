@@ -29,8 +29,10 @@ typedef long long Long;
 Long mex(vector<Long> &s){
 	Long n = s.size();
 	vector<bool> marked(n , false);
-	for(Long i = 0; i < s.size(); i++){
-		if(s[i] < n) marked[s[i]] = true;
+	for(Long x : s){
+		if(x < n){
+			marked[x] = true;
+		} 
 	}
 	for(Long x = 0; x < n; x++){
 		if(!marked[x]) return x;
