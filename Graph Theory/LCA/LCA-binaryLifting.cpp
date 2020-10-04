@@ -47,8 +47,8 @@ struct Graph {
 		dfs(root);
 		for (int j = 1; (1 << j) < n; j++){
 			for(int i = 0; i < n; i++){
-				if(anc[i][j-1] != -1){
-					anc[i][j] = anc[anc[i][j-1]][j-1];
+				if(anc[i][j - 1] != -1){
+					anc[i][j] = anc[anc[i][j - 1]][j - 1];
 				} else {
 					anc[i][j] = -1;
 				}
