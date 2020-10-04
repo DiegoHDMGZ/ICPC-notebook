@@ -83,7 +83,7 @@ struct Graph{
 		int lg = 31 - (__builtin_clz(height[u]));
 		
 		pair<Long,Long> bestU,bestV;
-		bestU = bestV = {INF, -INF}; //cambiar para min
+		bestU = bestV = {INF, -INF}; 
 		for(Long i = lg; i >= 0; i--){
 			if(height[u] - (1 << i) >= height[v]){
 				bestU = f(bestU,st[u][i]);
