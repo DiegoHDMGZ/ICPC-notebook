@@ -59,7 +59,7 @@ struct Graph {
 		adj[v].push_back(u);
 	}
 	
-	void dfs(Long u = 0, Long p = -1){ //O(n+m)
+	void dfs(Long u = 0, Long p = -1){ //O(n)
 		tIn[u] = timer++;
 		first[u] = euler.size();
 		euler.push_back({height[u], u });
