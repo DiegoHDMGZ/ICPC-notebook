@@ -89,9 +89,6 @@ struct Graph {
 	
 	bool onPath(int A, int B, int C) { //is C on AB path ?
 		int x = lca(A , B); 
-		if(C == x) {
-			return true;
-		}
 		if(isAncestor(x , C) && isAncestor(C, A)) {
 			return true;
 		}
