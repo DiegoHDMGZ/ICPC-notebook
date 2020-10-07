@@ -41,7 +41,7 @@ struct Graph {
 	vector<Long> adj[MX];
 	vector<pair<Long,Long>> euler;
 	Long first[MX];
-	Long height[MX];
+	Long depth[MX];
 	Long tIn[MX];
 	Long tOut[MX];
 	Long timer;
@@ -60,12 +60,12 @@ struct Graph {
 	void dfs(Long u = 0, Long p = -1){ //O(n)
 		tIn[u] = timer++;
 		first[u] = euler.size();
-		euler.push_back({height[u], u });
+		euler.push_back({depth[u], u });
 		for ( Long v : adj[u] ) {
 			if(p != v){
-				height[v] = height[u] + 1;
+				depth[v] = depth[u] + 1;
 				dfs(v , u);
-				euler.push_back({height[u], u});
+				euler.push_back({depth[u], u});
 			}
 		}
 		tOut[u] = timer++;
@@ -73,7 +73,7 @@ struct Graph {
 
 	void precalculate( Long root = 0){ //O(nlogn)
 		euler.clear();
-		height[root] = 0;
+		depth[root] = 0;
 		timer = 0;
 		dfs(root);
 		st.build(euler);
