@@ -44,14 +44,12 @@ struct Graph {
 	Long height[MX];
 	Long tIn[MX];
 	Long tOut[MX];
-	Long timer = 0;
+	Long timer;
 	
 	void clear(Long n){
 		for(Long i = 0; i < n; i++){
 			adj[i].clear();
 		}
-		euler.clear();
-		timer = 0;
 	}
 	
 	void addEdge(Long u , Long v){
@@ -74,7 +72,9 @@ struct Graph {
 	}
 
 	void precalculate( Long root = 0){ //O(nlogn)
+		euler.clear();
 		height[root] = 0;
+		timer = 0;
 		dfs(root);
 		st.build(euler);
 	}
