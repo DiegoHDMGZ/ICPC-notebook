@@ -2,15 +2,15 @@
 using namespace std;
 
 typedef long long Long;
-const Long MX = 100000;
+const Long MX = 1e5;
 
 struct DSU{
 	Long parent[MX];
 	Long size[MX];
 	
-	void make_set(Long v){ //O(1)
-		parent[v] = v;
-		size[v] = 1;
+	void make_set(Long u){ //O(1)
+		parent[u] = u;
+		size[u] = 1;
 	}
 	
 	void build(int n) {
@@ -23,14 +23,12 @@ struct DSU{
 		if(u == parent[u]){
 			return u;
 		}
-		
 		return parent[u] = find(parent[u]);
 	}
 	
 	void join(Long u, Long v){ //O(1) amortized
 		u = find(u);
 		v = find(v);
-		
 		if(u != v){
 			if(size[u] < size[v]){
 				swap(u, v);
