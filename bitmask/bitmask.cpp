@@ -28,17 +28,17 @@ void changeBit(Long &x, Long i){
 int main() {
 	Long n = 8;
 
-	REP(mask, (1LL<<n) ) {
+	for (Long mask = 0; mask < (1LL << n); mask++) {
 		cout << mask << " : ";
-		REP(i , n){
-			if( getBit(mask, i) == 1) cout << " " << i;
+		for (Long i = 0; i < n; i++) {
+			if (getBit(mask, i) == 1) cout << " " << i;
 		}
 		cout << endl;
 	}
 	//transverse all submask
-	for(Long mask = 0; mask < (1LL << n) ; mask++){
+	for (Long mask = 0; mask < (1LL << n); mask++) {
 		//s 0 is present in all submask
-		for(Long s = mask; s > 0; s = (s - 1) & mask){
+		for (Long s = mask; s > 0; s = (s - 1) & mask) {
 			
 		}
 	}
