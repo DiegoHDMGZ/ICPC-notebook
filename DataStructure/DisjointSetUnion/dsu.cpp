@@ -8,7 +8,7 @@ struct DSU{
 	Long parent[MX];
 	Long size[MX];
 	
-	void make_set(Long u){ //O(1)
+	void make_set(Long u) { //O(1)
 		parent[u] = u;
 		size[u] = 1;
 	}
@@ -19,18 +19,18 @@ struct DSU{
 		}
 	}
 	
-	Long find(Long u){ //O(1) amortized
-		if(u == parent[u]){
+	Long find(Long u) { //O(1) amortized
+		if (u == parent[u]) {
 			return u;
 		}
 		return parent[u] = find(parent[u]);
 	}
 	
-	void join(Long u, Long v){ //O(1) amortized
+	void join(Long u, Long v) { //O(1) amortized
 		u = find(u);
 		v = find(v);
-		if(u != v){
-			if(size[u] > size[v]){
+		if (u != v) {
+			if (size[u] > size[v]) {
 				swap(u, v);
 			}
 			parent[u] = v;
@@ -42,5 +42,3 @@ struct DSU{
 int main() {
 	return 0;
 }
-
-
