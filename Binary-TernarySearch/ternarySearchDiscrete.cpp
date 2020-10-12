@@ -10,15 +10,15 @@ typedef long long Long;
 const Long MX = 1e5;
 Long A[MX];
 
-Long f(Long i){
+Long f(Long i) {
 	return A[i];
 }
 
-Long ternarySearch(Long low, Long high){ //O(log n)
-	while(high - low > 2){
-		Long m1 = low + (high-low)/3;
-		Long m2 = high - (high-low)/3;
-		if(f(m1) < f(m2)){ //if minimum is needed, change to >
+Long ternarySearch(Long low, Long high) { //O(log n)
+	while (high - low > 2) {
+		Long m1 = low + (high-low) / 3;
+		Long m2 = high - (high-low) / 3;
+		if (f(m1) < f(m2)) { //if minimum is needed, change to >
 			low = m1;
 		}
 		else{
