@@ -10,21 +10,21 @@ const Long EXTRA = 6;
 struct BIT2D{
 	Long tree[MX_X + EXTRA][MX_Y + EXTRA];
 	
-	void clear(Long n, Long m){ //O(n * m)
-		for(Long i = 0; i< n + EXTRA; i++){
-			for(Long j = 0; j < m + EXTRA; j++){
+	void clear(Long n, Long m) { //O(n * m)
+		for (Long i = 0; i < n + EXTRA; i++) {
+			for (Long j = 0; j < m + EXTRA; j++) {
 				tree[i][j] = 0;	
 			}
 		}
 	}
 	
-	Long query(Long x, Long y){ // O(log n log m)
+	Long query(Long x, Long y) { // O(log n log m)
 		x += EXTRA;
 		y += EXTRA;
 		Long sum = 0;
-		while(x > 0){
+		while (x > 0) {
 			Long j = y;
-			while(j > 0){
+			while (j > 0) {
 				sum += tree[x][j];
 				j -= (j & -j);
 			}
@@ -33,12 +33,12 @@ struct BIT2D{
 		return sum;
 	}
 	
-	void update(Long x, Long y, Long add){ // O(log n log m)
+	void update(Long x, Long y, Long add) { // O(log n log m)
 		x += EXTRA;
 		y += EXTRA;
-		while(x < MX_X + EXTRA){
+		while (x < MX_X + EXTRA) {
 			Long j = y;
-			while(j < MX_Y + EXTRA){
+			while (j < MX_Y + EXTRA) {
 				tree[x][j] += add;
 				j += (j & -j);
 			}
@@ -47,11 +47,11 @@ struct BIT2D{
 	}
 	
 	//you can only use one of this range implementations
-	Long query(Long x1, Long y1,Long x2, Long y2){
+	Long query(Long x1, Long y1,Long x2, Long y2) {
 		return query(x2 , y2) - query(x2 , y1 - 1) - query(x1 - 1 , y2) + query(x1 - 1 , y1 - 1);
 	}
 	
-	void update(Long x1, Long y1, Long x2 , Long y2, Long add){
+	void update(Long x1, Long y1, Long x2, Long y2, Long add) {
 		update(x1 , y1 , add);
 		update(x2 + 1 , y1, -add);
 		update(x1, y2 + 1 , -add);
@@ -62,4 +62,3 @@ struct BIT2D{
 int main() {
 	return 0;
 }
-
