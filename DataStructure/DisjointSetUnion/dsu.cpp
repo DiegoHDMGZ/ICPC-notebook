@@ -30,11 +30,11 @@ struct DSU{
 		u = find(u);
 		v = find(v);
 		if(u != v){
-			if(size[u] < size[v]){
+			if(size[u] > size[v]){
 				swap(u, v);
 			}
-			parent[v] = u;
-			size[u] += size[v];
+			parent[u] = v;
+			size[v] += size[u];
 		}
 	}
 } dsu;
