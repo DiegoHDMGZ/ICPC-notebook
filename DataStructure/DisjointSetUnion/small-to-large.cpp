@@ -8,7 +8,7 @@ typedef long long Long;
 
 const int MX = 1e5;
 struct DSU{
-	int p[MX];
+	int parent[MX];
 	vector<int> elements[MX];
 	
 	void build(int n) {
@@ -18,24 +18,24 @@ struct DSU{
 	}
 	
 	void make_set(int u) { 
-		p[u] = u;
+		parent[u] = u;
 		elements[u].push_back(u);
 	}
 	
 	int find(int u) {
-		return p[u];
+		return parent[u];
 	}
 	
 	void join(int u, int v) { //O(log n) amortized
-		u = p[u];
-		v = p[v];
+		u = parent[u];
+		v = parent[v];
 		if (u != v) {
 			if (elements[u].size() > elements[v].size()) {
 				swap(u , v);
 			}
 			for (int x : elements[u]) {
 				elements[v].push_back(x);
-				p[x] = v;
+				parent[x] = v;
 			}
 		}
 	}
