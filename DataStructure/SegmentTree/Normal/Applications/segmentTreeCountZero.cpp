@@ -13,7 +13,7 @@ struct SegmentTree{
 	Long maxN;
 	
 	void clear(Long n) {
-		for(Long i = 0; i < 2 * n; i++) {
+		for (Long i = 0; i < 2 * n; i++) {
 			t[i] = 0;
 		}
 		maxN = n;
@@ -45,10 +45,10 @@ struct SegmentTree{
 		Long tm = (tl + tr) / 2;
 		Long left = id + 1;
 		Long right = id + 2 * (tm - tl + 1) ;
-		if(r < tm + 1){
+		if (r < tm + 1) {
 			//only left child
 			return countZeros(l , r , left , tl , tm);
-		}else if(tm < l){
+		}else if (tm < l) {
 			//only right child
 			return countZeros(l , r, right , tm + 1 , tr); 
 		} else{

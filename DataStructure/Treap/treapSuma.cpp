@@ -2,8 +2,6 @@
 #define debug(x) cout << #x << " = " << x << endl
 #define REP(i,n) for(Long i = 0; i < (Long)n; i++)
 #define pb push_back
-#define RANDOM mt19937 rng(chrono::steady_clock::now().time_since_epoch().count())
-#define unif(a,b) uniform_int_distribution<int>(a,b)(rng)
 
 using namespace std;
 

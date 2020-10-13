@@ -10,7 +10,7 @@ const Long MX = 1e5;
 struct Data {
 	Long sum, pref, suf, ans;
 	Data(){}
-	Data(Long val){
+	Data(Long val) {
 		sum = val;
 		pref = suf = ans = val; //max(0LL,val); to consider the empty array
 	}
@@ -63,10 +63,10 @@ struct SegmentTree {
 		Long tm = (tl + tr) / 2;
 		Long left = id + 1;
 		Long right = id + 2 * (tm - tl + 1) ;
-		if(r < tm + 1){
+		if (r < tm + 1) {
 			//only left child
 			return query(l , r , left , tl , tm);
-		} else if(tm < l){
+		} else if (tm < l) {
 			//only right child
 			return query(l , r, right , tm + 1 , tr); 
 		} else {

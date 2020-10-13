@@ -25,7 +25,7 @@ struct SparseTable{
 		
 		for(Long j = 1; (1 << j) <= n; j++){
 			for(Long i = 0; i + (1 << j) <= n; i++){
-				st[i][j] = f(st[i][j-1], st[i + (1 << (j-1))][j-1]);
+				st[i][j] = f(st[i][j - 1], st[i + (1 << (j - 1))][j - 1]);
 			}
 		}
 	}
@@ -51,12 +51,10 @@ struct SparseTable{
 		//special cases : idempotent(  min, max, gcd)
 		Long T = R - L + 1;
 		Long lg = 31 - (__builtin_clz(T));
-		return f(st[L][lg], st[R- (1LL << lg) + 1][lg]);
+		return f(st[L][lg], st[R - (1LL << lg) + 1][lg]);
 	}
 }st;
-
 
 int main() {
 	return 0;
 }
-
