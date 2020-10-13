@@ -32,26 +32,25 @@ struct Line{
 struct CHT{
 	vector<Line> envelope;
 
-	bool check( Long med, Long x ){
-		return envelope[med + 1].val(x) - envelope[med].val(x) <= 0;
+	bool check(Long mid, Long x) {
+		return envelope[mid + 1].val(x) - envelope[mid].val(x) <= 0;
 	}
 
-	Long search(  Long ini , Long fin, Long x ){ //O(logn)
+	Long search(Long low , Long high, Long x) { //O(logn)
 		// F F F... T T T
-		if(!check(fin - 1, x)) return envelope[fin].val(x); //all F
-		if(check(ini, x)) return envelope[ini].val(x); //all T
-		while(fin - ini > 1){ 
-			Long med= ini + (fin - ini) / 2;
+		if (!check(high - 1, x)) return envelope[high].val(x); //all F
+		if (check(low, x)) return envelope[low].val(x); //all T
+		while (high - low > 1) { 
+			Long mid = low + (high - low) / 2;
 			
-			if(check( med , x )){
-				fin = med;
-			} 
-			else {
-				ini = med;
+			if (check(mid , x)) {
+				high = mid;
+			} else {
+				low = mid;
 			}
 		}
 		//2 values low -> F and high-> T
-		return envelope[fin].val(x);
+		return envelope[high].val(x);
 	}
 	
 	Long div(Long a, Long b){ //floored division
@@ -108,16 +107,14 @@ struct CHT{
 	
 	Long maxY(Long x){ //O(log n)
 		assert(!envelope.empty());
+		if (envelope.size() == 1) {
+			return envelope[0].val(x);
+		}
 		return search(0, (Long)envelope.size() - 1, x);
 	}
 	
 }cht;
 
 int main() {
-	ios_base::sync_with_stdio(false);
-	cin.tie(NULL);
-	cout.tie(NULL);
-	
-	
 	return 0;
 }
