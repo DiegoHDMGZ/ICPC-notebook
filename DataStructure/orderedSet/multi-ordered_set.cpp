@@ -9,7 +9,6 @@ using namespace std;
 using namespace __gnu_pbds;
 
 typedef long long Long;
-
 typedef tree<Long, null_type, less_equal<Long> , rb_tree_tag, tree_order_statistics_node_update> ordered_set;
 
 ordered_set s;
@@ -26,8 +25,6 @@ int main() {
 	s.insert(5);
 	s.insert(6);
 	s.insert(-3);
-	//s.erase(5);
-	cout << "s = " ;
 	for(Long x : s){
 		cout << x << " ";
 	}
@@ -44,6 +41,3 @@ int main() {
 	
 	return 0;
 }
-
-
-
