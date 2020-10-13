@@ -157,7 +157,6 @@ struct Mo{
 		Long acum = 0;
 		vector<Long> answer(queries.size());
 		for (int i = 0; i < queries.size(); i++) {
-			// L and R values of current range
 			Long l = queries[i].l;
 			Long r = queries[i].r;
 			while (curR <= r) {//f(l , r + 1)
