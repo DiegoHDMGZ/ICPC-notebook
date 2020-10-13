@@ -10,7 +10,7 @@ const Long MX = 1e5;
 const Long loga = 32 - __builtin_clz(MX);
 
 struct SparseTable{
-	pair<Long,Long> st[2 * MX][loga + 1]; //<min height , node>
+	pair<Long,Long> st[2 * MX][loga + 1]; //<min depth , node>
 	
 	pair<Long,Long> f(pair<Long,Long> a, pair<Long,Long> b){
 		return min(a , b);
@@ -24,7 +24,7 @@ struct SparseTable{
 		
 		for(Long j = 1; (1 << j) <= n; j++){
 			for(Long i = 0; i + (1 << j) <= n; i++){
-				st[i][j] = f(st[i][j-1], st[i + (1 << (j-1))][j-1]);
+				st[i][j] = f(st[i][j - 1], st[i + (1 << (j - 1))][j - 1]);
 			}
 		}
 	}

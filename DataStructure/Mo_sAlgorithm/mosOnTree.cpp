@@ -10,8 +10,8 @@ typedef long long Long;
 //Let's assume tIn[u] <= tIn[v]
 //Case 1 : lca(u, v) == u , then use the range [tIn[u] , tIn[v]]
 //Case 2 : use the range [tOut[u] , tIn[v]] U [tIn[lca(u , v)] , tIn[lca(u,v]]
-//When answering the queries in this range, 
-//only counts the elements that appears once
+//Take care of repeated elements in the range !
+//only counts the elements that appears once (ignore the others)
 
 const Long MX = 1e5;
 const Long block = 400;
@@ -19,34 +19,30 @@ const Long block = 400;
 const Long loga = 32 - __builtin_clz(MX);
 
 struct SparseTable{
-	pair<Long,Long> st[2 * MX][loga + 1]; //<min height , node>
+	pair<Long, Long> st[2 * MX][loga + 1]; //<min height , node>
 	
-	pair<Long,Long> f(pair<Long,Long> a, pair<Long,Long> b){
+	pair<Long,Long> f(pair<Long,Long> a, pair<Long,Long> b) {
 		return min(a , b);
 	}
 	
-	void build(vector<pair<Long,Long>> &A){ // O(n log n)
+	void build(vector<pair<Long,Long>> &A) { // O(n log n)
 		Long n = A.size();
-		for(Long i = 0; i < n; i++){
+		for (Long i = 0; i < n; i++) {
 			st[i][0] = A[i];
 		}
-		
-		for(Long j = 1; (1 << j) <= n; j++){
-			for(Long i = 0; i + (1 << j) <= n; i++){
-				st[i][j] = f(st[i][j-1], st[i + (1 << (j-1))][j-1]);
+		for (Long j = 1; (1 << j) <= n; j++) {
+			for (Long i = 0; i + (1 << j) <= n; i++) {
+				st[i][j] = f(st[i][j - 1], st[i + (1 << (j - 1))][j - 1]);
 			}
 		}
 	}
 	
-	Long query(Long L, Long R){ //O(1)
+	Long query(Long L, Long R) { //O(1)
 		Long T = R - L + 1;
 		Long lg = 31 - (__builtin_clz(T));
 		return f(st[L][lg], st[R- (1LL << lg) + 1][lg]).second;
 	}
-	
 }st;
-
-
 
 struct Graph {
 	vector<Long> adj[MX];
@@ -56,23 +52,20 @@ struct Graph {
 	Long node[2 * MX];
 	Long tIn[MX];
 	Long tOut[MX];
+	Long timer;
 	
-	Long timer = 0;
-	
-	void clear(Long n){
-		for(Long i = 0; i < n; i++){
+	void clear(Long n) {
+		for (Long i = 0; i < n; i++) {
 			adj[i].clear();
 		}
-		euler.clear();
-		timer = 0;
 	}
 	
-	void addEdge(Long u , Long v){
+	void addEdge(Long u , Long v) {
 		adj[u].push_back(v);
 		adj[v].push_back(u);
 	}
 	
-	void dfs(Long u = 0, Long p = -1){ //O(n+m)
+	void dfs(Long u = 0, Long p = -1) { //O(n)
 		node[timer] = u;
 		tIn[u] = timer++;
 		first[u] = euler.size();
@@ -88,13 +81,15 @@ struct Graph {
 		tOut[u] = timer++;
 	}
 
-	void precalculate( Long root = 0){ //O(nlogn)
+	void precalculate(Long root = 0) { //O(n logn)
 		height[root] = 0;
+		timer = 0;
+		euler.clear();
 		dfs(root);
 		st.build(euler);
 	}
 	
-	Long lca(Long u, Long v){ //O(1)
+	Long lca(Long u, Long v) { //O(1)
 		return st.query(min(first[u] , first[v]) , max(first[u] , first[v]));
 	}
 } G;
@@ -102,10 +97,23 @@ struct Graph {
 struct Query{
 	Long id, l , r, lca ;
 	Query(){}
-	Query(Long id, Long l, Long r, Long lca): id(id), l(l) , r(r),  lca(lca){}
+	Query(Long id, Long u , Long v) {
+		this->id = id;
+		lca = G.lca(u , v);
+		if (G.tIn[u] > G.tIn[v]) {
+			swap(u , v);
+		}
+		if (u == lca) {
+			l = G.tIn[u];
+			r = G.tIn[v];
+		} else {
+			l = G.tOut[u];
+			r = G.tIn[v];
+		}
+	}
 };
 
-bool cmp(const Query &x, const Query &y){
+bool cmp(const Query &x, const Query &y) {
 	// queries are sorted in increasing order blocks 
 	Long bx = x.l / block ;
 	Long by = y.l / block;
@@ -113,7 +121,7 @@ bool cmp(const Query &x, const Query &y){
 	
 	//in the same blocks, if the block is odd sort in ascending order
 	//otherwise, in descending order, in order to be more efficient
-	if(bx & 1 == 1){
+	if (bx & 1 == 1) {
 		return x.r < y.r;
 	} else{
 		return x.r > y.r;
@@ -121,96 +129,69 @@ bool cmp(const Query &x, const Query &y){
 }
 
 struct Mo{
-	vector<Query> q;
-	Long answer[MX];
-	Long A[MX];
 	bool activated[MX];
-	
-	void clear(Long n){
-		q.clear();
-		fill(activated, activated + 2 * n, false);
+
+	void add(Long val, Long &ans) {
+		ans += val;
 	}
 
-	void addQuery(Long u , Long v) {
-		Long id = q.size();
-		Long lca = G.lca(u , v);
-		if(G.tIn[u] > G.tIn[v]){
-			swap(u , v);
-		}
-		if(u == lca){
-			q.push_back( Query(id , G.tIn[u] , G.tIn[v] , lca));
-		}else{
-			q.push_back( Query(id ,G.tOut[u] , G.tIn[v], lca));
-		}
+	void remove(Long val, Long &ans) {
+		ans -= val;
 	}
-	
-	void add(Long x, Long &ans){
-		ans += A[x];
-	}
-	
-	void remove(Long x, Long &ans){
-		ans -= A[x];
-	}
-	
-	void change(Long pos, Long &ans){
+
+	void change(Long pos, Long &ans, vector<Long> &A) {
 		Long u = G.node[pos];
 		activated[u] ^= 1;
 		if(activated[u]){
-			add(u , ans);
+			add(A[u] , ans);
 		}else{
-			remove(u , ans );
+			remove(A[u] , ans );
 		}
 	}
-	
-	void process(Long N) { //O((N + Q) sqrt(N) |F|)
-	    sort(q.begin() , q.end(), cmp);
-	    
-	    Long currL = 0, currR = 0;
-	    Long ans = 0;
-		Long sz = q.size();
-		
-	    REP(i, sz) {
-	        // L and R values of current range
-	        Long l = q[i].l, r = q[i].r;
-			while(currR <= r){//f(l , r + 1)
-				change(currR, ans);
-				currR++;
+
+	vector<Long> process(vector<Long> &A, vector<Query> &queries) { //O((N + Q) sqrt(N) |F|)
+		int n = A.size();
+		fill(activated, activated + n, false);
+		sort(queries.begin() , queries.end(), cmp);
+		Long curL = 0, curR = 0;
+		Long acum = 0;
+		vector<Long> answer(queries.size());
+		for (int i = 0; i < queries.size(); i++) {
+			// L and R values of current range
+			Long l = queries[i].l;
+			Long r = queries[i].r;
+			while (curR <= r) {//f(l , r + 1)
+				change(curR, acum, A);
+				curR++;
 			}
-			while(currL > l){ //f(l - 1 , r)
-				currL--;
-				change(currL , ans);
+			while (curL > l) { //f(l - 1 , r)
+				curL--;
+				change(curL , acum, A);
 			}
-			while(currL < l){ // f(l + 1 , r)
-				change(currL , ans);
-				currL++;
+			while (curL < l) { // f(l + 1 , r)
+				change(curL , acum, A);
+				curL++;
 			}
-			while(currR > r + 1){ //f(l , r - 1)
-				currR--;
-				change(currR , ans);
+			while (curR > r + 1) { //f(l , r - 1)
+				curR--;
+				change(curR , acum, A);
 			}
 			Long u = G.node[l];
-	        Long v = G.node[r];
-	        if(q[i].lca != u && q[i].lca != v){
+			Long v = G.node[r];
+			if (queries[i].lca != u && queries[i].lca != v) {
 				//Case 2
-				change(G.tIn[q[i].lca], ans );
+				change(G.tIn[queries[i].lca], acum, A);
 			}
-			answer[q[i].id] = ans;
-			if(q[i].lca != u && q[i].lca != v){
+			answer[queries[i].id] = acum;
+			if (queries[i].lca != u && queries[i].lca != v) {
 				//Case 2
-				change(G.tIn[q[i].lca], ans );
+				change(G.tIn[queries[i].lca], acum, A);
 			}
-	    }
+		}
+		return answer;
 	}
-	
-	Long query(Long id){
-		return answer[id];
-	}
-	
 }mo;
  
 int main(){
-	ios_base::sync_with_stdio(false);
-	cin.tie(NULL);
-
     return 0;
 }

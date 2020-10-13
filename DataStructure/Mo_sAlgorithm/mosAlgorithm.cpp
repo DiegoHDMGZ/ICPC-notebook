@@ -31,7 +31,7 @@ bool cmp(const Query &x, const Query &y) {
 	
 	//in the same blocks, if the block is odd sort in ascending order
 	//otherwise, in descending order, in order to be more efficient
-	if(bx & 1 == 1){
+	if (bx & 1 == 1) {
 		return x.r < y.r;
 	} else{
 		return x.r > y.r;
@@ -39,39 +39,39 @@ bool cmp(const Query &x, const Query &y) {
 }
 
 struct Mo{
-	void add(Long val, Long &ans){ //O(|f|)
+	void add(Long val, Long &ans) { //O(|f|)
 		ans += val;
 	}
 	
-	void remove(Long val, Long &ans){ //O(|f|)
+	void remove(Long val, Long &ans) { //O(|f|)
 		ans -= val;
 	}
 	
 	vector<Long> process(vector<Long> &A, vector<Query> &queries) { //O((N + Q) sqrt(N) |f|)
 	    sort(queries.begin() , queries.end(), cmp);
 	    Long curL = 0, curR = 0;
-	    Long ans = 0;
+	    Long acum = 0;
 		vector<Long> answer(queries.size());
 	    for (int i = 0; i < queries.size(); i++) {
 	        Long l = queries[i].l;
 	        Long r = queries[i].r;
-			while(curR <= r){//f(l , r + 1)
-				add(A[curR], ans);
+			while (curR <= r) {//f(l , r + 1)
+				add(A[curR], acum);
 				curR++;
 			}
-			while(curL > l){ //f(l - 1 , r)
+			while (curL > l) { //f(l - 1 , r)
 				curL--;
-				add(A[curL] , ans);
+				add(A[curL] , acum);
 			}
-			while(curL < l){ // f(l + 1 , r)
-				remove(A[curL] , ans);
+			while (curL < l) { // f(l + 1 , r)
+				remove(A[curL] , acum);
 				curL++;
 			}
-			while(curR > r + 1){ //f(l , r - 1)
+			while (curR > r + 1) { //f(l , r - 1)
 				curR--;
-				remove(A[curR] , ans);
+				remove(A[curR] , acum);
 			}
-			answer[queries[i].id] = ans;
+			answer[queries[i].id] = acum;
 	    }
 	    return answer;
 	}
