@@ -9,79 +9,61 @@ typedef long long Long;
 const Long MX = 1e5;
 const Long INF = 1e18;
 
-struct EndPoint{
+struct Endpoint{
 	Long node , w;
-	EndPoint(){
-		w = INF;
-		node = -1;
-	}
-
-	EndPoint(Long node, Long w): node(node), w(w) {}
-
-	bool operator <(EndPoint const &other) const{
+	Endpoint(Long node, Long w): node(node), w(w) {}
+	bool operator >(Endpoint const &other) const{
 		return w > other.w;
 	}
 };
 
-
 struct Graph { 
-	vector<EndPoint> adj [MX];
+	vector<Endpoint> adj[MX];
+	Long minWeight[MX];
+	Long parent[MX]; 
 
-	Long minCost[MX];
-	Long p[MX]; 
-	bool selected[MX];
-
-	void clear(Long N = MX) { //mandatory
-		REP( i, N) {
-			selected[i] = false;
-			minCost[i] = INF;
-			p[i] = -1;
+	void clear(Long n) { 
+		for (int i = 0; i < n; i++) {
 			adj[i].clear();
 		}
 	}
-
-	Graph(){
-		clear();
-	}
-
+	
 	void addEdge(Long u, Long v, Long w) {
-		adj[u].pb(EndPoint(v , w));
-		adj[v].pb(EndPoint(u , w));
+		adj[u].push_back(Endpoint(v , w));
+		adj[v].push_back(Endpoint(u , w));
 	}
 
-	Long MST (Long n) { //O(mlogn)
+	Long getMST(Long n, Long root = 0) { //O(mlogn)
 		Long totalWeight = 0;
-		minCost[0] = 0;
-		priority_queue<EndPoint> q;
-		
-		EndPoint ini(0,0);
-		q.push(ini);
-		
 		Long totalNodes = 0;
-		while(!q.empty()) {
-			//we find the next edge with least weight
-			EndPoint cur = q.top();
+		vector<bool> onTree(n, false);
+		fill(minWeight, minWeight + n, INF);
+		minWeight[root] = 0;
+		parent[root] = -1;
+		priority_queue<Endpoint, vector<Endpoint>, greater<Endpoint>> q;
+		q.push(Endpoint(0, 0));
+		while (!q.empty()) {
+			Endpoint cur = q.top();
 			q.pop();
 			Long u = cur.node;
-			if(selected[u]) {
+			if (onTree[u]) {
 				continue;
 			}
 			totalWeight += cur.w;
-			selected[u] = true;
+			onTree[u] = true;
 			totalNodes++;
-			for(EndPoint e : adj[u]){
+			for (Endpoint e : adj[u]) {
 				Long v = e.node;
-				if(e.w < minCost[v] && !selected[v]){
-					minCost[v] = e.w;
-					p[v] = u;
-					q.push( e );
+				if (e.w < minWeight[v] && !onTree[v]) {
+					minWeight[v] = e.w;
+					parent[v] = u;
+					q.push(e);
 				}
 			}
 		}
 		if(totalNodes != n) return -1;
 		return totalWeight;
 	}
-		
 } G;
 
 int main() {
