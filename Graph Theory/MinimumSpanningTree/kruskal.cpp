@@ -44,7 +44,7 @@ struct DSU{
 } dsu;
 
 struct Edge{
-	Long u,v,w;
+	Long u, v, w;
 	Edge() {}
 	Edge(Long u, Long v, Long w) : u(u) , v(v) , w(w) {}
 	bool operator <(Edge const &other) const{
@@ -54,7 +54,7 @@ struct Edge{
 
 struct Graph{
 	vector<Edge> edges;
-	vector<Long> tree[MX];
+	vector<pair<Long, Long>> tree[MX]; //node, weight
 	
 	void clear(Long n) { //O(n)
 		for (int i = 0; i < n; i++) {
@@ -74,8 +74,8 @@ struct Graph{
 		for (Edge e : edges) {
 			if (dsu.find(e.u) != dsu.find(e.v)) {
 				cost += e.w;
-				tree[e.u].push_back(e.v);
-				tree[e.v].push_back(e.u);
+				tree[e.u].push_back({e.v, e.w});
+				tree[e.v].push_back({e.u, e.w});
 				dsu.join(e.u,e.v);				
 			}
 		}
