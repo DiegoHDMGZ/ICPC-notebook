@@ -8,31 +8,37 @@ typedef long long Long;
 
 const Long MX = 1e5;
 
-struct DisjointSetUnion{
+struct DSU{
 	Long parent[MX];
 	Long size[MX];
 	
-	void make_set(Long v){ //O(1)
-		parent[v] = v;
-		size[v] = 1;
+	void make_set(Long u) { //O(1)
+		parent[u] = u;
+		size[u] = 1;
 	}
 	
-	Long find(Long v){ //O(log(N))
-		if(v == parent[v]){
-			return v;
+	void build(int n) {
+		for (int i = 0; i < n; i++) {
+			make_set(i);
 		}
-		return parent[v] = find(parent[v]);
 	}
 	
-	void join(Long a, Long b){ //O(1)
-		a = find(a);
-		b = find(b);
-		if(a != b){
-			if(size[a] < size[b]){
-				swap(a,b);
+	Long find(Long u) { //O(1) amortized
+		if (u == parent[u]) {
+			return u;
+		}
+		return parent[u] = find(parent[u]);
+	}
+	
+	void join(Long u, Long v) { //O(1) amortized
+		u = find(u);
+		v = find(v);
+		if (u != v) {
+			if (size[u] > size[v]) {
+				swap(u, v);
 			}
-			parent[b] = a;
-			size[a] += size[b];
+			parent[u] = v;
+			size[v] += size[u];
 		}
 	}
 } dsu;
@@ -50,29 +56,26 @@ struct Graph{
 	vector<Edge> edges;
 	vector<Long> tree[MX];
 	
-	void clear(Long N) { //O(n+m)
-		REP(i, N) {
+	void clear(Long n) { //O(n)
+		for (int i = 0; i < n; i++) {
 			tree[i].clear();
 		}
 		edges.clear();
 	}
 	
 	void addEdge(Long u, Long v, Long w) {
-		edges.pb(Edge(u , v , w));
+		edges.push_back(Edge(u , v , w));
 	}
 	
-	Long kruskal(Long N) { //O(mlogn)
+	Long getMST(Long n) { //O(mlogn)
 		Long cost = 0;
-		REP ( i , N ){
-			dsu.make_set(i);
-		}
+		dsu.build(n);
 		sort(edges.begin(),edges.end());
-		
-		for( Edge e : edges ) {
-			if(dsu.find(e.u) != dsu.find(e.v)){
+		for (Edge e : edges) {
+			if (dsu.find(e.u) != dsu.find(e.v)) {
 				cost += e.w;
-				tree[e.u].pb(e.v);
-				tree[e.v].pb(e.u);
+				tree[e.u].push_back(e.v);
+				tree[e.v].push_back(e.u);
 				dsu.join(e.u,e.v);				
 			}
 		}
