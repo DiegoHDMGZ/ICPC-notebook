@@ -10,27 +10,27 @@ const Long MX = 1e5;
 const Long INF = 1e18;
 
 struct EndPoint{
-    Long node , w;
-    EndPoint(){
-        w = INF;
-        node = -1;
-    }
-    
-    EndPoint(Long node, Long w): node(node), w(w) {}
-    
-    bool operator <(EndPoint const &other) const{
-        return w > other.w;
-    }
+	Long node , w;
+	EndPoint(){
+		w = INF;
+		node = -1;
+	}
+
+	EndPoint(Long node, Long w): node(node), w(w) {}
+
+	bool operator <(EndPoint const &other) const{
+		return w > other.w;
+	}
 };
 
 
 struct Graph { 
 	vector<EndPoint> adj [MX];
-	
+
 	Long minCost[MX];
 	Long p[MX]; 
 	bool selected[MX];
-	
+
 	void clear(Long N = MX) { //mandatory
 		REP( i, N) {
 			selected[i] = false;
@@ -39,51 +39,51 @@ struct Graph {
 			adj[i].clear();
 		}
 	}
-	
+
 	Graph(){
 		clear();
 	}
-	
+
 	void addEdge(Long u, Long v, Long w) {
 		adj[u].pb(EndPoint(v , w));
 		adj[v].pb(EndPoint(u , w));
 	}
-	
+
 	Long MST (Long n) { //O(mlogn)
-	    Long totalWeight = 0;
+		Long totalWeight = 0;
 		minCost[0] = 0;
-	    priority_queue<EndPoint> q;
-	    
-	    EndPoint ini(0,0);
-	    q.push(ini);
-	    
-	    Long totalNodes = 0;
+		priority_queue<EndPoint> q;
+		
+		EndPoint ini(0,0);
+		q.push(ini);
+		
+		Long totalNodes = 0;
 		while(!q.empty()) {
-		    //we find the next edge with least weight
-		    EndPoint cur = q.top();
-		    q.pop();
-		    Long u = cur.node;
-		    if(selected[u]) {
-		    	continue;
+			//we find the next edge with least weight
+			EndPoint cur = q.top();
+			q.pop();
+			Long u = cur.node;
+			if(selected[u]) {
+				continue;
 			}
-		    totalWeight += cur.w;
-		    selected[u] = true;
-		    totalNodes++;
+			totalWeight += cur.w;
+			selected[u] = true;
+			totalNodes++;
 			for(EndPoint e : adj[u]){
-				  Long v = e.node;
-				  if(e.w < minCost[v] && !selected[v]){
-		            minCost[v] = e.w;
-		            p[v] = u;
+				Long v = e.node;
+				if(e.w < minCost[v] && !selected[v]){
+					minCost[v] = e.w;
+					p[v] = u;
 					q.push( e );
-		        }       
+				}
 			}
 		}
 		if(totalNodes != n) return -1;
-	    return totalWeight;
+		return totalWeight;
 	}
 		
 } G;
 
 int main() {
-    return 0;
+	return 0;
 }
