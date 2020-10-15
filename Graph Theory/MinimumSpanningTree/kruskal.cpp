@@ -68,18 +68,18 @@ struct Graph{
 	}
 	
 	Long getMST(Long n) { //O(mlogn)
-		Long cost = 0;
+		Long totalWeight = 0;
 		dsu.build(n);
 		sort(edges.begin(),edges.end());
 		for (Edge e : edges) {
 			if (dsu.find(e.u) != dsu.find(e.v)) {
-				cost += e.w;
+				totalWeight += e.w;
 				tree[e.u].push_back({e.v, e.w});
 				tree[e.v].push_back({e.u, e.w});
 				dsu.join(e.u,e.v);				
 			}
 		}
-		return cost;
+		return totalWeight;
 	}
 } G;
 

@@ -41,7 +41,7 @@ struct Graph {
 		minWeight[root] = 0;
 		parent[root] = -1;
 		priority_queue<Endpoint, vector<Endpoint>, greater<Endpoint>> q;
-		q.push(Endpoint(0, 0));
+		q.push(Endpoint(root, 0));
 		while (!q.empty()) {
 			Endpoint cur = q.top();
 			q.pop();
