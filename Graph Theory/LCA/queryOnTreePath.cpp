@@ -23,7 +23,6 @@ struct Graph{
 		for(int i = 0; i < n; i++) {
 			adj[i].clear();
 		}
-		timer = 0;
 	}
 	
 	void addEdge(int u , int v, Long w) {
@@ -59,7 +58,7 @@ struct Graph{
 		
 		for(int j = 1; (1 << j) < n; j++){
 			for(int i = 0; i < n; i++){
-				if(anc[i][j-1] != -1){
+				if(anc[i][j - 1] != -1){
 					anc[i][j] = anc[anc[i][j - 1]][j - 1];
 					st[i][j] = f(st[i][j - 1],st[anc[i][j - 1]][j - 1]);
 				} else {
