@@ -19,7 +19,7 @@ struct DSU{
 	
 	void make_set(int u) { 
 		parent[u] = u;
-		elements[u].push_back(u);
+		elements[u] = {u};
 	}
 	
 	int find(int u) {
