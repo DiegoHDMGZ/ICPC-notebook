@@ -72,7 +72,7 @@ struct Graph{
     
 	vector<Long> getEulerianPath(Long n){
 		//it has to be connected 
-        //there has to be exactle 2 nodes with odd degree
+        //there has to be exactly 2 nodes with odd degree
         vector<Long> odd;
         for(Long u = 0; u < n; u++){
             if((adj[u].size() & 1) == 1){
