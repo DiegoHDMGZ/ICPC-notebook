@@ -13,7 +13,7 @@ struct Endpoint{
 
 struct Graph { 
 	vector<Endpoint> adj[MX];
-	Long minCost[MX];
+	Long minWeight[MX];
 	Long parent[MX]; 
 
 	void clear(Long n) { 
@@ -30,28 +30,28 @@ struct Graph {
 	Long getMST(Long n, Long root = 0) { //O(n^2)
 		Long totalWeight = 0;
 		vector<bool> onTree(n, false);
-		fill(minCost, minCost + n, INF);
-		minCost[root] = 0;
+		fill(minWeight, minWeight + n, INF);
+		minWeight[root] = 0;
 		parent[root] = -1;
 		
 		for (Long nodes = 1; nodes <= n; nodes++) {
 			Long choice = -1;
 			for (Long u = 0; u < n; u++) {
 				if (!onTree[u]) {
-					if (choice == -1 || minCost[u] < minCost[choice]) {
+					if (choice == -1 || minWeight[u] < minWeight[choice]) {
 						choice = u;
 					}
 				}
 			}
-			if (minCost[choice] == INF) {
+			if (minWeight[choice] == INF) {
 				//graph is not connected
 				return -1;
 			}
-			totalWeight += minCost[choice];
+			totalWeight += minWeight[choice];
 			onTree[choice] = true;
 			for (Endpoint e : adj[choice]) {
-				if (!onTree[e.node] && e.w < minCost[e.node]) {
-					minCost[e.node] = e.w;
+				if (!onTree[e.node] && e.w < minWeight[e.node]) {
+					minWeight[e.node] = e.w;
 					parent[e.node] = e.w;
 				}
 			}
