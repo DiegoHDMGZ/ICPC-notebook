@@ -37,8 +37,6 @@ struct Node{
 		//restart the lazy value
 		lazy = 0;
 	}
-	
-	
 };
 
 Long combine(Long x, Long y){
@@ -51,12 +49,12 @@ struct SegmentTree {
 	
 	SegmentTree(){}
 	
-	SegmentTree(Long n){
+	SegmentTree(Long n) {
 		root = new Node();
 		maxN = n;
 	}
 
-	Long query(Long l, Long r, Node *node ,  Long tl, Long tr ) { //O(logn)
+	Long query(Long l, Long r, Node *node, Long tl, Long tr) { //O(logn)
 		if(!node) return 0;
 		
 		if (l <= tl && tr <= r) {
@@ -66,7 +64,7 @@ struct SegmentTree {
 		node->push(tl , tr);
 		if(r < tm + 1){
 			return query(l , r, node->left  , tl , tm);
-		}else if(tm < l){
+		} else if(tm < l){
 			return query( l , r , node->right , tm + 1 , tr);  
 		} else{
 			return combine(query(l, r, node->left, tl, tm) , query(l, r, node->right, tm + 1, tr));
@@ -78,15 +76,15 @@ struct SegmentTree {
 		return query(l , r  ,root ,  0 , maxN - 1);
 	}
 
-	void update(Long l, Long r, Long val, Node *node , Long tl , Long tr) { //O(logn)
-		if(tr < l || tl > r){
+	void update(Long l, Long r, Long val, Node *node, Long tl, Long tr) { //O(logn)
+		if (tr < l || tl > r) {
 			return;
 		}
 		if (l <= tl && tr <= r) {
 			Long sz = tr - tl + 1;
 			node->sum += val * sz;
 			node->lazy += val;
-		}else{
+		} else {
 			Long tm = (tl + tr) / 2;
 			node->push(tl , tr);
 			update(l, r, val , node->left, tl, tm);
@@ -95,7 +93,7 @@ struct SegmentTree {
 		}
 	}
 	
-	void update(Long l , Long r, Long val) {
+	void update(Long l, Long r, Long val) {
 		assert(maxN > 0);
 		update(l, r , val , root , 0 , maxN - 1);
 	}
