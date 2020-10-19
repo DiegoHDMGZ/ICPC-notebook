@@ -26,8 +26,7 @@ struct SegmentTree{
 		marked[id] = false;
 		if(tl == tr){
 			lazy[id] = a[tl];
-		}
-		else{
+		} else{
 			Long tm = (tl + tr) / 2;
 			Long left = 2 * id;
 			Long right = 2 * id + 1 ;
@@ -67,8 +66,7 @@ struct SegmentTree{
 		push(id);
 		if(pos <= tm){
 			return query(pos, left , tl, tm);
-		}
-		else{
+		} else{
 			return query(pos, right, tm + 1, tr);
 		}
 	}
