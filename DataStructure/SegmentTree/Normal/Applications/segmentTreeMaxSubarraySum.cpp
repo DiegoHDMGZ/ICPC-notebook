@@ -12,7 +12,7 @@ struct Data {
 	Data(){}
 	Data(Long val) {
 		sum = val;
-		pref = suf = ans = val; //max(0LL,val); to consider the empty array
+		pref = suf = ans = val; //max(0LL, val); to consider the empty array
 	}
 };
 
@@ -36,10 +36,10 @@ struct SegmentTree {
 		maxN = n;
 	}
 	
-	void build(vector<Long> &a, Long id , Long tl , Long tr) { //O(n)
+	void build(vector<Long> &a, Long id, Long tl, Long tr) { //O(n)
 		if (tl == tr) {
 			t[id] = Data(a[tl]);
-		}else {
+		} else {
 			Long tm = (tl + tr) / 2;
 			Long left = id + 1;
 			Long right = id + 2 * (tm - tl + 1) ;
@@ -49,13 +49,13 @@ struct SegmentTree {
 		}
 	}
 	
-	void build(vector<Long> &a ) {
+	void build(vector<Long> &a) {
 		maxN = a.size();
 		assert(maxN > 0);
 		build(a , 1 , 0 , maxN - 1);
 	}
 
-	Data query(Long l, Long r, Long id, Long tl , Long tr ) { //O(logn)
+	Data query(Long l, Long r, Long id, Long tl, Long tr) { //O(logn)
 		//maxSubsemengtSum in [l,r]
 		if (l <= tl && tr <= r) {
 			return t[id];
@@ -83,14 +83,13 @@ struct SegmentTree {
 	void update(Long pos, Long val, Long id, Long tl, Long tr) { //O(logn)
 		if (tl == tr) {
 			t[id] = Data(val);
-		}
-		else {
+		} else {
 			Long tm = (tl + tr) / 2;
 			Long left = id + 1;
 			Long right = id + 2 * (tm - tl + 1) ;
 			if (pos <= tm) {
 				update(pos, val, left, tl, tm);
-			}else {
+			} else {
 				update(pos, val, right, tm + 1, tr);
 			}
 			t[id] = combine(t[left], t[right]);

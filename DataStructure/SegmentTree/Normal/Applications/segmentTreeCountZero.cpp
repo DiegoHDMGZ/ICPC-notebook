@@ -19,7 +19,7 @@ struct SegmentTree{
 		maxN = n;
 	}
 	
-	void build(vector<Long> &a , Long id , Long tl  , Long tr) { //O(n)
+	void build(vector<Long> &a, Long id, Long tl, Long tr) { //O(n)
 		if (tl == tr){
 			a[tl] == 0 ? t[id] = 1 : t[id] = 0;
 		}else{
@@ -32,12 +32,12 @@ struct SegmentTree{
 		}
 	}
 	
-	void build(vector<Long> &a ) {
+	void build(vector<Long> &a) {
 		maxN = a.size();
 		build(a , 1 , 0 , maxN - 1);
 	}
 
-	Long countZeros(Long l, Long r, Long id  , Long tl , Long tr) { //O(logn)
+	Long countZeros(Long l, Long r, Long id, Long tl, Long tr) { //O(logn)
 		//# of zeros in interval
 		if (l <= tl && tr <= r) {
 			return t[id];
@@ -48,7 +48,7 @@ struct SegmentTree{
 		if (r < tm + 1) {
 			//only left child
 			return countZeros(l , r , left , tl , tm);
-		}else if (tm < l) {
+		} else if (tm < l) {
 			//only right child
 			return countZeros(l , r, right , tm + 1 , tr); 
 		} else{
@@ -75,7 +75,7 @@ struct SegmentTree{
 		Long right = id + 2 * (tm - tl + 1) ;
 		if (t[left] >= k) {
 			return find_kth(k, left, tl, tm);
-		}else {
+		} else {
 			return find_kth(k - t[left], right, tm + 1, tr);
 		}
 	}
@@ -87,10 +87,10 @@ struct SegmentTree{
 	}
 
 
-	void update(Long pos, Long val, Long id , Long tl , Long tr ) { //O(logn)
+	void update(Long pos, Long val, Long id, Long tl, Long tr) { //O(logn)
 		if (tl == tr) {
 			val == 0 ? t[id] = 1 : t[id] = 0;
-		}else {
+		} else {
 			Long tm = (tl + tr) / 2;
 			Long left = id + 1;
 			Long right = id + 2 * (tm - tl + 1) ;
