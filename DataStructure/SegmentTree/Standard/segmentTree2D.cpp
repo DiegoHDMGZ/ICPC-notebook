@@ -68,7 +68,6 @@ struct SegmentTree{
 		if (lY <= tlY && trY <= rY) {
 			return t[idX][idY];
 		}
-
 		Long tmY = (tlY + trY) / 2;
 		Long leftY = idY + 1;
 		Long rightY = idY + 2 * (tmY - tlY + 1) ;
@@ -86,7 +85,6 @@ struct SegmentTree{
 	}
 
 	Long query(Long lX, Long rX, Long lY, Long rY, Long idX, Long tlX, Long trX, Long trY) { 
-		//O(log n log m)
 		if (lX <= tlX && trX <= rX) {
 			return queryY(idX, lY, rY, 1 , 0 , trY);
 		}
@@ -120,7 +118,6 @@ struct SegmentTree{
 				Long rightX = idX + 2 * (tmX - tlX + 1) ;
 				t[idX][idY] = combine(t[leftX][idY], t[rightX][idY]);
 			}
-			
 		} else {
 			Long tmY = (tlY + trY) / 2;
 			Long leftY = idY + 1;
