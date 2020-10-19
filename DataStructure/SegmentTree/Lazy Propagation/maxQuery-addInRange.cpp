@@ -25,11 +25,11 @@ struct SegmentTree {
 		maxN = n;
 	}
 	
-	void build(vector<Long> &a, Long id , Long tl , Long tr ) { //O(n)
+	void build(vector<Long> &a, Long id, Long tl, Long tr) { //O(n)
 		lazy[id] = 0;
 		if (tl == tr) {
 			t[id] = a[tl];
-		}else{
+		} else{
 			Long tm = (tl + tr) / 2;
 			Long left = 2 * id;
 			Long right = 2 * id + 1;
@@ -39,7 +39,7 @@ struct SegmentTree {
 		}
 	}
 	
-	void build(vector<Long> &a ) {
+	void build(vector<Long> &a) {
 		maxN = a.size();
 		build(a , 1 , 0 , maxN - 1);
 	}
@@ -59,7 +59,7 @@ struct SegmentTree {
 		lazy[id] = 0;
 	}
 
-	Long query(Long l, Long r, Long id , Long tl, Long tr ) { //O(logn)
+	Long query(Long l, Long r, Long id, Long tl, Long tr) { //O(logn)
 		if (l <= tl && tr <= r) {
 			return t[id];
 		}
@@ -67,11 +67,11 @@ struct SegmentTree {
 		Long left = 2 * id;
 		Long right = 2 * id + 1;
 		push(id);
-		if(r < tm + 1){
+		if (r < tm + 1) {
 			return query(l , r , left , tl , tm);
-		}else if(tm < l){
+		} else if(tm < l) {
 			return query(l , r, right , tm + 1 , tr);  
-		} else{
+		} else {
 			return combine(query(l, r, left, tl, tm) , query(l, r, right, tm + 1, tr));
 		}
 	}
@@ -81,14 +81,14 @@ struct SegmentTree {
 		return query(l , r , 1 , 0 , maxN - 1);
 	}
 
-	void update(Long l, Long r, Long val, Long id , Long tl , Long tr) { //O(logn)
-		if(tr < l || tl > r){
+	void update(Long l, Long r, Long val, Long id, Long tl, Long tr) { //O(logn)
+		if (tr < l || tl > r) {
 			return;
 		}
 		if (l <= tl && tr <= r) {
 			t[id] += val;
 			lazy[id] += val;
-		}else{
+		} else{
 			Long tm = (tl + tr) / 2;
 			Long left = 2 * id;
 			Long right = 2 * id + 1 ;

@@ -25,7 +25,7 @@ struct SegmentTree {
 		maxN = n;
 	}
 	
-	void build(vector<Long> &a, Long id , Long tl , Long tr ) { //O(n)
+	void build(vector<Long> &a, Long id, Long tl, Long tr) { //O(n)
 		lazy[id] = 0;
 		if (tl == tr) {
 			t[id] = a[tl];
@@ -39,7 +39,7 @@ struct SegmentTree {
 		}
 	}
 	
-	void build(vector<Long> &a ) {
+	void build(vector<Long> &a) {
 		maxN = a.size();
 		build(a , 1 , 0 , maxN - 1);
 	}
@@ -54,7 +54,7 @@ struct SegmentTree {
 		t[left] += lazy[id] * szLeft;
 		t[right] += lazy[id] * szRight;
 		
-		//aggregate the lazy value of the node to the lazy value of the children
+		//aggregate the lazy value to the lazy value of the children
 		lazy[left] += lazy[id];
 		lazy[right] += lazy[id];
 		
@@ -62,7 +62,7 @@ struct SegmentTree {
 		lazy[id] = 0;
 	}
 
-	Long query(Long l, Long r, Long id , Long tl, Long tr ) { //O(logn)
+	Long query(Long l, Long r, Long id, Long tl, Long tr) { //O(logn)
 		if (l <= tl && tr <= r) {
 			return t[id];
 		}
@@ -70,9 +70,9 @@ struct SegmentTree {
 		Long left = 2 * id;
 		Long right = 2 * id + 1;
 		push(id, tl , tr);
-		if(r < tm + 1){
+		if (r < tm + 1) {
 			return query(l , r , left , tl , tm);
-		}else if(tm < l){
+		} else if (tm < l) {
 			return query(l , r, right , tm + 1 , tr);  
 		} else{
 			return combine(query(l, r, left, tl, tm) , query(l, r, right, tm + 1, tr));
@@ -84,15 +84,15 @@ struct SegmentTree {
 		return query(l , r , 1 , 0 , maxN - 1);
 	}
 
-	void update(Long l, Long r, Long val, Long id , Long tl , Long tr) { //O(logn)
-		if(tr < l || tl > r){
+	void update(Long l, Long r, Long val, Long id, Long tl, Long tr) { //O(logn)
+		if (tr < l || tl > r) {
 			return;
 		}
 		if (l <= tl && tr <= r) {
 			Long sz = tr - tl + 1;
 			t[id] += val * sz;
 			lazy[id] += val;
-		}else{
+		} else{
 			Long tm = (tl + tr) / 2;
 			Long left = 2 * id;
 			Long right = 2 * id + 1 ;
@@ -103,16 +103,12 @@ struct SegmentTree {
 		}
 	}
 	
-	void update(Long l , Long r, Long val) {
+	void update(Long l, Long r, Long val) {
 		assert(maxN > 0);
 		update(l, r , val , 1 , 0 , maxN - 1);
 	}
 } st;
 
 int main() {
-	ios_base::sync_with_stdio(false);
-	cin.tie(NULL);
-	cout.tie(NULL);
-
 	return 0;
 }
