@@ -49,7 +49,7 @@ struct SegmentTree {
 		}
 	}
 	
-	void build(vector<Long> &a ) {
+	void build(vector<Long> &a) {
 		maxN = a.size();
 		build(a , 1 , 0 , maxN - 1);
 	}
@@ -62,10 +62,10 @@ struct SegmentTree {
 		Long tm = (tl + tr) / 2;
 		Long left = id + 1;
 		Long right = id + 2 * (tm - tl + 1) ;
-		if(r < tm + 1){
+		if (r < tm + 1) {
 			//only left child
 			return query(l , r , left , tl , tm);
-		} else if(tm < l){
+		} else if (tm < l) {
 			//only right child
 			return query(l , r, right , tm + 1 , tr); 
 		} else {
@@ -79,7 +79,7 @@ struct SegmentTree {
 		return query(l , r , 1 , 0 , maxN - 1);
 	}
 
-	void update(Long pos, Long val, Long id, Long tl , Long tr) { //O(logn)
+	void update(Long pos, Long val, Long id, Long tl, Long tr) { //O(logn)
 		if (tl == tr) {
 			t[id] = Data(val);
 		}
