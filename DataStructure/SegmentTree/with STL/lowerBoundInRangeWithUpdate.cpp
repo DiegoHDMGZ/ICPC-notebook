@@ -25,11 +25,11 @@ struct SegmentTree {
 		maxN = n;
 	}
 	
-	void build(vector<Long> &a , Long id , Long tl , Long tr) { //O(nlog²n)
-		if (tl == tr){
+	void build(vector<Long> &a, Long id, Long tl, Long tr) { //O(nlog²n)
+		if (tl == tr) {
 			t[id] = {a[tl]};
 			curVal[tl] = a[tl];
-		}else{
+		} else{
 			Long tm = (tl + tr) / 2;
 			Long left = id + 1;
 			Long right = id + 2 * (tm - tl + 1) ;
@@ -40,15 +40,15 @@ struct SegmentTree {
 		}
 	}
 	
-	void build(vector<Long> &a ) {
+	void build(vector<Long> &a) {
 		maxN = a.size();
 		assert(maxN > 0);
 		build(a , 1 , 0 , maxN - 1);
 	}
 
-	Long query(Long l, Long r, Long x , Long id , Long tl , Long tr) { //O(log²n)
+	Long query(Long l, Long r, Long x, Long id, Long tl, Long tr) { //O(log²n)
 		//find the smallest number greater or equal to X
-		if(tr < l || tl > r){
+		if (tr < l || tl > r) {
 			return INF;
 		}
 
@@ -56,7 +56,7 @@ struct SegmentTree {
 			auto it = t[id].lower_bound(x);
 			if (it != t[id].end()) {
 				return *it;
-			} else{
+			} else {
 				return INF;
 			}
 		}
@@ -72,18 +72,18 @@ struct SegmentTree {
 		return query(l , r , x , 1 , 0 , maxN - 1);
 	}
 
-	void update(Long pos, Long val , Long id , Long tl, Long tr ) { //O(log²n)
+	void update(Long pos, Long val, Long id, Long tl, Long tr) { //O(log²n)
 		t[id].erase(t[id].find(curVal[pos]));
 		t[id].insert(val);
 		if(tl == tr){
 			curVal[pos] = val;
-		}else{
+		} else{
 			Long tm = (tl + tr) / 2;
 			Long left = id + 1;
 			Long right = id + 2 * (tm - tl + 1) ;
 			if (pos <= tm) {
 				update(pos, val, left, tl, tm);
-			}else {
+			} else {
 				update(pos, val , right, tm + 1, tr);
 			}
 		} 
