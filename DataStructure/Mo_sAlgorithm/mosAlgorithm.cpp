@@ -9,7 +9,7 @@ typedef long long Long;
 //And check : https://cp-algorithms.com/data_structures/sqrt_decomposition.html
 
 const Long MX = 1e5;
-const Long block = 400;
+const Long block = 400; //Aprox sqrt(MX)
 //Conditions
 //1) No update
 //2) Offline
