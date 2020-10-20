@@ -4,39 +4,51 @@ using namespace std;
 
 typedef long long Long;
 
-//Credits : https://www.geeksforgeeks.org/mos-algorithm-query-square-root-decomposition-set-1-introduction/
-//For a good explanation check : https://www.hackerearth.com/practice/notes/mos-algorithm/
-//And check : https://cp-algorithms.com/data_structures/sqrt_decomposition.html
+//Hilber Curves: https://codeforces.com/blog/entry/61203
 
 const Long MX = 1e5;
-const Long BLOCK = 400; //Aprox sqrt(N) or N / sqrt(Q)
+
 //Conditions
 //1) No update
 //2) Offline
 //3) Knowing f([l,r]) , we can compute in O(|f|):
 //  f([l + 1 , r]) ,f([l - 1 , r]) , f([l, r + 1]) , f([l , r - 1]) 
-//=> Overall complexity O((N + Q) sqrt(N) |f|)
+//=> Overall complexity O(N sqrt(Q))
 
-//Using a BLOCK of size N / sqrt(Q) yields a overall complexity O(N sqrt(Q) |f|)
+Long hilbertOrder(int x, int y, int pow, int rotate) {
+	if (pow == 0) {
+		return 0;
+	}
+	int hpow = 1 << (pow - 1);
+	int seg = (x < hpow) ? (
+		(y < hpow) ? 0 : 3
+	) : (
+		(y < hpow) ? 1 : 2
+	);
+	seg = (seg + rotate) & 3;
+	const int rotateDelta[4] = {3, 0, 0, 1};
+	int nx = x & (x ^ hpow), ny = y & (y ^ hpow);
+	int nrot = (rotate + rotateDelta[seg]) & 3;
+	Long subSquareSize = 1LL << (2 * pow - 2);
+	Long ans = seg * subSquareSize;
+	Long add = hilbertOrder(nx, ny, pow - 1, nrot);
+	ans += (seg == 1 || seg == 2) ? add : (subSquareSize - add - 1);
+	return ans;
+}
+ 
 struct Query{
-    Long id, l, r;
+    Long id, l, r, order;
     Query(){}
-    Query(Long id, Long l, Long r): id(id), l(l) , r(r){}
-    
+    Query(Long id, Long l, Long r){
+		this->id = id;
+		this->l = l;
+		this->r = r;
+		int k = 21; //k holds 2^k >= N
+		this->order = hilbertOrder(l, r, k, 0);
+	}
+
     bool operator <(const Query &other) const {
-		//queries are sorted in increasing order of the block of l
-		Long curBlock = l / BLOCK ;
-		Long otherBlock = other.l / BLOCK;
-		if (curBlock != otherBlock) return curBlock < otherBlock;
-		
-		//If queries are in the same blocks
-		//if the block is odd, sort in ascending order of r
-		//otherwise, in descending order of r
-		if (curBlock & 1 == 1) {
-			return r < other.r;
-		} else{
-			return r > other.r;
-		}
+		return order < other.order;
 	}
 };
 

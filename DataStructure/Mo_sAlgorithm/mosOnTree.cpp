@@ -14,7 +14,7 @@ typedef long long Long;
 //only counts the elements that appears once (ignore the others)
 
 const Long MX = 1e5;
-const Long block = 400;
+const Long BLOCK = 400;
 
 const Long loga = 32 - __builtin_clz(MX);
 
@@ -111,22 +111,23 @@ struct Query{
 			r = G.tIn[v];
 		}
 	}
-};
-
-bool cmp(const Query &x, const Query &y) {
-	// queries are sorted in increasing order blocks 
-	Long bx = x.l / block ;
-	Long by = y.l / block;
-	if (bx != by) return bx < by;
 	
-	//in the same blocks, if the block is odd sort in ascending order
-	//otherwise, in descending order, in order to be more efficient
-	if (bx & 1 == 1) {
-		return x.r < y.r;
-	} else{
-		return x.r > y.r;
+	bool operator <(const Query &other) const {
+		//queries are sorted in increasing order of the block of l
+		Long curBlock = l / BLOCK ;
+		Long otherBlock = other.l / BLOCK;
+		if (curBlock != otherBlock) return curBlock < otherBlock;
+		
+		//If queries are in the same blocks
+		//if the block is odd, sort in ascending order of r
+		//otherwise, in descending order of r
+		if (curBlock & 1 == 1) {
+			return r < other.r;
+		} else{
+			return r > other.r;
+		}
 	}
-}
+};
 
 struct Mo{
 	bool activated[MX];
@@ -152,7 +153,7 @@ struct Mo{
 	vector<Long> process(vector<Long> &A, vector<Query> &queries) { //O((N + Q) sqrt(N) |F|)
 		int n = A.size();
 		fill(activated, activated + n, false);
-		sort(queries.begin() , queries.end(), cmp);
+		sort(queries.begin() , queries.end());
 		Long curL = 0, curR = 0;
 		Long acum = 0;
 		vector<Long> answer(queries.size());
