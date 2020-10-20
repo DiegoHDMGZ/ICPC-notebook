@@ -24,13 +24,14 @@ struct Query{
 };
 
 bool cmp(const Query &x, const Query &y) {
-	// queries are sorted in increasing order blocks 
+	//queries are sorted in increasing order of the block of l
 	Long bx = x.l / block ;
 	Long by = y.l / block;
 	if (bx != by) return bx < by;
 	
-	//in the same blocks, if the block is odd sort in ascending order
-	//otherwise, in descending order, in order to be more efficient
+	//If queries are in the same blocks
+	//if the block is odd, sort in ascending order of r
+	//otherwise, in descending order of r
 	if (bx & 1 == 1) {
 		return x.r < y.r;
 	} else{
