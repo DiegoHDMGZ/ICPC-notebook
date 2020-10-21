@@ -9,15 +9,17 @@ typedef long long Long;
 const Long MX = 1e5;
 
 struct Checkpoint{
-	Long u , v, sizeU, sizeV;
+	Long u , v, sizeU, sizeV, components;
 	Checkpoint(){}
-	Checkpoint(Long u, Long v, Long sizeU, Long sizeV) :
-		u(u), v(v), sizeU(sizeU), sizeV(sizeV){}
+	Checkpoint(Long u, Long v, Long sizeU, Long sizeV, Long components) :
+		u(u), v(v), sizeU(sizeU), sizeV(sizeV), components(components){}
 };
 struct DSU{
 	Long parent[MX];
 	Long size[MX];
 	vector<Checkpoint> history;
+	vector<Long> savedCheckpoints;
+	Long components;
 	
 	void make_set(Long u) { //O(1)
 		parent[u] = u;
@@ -28,6 +30,7 @@ struct DSU{
 		for (int i = 0; i < n; i++) {
 			make_set(i);
 		}
+		components = n;
 	}
 	
 	Long find(Long u) { //O(log n)
@@ -44,11 +47,12 @@ struct DSU{
 			if (size[u] > size[v]) {
 				swap(u, v);
 			}
-			history.push_back(Checkpoint(u , v, size[u], size[v]));
+			history.push_back(Checkpoint(u , v, size[u], size[v], components));
+			components--;
 			parent[u] = v;
 			size[v] += size[u];
 		} else {
-			history.push_back(Checkpoint(-1, -1, -1, -1));
+			history.push_back(Checkpoint(-1, -1, -1, -1, components));
 		}
 	}
 	
@@ -58,11 +62,28 @@ struct DSU{
 		}
 		Checkpoint checkpoint = history.back();
 		history.pop_back();
+		components = checkpoint.components;
 		if (checkpoint.u == -1) return;
 		parent[checkpoint.u] = checkpoint.u;
 		parent[checkpoint.v] = checkpoint.v;
 		size[checkpoint.u] = checkpoint.sizeU;
 		size[checkpoint.v] = checkpoint.sizeV;
+	}
+	
+	void save() {
+		savedCheckpoints.push_back(history.size());
+	}
+	
+	void loadCheckpoint() {
+		assert(!savedCheckpoints.empty());
+		while (history.size() > savedCheckpoints.back()) {
+			rollback();
+		}
+		savedCheckpoints.pop_back();
+	}
+	
+	Long getComponents() {
+		return components;
 	}
 } dsu;
 
