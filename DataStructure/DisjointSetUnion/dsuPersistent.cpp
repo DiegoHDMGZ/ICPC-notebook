@@ -52,7 +52,7 @@ struct DSU{
 		}
 	}
 	
-	void rollBack() { //O(1)
+	void rollback() { //O(1)
 		if (history.empty()) {
 			return;
 		}
