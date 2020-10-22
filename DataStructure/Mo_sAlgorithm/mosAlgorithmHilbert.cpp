@@ -6,8 +6,6 @@ typedef long long Long;
 
 //Hilber Curves: https://codeforces.com/blog/entry/61203
 
-const Long MX = 1e5;
-
 //Conditions
 //1) No update
 //2) Offline
