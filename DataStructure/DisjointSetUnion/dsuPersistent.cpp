@@ -8,17 +8,10 @@ typedef long long Long;
 
 const Long MX = 1e5;
 
-struct Checkpoint{
-	Long u , v, sizeU, sizeV, components;
-	Checkpoint(){}
-	Checkpoint(Long u, Long v, Long sizeU, Long sizeV, Long components) :
-		u(u), v(v), sizeU(sizeU), sizeV(sizeV), components(components){}
-};
-
 struct DSU{
 	Long parent[MX];
 	Long size[MX];
-	vector<Checkpoint> history;
+	vector<Long> history;
 	vector<Long> savedCheckpoints;
 	Long components;
 	
@@ -48,12 +41,12 @@ struct DSU{
 			if (size[u] > size[v]) {
 				swap(u, v);
 			}
-			history.push_back(Checkpoint(u , v, size[u], size[v], components));
+			history.push_back(u);
 			components--;
 			parent[u] = v;
 			size[v] += size[u];
 		} else {
-			history.push_back(Checkpoint(-1, -1, -1, -1, components));
+			history.push_back(u);
 		}
 	}
 	
@@ -62,14 +55,13 @@ struct DSU{
 		if (history.empty()) {
 			return;
 		}
-		Checkpoint checkpoint = history.back();
+		Long u = history.back();
+		Long v = parent[u];
 		history.pop_back();
-		components = checkpoint.components;
-		if (checkpoint.u == -1) return;
-		parent[checkpoint.u] = checkpoint.u;
-		parent[checkpoint.v] = checkpoint.v;
-		size[checkpoint.u] = checkpoint.sizeU;
-		size[checkpoint.v] = checkpoint.sizeV;
+		if (u == v) return;
+		components++;
+		size[v] -= size[u];
+		parent[u] = u;
 	}
 	
 	void save() { //O(1)

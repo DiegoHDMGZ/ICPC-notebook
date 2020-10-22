@@ -15,17 +15,10 @@ const int SZ_BLOCK = 223; //Aprox sqrt(N) or N / sqrt(Q)
 //Block sqrt(N) -> overall O((M + Q) sqrt(M) log N)
 //Block N / sqrt(Q) -> overall O(M sqrt(Q) log N) (best option)
 
-struct Checkpoint{
-	int u , v, sizeU, sizeV, components;
-	Checkpoint(){}
-	Checkpoint(int u, int v, int sizeU, int sizeV, int components) :
-		u(u), v(v), sizeU(sizeU), sizeV(sizeV), components(components){}
-};
-
 struct DSU{
 	int parent[MX];
 	int size[MX];
-	vector<Checkpoint> history;
+	vector<int> history;
 	vector<int> savedCheckpoints;
 	int components;
 	
@@ -55,12 +48,12 @@ struct DSU{
 			if (size[u] > size[v]) {
 				swap(u, v);
 			}
-			history.push_back(Checkpoint(u , v, size[u], size[v], components));
+			history.push_back(u);
 			components--;
 			parent[u] = v;
 			size[v] += size[u];
 		} else {
-			history.push_back(Checkpoint(-1, -1, -1, -1, components));
+			history.push_back(u);
 		}
 	}
 	
@@ -69,14 +62,13 @@ struct DSU{
 		if (history.empty()) {
 			return;
 		}
-		Checkpoint checkpoint = history.back();
+		int u = history.back();
+		int v = parent[u];
 		history.pop_back();
-		components = checkpoint.components;
-		if (checkpoint.u == -1) return;
-		parent[checkpoint.u] = checkpoint.u;
-		parent[checkpoint.v] = checkpoint.v;
-		size[checkpoint.u] = checkpoint.sizeU;
-		size[checkpoint.v] = checkpoint.sizeV;
+		if (u == v) return;
+		components++;
+		size[v] -= size[u];
+		parent[u] = u;
 	}
 	
 	void save() { //O(1)
@@ -101,7 +93,7 @@ struct DSU{
 	}
 } dsu;
 
-struct Query {
+struct Query{
     int id, l, r;
     Query(){}
     Query(int id, int l, int r): id(id), l(l) , r(r){}
@@ -117,22 +109,22 @@ struct Query {
 	}
 };
 
-struct Edge {
+struct Edge{
 	int u, v;
 	Edge(){}
 	Edge(int u, int v) : u(u), v(v){}
 };
 
-struct Mo {
-	int getBlock(int i) {
+struct Mo{
+	int getBlock(int i){
 		return i / SZ_BLOCK;
 	}
 	 
-	int lowerLim(int i) {
+	int lowerLim(int i){
 		return getBlock(i) * SZ_BLOCK;
 	}
 	 
-	int upperLim(int i, int sz) {
+	int upperLim(int i, int sz){
 		return min(lowerLim(i) + SZ_BLOCK - 1 , sz - 1);
 	}
 	

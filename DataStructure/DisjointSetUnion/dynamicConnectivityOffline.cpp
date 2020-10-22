@@ -9,22 +9,14 @@ typedef long long Long;
 /*
 add(u, v) — add an edge u − v into the graph;
 remove(u, v) — add an edge u − v into the graph;
-get() — return number of components
+query() — return number of components
 */
 
-const int MX = 1e5;
-
-struct Checkpoint{
-	Long u , v, sizeU, sizeV, components;
-	Checkpoint(){}
-	Checkpoint(Long u, Long v, Long sizeU, Long sizeV, Long components) :
-		u(u), v(v), sizeU(sizeU), sizeV(sizeV), components(components){}
-};
-
+const int MX = 3e5;
 struct DSU{
 	Long parent[MX];
 	Long size[MX];
-	vector<Checkpoint> history;
+	vector<Long> history;
 	vector<Long> savedCheckpoints;
 	Long components;
 	
@@ -54,12 +46,12 @@ struct DSU{
 			if (size[u] > size[v]) {
 				swap(u, v);
 			}
-			history.push_back(Checkpoint(u , v, size[u], size[v], components));
+			history.push_back(u);
 			components--;
 			parent[u] = v;
 			size[v] += size[u];
 		} else {
-			history.push_back(Checkpoint(-1, -1, -1, -1, components));
+			history.push_back(u);
 		}
 	}
 	
@@ -68,14 +60,13 @@ struct DSU{
 		if (history.empty()) {
 			return;
 		}
-		Checkpoint checkpoint = history.back();
+		Long u = history.back();
+		Long v = parent[u];
 		history.pop_back();
-		components = checkpoint.components;
-		if (checkpoint.u == -1) return;
-		parent[checkpoint.u] = checkpoint.u;
-		parent[checkpoint.v] = checkpoint.v;
-		size[checkpoint.u] = checkpoint.sizeU;
-		size[checkpoint.v] = checkpoint.sizeV;
+		if (u == v) return;
+		components++;
+		size[v] -= size[u];
+		parent[u] = u;
 	}
 	
 	void save() { //O(1)
@@ -96,64 +87,46 @@ struct DSU{
 	}
 } dsu;
 
+enum {RANGE, QUERY, ADD, REMOVE};
 struct Query{
-	Long id;
-	Long type; //0 -> range lifetime , 1 -> get , 2 -> add, 3 -> remove
+	Long type; 
 	Long u , v;
 	Long l, r;
-	
 	Query(){}
-	Query(Long id, Long type, Long u = -1, Long v = -1) {
-		this->id = id;
-		this->type = type;
-		this->u = min(u ,v);
-		this->v = max(u , v);
-	}
-		
-	void setRange(Long l, Long r, bool lifetime = true, int newId = -1) {
-		this->l = l;
-		this->r = r;
-		if (lifetime) {
-			type = 0;
-		}
-		id = newId;
-	}
-	
+	Query(Long type, Long id, Long u = -1, Long v = -1) :
+		type(type), l(id), r(id), u(min(u , v)), v(max(u , v)){}
 	bool operator <(const Query &other) const {
-		return make_pair(make_pair(u , v), id) 
-		< make_pair(make_pair(other.u , other.v), other.id);
+		return make_pair(make_pair(u , v), l) 
+		< make_pair(make_pair(other.u , other.v), other.l);
 	}
 };
 
 namespace DynamicConnectivity{
-	vector<Query> transform(vector<Query> &queries, Long &cntGet) { //O(Q log Q)
+	vector<Query> transform(vector<Query> &queries) { //O(Q log Q)
 		sort(queries.begin(), queries.end());
 		vector<Query> ans;
 		int i = 0;
-		cntGet = 0;
 		while (i < queries.size()) {
-			Query newQuery;
 			if (queries[i].type == 1) {
 				//get
-				newQuery = queries[i];
-				newQuery.setRange(queries[i].id, queries[i].id, false, cntGet);
+				ans.push_back(queries[i]);
 				i++;
-				cntGet++;
 			} else {
 				//range
-				assert(queries[i].type == 2);
-				if (i + 1 < queries.size() && queries[i + 1].u == queries[i].u && queries[i + 1].v == queries[i].v) {
-					assert(queries[i + 1].type == 3);
-					newQuery = queries[i];
-					newQuery.setRange(queries[i].id, queries[i + 1].id, true);
+				assert(queries[i].type == ADD);
+				Query newQuery = queries[i];
+				newQuery.type = RANGE;
+				if (i + 1 < queries.size() 
+				&& queries[i + 1].u == queries[i].u && queries[i + 1].v == queries[i].v) {
+					assert(queries[i + 1].type == REMOVE);
+					newQuery.r = queries[i + 1].l;
 					i += 2;
 				} else {
-					newQuery = queries[i];
-					newQuery.setRange(queries[i].id, queries.size(), true);
+					newQuery.r = queries.size();
 					i++;
 				}
+				ans.push_back(newQuery);
 			}
-			ans.push_back(newQuery);
 		}
 		return ans;
 	}
@@ -168,14 +141,10 @@ namespace DynamicConnectivity{
 		vector<Query> right;
 		int mid = (l + r) / 2;
 		for (Query query : queries) {
-			if (query.type == 1) {
-				if (query.l <= mid) {
-					left.push_back(query);
-				} else {
-					right.push_back(query);
-				}
+			if (query.type == QUERY) {
+				if (query.l <= mid) left.push_back(query);
+				else right.push_back(query);
 			} else {
-				assert(query.type == 0);
 				if (query.l <= l && r <= query.r) {
 					dsu.join(query.u, query.v);
 				} else {
@@ -190,33 +159,26 @@ namespace DynamicConnectivity{
 		}
 		if (l == r) {
 			for (Query query : queries) {
-				if (query.type == 1) {
-					assert(l == query.l);
-					answer[query.id] = dsu.getComponents();
+				if (query.type == QUERY) {
+					answer.push_back(dsu.getComponents());
 				}
 			}
 		} else {
 			process(l , mid, left, answer);
 			process(mid + 1 , r , right, answer);
-			
 		}
 		dsu.load();
 	}
 	
 	vector<Long> getAnswer(Long n, vector<Query> &queries){ //O(Q log Q log n)
 		dsu.build(n);
-		Long cntGet = 0;
-		vector<Query> transformed = transform(queries, cntGet);
-		vector<Long> answer(cntGet);
+		vector<Query> transformed = transform(queries);
+		vector<Long> answer;
 		process(0 , queries.size(), transformed, answer);
 		return answer;
 	}
 };
 
 int main() {
-	ios_base::sync_with_stdio(false);
-	cin.tie(NULL);
-	cout.tie(NULL);
-
 	return 0;
 }
