@@ -19,11 +19,11 @@ const Long SZ_BLOCK = 400; //Aprox sqrt(N) or N / sqrt(Q)
 //Block N / sqrt(Q) -> overall O(N sqrt(Q) |f|) (best option)
 
 struct Query{
-    Long id, l, r;
-    Query(){}
-    Query(Long id, Long l, Long r): id(id), l(l) , r(r){}
-    
-    bool operator <(const Query &other) const {
+	Long id, l, r;
+	Query(){}
+	Query(Long id, Long l, Long r): id(id), l(l) , r(r){}
+	
+	bool operator <(const Query &other) const {
 		//queries are sorted in increasing order of the block of l
 		Long curBlock = l / SZ_BLOCK ;
 		Long otherBlock = other.l / SZ_BLOCK;
@@ -50,13 +50,13 @@ struct Mo{
 	}
 	
 	vector<Long> process(vector<Long> &A, vector<Query> &queries) { //O(N sqrt(Q) |f|)
-	    sort(queries.begin() , queries.end());
-	    Long curL = 0, curR = 0;
-	    Long acum = 0;
+		sort(queries.begin() , queries.end());
+		Long curL = 0, curR = 0;
+		Long acum = 0;
 		vector<Long> answer(queries.size());
-	    for (int i = 0; i < queries.size(); i++) {
-	        Long l = queries[i].l;
-	        Long r = queries[i].r;
+		for (int i = 0; i < queries.size(); i++) {
+			Long l = queries[i].l;
+			Long r = queries[i].r;
 			while (curR <= r) {//f(l , r + 1)
 				add(A[curR], acum);
 				curR++;
@@ -74,8 +74,8 @@ struct Mo{
 				remove(A[curR] , acum);
 			}
 			answer[queries[i].id] = acum;
-	    }
-	    return answer;
+		}
+		return answer;
 	}
 }mo;
 
@@ -96,9 +96,9 @@ int main(){
 		cin >> l >> r;
 		queries.push_back(Query(q, l , r));
 	}
-    vector<Long> ans = mo.process(A, queries);
-    for (int q = 0; q < Q; q++){
-    	cout << ans[q] << endl;
+	vector<Long> ans = mo.process(A, queries);
+	for (int q = 0; q < Q; q++){
+		cout << ans[q] << endl;
 	}
-    return 0;
+	return 0;
 }

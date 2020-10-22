@@ -94,11 +94,11 @@ struct DSU{
 } dsu;
 
 struct Query{
-    int id, l, r;
-    Query(){}
-    Query(int id, int l, int r): id(id), l(l) , r(r){}
-    
-    bool operator <(const Query &other) const {
+	int id, l, r;
+	Query(){}
+	Query(int id, int l, int r): id(id), l(l) , r(r){}
+	
+	bool operator <(const Query &other) const {
 		//queries are sorted in increasing order of the block of l
 		int curBlock = l / SZ_BLOCK ;
 		int otherBlock = other.l / SZ_BLOCK;
@@ -119,18 +119,18 @@ struct Mo{
 	int getBlock(int i){
 		return i / SZ_BLOCK;
 	}
-	 
+	
 	int lowerLim(int i){
 		return getBlock(i) * SZ_BLOCK;
 	}
-	 
+	
 	int upperLim(int i, int sz){
 		return min(lowerLim(i) + SZ_BLOCK - 1 , sz - 1);
 	}
 	
 	vector<int> process(int n, vector<Edge> &edges, vector<Query> &queries) { //O(M sqrt(Q) log N)
-	    sort(queries.begin() , queries.end());
-	    dsu.build(n);
+		sort(queries.begin() , queries.end());
+		dsu.build(n);
 		vector<int> answer(queries.size());
 		int q = 0;
 		while (q < queries.size()) {
@@ -160,7 +160,7 @@ struct Mo{
 				q++;
 			}
 		}
-	    return answer;
+		return answer;
 	}
 }mo;
 
