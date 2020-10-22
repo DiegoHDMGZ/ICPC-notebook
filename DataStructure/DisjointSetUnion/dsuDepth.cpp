@@ -15,7 +15,7 @@ struct DSU{
 		depth[u] = 0;
 	}
 	
-	void build(int n) {
+	void build(int n) { //O(n)
 		for (int i = 0; i < n; i++) {
 			make_set(i);
 		}

@@ -6,25 +6,25 @@ using namespace std;
 
 typedef long long Long;
 
-const Long MX = 3e5;
+const Long MX = 1e5;
 struct DSU{
 	Long parent[MX];
 	Long size[MX];
 	Long parity[MX];
 	
-	void make_set(Long u) {
+	void make_set(Long u) { //O(1)
 		parent[u] = u;
 		size[u] = 1;
 		parity[u] = 0;
 	}
 	
-	void build(int n) {
+	void build(int n) { //O(n)
 		for (int i = 0; i < n; i++) {
 			make_set(i);
 		}
 	}
 	
-	pair<Long,Long> find(Long u) {
+	pair<Long,Long> find(Long u) { //O(1) amortized
 		if (parent[u] == u) {
 			return {u, 0};
 		} 
@@ -34,11 +34,11 @@ struct DSU{
 		return {parent[u] , parity[u]};
 	}
 	
-	Long getParity(Long u) {
+	Long getParity(Long u) { //O(1) amortized
 		return find(u).second;
 	}
 	
-	bool join(Long u, Long v) {
+	bool join(Long u, Long v) { //O(1) amortized
 		//true if is still bipartite after adding the edge
 		auto pu = find(u);
 		auto pv = find(v);

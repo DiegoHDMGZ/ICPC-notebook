@@ -13,7 +13,7 @@ struct DSU{
 		size[u] = 1;
 	}
 	
-	void build(int n) {
+	void build(int n) { //O(n)
 		for (int i = 0; i < n; i++) {
 			make_set(i);
 		}
