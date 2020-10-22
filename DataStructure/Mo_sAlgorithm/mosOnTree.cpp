@@ -14,7 +14,7 @@ typedef long long Long;
 //only counts the elements that appears once (ignore the others)
 
 const Long MX = 1e5;
-const Long BLOCK = 400;
+const Long SZ_BLOCK = 400; //Aprox sqrt(N) or N / sqrt(Q)
 
 const Long loga = 32 - __builtin_clz(MX);
 
@@ -114,13 +114,13 @@ struct Query{
 	
 	bool operator <(const Query &other) const {
 		//queries are sorted in increasing order of the block of l
-		Long curBlock = l / BLOCK ;
-		Long otherBlock = other.l / BLOCK;
+		Long curBlock = l / SZ_BLOCK ;
+		Long otherBlock = other.l / SZ_BLOCK;
 		if (curBlock != otherBlock) return curBlock < otherBlock;
 		
 		//If queries are in the same blocks
-		//if the block is odd, sort in ascending order of r
-		//otherwise, in descending order of r
+		//if the block is odd, sort in increasing order of r
+		//otherwise, in decreasing order of r
 		if (curBlock & 1 == 1) {
 			return r < other.r;
 		} else{
@@ -150,7 +150,7 @@ struct Mo{
 		}
 	}
 
-	vector<Long> process(vector<Long> &A, vector<Query> &queries) { //O((N + Q) sqrt(N) |F|)
+	vector<Long> process(vector<Long> &A, vector<Query> &queries) { //O(N sqrt(Q) |F|)
 		int n = A.size();
 		fill(activated, activated + n, false);
 		sort(queries.begin() , queries.end());

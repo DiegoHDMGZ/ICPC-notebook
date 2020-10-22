@@ -9,15 +9,15 @@ typedef long long Long;
 //And check : https://cp-algorithms.com/data_structures/sqrt_decomposition.html
 
 const Long MX = 1e5;
-const Long BLOCK = 400; //Aprox sqrt(N) or N / sqrt(Q)
+const Long SZ_BLOCK = 400; //Aprox sqrt(N) or N / sqrt(Q)
 //Conditions
 //1) No update
 //2) Offline
 //3) Knowing f([l,r]) , we can compute in O(|f|):
 //  f([l + 1 , r]) ,f([l - 1 , r]) , f([l, r + 1]) , f([l , r - 1]) 
-//=> Overall complexity O((N + Q) sqrt(N) |f|)
+//Block sqrt(N) -> overall O((N + Q) sqrt(N) |f|)
+//Block N / sqrt(Q) -> overall O(N sqrt(Q) |f|) (best option)
 
-//Using a BLOCK of size N / sqrt(Q) yields a overall complexity O(N sqrt(Q) |f|)
 struct Query{
     Long id, l, r;
     Query(){}
@@ -25,13 +25,13 @@ struct Query{
     
     bool operator <(const Query &other) const {
 		//queries are sorted in increasing order of the block of l
-		Long curBlock = l / BLOCK ;
-		Long otherBlock = other.l / BLOCK;
+		Long curBlock = l / SZ_BLOCK ;
+		Long otherBlock = other.l / SZ_BLOCK;
 		if (curBlock != otherBlock) return curBlock < otherBlock;
 		
 		//If queries are in the same blocks
-		//if the block is odd, sort in ascending order of r
-		//otherwise, in descending order of r
+		//if the block is odd, sort in increasing order of r
+		//otherwise, in decreasing order of r
 		if (curBlock & 1 == 1) {
 			return r < other.r;
 		} else{
@@ -49,7 +49,7 @@ struct Mo{
 		ans -= val;
 	}
 	
-	vector<Long> process(vector<Long> &A, vector<Query> &queries) { //O((N + Q) sqrt(N) |f|)
+	vector<Long> process(vector<Long> &A, vector<Query> &queries) { //O(N sqrt(Q) |f|)
 	    sort(queries.begin() , queries.end());
 	    Long curL = 0, curR = 0;
 	    Long acum = 0;
