@@ -57,7 +57,7 @@ struct Fraction {
 	}
 	
 	bool operator == (const Fraction &F) const {
-		return num == F.num && den == F.den;
+		return num * F.den == F.num * den;
 	}
 	
 	bool operator != (const Fraction &F) const {
