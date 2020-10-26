@@ -11,8 +11,7 @@ const Long INF = 1e18;
 
 struct Fraction {	
 	Long num, den;
-	Fraction(){
-	}
+	Fraction(){}
 	Fraction(Long n, Long d) {
 		if(d == 0) {
 			if(n > 0){
