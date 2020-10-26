@@ -23,7 +23,7 @@ struct Graph {
 	Long low[MX];
 	//if S[u] = {Set of this node and all of its sucessors} 
 	//low[u] = min entry time of S[u] U {all parents of S[u]}
-	Long timer = 0;
+	Long timer;
 	vector<Edge> bridge;
 	vector<Long> articulation;
 	bool isArticulation[MX];
@@ -40,7 +40,6 @@ struct Graph {
 		}
 		bridge.clear();
 		articulation.clear();
-		timer = 0;
 	}
 	
 	void addEdge(Long u, Long v) {
@@ -79,6 +78,7 @@ struct Graph {
 	}
 	
 	void calculate(Long n) { //O(N + M)
+		timer = 0;
 		for(Long i = 0; i < n; i++) {
 			if(!vis[i]) {
 				dfs(i);

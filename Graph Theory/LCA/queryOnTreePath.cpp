@@ -74,7 +74,7 @@ struct Graph{
 	
 	pair<Long,Long> lift(int u, int v) { //O(log n)
 		//lift vertex u to the lca(u , v)
-		pair<Long, Long> ans = {INF, -INF};;
+		pair<Long, Long> ans = {INF, -INF};
 		int bits = 31 - __builtin_clz(depth[u]);
 		if (!isAncestor(u , v)) {
 			for (int i = bits; i >= 0; i--) {
