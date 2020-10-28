@@ -32,11 +32,9 @@ struct Graph{
 		d[s] = 0;
 		deque<Long> Q;
 		Q.push_back(s);
-		
 		while (!Q.empty()) {
 			Long u = Q.front();
 			Q.pop_front();
-			
 			for (Long v : adj[u]) {
 				if (d[v] == INF) {
 					d[v] = d[u] + 1;
