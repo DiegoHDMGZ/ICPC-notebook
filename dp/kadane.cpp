@@ -10,10 +10,9 @@ const Long INF = 1e18;
 Long kadane(vector<Long> &v){
 	Long maxSoFar = -INF;
 	Long maxEndingHere = 0;
-	
-	REP(i , v.size() ) {
-		maxEndingHere = max(v[i],maxEndingHere+v[i]);
-		maxSoFar = max(maxSoFar,maxEndingHere);
+	for (Long x : v ) {
+		maxEndingHere = max(x, maxEndingHere+ x);
+		maxSoFar = max(maxSoFar, maxEndingHere);
 	}
 	return maxSoFar;
 }
@@ -21,6 +20,3 @@ Long kadane(vector<Long> &v){
 int main() {
 	return 0;
 }
-
-
-

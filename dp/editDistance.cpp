@@ -12,13 +12,11 @@ Long dp[MX][MX];
 bool used[MX][MX];
 string a , b;
 
-Long editDistance(Long n = (Long)a.size()  , Long m = (Long)b.size() ){
+Long editDistance(Long n = a.size(), Long m = b.size()) {
 	if(n == 0) return m;
 	if(m == 0) return n;
-	
 	if(used[n][m]) return dp[n][m];
 	used[n][m] = true;
-	
 	if(a[n - 1] == b[m - 1]){
 		return dp[n][m] = editDistance(n - 1 , m - 1);
 	} else {
@@ -26,7 +24,7 @@ Long editDistance(Long n = (Long)a.size()  , Long m = (Long)b.size() ){
 	}
 }
 
-void clear(){
+void clear() {
 	Long n = a.size();
 	Long m = b.size();
 	REP(i , n + 1){
@@ -35,17 +33,7 @@ void clear(){
 		}
 	}
 }
+
 int main() {
-	ios_base::sync_with_stdio(false);
-	cin.tie(NULL);
-	cout.tie(NULL);
-	
-	a = "aabba";
-	while(cin  >> b){
-		cout << editDistance() << endl;
-		clear();
-	}
-	
-	
 	return 0;
 }

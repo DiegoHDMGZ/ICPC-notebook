@@ -10,7 +10,7 @@ typedef long long Long;
 
 const Long INF = 1e18;
 
-deque<Long> LIS(vector<Long> &A){
+deque<Long> LIS(vector<Long> &A) {
 	Long n = A.size();
 	vector<Long> L(n);
 	vector<Long> B(n + 1, INF);
@@ -37,9 +37,5 @@ deque<Long> LIS(vector<Long> &A){
 }
 
 int main() {
-	ios_base::sync_with_stdio(false);
-	cin.tie(NULL);
-	cout.tie(NULL);
-
 	return 0;
 }

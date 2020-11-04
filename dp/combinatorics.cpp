@@ -25,12 +25,6 @@ Long comb(Long n , Long m) {
 }
 
 int main() {
-	ios_base::sync_with_stdio(false);
-	cin.tie(NULL);
-	cout.tie(NULL);
-	
-	cout << comb(7 , 3) << endl;
-	
 	return 0;
 }
 

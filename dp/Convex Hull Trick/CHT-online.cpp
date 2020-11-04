@@ -19,7 +19,6 @@ const Long INF = 1e18;
 struct Line{
 	mutable Long m , b , rInter;
 	Line(){}
-	Line(Long m , Long b, Long rInter) : m(m), b(b) , rInter(rInter){}
 	Line(Long m , Long b) : m(m), b(b) , rInter(0){}
 	
 	bool operator < (const Line &L1) const {
