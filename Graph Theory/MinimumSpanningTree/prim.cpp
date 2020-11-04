@@ -9,16 +9,8 @@ typedef long long Long;
 const Long MX = 1e5;
 const Long INF = 1e18;
 
-struct Endpoint{
-	Long node , w;
-	Endpoint(Long node, Long w): node(node), w(w) {}
-	bool operator >(Endpoint const &other) const{
-		return w > other.w;
-	}
-};
-
 struct Graph { 
-	vector<Endpoint> adj[MX];
+	vector<pair<Long, Long>> adj[MX];
 	Long minWeight[MX];
 	Long parent[MX]; 
 
@@ -29,8 +21,8 @@ struct Graph {
 	}
 	
 	void addEdge(Long u, Long v, Long w) {
-		adj[u].push_back(Endpoint(v , w));
-		adj[v].push_back(Endpoint(u , w));
+		adj[u].push_back({v, w});
+		adj[v].push_back({u, w});
 	}
 
 	Long getMST(Long n, Long root = 0) { //O(mlogn)
@@ -40,24 +32,24 @@ struct Graph {
 		fill(minWeight, minWeight + n, INF);
 		minWeight[root] = 0;
 		parent[root] = -1;
-		priority_queue<Endpoint, vector<Endpoint>, greater<Endpoint>> q;
-		q.push(Endpoint(root, 0));
+		priority_queue<pair<Long, Long>, vector<pair<Long, Long>>, greater<pair<Long, Long>>> q;
+		q.push({0, root});
 		while (!q.empty()) {
-			Endpoint cur = q.top();
+			Long u = q.top().second;
 			q.pop();
-			Long u = cur.node;
 			if (onTree[u]) {
 				continue;
 			}
-			totalWeight += cur.w;
+			totalWeight += minWeight[u];
 			onTree[u] = true;
 			totalNodes++;
-			for (Endpoint e : adj[u]) {
-				Long v = e.node;
-				if (e.w < minWeight[v] && !onTree[v]) {
-					minWeight[v] = e.w;
+			for (auto e : adj[u]) {
+				Long v = e.first;
+				Long w = e.second;
+				if (w < minWeight[v] && !onTree[v]) {
+					minWeight[v] = w;
 					parent[v] = u;
-					q.push(e);
+					q.push({w, v});
 				}
 			}
 		}

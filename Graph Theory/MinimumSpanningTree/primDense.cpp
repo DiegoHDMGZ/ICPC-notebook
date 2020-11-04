@@ -6,13 +6,8 @@ typedef long long Long;
 const Long MX = 1e5;
 const Long INF = 1e18;
 
-struct Endpoint{
-	Long node , w;
-	Endpoint(Long node, Long w): node(node), w(w) {}
-};
-
 struct Graph { 
-	vector<Endpoint> adj[MX];
+	vector<pair<Long,Long>> adj[MX];
 	Long minWeight[MX];
 	Long parent[MX]; 
 
@@ -23,8 +18,8 @@ struct Graph {
 	}
 
 	void addEdge(Long u, Long v, Long w) {
-		adj[u].push_back(Endpoint(v , w));
-		adj[v].push_back(Endpoint(u , w));
+		adj[u].push_back({v , w});
+		adj[v].push_back({u , w});
 	}
 
 	Long getMST(Long n, Long root = 0) { //O(n^2)
@@ -35,24 +30,26 @@ struct Graph {
 		parent[root] = -1;
 		
 		for (Long nodes = 1; nodes <= n; nodes++) {
-			Long choice = -1;
-			for (Long u = 0; u < n; u++) {
-				if (!onTree[u]) {
-					if (choice == -1 || minWeight[u] < minWeight[choice]) {
-						choice = u;
+			Long u = -1;
+			for (Long i = 0; i < n; i++) {
+				if (!onTree[i]) {
+					if (u == -1 || minWeight[i] < minWeight[u]) {
+						u = i;
 					}
 				}
 			}
-			if (minWeight[choice] == INF) {
+			if (minWeight[u] == INF) {
 				//graph is not connected
 				return -1;
 			}
-			totalWeight += minWeight[choice];
-			onTree[choice] = true;
-			for (Endpoint e : adj[choice]) {
-				if (!onTree[e.node] && e.w < minWeight[e.node]) {
-					minWeight[e.node] = e.w;
-					parent[e.node] = e.w;
+			totalWeight += minWeight[u];
+			onTree[u] = true;
+			for (auto e : adj[u]) {
+				Long v = e.first;
+				Long w = e.second;
+				if (!onTree[v] && w < minWeight[v]) {
+					minWeight[v] = w;
+					parent[v] = w;
 				}
 			}
 		}
