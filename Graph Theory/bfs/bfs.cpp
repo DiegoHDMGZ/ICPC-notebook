@@ -25,7 +25,7 @@ struct Graph{
 		adj[v].push_back(u);
 	}
 	
-	void bfs(Long s, Long n) { //O(n + m)
+	void bfs(Long s, Long n) { //O(V + E)
 		for (Long i = 0; i < n; i++) {
 			d[i] = INF;
 		}

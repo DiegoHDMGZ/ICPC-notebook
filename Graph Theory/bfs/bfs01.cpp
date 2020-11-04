@@ -31,7 +31,7 @@ struct Graph{
 		adj[v].pb(EndPoint(u , w));
 	}
 	
-	void bfs01(Long s, Long n){ //O(n+m)
+	void bfs01(Long s, Long n){ //O(V + E)
 		for(Long i = 0; i < n; i++){
 			d[i] = INF;
 			used[i] = false;
