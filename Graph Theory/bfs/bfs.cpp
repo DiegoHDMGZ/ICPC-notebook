@@ -30,15 +30,15 @@ struct Graph{
 			d[i] = INF;
 		}
 		d[s] = 0;
-		deque<Long> Q;
-		Q.push_back(s);
-		while (!Q.empty()) {
-			Long u = Q.front();
-			Q.pop_front();
+		deque<Long> q;
+		q.push_back(s);
+		while (!q.empty()) {
+			Long u = q.front();
+			q.pop_front();
 			for (Long v : adj[u]) {
 				if (d[v] == INF) {
 					d[v] = d[u] + 1;
-					Q.push_back(v);
+					q.push_back(v);
 				}
 			}
 		}
