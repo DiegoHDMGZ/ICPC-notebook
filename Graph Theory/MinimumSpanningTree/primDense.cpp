@@ -22,7 +22,7 @@ struct Graph {
 		adj[v].push_back({u , w});
 	}
 
-	Long getMST(Long n, Long root = 0) { //O(n^2)
+	Long getMST(Long n, Long root = 0) { //O(V^2)
 		Long totalWeight = 0;
 		vector<bool> onTree(n, false);
 		fill(minWeight, minWeight + n, INF);

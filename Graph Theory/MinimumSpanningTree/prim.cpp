@@ -25,7 +25,7 @@ struct Graph {
 		adj[v].push_back({u, w});
 	}
 
-	Long getMST(Long n, Long root = 0) { //O(mlogn)
+	Long getMST(Long n, Long root = 0) { //O(E log V)
 		Long totalWeight = 0;
 		Long totalNodes = 0;
 		vector<bool> onTree(n, false);

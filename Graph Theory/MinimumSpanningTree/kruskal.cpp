@@ -67,7 +67,7 @@ struct Graph{
 		edges.push_back(Edge(u , v , w));
 	}
 	
-	Long getMST(Long n) { //O(mlogn)
+	Long getMST(Long n) { //O(E log V)
 		Long totalWeight = 0;
 		dsu.build(n);
 		sort(edges.begin(),edges.end());
