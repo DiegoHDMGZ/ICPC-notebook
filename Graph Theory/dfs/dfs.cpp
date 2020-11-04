@@ -1,7 +1,5 @@
 #include <bits/stdc++.h>
 #define debug(x) cout << #x << " = " << x << endl
-#define REP(i,n) for(Long i = 0; i < (Long)n; i++)
-#define pb push_back
 
 using namespace std;
 
@@ -15,8 +13,8 @@ struct Graph {
 	Long tOut[MX];
 	Long timer = 0;
 	
-	void clear(Long N = MX) {
-		REP( i , N) {
+	void clear(Long n) {
+		for (Long i = 0; i < n; i++) {
 			adj[i].clear();
 			vis[i] = false;
 			tIn[i] = tOut[i] = 0;
@@ -25,25 +23,23 @@ struct Graph {
 	}
 	
 	void addEdge(Long u, Long v) {
-		adj[u].pb(v);
-		adj[v].pb(u);
+		adj[u].push_back(v);
+		adj[v].push_back(u);
 	}
 	
-	void dfs(Long u){
+	void dfs(Long u) { //O(V + E)
 		vis[u] = true;
 		tIn[u] = ++timer;
-		for(Long v : adj[u]){
+		for (Long v : adj[u]) {
 			if(!vis[v]){
 				dfs(v); //tree edge
-			}else{
-				if(tOut[v] == 0){
-					//back edge
-				} else if(tIn[u] < tIn[v]){
-					//forward edge
-				} else {
-					//cross edge
-				}
-			} 
+			} else if(tOut[v] == 0){
+				//back edge
+			} else if(tIn[u] < tIn[v]){
+				//forward edge
+			} else {
+				//cross edge
+			}
 		}
 		tOut[u] = ++timer;
 	}
@@ -52,5 +48,3 @@ struct Graph {
 int main() {
 	return 0;
 }
-
-
