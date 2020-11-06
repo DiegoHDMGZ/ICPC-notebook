@@ -17,7 +17,7 @@ void sieve(){ //O(MX)
 	isPrime[1] = false;
 	for(Long i = 2; i  < MX; i++){
 		if(isPrime[i]) {
-			primes.pb(i);
+			primes.push_back(i);
 			fact[i] = i;
 		}
 		for(Long j = 0 ; j < primes.size() && i * primes[j] < MX; j++){
@@ -64,7 +64,7 @@ vector<Long> getDivisors(Long x) {
 			num *= f;
 			x /= f;
 			for(Long i = 0; i < sz; i++) {
-				ans.pb(num * ans[i]);
+				ans.push_back(num * ans[i]);
 			}
 		}
 	}
