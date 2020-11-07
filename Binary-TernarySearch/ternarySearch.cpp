@@ -15,16 +15,15 @@ Double f(Double x) {
 
 Double ternarySearch(Double low, Double high) { //O(log n)
 	while (high - low > EPS) { //for(Long i = 0; i < 200 ; i++)
-		Double m1 = low + (high-low)/3.0;
-		Double m2 = high - (high-low)/3.0;
+		Double m1 = low + (high - low) / 3.0;
+		Double m2 = high - (high - low) / 3.0;
 		if (f(m1) < f(m2)) { //if minimum is needed, change to >
 			low = m1;
-		}
-		else{
+		} else{
 			high = m2;
 		}
 	}
-	return f((low+high) / 2.0);
+	return f((low + high) / 2.0);
 }
 
 int main(){
