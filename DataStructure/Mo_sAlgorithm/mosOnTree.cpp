@@ -9,7 +9,7 @@ typedef long long Long;
 //If we have a query(u , v)
 //Let's assume tIn[u] <= tIn[v]
 //Case 1 : lca(u, v) == u , then use the range [tIn[u] , tIn[v]]
-//Case 2 : use the range [tOut[u] , tIn[v]] U {tIn[lca(u , v)]}
+//Case 2 : use the range [tOut[u] , tIn[v]] U {tIn[lca(u , v)}
 //Take care of repeated elements in the range !
 //only counts the elements that appears once (ignore the others)
 
