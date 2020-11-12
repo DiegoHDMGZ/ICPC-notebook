@@ -41,18 +41,10 @@ Long divide(Long a, Long b) {
 }
 
 const Long MX = 5002;
-Long fact[MX];
-Long inv[MX];
 
 Long stirling[MX][MX];
 
 void precalc() {
-	fact[0] = inv[0] = 1;
-	for (Long i = 1; i < MX; i++) {
-		fact[i] = mult(i, fact[i - 1]);
-		inv[i] = modInverse(fact[i]);
-	}
-	
 	stirling[0][0] = 1;
 	for (Long n = 1; n < MX; n++) {
 		stirling[n][0] = 0;
@@ -74,7 +66,11 @@ polynomial transformFalling(Long c, Long n) { //O(n)
 
 Long falling(Long x, Long n) {
 	if (n > x) return 0;
-	return mult(fact[x], inv[x - n]);
+	Long ans = 1;
+	for (Long i = 0; i < n; i++) {
+		ans = mult(ans, x - i);
+	}
+	return ans;
 }
 
 polynomial operator +(const polynomial &A, const polynomial &B) {
