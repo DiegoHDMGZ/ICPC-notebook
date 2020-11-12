@@ -99,13 +99,10 @@ Long summation(polynomial &p, Long r) { //O(n^2)
 		fallings = fallings + transformFalling(p[i], i);
 	}
 	Long ans = 0;
-	cout << "fallings" << endl;
 	for (Long i = 0; i < fallings.size(); i++) {
-		cout << fallings[i] << " ";
 		Long coef = divide(fallings[i], i + 1);
 		ans = add(ans, mult(coef, falling(r + 1, i + 1))) ;
 	}
-	cout << endl;
 	return ans;
 }
 
