@@ -5,103 +5,68 @@
 using namespace std;
 
 typedef long long Long;
+typedef pair<Long, Long> Path;
 const Long MX = 1e5;
 const Long INF = 1e18;
 
-struct Endpoint{
-	Long node, weight;
-	Endpoint(){}
-	
-	Endpoint(Long node, Long weight) : node(node) , weight(weight) {}
-
-	bool operator >(const Endpoint &P) const{
-		if(weight == P.weight){
-			return node > P.node;
-		}
-		return weight > P.weight;
-	}
-};
-
 struct Graph{
-	vector<Endpoint> adj[MX];
-	bool vis[MX];
-	Long d[MX];
+	vector<pair<Long,Long>> adj[MX];
 	Long parent[MX];
+	Long d[MX];
 	
-	void clear(Long N = MX) {
-		REP( i , N) {
+	void clear(Long n) {
+		for (int i = 0; i < n; i++) {
 			adj[i].clear();
 		}
 	}
 	
 	void addEdge(Long u, Long v, Long w) {
-		adj[u].pb(Endpoint(v , w) );
-		adj[v].pb(Endpoint(u , w));
+		adj[u].push_back({v , w});
+		adj[v].push_back({u , w}); 
 	}
 	
-	void dijkstra(Long root, Long n){ //O(nlogm + mlogn)
+	void dijkstra(Long s, Long n){ //O(E log V)
 		for(Long i = 0; i < n; i++){
-			vis[i] = false;
 			parent[i] = -1;
 			d[i] = INF;
 		}
-		priority_queue<Endpoint, vector<Endpoint>, greater<Endpoint>> q;
-		d[root] = 0;
-	
-		q.push(Endpoint(root , d[root]));
-		
+		priority_queue<Path, vector<Path> , greater<Path>> q;
+		d[s] = 0;
+		q.push({d[s], s});
 		while(!q.empty()){
-			Endpoint p = q.top();
+			Path p = q.top();
 			q.pop();
-			int u = p.node;
-			if(vis[u]){
+			Long u = p.second;
+			Long weight = p.first;
+			if (weight != d[u]) {
 				continue;
 			}
-			if(p.weight != d[u]){
-				continue;
-			}
-	
-			vis[u] = true;
-			for( Endpoint x : adj[u]){
-				Long v = x.node;
-				if(vis[v]){
-					continue;
-				}
-				
-				if(d[u] + x.weight < d[v]){
-					d[v] = d[u] + x.weight;
-					q.push(Endpoint(v , d[v]));
+			for(auto e : adj[u]){
+				Long v = e.first;
+				Long w = e.second;
+				if(d[u] + w < d[v]){
+					d[v] = d[u] + w;
 					parent[v] = u;
+					q.push({d[v], v});
 				}
 			}
 		}
 	}
 	
-	deque<Long> retrievePath(Long v){
+	vector<Long> retrievePath(Long v){
 		if(parent[v] == -1){
 			return {};
 		}
-		deque<Long> path;
+		vector<Long> path;
 		while(v != -1){
-			path.push_front(v);
+			path.push_back(v);
 			v = parent[v];
 		}
+		reverse(path.begin(), path.end());
 		return path;
 	}
 } G;
 
 int main() {
-	Long n , m;
-	cin >> n >> m;
-	G.clear(n);
-	REP( i , m){
-		Long u , v , w;
-		cin >> u >> v >> w;
-		G.addEdge(u , v , w);
-	}
-	G.dijkstra(0, n);
-	REP(i , n){
-		cout << G.d[i] << endl;
-	}
 	return 0;
 }
