@@ -64,15 +64,6 @@ polynomial transformFalling(Long c, Long n) { //O(n)
 	return p;
 }
 
-Long falling(Long x, Long n) {
-	if (n > x) return 0;
-	Long ans = 1;
-	for (Long i = 0; i < n; i++) {
-		ans = mult(ans, x - i);
-	}
-	return ans;
-}
-
 polynomial operator +(const polynomial &A, const polynomial &B) {
 	polynomial ans(max(A.size(), B.size()));
 	for (Long i = 0; i < max(A.size(), B.size()); i++) {
@@ -95,9 +86,13 @@ Long summation(polynomial &p, Long r) { //O(n^2)
 		fallings = fallings + transformFalling(p[i], i);
 	}
 	Long ans = 0;
+	Long fact = 1;
+	Long x = r + 1;
 	for (Long i = 0; i < fallings.size(); i++) {
+		fact = fact = mult(fact , x);
+		x--;
 		Long coef = divide(fallings[i], i + 1);
-		ans = add(ans, mult(coef, falling(r + 1, i + 1))) ;
+		ans = add(ans, mult(coef, fact)) ;
 	}
 	return ans;
 }
