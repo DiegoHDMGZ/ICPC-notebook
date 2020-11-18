@@ -8,46 +8,30 @@ typedef long long Long;
 const Long MX = 1e5;
 const Long INF = 1e18;
 
-struct Endpoint{
-	Long node, weight;
-	Endpoint(){}
-	
-	Endpoint(Long node, Long weight) : node(node) , weight(weight) {}
-
-	bool operator >(const Endpoint &P) const{
-		if(weight == P.weight){
-			return node > P.node;
-		}
-		return weight > P.weight;
-	}
-};
-
 struct Graph{
-	vector<Endpoint> adj[MX];
+	vector<pair<Long, Long>> adj[MX];
 	bool vis[MX];
 	Long d[MX];
 	Long parent[MX];
 	
-	void clear(Long N = MX) {
-		REP( i , N) {
+	void clear(Long n) {
+		for (int i = 0; i < n; i++) {
 			adj[i].clear();
 		}
 	}
 	
 	void addEdge(Long u, Long v, Long w) {
-		adj[u].pb(Endpoint(v , w) );
-		adj[v].pb(Endpoint(u , w));
+		adj[u].push_back({v , w});
+		adj[v].push_back({u , w});
 	}
 	
-	void dijkstra(Long root, Long n){ //O(n^2)
+	void dijkstra(Long s, Long n){ //O(V^2)
 		for(Long i = 0; i < n; i++){
 			vis[i] = false;
 			parent[i] = -1;
 			d[i] = INF;
 		}
-		
-		d[root] = 0;
-		
+		d[s] = 0;
 		for(Long i = 0; i < n; i++){
 			Long u = -1;
 			for(Long j = 0; j < n; j++){
@@ -59,13 +43,11 @@ struct Graph{
 				break;
 			}
 			vis[u] = true;
-			for(Endpoint e : adj[u]){
-				Long v = e.node;
-				if(vis[v]){
-					continue;
-				}
-				if(d[u] + e.weight < d[v]){
-					d[v] = d[u] + e.weight;
+			for(auto e : adj[u]){
+				Long v = e.first;
+				Long w = e.second;
+				if(d[u] + w < d[v]){
+					d[v] = d[u] + w;
 					parent[v] = u;
 				}
 			}
