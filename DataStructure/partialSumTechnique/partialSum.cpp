@@ -23,7 +23,8 @@ struct PartialSum{
 		dif[r + 1] -= delta;
 	}
 
-	void finalUpdate(Long n) { //O(n)
+	void update(Long n) { //O(n)
+		//last update before answering queries
 		A[0] = dif[0];
 		for (Long i = 1; i < n; i++) {
 			A[i] = A[i - 1] + dif[i];
