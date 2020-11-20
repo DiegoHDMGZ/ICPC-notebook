@@ -9,7 +9,6 @@ typedef long long Long;
 const Long MX = 1e5;
 
 struct PartialSum{
-	Long A[MX];
 	Long dif[MX + 1];
 	
 	void build(vector<Long> &v) {
@@ -25,16 +24,14 @@ struct PartialSum{
 
 	void update(Long n) { //O(n)
 		//last update before answering queries
-		A[0] = dif[0];
 		for (Long i = 1; i < n; i++) {
-			A[i] = A[i - 1] + dif[i];
+			dif[i] += dif[i - 1];
 		}
 	}
 	
 	Long query(Long pos) { //O(1)
-		return A[pos];
+		return dif[pos];
 	}
-	
 }ps;
 
 int main() {
