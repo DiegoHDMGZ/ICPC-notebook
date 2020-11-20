@@ -56,6 +56,9 @@ struct Graph{
 	}
 	
 	vector<Long> getPath(Long v){
+		if (d[v] == INF) {
+			return {};
+		}
 		vector<Long> path;
 		while(v != -1){
 			path.push_back(v);

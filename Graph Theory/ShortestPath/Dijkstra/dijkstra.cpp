@@ -5,6 +5,7 @@
 using namespace std;
 
 typedef long long Long;
+
 typedef pair<Long, Long> Path;
 const Long MX = 1e5;
 const Long INF = 1e18;
@@ -54,6 +55,9 @@ struct Graph{
 	}
 	
 	vector<Long> getPath(Long v){
+		if (d[v] == INF) {
+			return {};
+		}
 		vector<Long> path;
 		while(v != -1){
 			path.push_back(v);
