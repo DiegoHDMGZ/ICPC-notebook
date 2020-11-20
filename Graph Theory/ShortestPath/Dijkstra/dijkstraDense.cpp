@@ -54,41 +54,17 @@ struct Graph{
 		}
 	}
 	
-	deque<Long> retrievePath(Long v){
-		if(parent[v] == -1){
-			return {};
-		}
-		deque<Long> path;
+	vector<Long> getPath(Long v){
+		vector<Long> path;
 		while(v != -1){
-			path.push_front(v);
+			path.push_back(v);
 			v = parent[v];
 		}
+		reverse(path.begin(), path.end());
 		return path;
 	}
 } G;
 
 int main() {
-	ios_base::sync_with_stdio(false);
-	cin.tie(NULL);
-	cout.tie(NULL);
-	Long n , m;
-	cin >> n >> m;
-	G.clear(n);
-	REP( i , m){
-		Long u , v , w;
-		cin >> u >> v >> w;
-		G.addEdge(u - 1 , v - 1 , w);
-	}
-	G.dijkstra(0, n);
-
-	deque<Long> path = G.retrievePath(n - 1);
-	if(path.empty()){
-		cout << -1 << endl;
-	} else {
-		for(Long u : path){
-			cout << u + 1 << " ";
-		}
-		cout << endl;
-	}
 	return 0;
 }

@@ -53,10 +53,7 @@ struct Graph{
 		}
 	}
 	
-	vector<Long> retrievePath(Long v){
-		if(parent[v] == -1){
-			return {};
-		}
+	vector<Long> getPath(Long v){
 		vector<Long> path;
 		while(v != -1){
 			path.push_back(v);
