@@ -14,8 +14,8 @@ Long sub(Long a, Long b) {
 	return a - b;
 }
 
-Long oper(Long a, Long b, Long (*oper)(Long, Long)) {
-	return (*oper)(a, b);
+Long operate(Long a, Long b, Long (*op)(Long, Long)) {
+	return (*op)(a, b);
 }
 
 int main() {
@@ -23,8 +23,8 @@ int main() {
 	cin.tie(NULL);
 	cout.tie(NULL);
 	
-	cout << oper(5, 7 , add) << endl;
-	cout << oper(5 , 7 , sub) << endl;
+	cout << operate(5, 7 , add) << endl;
+	cout << operate(5 , 7 , sub) << endl;
 
 	return 0;
 }
