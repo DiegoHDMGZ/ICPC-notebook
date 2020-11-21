@@ -54,14 +54,14 @@ struct Graph{
 		}
 	}
 	
-	vector<Long> getPath(Long v){
-		if (d[v] == INF) {
+	vector<Long> getPath(Long u){
+		if (d[u] == INF) {
 			return {};
 		}
 		vector<Long> path;
-		while(v != -1){
-			path.push_back(v);
-			v = parent[v];
+		while(u != -1){
+			path.push_back(u);
+			u = parent[u];
 		}
 		reverse(path.begin(), path.end());
 		return path;
