@@ -20,8 +20,8 @@ struct Graph{
 	vector<pair<Long,Long>> adj[MX];
 	Long parent[MX];
 	
-	void clear(Long N = MX) {
-		REP( i , N) {
+	void clear(Long n) {
+		for (int i = 0; i < n; i++) {
 			adj[i].clear();
 		}
 	}
