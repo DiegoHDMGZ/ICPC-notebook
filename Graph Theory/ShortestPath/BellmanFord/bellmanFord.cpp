@@ -7,59 +7,76 @@ typedef long long Long;
 const Long MX = 1e4;
 const Long INF = 1e18;
 
-struct Edge{
-	Long u, v, w;
-	Edge(){}
-	Edge(Long u, Long v, Long w) : u(u) , v(v) , w(w) {}
-};
-
 struct Graph{
-	vector<Edge> edges;
+	vector<pair<Long,Long>> adj[MX];
 	Long d[MX];
 	Long parent[MX];
 	
-	void clear() {
-		edges.clear();
+	void clear(Long n) {
+		for (int i = 0; i < n; i++) {
+			adj[i].clear();
+		}
 	}
 
 	void addEdge(Long u, Long v, Long w) {
-		edges.push_back(Edge(u, v , w));
+		adj[u].push_back({v, w});
 	}
 	
 	bool bellmanFord(Long s , Long n){ //O(VE)
+		//true : negative cycle found
 		for(Long i = 0; i < n; i++){
 			d[i] = INF;
 			parent[i] = -1;
 		}
 		d[s] = 0;
-		Long relaxedVertex = -1; 
+		vector<bool> cycle(n, false);
+		bool tense;
 		for (Long i = 0; i < n; i++) {
-			relaxedVertex = -1; 
-			for (Edge e : edges ) {
-				if (d[e.u] != INF && d[e.u] + e.w < d[e.v]) { //tense
-					d[e.v] = d[e.u] + e.w; //relax
-					parent[e.v] = e.u;
-					relaxedVertex = e.v;
+			tense = false;
+			for (Long u = 0; u < n; u++) {
+				for (auto e : adj[u]) {
+					Long v = e.first;
+					Long w = e.second;
+					if (d[u] != INF && d[u] + w < d[v]) { //tense
+						d[v] = d[u] + w; //relax
+						parent[v] = u;
+						tense = true;
+						if (i == n - 1) {
+							cycle[v] = true;
+						}
+					}
 				}
 			}
-			if(relaxedVertex == -1) {
+			if(!tense) {
 				break;
 			}
 		}
-		if(relaxedVertex == -1){
-			return false; //no negative cycle
-		} else{
-			return true; //negative cycle found
-			//getNegativeCycle(relaxedVertex, n);
+		deque<Long> q;
+		for (int u = 0; u < n; u++) {
+			if (cycle[u]) {
+				q.push_back(u);
+			}
 		}
-	
+		while (!q.empty()) {
+			Long u = q.front();
+			d[u] = -INF;
+			q.pop_front();
+			for (auto e : adj[u]) {
+				Long v = e.first;
+				if (!cycle[v]) {
+					cycle[v] = true;
+					q.push_back(v);
+				}
+			}
+		}
+		return tense;
 	}
 	
 	vector<Long> getNegativeCycle(Long u, Long n){
 		//go back n times to find a cycle
+		assert(d[u] == -INF);
 		for (int i = 0; i < n; i++) {
 			u = parent[u]; 
-			assert(parent[u] != -1);
 		}
 		
 		vector<Long> cycle = {u};
