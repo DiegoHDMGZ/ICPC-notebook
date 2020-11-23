@@ -33,7 +33,7 @@ struct Graph{
 		}
 	}
 	
-	bool spfa(Long s, Long n){ //O(nm)
+	bool spfa(Long s, Long n){ //O(VE)
 		for(Long i = 0; i < n; i++){
 			d[i] = INF;
 			parent[i] = -1;
