@@ -22,6 +22,16 @@ struct Graph{
 		adj[u].push_back({v, w});
 	}
 	
+	void dfs(Long u) {
+		d[u] = -INF;
+		for (auto e : adj[u]) {
+			Long v = e.first;
+			if (d[v] != -INF) {
+				dfs(v);
+			}
+		}
+	}
+	
 	bool bellmanFord(Long s , Long n){ //O(VE)
 		//true : negative cycle found
 		for(Long i = 0; i < n; i++){
@@ -51,22 +61,9 @@ struct Graph{
 				break;
 			}
 		}
-		deque<Long> q;
 		for (int u = 0; u < n; u++) {
-			if (cycle[u]) {
-				q.push_back(u);
-			}
-		}
-		while (!q.empty()) {
-			Long u = q.front();
-			d[u] = -INF;
-			q.pop_front();
-			for (auto e : adj[u]) {
-				Long v = e.first;
-				if (!cycle[v]) {
-					cycle[v] = true;
-					q.push_back(v);
-				}
+			if (cycle[u] && d[u] != -INF) {
+				dfs(u);
 			}
 		}
 		return tense;
