@@ -16,7 +16,7 @@ bool check(Double mid, Double x) {
 }
 
 Double search(Double low, Double high, Double x) {
-	while (high - low > EPS) { //REP(i, 1000)
+	while (high - low > EPS) { //REP(i, 1000) {
 		Double mid = (high + low) / 2.0;
 		if (check(mid , x)) high = mid;
 		else low = mid;
