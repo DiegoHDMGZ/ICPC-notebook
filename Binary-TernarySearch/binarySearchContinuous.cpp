@@ -12,7 +12,7 @@ Double f(Double x){
 }
 
 bool check(Double mid, Double x) {
-	return f(mid)>=x;
+	return f(mid) >= x;
 }
 
 Double search(Double low, Double high, Double x) {
