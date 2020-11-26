@@ -24,24 +24,39 @@ struct Graph{
 	}
 	
 	void addEdge(Long u, Long v, Long w) {
-		d[u][v] = min(d[u][v], w);
+		if (w < d[u][v]) {
+			d[u][v] = w;
+			parent[u][v] = u;
+		}
 	}
 	
-	vector<Long> getPath(Long u, Long v) {
-		if (d[u][v] == INF) return {};
-		if (u == v) {
-			return {u};
+	vector<Long> getPath(Long u, Long v){
+		if (d[u][v] == INF) {
+			return {};
 		}
-		if (parent[u][v] == -1) {
-			return {u, v};
+		vector<Long> path;
+		while(v != -1){
+			path.push_back(v);
+			v = parent[u][v];
 		}
-		vector<Long> left = getPath(u, parent[u][v]);
-		vector<Long> right = getPath(parent[u][v], v);
-		left.pop_back();
-		for (Long x : right) {
-			left.push_back(x);
+		reverse(path.begin(), path.end());
+		return path;
+	}
+	
+	vector<Long> getNegativeCycle(Long u, Long v, Long n){
+		//go back n times to find a cycle
+		assert(d[u][v] == -INF);
+		for (int i = 0; i < n; i++) {
+			v = parent[u][v]; 
 		}
-		return left;
+		
+		vector<Long> cycle = {v};
+		v = parent[u][v];
+		while (v != cycle[0]) {
+			cycle.push_back(v);
+			v = parent[u][v];
+		}
+		return cycle;
 	}
 	
 	void floydWarshall(Long n) { //O(V^3)
@@ -52,7 +67,7 @@ struct Graph{
 					if (d[k][v] == INF) continue;
 					if (d[u][k] + d[k][v] < d[u][v]) {
 						d[u][v] = d[u][k] + d[k][v];
-						parent[u][v] = k;
+						parent[u][v] = parent[k][v];
 					}
 				}
 			}
