@@ -6,83 +6,69 @@
 using namespace std;
 
 typedef long long Long;
-const Long MX = 500;
-const Long INF = 1e18;
 
-struct Graph {
+const int MX = 500;
+const Long INF = 1e18;
+struct Graph{
 	Long d[MX][MX];
-	Long p[MX][MX];
-	vector<Long> path;
+	Long parent[MX][MX];
 	
-	void clear( Long N) {
-		REP(i , N) {
-			REP( j , N) {
-				d[i][j] = INF;
-				p[i][j] = -1;
+	void initialize(Long n) {
+		for (int u = 0; u < n; u++) {
+			for (int v = 0; v < n; v++) {
+				d[u][v] = INF;
+				parent[u][v] = -1;
 			}
+			d[u][u] = 0;
 		}
 	}
 	
-	Graph(){
-		clear(MX);
+	void addEdge(Long u, Long v, Long w) {
+		d[u][v] = min(d[u][v], w);
 	}
 	
-	void addEdge(Long u, Long v, Long cost) {
-		d[u][v] = min(d[u][v],cost);
-		d[v][u] = d[u][v];
+	vector<Long> getPath(Long u, Long v) {
+		if (d[u][v] == INF) return {};
+		if (u == v) {
+			return {u};
+		}
+		if (parent[u][v] == -1) {
+			return {u, v};
+		}
+		vector<Long> left = getPath(u, parent[u][v]);
+		vector<Long> right = getPath(parent[u][v], v);
+		left.pop_back();
+		for (Long x : right) {
+			left.push_back(x);
+		}
+		return left;
 	}
 	
-	void retrievePath(Long i, Long j, bool clean = true){ //O(n)
-		if(clean){
-			path.clear();
-			clean = false;
-			path.pb(i);
-			if(i == j) return;
-		}
-		
-		if(p[i][j] == -1){
-			
-			path.pb(j);
-			return;
-		}
-		
-		retrievePath(i,p[i][j],clean);
-		retrievePath(p[i][j],j,clean);
-	}
-	
-	void floydWarshall(Long n){ //O(n³)
-		REP(i, n) {
-			d[i][i] = 0;
-		}
-		
-		REP(k,n){
-			REP(i,n){
-				REP(j,n){
-					if(d[i][k] < INF && d[k][j] < INF){
-						//if (d[i][k] + d[k][j] < d[i][j] - EPS)  //real weights
-						if(d[i][j] > d[i][k]+d[k][j]){
-							d[i][j] = min(d[i][j],d[i][k]+d[k][j]);
-							p[i][j] = k;
-						}
-						
+	void floydWarshall(Long n) { //O(V^3)
+		for (int k = 0; k < n; k++) {
+			for (int u = 0; u < n; u++) {
+				for (int v = 0; v < n; v++) {
+					if (d[u][k] == INF) continue;
+					if (d[k][v] == INF) continue;
+					if (d[u][k] + d[k][v] < d[u][v]) {
+						d[u][v] = d[u][k] + d[k][v];
+						parent[u][v] = k;
 					}
 				}
 			}
 		}
-		
-		//negative cycle
-		REP(i,n){
-			REP(j,n){
-				REP(k,n){
-					if(d[i][k] < INF && d[k][j] < INF && d[k][k] < 0){
-						d[i][j] = -INF;
+		//negative cycles
+		for (int u = 0; u < n; u++) {
+			for (int v = 0; v < n; v++) {
+				for (int k = 0; k < n; k++) {
+					if (d[k][k] < 0 && d[u][k] != INF && d[k][v] != INF) {
+						d[u][v] = -INF;
 					}
 				}
 			}
 		}
-	
 	}
-} G;
+}G;
 
 int main() {
 	return 0;
