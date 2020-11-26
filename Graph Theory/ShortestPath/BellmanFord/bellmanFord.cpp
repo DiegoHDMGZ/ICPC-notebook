@@ -75,7 +75,6 @@ struct Graph{
 		for (int i = 0; i < n; i++) {
 			u = parent[u]; 
 		}
-		
 		vector<Long> cycle = {u};
 		u = parent[u];
 		while (u != cycle[0]) {
