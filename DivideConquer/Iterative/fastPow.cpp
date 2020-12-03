@@ -11,14 +11,14 @@ typedef long long Long;
 //Fermat's little theorem : r = x % (mod-1) , mod prime
 // Euler's theorem : r = x % phi(mod) 
 
-Long mult(Long a, Long b, Long mod){
+Long mult(Long a, Long b, Long mod) {
 	return (a * b ) % mod;
 }
 
-Long fastPow(Long a, Long b , Long mod){ //O(logb)
+Long fastPow(Long a, Long b , Long mod) { //O(log b)
 	Long ans = 1;
-	while(b > 0){
-		if(b & 1 == 1){ //b % 2 == 1
+	while (b > 0) {
+		if (b & 1 == 1) { //b % 2 == 1
 			ans = mult(ans ,a , mod);
 		}
 		a = mult(a , a  , mod);
