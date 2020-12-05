@@ -35,6 +35,8 @@ Long fastPow(Long a, Long b , Long mod) { //O(log b)
 }
 
 bool checkComposite(Long a, Long d, Long s, Long n) {
+	//O(log n) with 128 bit
+	//O(log^2 n) with divide and conquer mult
 	Long x = fastPow(a , d, n);
 	if (x == 1 || x == n - 1) {
 		return false;
@@ -48,8 +50,9 @@ bool checkComposite(Long a, Long d, Long s, Long n) {
 	return true;
 }
 
-bool isPrime(Long n) {
-	//2 3 5 7 for 32-bit integer
+bool isPrime(Long n) { 
+	//O(log n * |base|) with 128-bit
+	//O(log^2 n * |base|) with divide and conquer
 	if (n <= 1) {
 		return false;
 	}
@@ -61,6 +64,7 @@ bool isPrime(Long n) {
 	}
 	//64-bit integer
 	vector<Long> base = {2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37};
+	//2 3 5 7 for 32-bit integer
 	for (Long a : base) {
 		if (a >= n) break;
 		if (checkComposite(a, d, s, n)) {
