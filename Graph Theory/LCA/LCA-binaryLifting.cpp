@@ -7,7 +7,7 @@ using namespace std;
 typedef long long Long;
 
 const Long MX = 1e5;
-const Long loga = 32 - __builtin_clz(MX);
+const Long LG = 32 - __builtin_clz(MX);
 
 struct Graph {
 	vector<int> adj[MX];
@@ -15,7 +15,7 @@ struct Graph {
 	int tIn[MX];
 	int tOut[MX];
 	int timer;
-	int anc[MX][loga];
+	int anc[MX][LG];
 	
 	void clear(Long n){
 		for(Long i = 0; i < n; i++){

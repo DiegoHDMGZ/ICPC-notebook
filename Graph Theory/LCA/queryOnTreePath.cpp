@@ -8,12 +8,12 @@ typedef long long Long;
 
 const Long MX = 1e5;
 const Long INF = 1e18;
-const Long loga = 32 - __builtin_clz(MX);
+const Long LG = 32 - __builtin_clz(MX);
 
 struct Graph{
 	vector<pair<int, Long>> adj [MX];
-	pair<Long, Long> st[MX][loga]; //st[i][j] : min/max edge starting at i and ending at anc[i][j]
-	int anc[MX][loga]; //anc[i][j] : ancestor of i at distance 2^j
+	pair<Long, Long> st[MX][LG]; //st[i][j] : min/max edge starting at i and ending at anc[i][j]
+	int anc[MX][LG]; //anc[i][j] : ancestor of i at distance 2^j
 	int depth[MX]; 
 	int tIn[MX];
 	int tOut[MX];
