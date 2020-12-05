@@ -67,5 +67,3 @@ int main() {
 	sieve();
 	return 0;
 }
-
-
