@@ -24,19 +24,18 @@ Long minChar = (Long)'0';
 const Long MX = 1e6;
 struct Hashing{
 	Long MOD;
-	Long B;
-
+	Long BASE;
 	Long pot[MX];
 	Long hPref[MX];
 	Long hSuf[MX];
 	
 	Hashing() { 
 		MOD = 1e9 + 7; //1e9 + 1269
-		B = 67;
+		BASE = 67;
 	}
 	
 	void setData(Long b, Long mod) {
-		B = b;
+		BASE = b;
 		MOD = mod;
 	}
 	
@@ -54,9 +53,9 @@ struct Hashing{
 	}
 
 	void precalc() {
-		pot[0]= 1;
-		for (int i = 1; i< MX; i++) {
-			pot[i] = mult(pot[i - 1] , B , MOD);
+		pot[0] = 1;
+		for (int i = 1; i < MX; i++) {
+			pot[i] = mult(pot[i - 1] , BASE , MOD);
 		}
 	}
 
@@ -64,12 +63,12 @@ struct Hashing{
 		Long sz = s.size();
 		hPref[0] = s[0] - minChar + 1;
 		for (int i = 1; i < sz; i++) {
-			hPref[i] = add( mult(hPref[i - 1] , B, MOD) , s[i] - minChar + 1, MOD);
+			hPref[i] = add( mult(hPref[i - 1] , BASE, MOD) , s[i] - minChar + 1, MOD);
 		}
 		hSuf[sz] = 0;
 		hSuf[sz - 1] = s[sz - 1]- minChar + 1;
 		for (int i = sz - 2; i >= 0; i--) {
-			hSuf[i] = add(mult( hSuf[i + 1] , B, MOD) ,  s[i] - minChar + 1 , MOD);
+			hSuf[i] = add(mult( hSuf[i + 1] , BASE, MOD) ,  s[i] - minChar + 1 , MOD);
 		}
 	}
 }hs;
