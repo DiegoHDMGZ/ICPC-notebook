@@ -56,7 +56,7 @@ struct Hashing{
 
 	void precalc() {
 		pot[0]= 1;
-		for (int i = 1; i< MX;i++) {
+		for (int i = 1; i< MX; i++) {
 			pot[i] = mult(pot[i - 1] , B , MOD);
 		}
 	}
