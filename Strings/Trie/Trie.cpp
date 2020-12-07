@@ -24,11 +24,10 @@ struct Trie{
 		nodes = 1;
 	}
 	
-	void addWord(string &s){
-		int sz = s.size();
+	void addWord(string &s){ //O(n)
+		int n = s.size();
 		int u = 0;
-		
-		for(Long i = 0; i < sz; i++){
+		for(Long i = 0; i < n; i++){
 			Long c = s[i] - 'a';
 			if(memo[u][c] == 0){
 				memo[u][c] = nodes++;
@@ -38,11 +37,10 @@ struct Trie{
 		term[u] = true;
 	}
 	
-	bool isPrefix(string &s){
-		Long sz = s.size();
+	bool isPrefix(string &s){ //O(n)
+		Long n = s.size();
 		Long u = 0;
-		
-		for(Long i = 0; i < sz; i++){
+		for(Long i = 0; i < n; i++){
 			Long c = s[i] - 'a';
 			if(memo[u][c] == 0){
 				return false;
@@ -52,11 +50,11 @@ struct Trie{
 		return true;
 	}
 	
-	bool isWord(string &s){
-		Long sz = s.size();
+	bool isWord(string &s){ //O(n)
+		Long n = s.size();
 		Long u = 0;
 		
-		for(Long i = 0; i < sz; i++){
+		for(Long i = 0; i < n; i++){
 			Long c = s[i] - 'a';
 			if(memo[u][c] == 0){
 				return false;
