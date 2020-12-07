@@ -40,17 +40,17 @@ struct Hashing{
 		MOD = mod;
 	}
 	
-	Long hSub(Long i, Long j) { //O(1)
+	Long hash(Long i, Long j) { //O(1)
 		if(i == 0) return hPref[j];
 		return sub(hPref[j] , mult(hPref[i - 1] , pot[j - i + 1], MOD) , MOD);
 	}
 
-	Long hSub2(Long i, Long j) { //O(1)
+	Long hashInverse(Long i, Long j) { //O(1)
 		return sub(hSuf[i] , mult(hSuf[j + 1] , pot[j - i + 1], MOD) , MOD);
 	}
 	
 	bool isPalindrome(Long i, Long j) { //O(1)
-		return hSub(i , j) == hSub2(i , j);
+		return hash(i , j) == hashInverse(i , j);
 	}
 
 	void precalc() {
