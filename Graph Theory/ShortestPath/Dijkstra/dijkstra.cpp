@@ -26,15 +26,15 @@ struct Graph{
 		adj[v].push_back({u , w}); 
 	}
 	
-	void dijkstra(Long s, Long n){ //O(E log V)
-		for(Long i = 0; i < n; i++){
+	void dijkstra(Long s, Long n) { //O(E log V)
+		for (Long i = 0; i < n; i++) {
 			parent[i] = -1;
 			d[i] = INF;
 		}
 		priority_queue<Path, vector<Path> , greater<Path>> q;
 		d[s] = 0;
 		q.push({d[s], s});
-		while(!q.empty()){
+		while (!q.empty()) {
 			Path p = q.top();
 			q.pop();
 			Long u = p.second;
@@ -42,10 +42,10 @@ struct Graph{
 			if (weight != d[u]) {
 				continue;
 			}
-			for(auto e : adj[u]){
+			for (auto e : adj[u]) {
 				Long v = e.first;
 				Long w = e.second;
-				if(d[u] + w < d[v]){
+				if (d[u] + w < d[v]) {
 					d[v] = d[u] + w;
 					parent[v] = u;
 					q.push({d[v], v});
