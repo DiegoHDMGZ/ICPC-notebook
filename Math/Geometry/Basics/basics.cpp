@@ -18,7 +18,8 @@ struct Point{
 		y = 0;
 		z = 0;
 	}
-	Point(Double _x, Double _y, Double _z = 0) : x(x), y(y), z(z){}
+	Point(Double x, Double y, Double z = 0):
+	 x(x), y(y), z(z){}
 
 	Point operator += (const Point &t){
 		x += t.x;
