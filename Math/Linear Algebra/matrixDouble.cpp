@@ -9,7 +9,7 @@ typedef long long Long;
 typedef long double Double;
 
 const Double EPS = 1e-6;
-typedef vector<vector<Double> > Matrix;
+typedef vector<vector<Double>> Matrix;
 
 Matrix operator +(const Matrix &a , const Matrix &b){ //O(n * m)
 	Long n = a.size();
@@ -17,8 +17,7 @@ Matrix operator +(const Matrix &a , const Matrix &b){ //O(n * m)
 	assert(a.size() == b.size() );
 	assert(a[0].size() == b[0].size());
 	
-	Matrix c(n , vector<Double> (m ));
-	
+	Matrix c = getMatrix(n , m);
 	for(Long i = 0; i < n; i++){
 		for(Long j = 0; j <m; j++){
 			c[i][j] = a[i][j] + b[i][j];
@@ -36,7 +35,7 @@ Matrix operator *(const Matrix &a, const Matrix &b){ //O( n^3)
 	
 	Long n = n1;
 	Long m = m2;
-	Matrix c(n, vector<Double>(m , 0));
+	Matrix c = getMatrix(n, m);
 	for(Long i = 0; i < n; i++){
 		for(Long j = 0; j < m; j++){
 			for(Long k = 0; k < m1; k++){
@@ -96,10 +95,74 @@ void print(Matrix a, string name){
 	cout << endl;
 }
 
+Long linearSystem(Matrix M, vector<Double> &ans) {
+	//AX = b
+	//M = [A|b]
+	Long n = M.size();
+	Long m = (Long)M[0].size() - 1;
+	
+	Long row = 0;
+	vector<Long> position(m, -1);
+	for (Long col = 0; col < m; col++) {
+		if (row == n) break;
+		Long pivot = row;
+		for(Long i = row + 1; i < n; i++){
+			if(fabs(M[i][col]) > fabs(M[pivot][col]) ){
+				pivot = i;
+			} 
+		}
+		if(row != pivot){
+			swap(M[row] , M[pivot]);
+		}
+		if (fabs(M[row][col]) <= EPS) {
+			continue;
+		}
+		position[col] = row;
+		for(Long j = col + 1; j <= m; j++){
+			M[row][j] /= M[row][col];
+		}
+		M[row][col] = 1;
+		for(Long i = 0; i < n; i++){
+			if (i == row) continue;
+			if(fabs(M[i][col]) >= EPS){
+				for(Long j = col + 1; j <= m; j++){
+					M[i][j] -= M[row][j] * M[i][col];
+				}
+				M[i][col] = 0;
+			}
+		}
+		row++;
+	}
+	ans = vector<Double>(m, 0);
+	bool infinite = false;
+	for (Long i = 0; i < m; i++) {
+		if (position[i] != -1) {
+			ans[i] = M[position[i]][m];
+		} else {
+			infinite = true;
+		}
+	}
+	for (int i = 0; i < n; i++) {
+		bool allZero = true;
+		for (int j = 0; j < m; j++) {
+			if (M[i][j] != 0) {
+				allZero = false;
+			}
+		}
+		if (allZero && M[i][m] != 0) {
+			ans = {};
+			return 0;
+		}
+	}
+	if (infinite) return 2;
+	return 1;
+}
+
+
 Matrix inverse(Matrix M){
 	assert(M.size() == M[0].size());
 	Long n = M.size();
-	Matrix ans(n , vector<Double>(n, 0));
+	Matrix ans = getMatrix(n , n);
 	for(Long i = 0; i < n; i++){
 		ans[i][i] = 1;
 	}
@@ -123,7 +186,8 @@ Matrix inverse(Matrix M){
 			M[i][j] /= c;
 			ans[i][j] /= c;
 		}
-		for(Long j = i + 1; j < n; j++){
+		for(Long j = 0; j < n; j++){
+			if (j == i) continue;
 			if(fabs(M[j][i]) >= EPS){
 				double c = M[j][i];
 				for(Long k = 0; k < n; k++){
@@ -133,38 +197,9 @@ Matrix inverse(Matrix M){
 			}
 		}
 	}
-	
-	for(Long i = n - 2; i >= 0; i--){
-		for(Long j = i + 1; j < n; j++){
-			if(fabs(M[i][j]) >= EPS){
-				Double c = M[i][j];
-				for(Long k = 0; k < n; k++){
-					M[i][k] -= M[j][k] * c;
-					ans[i][k] -= ans[j][k] * c;
-				}
-			}
-		}
-	}
-	
 	return ans;
 }
 
 int main(){
-	ios_base::sync_with_stdio(false);
-	cin.tie(NULL);
-	cout.tie(NULL);
-
-	
-	Long n;
-	cin >> n;
-	Matrix a(n , vector<Double>(n));
-	REP(i , n){
-		REP(j , n){
-			cin >> a[i][j];
-		}
-	}
-	Matrix inv = inverse(a);
-	print(a * inv, "I");
-
 	return 0;
 }
