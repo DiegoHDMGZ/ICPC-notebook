@@ -39,7 +39,6 @@ struct Graph{
 		vector<bool> used(edges.size(), false);
 		vector<Long> curPath = {start};
 		vector<Long> path;
-	   
 		while(!curPath.empty()){
 			Long u = curPath.back();
 			while(!endpoint[u].empty() && used[endpoint[u].back().second]){

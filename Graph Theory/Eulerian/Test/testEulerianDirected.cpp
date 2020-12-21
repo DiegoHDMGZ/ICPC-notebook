@@ -42,7 +42,7 @@ struct Graph{
 
 		vector<Long> curPath = {start};
 		vector<Long> path;
-	   
+		
 		while(!curPath.empty()){
 			Long u = curPath.back();
 			if(endpoint[u].empty()){

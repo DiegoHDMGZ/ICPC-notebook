@@ -35,10 +35,8 @@ struct Graph{
 			Long v = e.second;
 			endpoint[u].push_back(v);
 		}
-
 		vector<Long> curPath = {start};
 		vector<Long> path;
-	   
 		while(!curPath.empty()){
 			Long u = curPath.back();
 			if(endpoint[u].empty()){

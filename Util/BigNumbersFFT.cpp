@@ -62,7 +62,6 @@ void ntt(vector<Field> &a, bool invert, Field wn){ //O(n log n)
 
 	Field w (1);
 	vector<Field> even(n / 2), odd(n / 2);
-	 
 	for(Long i = 0; 2 * i < n; i++){
 		even[i] = a[2 * i];
 		odd[i] = a[2 * i + 1];

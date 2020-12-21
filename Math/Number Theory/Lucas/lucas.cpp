@@ -48,7 +48,7 @@ void init(Long mod) { //O(mod)
 
 Long comb(Long N, Long M, Long mod) { //O(1)
 	if(N < M){
-	  return 0;
+		return 0;
 	}
 	return ( (fact[N] * inv[M]) % mod ) * inv[N-M] % mod; 
 }
@@ -71,6 +71,3 @@ int main() {
 	init(MOD);
 	return 0;
 }
-
-
-
