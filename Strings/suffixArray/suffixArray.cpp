@@ -32,7 +32,7 @@ vector<int> sortCyclic(string &s) { //O(n log n)
 	// radix sort
 	vector<int> pNew(n) , cNew(n);
 	for (int k = 0; (1 << k) < n ; k++) {
-		//pNow is sorted by the second substring
+		//sort pNew by the second substring
 		for (int i = 0; i < n; i++) {
 			pNew[i] = p[i] - (1 << k);
 			if (pNew[i] < 0) pNew[i] += n;
