@@ -6,20 +6,18 @@ using namespace std;
 
 typedef long long Long;
 
-char minChar = 'a' - 1;
+const int ALPH = 256;
 
 vector<int> sortCyclic(string &s) { //O(n log n)
 	int n = s.size();
-	int alphabet = 26 + 1;
-	vector<int> p(n), c(n), cnt(max(alphabet , n), 0);
+	vector<int> p(n), c(n), cnt(max(ALPH , n), 0);
 	//p[] : sorted array with the starting index of substrings of length 2^k 
 	//c[] : equivalence class
 	//counting sort
-	for (int i = 0; i < n; i++) cnt[s[i] - minChar]++;
-	for (int i = 1; i < alphabet; i++) cnt[i] += cnt[i - 1];
+	for (int i = 0; i < n; i++) cnt[s[i]]++;
+	for (int i = 1; i < ALPH; i++) cnt[i] += cnt[i - 1];
 	for (int i = 0 ; i < n; i++) {
-		int x = s[i] - minChar;
-		p[--cnt[x]] = i;
+		p[--cnt[s[i]]] = i;
 	}
 	c[p[0]] = 0;
 	int classes = 1;
@@ -65,6 +63,7 @@ vector<int> sortCyclic(string &s) { //O(n log n)
 
 //Suffix array: contain starting indexes of the all the suffixes (sorted)
 vector<int> suffixArray(string &s) {
+	char minChar = 'a' - 1;
 	s += minChar;
 	vector<int> v = sortCyclic(s);
 	v.erase(v.begin());
