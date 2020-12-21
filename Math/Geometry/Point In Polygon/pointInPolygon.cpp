@@ -87,11 +87,11 @@ struct Point{
 		}
 		//verify if the angle of the point lies between the angle of p0p1 and p0pn-1
 		if(poly[0].cross(poly[1] , P)  != 0 
-		    && sgn(poly[0].cross(poly[1] , P)  ) != sgn(poly[0].cross(poly[1] , poly[n - 1]) )) {
+			&& sgn(poly[0].cross(poly[1] , P)  ) != sgn(poly[0].cross(poly[1] , poly[n - 1]) )) {
 			return -1;
 		}
 		if(poly[0].cross(P , poly[n - 1]) != 0 
-		    && sgn(poly[0].cross(P , poly[n - 1]) ) != sgn(poly[0].cross(poly[1] , poly[n - 1]) )) {
+			&& sgn(poly[0].cross(P , poly[n - 1]) ) != sgn(poly[0].cross(poly[1] , poly[n - 1]) )) {
 			return -1;
 		}
 	
