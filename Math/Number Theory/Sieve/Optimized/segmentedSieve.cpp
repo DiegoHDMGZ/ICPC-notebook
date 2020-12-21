@@ -30,46 +30,41 @@ void sieve(){ //O(MX)
 bool isPrimeRange[MX];
 
 void segmentedSieve(Long l, Long r) { //O( (r - l) * log log (r - l) )
-
-    fill(isPrimeRange, isPrimeRange + MX , true);
-
-    for(Long i = 0; i < primes.size(); i++) {
-        if(primes[i] * primes[i] > r) {
-            break;
-        }
-        Long k = max(l / primes[i] , 2LL);
-        k = max(k , primes[i] );
-        for(Long j = k; ; j++) {
-            if(primes[i] * j < l) {
-                continue;
-            }
-            if(primes[i] * j > r ) {
-                break;
-            }
-            isPrimeRange[primes[i] * j - l] = false;
-        }
-    }
-    if(l == 1) {
-        isPrimeRange[0] = false;
-    }
+	fill(isPrimeRange, isPrimeRange + MX , true);
+	for(Long i = 0; i < primes.size(); i++) {
+		if(primes[i] * primes[i] > r) {
+			break;
+		}
+		Long k = max(l / primes[i] , 2LL);
+		k = max(k , primes[i] );
+		for(Long j = k; ; j++) {
+			if(primes[i] * j < l) {
+				continue;
+			}
+			if(primes[i] * j > r ) {
+				break;
+			}
+			isPrimeRange[primes[i] * j - l] = false;
+		}
+	}
+	if(l == 1) {
+		isPrimeRange[0] = false;
+	}
 }
 
 int main() {
-    ios_base::sync_with_stdio(false);
-    cin.tie(NULL);
-    cout.tie(NULL);
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	cout.tie(NULL);
 	sieve();
-	
 	Long l , r;
 	cin >> l >> r;
-    segmentedSieve(l , r);
-    
-    Long x;
-    cin >> x;
-    if(isPrimeRange[x - l]) {
-    	cout << "es primo" << endl;
+	segmentedSieve(l , r);
+
+	Long x;
+	cin >> x;
+	if(isPrimeRange[x - l]) {
+		cout << "prime" << endl;
 	}
 	return 0;
 }
-
-

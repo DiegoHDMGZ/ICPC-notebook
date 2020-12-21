@@ -38,25 +38,21 @@ Long mu[MX];
 //mu[x] = -1 if x is square free with odd number of prime factors
 
 void mobius() { //O(MX)
-    mu[1] = 1;
-    for(Long i = 2 ;i < MX; i ++) {
-        if(fact[i] == i) {
-            mu[i] = -1;
-        } else {
-            Long nx = i / fact[i];
-            if(nx % fact[i] == 0) {
-                mu[i] = 0;
-            } else {
-                mu[i] = -mu[nx];
-            }
-        }
-    }
+	mu[1] = 1;
+	for(Long i = 2 ;i < MX; i ++) {
+		if(fact[i] == i) {
+			mu[i] = -1;
+		} else {
+			Long nx = i / fact[i];
+			if(nx % fact[i] == 0) {
+				mu[i] = 0;
+			} else {
+				mu[i] = -mu[nx];
+			}
+		}
+	}
 }
 
 int main(){
-	ios_base::sync_with_stdio(false);
-	cin.tie(NULL);
-	cout.tie(NULL);
-	
 	return 0;
 }

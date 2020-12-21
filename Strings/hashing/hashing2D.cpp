@@ -4,17 +4,17 @@
 #define pb push_back
 
 using namespace std;
- 
+
 typedef long long Long;
 
 Long mult(Long a, Long b, Long mod){
 	return (a * b) % mod;
 }
- 
+
 Long add(Long a, Long b, Long mod){
 	return (a + b) % mod;
 }
- 
+
 Long sub(Long a , Long b, Long mod){
 	return (a - b + mod) % mod;
 }
@@ -52,7 +52,7 @@ struct Hash{
 		ans = add(ans , mult(hash(x1 - 1 , y1 - 1) , pot[sz * (x2 - x1 + 1) + (y2 - y1 + 1)] , mod) , mod);
 		return ans;
 	}
- 
+
 	void precalc(vector<vector<char>> &A){ //O(n * m)
 		Long n = A.size();
 		Long m = A[0].size();
@@ -112,7 +112,7 @@ vector<Long> getBases(vector<Long> mods) {
 	}
 	return ans;
 }
- 
+
 int main(){
 	return 0;
 }

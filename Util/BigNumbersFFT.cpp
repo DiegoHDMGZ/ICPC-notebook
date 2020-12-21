@@ -2,13 +2,12 @@
 #define debug(x) cout << #x << " = " << x << endl
 #define REP(i,n) for(Long i = 0; i < (Long)n; i++)
 #define pb push_back
- 
+
 using namespace std;
- 
+
 typedef long long Long;
 
 const Long MOD = 998244353; //MOD = 2^23 * 19 + 1
-
 const Long root = 3;//primitve root of MOD
 const Long rootInv = 332748118;//inverse modular of root
 
@@ -120,7 +119,7 @@ void eraseTrailing(deque<Long> &v){
 		v.pop_front();
 	}
 }
- 
+
 struct Big{
 	deque<Long> digits;
 	Long sgn;
@@ -148,22 +147,21 @@ struct Big{
 	}
 	
 	Big(deque<Long> v , Long s = 1){
-	   deque<Long> transf;
-	   Long i = 0;
-	   while(i < v.size() && v[i] == 0){
-		   i++;
-	   }
-	   while(i < v.size()){
-		   transf.pb(v[i]);
-		   i++;
-	   }
-	   if(transf.size() == 0){
-	      transf.pb(0);   
-	   }
-	  
-	   if(transf.size()==1 && transf[0] == 0) {
-	      s = 1;
-	   }
+		deque<Long> transf;
+		Long i = 0;
+		while(i < v.size() && v[i] == 0){
+			i++;
+		}
+		while(i < v.size()){
+			transf.pb(v[i]);
+			i++;
+		}
+		if(transf.size() == 0){
+			transf.pb(0);   
+		}
+		if(transf.size()==1 && transf[0] == 0) {
+			s = 1;
+		}
 		digits = transf;
 		sgn = s;
 	}
@@ -321,13 +319,12 @@ ostream & operator << (ostream &out, const Big &number){
 	for(Long i = 0; i < number.digits.size(); i++){
 		out << number.digits[i];
 	}
-    return out;
+	return out;
 }
 
 istream & operator >> (istream &in,  Big &number){
 	string s;
 	in >> s;
-	
 	if(s[0] == '-'){
 		number.sgn = -1;
 	}  else {
@@ -341,10 +338,8 @@ istream & operator >> (istream &in,  Big &number){
 			number.digits.push_back(s[i] - '0');
 		}
 	}
-	
-    return in;
+	return in;
 }
- 
 
 int main() {
 	return 0;

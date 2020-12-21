@@ -17,7 +17,7 @@ void eraseTrailing(deque<Long> &v){
 		v.pop_front();
 	}
 }
- 
+
 struct Big{
 	deque<Long> digits;
 	Long sgn;
@@ -45,22 +45,21 @@ struct Big{
 	}
 	
 	Big(deque<Long> v , Long s = 1){
-	   deque<Long> transf;
-	   Long i = 0;
-	   while(i < v.size() && v[i] == 0){
-		   i++;
-	   }
-	   while(i < v.size()){
-		   transf.pb(v[i]);
-		   i++;
-	   }
-	   if(transf.size() == 0){
-	      transf.pb(0);   
-	   }
-	  
-	   if(transf.size()==1 && transf[0] == 0) {
-	      s = 1;
-	   }
+		deque<Long> transf;
+		Long i = 0;
+		while(i < v.size() && v[i] == 0){
+			i++;
+		}
+		while(i < v.size()){
+			transf.pb(v[i]);
+			i++;
+		}
+		if(transf.size() == 0){
+			transf.pb(0);   
+		}
+		if(transf.size()==1 && transf[0] == 0) {
+			s = 1;
+		}
 		digits = transf;
 		sgn = s;
 	}
@@ -135,7 +134,6 @@ struct Big{
 			i--;
 			j--;
 		}
-
 		return Big(ans , sgn);
 	}
 	
@@ -184,7 +182,6 @@ struct Big{
 		for(Long j = i; j >= k; j--){
 			ans.push_front(a[j]);
 		}
-    
 		return Big(ans , newSgn);
 	}
 	
@@ -233,9 +230,9 @@ string toString (const Big &number){
 	for(Long i = 0; i < number.digits.size(); i++){
 		s+= number.digits[i] + '0';
 	}
-    return s;
+	return s;
 }
- 
+
 string toString(Long x){
 	string s = "";
 	if(x == 0) return "0";

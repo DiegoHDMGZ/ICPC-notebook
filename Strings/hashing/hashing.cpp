@@ -4,17 +4,17 @@
 #define pb push_back
 
 using namespace std;
- 
+
 typedef long long Long;
 
 Long mult(Long a, Long b, Long mod){
 	return (a * b) % mod;
 }
- 
+
 Long add(Long a, Long b, Long mod){
 	return (a + b) % mod;
 }
- 
+
 Long sub(Long a , Long b, Long mod){
 	return (a - b + mod) % mod;
 }
@@ -109,7 +109,7 @@ vector<Long> getBases(vector<Long> mods) {
 	}
 	return ans;
 }
- 
+
 int main(){
 	return 0;
 }

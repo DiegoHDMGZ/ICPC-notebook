@@ -54,7 +54,7 @@ Long divDown(Long a, Long b){
 		}
 	}
 }
- 
+
 Long divUp(Long a, Long b){
 	Long d = abs(a) / abs(b);
 	if((a > 0 && b > 0) || (a < 0 && b < 0)){

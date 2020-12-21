@@ -2,9 +2,9 @@
 #define debug(x) cout << #x << " = " << x << endl
 #define REP(i,n) for(Long i = 0; i < (Long)n; i++)
 #define pb push_back
- 
+
 using namespace std;
- 
+
 typedef long long Long;
 
 void eraseTrailing(deque<Long> &v){
@@ -16,12 +16,12 @@ void eraseTrailing(deque<Long> &v){
 struct Big{
 	deque<Long> digits;
 	Long sgn;
-	
+
 	Big(){
 		digits.pb(0);
 		sgn = 1;
 	}
-	
+
 	Big(Long x){
 		if(x >= 0) {
 			sgn = 1;
@@ -38,24 +38,24 @@ struct Big{
 			}
 		}
 	}
-	
+
 	Big(deque<Long> v , Long s = 1){
-	   deque<Long> transf;
-	   Long i = 0;
-	   while(i < v.size() && v[i] == 0){
-		   i++;
-	   }
-	   while(i < v.size()){
-		   transf.pb(v[i]);
-		   i++;
-	   }
-	   if(transf.size() == 0){
-	      transf.pb(0);   
-	   }
-	  
-	   if(transf.size()==1 && transf[0] == 0) {
-	      s = 1;
-	   }
+		deque<Long> transf;
+		Long i = 0;
+		while(i < v.size() && v[i] == 0){
+			i++;
+		}
+		while(i < v.size()){
+			transf.pb(v[i]);
+			i++;
+		}
+		if(transf.size() == 0){
+			transf.pb(0);   
+		}
+
+		if(transf.size()==1 && transf[0] == 0) {
+			s = 1;
+		}
 		digits = transf;
 		sgn = s;
 	}
@@ -63,7 +63,7 @@ struct Big{
 	bool operator == (const Big &P) const{
 		return P.digits == digits && sgn == P.sgn;
 	}
-	
+
 	bool operator < (const Big &P) const{
 		if(P.sgn != sgn){
 			return P.sgn == 1;
@@ -78,7 +78,7 @@ struct Big{
 		}
 		return false;
 	}
-	
+
 	bool operator > (const Big &P) const{
 		if(P.sgn != sgn){
 			return sgn == 1;
@@ -93,13 +93,13 @@ struct Big{
 		}
 		return false;
 	}
-	
+
 	friend ostream & operator << (ostream &out, const Big &c);
 	friend istream & operator >> (istream &in,  Big &c);
-	
+
 	friend Big operator +(const Big &other);
 	friend Big operator -(const Big &x);
-	
+
 	Big operator +(const Big &other) const {
 		deque<Long> ans;
 		deque<Long> a = digits;
@@ -117,7 +117,7 @@ struct Big{
 			Long x , y;
 			if(i >= 0) x = a[i];
 			else x = 0;
-	
+
 			if(j >= 0) y = b[j];
 			else y = 0;
 			
@@ -130,7 +130,7 @@ struct Big{
 		}
 		return Big(ans , sgn);
 	}
-	
+
 	Big operator -(const Big &other) const {
 		if(sgn * other.sgn == -1){
 			if(sgn == 1){
@@ -175,7 +175,7 @@ struct Big{
 		}
 		return Big(ans , newSgn);
 	}
-	
+
 	Big operator *(const Big &b) const {
 		Big a = *this;
 		Big ans;
@@ -218,7 +218,7 @@ ostream & operator << (ostream &out, const Big &number){
 	for(Long i = 0; i < number.digits.size(); i++){
 		out << number.digits[i];
 	}
-    return out;
+	return out;
 }
 
 istream & operator >> (istream &in,  Big &number){
@@ -238,15 +238,14 @@ istream & operator >> (istream &in,  Big &number){
 			number.digits.push_back(s[i] - '0');
 		}
 	}
-	
-    return in;
+	return in;
 }
- 
+
 int main() {
 	Big a ,b;
 	cin >> a >> b;
 	
-	cout << a+ b << endl;
+	cout << a + b << endl;
 	cout << a * b << endl;
 	return 0;
 }

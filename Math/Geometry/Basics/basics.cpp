@@ -121,19 +121,17 @@ bool antiClockwise(const Point &A, const Point &B , Point center) {
 	return center.cross(A, B) > 0;
 }
 
-
-Point operator*(Double a, Point b) {
-    return b * a;
+Point operator *(Double a, Point b) {
+	return b * a;
 }
 
 Point operator/(Double a , Point b){
-	return b/a;
+	return b / a;
 }
 
 double abs(Point A){
 	return sqrt(A.norm());
 }
-	
 
 Double dot(Point A, Point B){
 	return A.x * B.x + A.y * B.y + A.z * B.z;
@@ -154,7 +152,6 @@ Double angle(Point A, Point B){
 	if(A.abs()*B.abs() < EPS){
 		return INF;
 	}
-	
 	return acos(dot(A,B) / (A.abs()*B.abs()) );
 }
 
@@ -175,12 +172,12 @@ Double dist(Point A, Point B){
 
 Point intersectPlanes(Point a1, Point n1, Point a2, Point n2, Point a3, Point n3){
 	Point x(n1.x, n2.x, n3.x);
-    Point y(n1.y, n2.y, n3.y);
-    Point z(n1.z, n2.z, n3.z); 
-    Point d(dot(a1, n1), dot(a2, n2), dot(a3, n3));
-    return Point(triple(d, y, z),
-                   triple(x, d, z),
-                   triple(x, y, d)) / triple(n1, n2, n3);
+	Point y(n1.y, n2.y, n3.y);
+	Point z(n1.z, n2.z, n3.z); 
+	Point d(dot(a1, n1), dot(a2, n2), dot(a3, n3));
+	return Point(triple(d, y, z), 
+				triple(x, d, z), 
+				triple(x, y, d)) / triple(n1, n2, n3);
 }
 
 Double areaDet(Point P1, Point P2, Point P3 ){
@@ -427,23 +424,22 @@ Double area(vector<Point> &v) {
 int main() {
 	ios_base::sync_with_stdio(false);
 	cin.tie(NULL);
-	/*
-		5 6
-		7 -3
-		2 3
-		9
-		
-		20.9 3.5
-		9 15.3
-		2 3
-		9
-		
-		11.4 3.5
-		11.4 9
-		2.4 3.6
-		9
-	
-	*/
+/*
+5 6
+7 -3
+2 3
+9
+
+20.9 3.5
+9 15.3
+2 3
+9
+
+11.4 3.5
+11.4 9
+2.4 3.6
+9
+*/
 	Point P1,P2;
 	Double r1,r2;
 	
