@@ -125,5 +125,3 @@ vector<pair<Long,Long> > getAllSolutions(Long a, Long b, Long c, Long lx, Long r
 int main() {
 	return 0;
 }
-
-

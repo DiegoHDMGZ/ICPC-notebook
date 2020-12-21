@@ -33,7 +33,7 @@ Long hilbertOrder(int x, int y, int pow, int rotate) {
 	ans += (seg == 1 || seg == 2) ? add : (subSquareSize - add - 1);
 	return ans;
 }
- 
+
 struct Query{
 	Long id, l, r, order;
 	Query(){}

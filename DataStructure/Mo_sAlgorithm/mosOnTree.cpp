@@ -191,7 +191,7 @@ struct Mo{
 		return answer;
 	}
 }mo;
- 
+
 int main(){
-    return 0;
+	return 0;
 }

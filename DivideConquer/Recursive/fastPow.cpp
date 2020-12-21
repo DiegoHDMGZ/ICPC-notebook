@@ -18,16 +18,16 @@ Long mult(Long a, Long b, Long mod){
 }
 
 Long fastPow(Long a, Long b , Long mod){ //O(logb)
-    if(b == 0) {
+	if(b == 0) {
 		return 1;
 	}
-    Long ans = fastPow( a , b / 2 , mod);
-    ans = mult(ans , ans , mod);
-    if(b % 2 == 1){
+	Long ans = fastPow( a , b / 2 , mod);
+	ans = mult(ans , ans , mod);
+	if(b % 2 == 1){
 		ans = mult(ans , a , mod);
 	}
 	return ans;
-}    
+}
 
 int main() {
 	return 0;

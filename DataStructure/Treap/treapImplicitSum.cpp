@@ -9,13 +9,13 @@ typedef long long Long;
 
 const int MAXINT = 1e9;
 const Long INF = 1e18;
- 
+
 mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
- 
+
 Long random(Long a, Long b){
 	return uniform_int_distribution<int> (a , b) (rng);
 }
- 
+
 struct Item{
 	Long value,prior , cnt , add;
 	Item *l, *r;

@@ -2,11 +2,11 @@
 #define debug(x) cout << #x << " = " << x << endl
 #define REP(i , n) for(Long i = 0; i < (Long)n ; i++)
 #define pb push_back
- 
+
 using namespace std;
- 
+
 typedef long long Long;
- 
+
 const Long MX = 1e5 + 5;
 const Long SQ = sqrt(MX) + 1;
 
@@ -21,15 +21,15 @@ struct SQRT{
 		n = x;
 		sq = sqrt(n) + 1;
 	}
-	 
+	
 	Long block(Long i){
 		return i / sq;
 	}
-	 
+	
 	Long lowerLim(Long i){
 		return (i / sq)* sq;
 	}
-	 
+	
 	Long upperLim(Long i ){
 		return min(lowerLim(i) + sq - 1 , n - 1);
 	}
@@ -54,7 +54,7 @@ struct SQRT{
 			ans[block(i)] += v[i];
 		}
 	}
-	 
+	
 	void update(Long l , Long r , Long x){
 		if(l > r) return;
 		if(block(l) == block(r)){
@@ -79,7 +79,7 @@ struct SQRT{
 			lazy[block(i)] += x;
 		} 
 	}
-	 
+	
 	Long query(Long l , Long r){
 		if(l > r) return 0;
 		

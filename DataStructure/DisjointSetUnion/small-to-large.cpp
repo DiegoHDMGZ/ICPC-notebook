@@ -42,7 +42,7 @@ struct DSU{
 		}
 	}
 }dsu;
- 
+
 int main() {
 	return 0;
 }

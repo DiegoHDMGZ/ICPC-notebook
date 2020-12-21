@@ -11,8 +11,10 @@ const Long MX = 1e5;
 struct Line{
 	mutable Long m , b , rInter;
 	Line(){}
-	Line(Long m , Long b, Long rInter) : m(m), b(b) , rInter(rInter){}
-	Line(Long m , Long b) : m(m), b(b) , rInter(0){}
+	Line(Long m , Long b, Long rInter) : 
+		m(m), b(b) , rInter(rInter){}
+	Line(Long m , Long b) : 
+		m(m), b(b) , rInter(0){}
 	
 	Long val(Long x){
 		return m * x + b;
@@ -20,15 +22,15 @@ struct Line{
 };
 
 struct cmpLine {
-    bool operator() (const Line &L1, const Line &L2) const {
-        return L1.m < L2.m;
-    }
+	bool operator() (const Line &L1, const Line &L2) const {
+		return L1.m < L2.m;
+	}
 };
 
 struct cmpInter {
-    bool operator() (const Line &L1, const Line &L2) const {
-        return L1.rInter < L2.rInter;
-    }
+	bool operator() (const Line &L1, const Line &L2) const {
+		return L1.rInter < L2.rInter;
+	}
 };
 
 const Long INF = 1e18;
@@ -55,7 +57,6 @@ struct CHT{
 		return intersect(l2 , l3) <= intersect(l1, l2);
 	}
 	
-
 	void addLine(Line L){ //O(log n)
 		L.m *= -1;
 		L.b *= -1;
@@ -118,10 +119,5 @@ struct CHT{
 }cht;
 
 int main() {
-	ios_base::sync_with_stdio(false);
-	cin.tie(NULL);
-	cout.tie(NULL);
-	
-
 	return 0;
 }
