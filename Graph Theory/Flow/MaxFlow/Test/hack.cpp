@@ -3,7 +3,7 @@
 #define REP(i , n) for(Long i = 0; i < (Long)n ; i++)
 #define pb push_back
 using namespace std;
- 
+
 typedef long long Long;
 
 const Long MX = 3000;
@@ -79,7 +79,7 @@ struct Graph{
 	}
 	
 } G;
- 
+
 int main(){
 	ios_base::sync_with_stdio(false);
 	cin.tie(NULL);

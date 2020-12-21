@@ -12,8 +12,9 @@ struct Path{
 	Long node, weight;
 	Path(){}
 	
-	Path(Long node,Long weight) : node(node) , weight(weight) {}
- 
+	Path(Long node,Long weight) : 
+		node(node) , weight(weight) {}
+
 	bool operator >(const Path &P) const{
 		return weight > P.weight;
 	}

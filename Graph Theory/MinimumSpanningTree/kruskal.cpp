@@ -48,8 +48,8 @@ struct Edge{
 	Edge() {}
 	Edge(Long u, Long v, Long w) : u(u) , v(v) , w(w) {}
 	bool operator <(Edge const &other) const{
-        return w < other.w;
-    }
+		return w < other.w;
+	}
 };
 
 struct Graph{

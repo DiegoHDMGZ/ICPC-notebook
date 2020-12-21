@@ -51,5 +51,5 @@ struct Graph{
 } G;
 
 int main() {
-    return 0;
+	return 0;
 }
