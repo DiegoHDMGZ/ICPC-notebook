@@ -10,10 +10,10 @@ const Long INF = 1e18;
 
 Long d[MX];
 struct Compare{
-    bool operator() (Long u, Long v) const {
+	bool operator() (Long u, Long v) const {
 		if (d[u] == d[v]) return u < v; 
-        return d[u] < d[v];
-    }
+		return d[u] < d[v];
+	}
 };
 
 struct Graph{
