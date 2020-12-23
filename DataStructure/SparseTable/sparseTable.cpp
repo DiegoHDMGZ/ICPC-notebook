@@ -23,7 +23,7 @@ struct SparseTable {
 			st[i][0] = A[i];
 		}
 		
-		for (Long k = 1; (1 << k) <= n; k++) {
+		for (Long k = 1; k < LG; k++) {
 			for (Long i = 0; i + (1 << k) <= n; i++) {
 				st[i][k] = f(st[i][k - 1], st[i + (1 << (k - 1))][k - 1]);
 			}
