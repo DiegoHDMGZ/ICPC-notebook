@@ -86,7 +86,6 @@ struct SuffixArray {
 
 	//Suffix array: contain starting indexes of the all the suffixes (sorted)
 	void build(string &s) { //O(n log n)
-		int n = s.size();
 		char minChar = 'a' - 1;
 		s += minChar;
 		suffixArray = sortCyclic(s);
