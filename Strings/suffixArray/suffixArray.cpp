@@ -93,6 +93,13 @@ struct SuffixArray {
 		s.pop_back();
 		buildLCP(s);
 	}
+		
+	/*int getLCP(int l, int r) {
+		assert(l != r);
+		int minPos = min(pos[l], pos[r]);
+		int maxPos = max(pos[l], pos[r]);
+		return min(lcp[minPos], ... , lcp[maxPos - 1])
+	}*/
 };
 
 int main() {
