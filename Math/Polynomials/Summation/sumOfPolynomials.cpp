@@ -82,6 +82,7 @@ polynomial operator +(const polynomial &A, const polynomial &B) {
 
 Long summation(polynomial &p, Long r) { //O(n^2)
 	//call precalc first
+	r %= MOD;
 	polynomial fallings;
 	for (Long i = 0; i < p.size(); i++) {
 		fallings = fallings + transformFalling(p[i], i);
