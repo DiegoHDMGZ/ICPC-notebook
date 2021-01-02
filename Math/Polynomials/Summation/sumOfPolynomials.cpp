@@ -89,7 +89,7 @@ Long summation(polynomial &p, Long r) { //O(n^2)
 	Long fact = 1;
 	Long x = r + 1;
 	for (Long i = 0; i < fallings.size(); i++) {
-		fact = fact = mult(fact , x);
+		fact = mult(fact , x);
 		x--;
 		Long coef = divide(fallings[i], i + 1);
 		ans = add(ans, mult(coef, fact)) ;
