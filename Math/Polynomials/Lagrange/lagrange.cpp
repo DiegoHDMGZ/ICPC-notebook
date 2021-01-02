@@ -46,13 +46,11 @@ polynomial operator *(const polynomial &a, const polynomial &b) {
 	Long n = a.size();
 	Long m = b.size();
 	polynomial ans(n + m - 1 , 0);
-	
 	REP(i , n){
 		REP(j , m){
 			ans[i + j] = add(ans[i + j] , mult(a[i] , b[j]));
 		}
 	}
-
 	return ans;
 } 
 
@@ -124,11 +122,6 @@ Long interpolate(Long x, vector<Long> &xSample, vector<Long> &ySample){//O(n^2)
 	return y;
 }
 
-
 int main() {
-	ios_base::sync_with_stdio(false);
-	cin.tie(NULL);
-	cout.tie(NULL);
-	
 	return 0;
 }

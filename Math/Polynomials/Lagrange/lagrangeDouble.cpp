@@ -14,13 +14,11 @@ polynomial operator *(const polynomial &a, const polynomial &b) {
 	Long n = a.size();
 	Long m = b.size();
 	polynomial ans(n + m - 1 , 0);
-	
 	REP(i , n){
 		REP(j , m){
 			ans[i + j] +=a[i] * b[j];
 		}
 	}
-
 	return ans;
 } 
 
@@ -89,30 +87,6 @@ Long interpolate(Double x, vector<Double> &xSample, vector<Double> &ySample){//O
 	return y;
 }
 
-void print(string name, polynomial p){
-	cout << name << " = ";
-	for(Long i = (Long)p.size() - 1; i >= 0; i--){
-		cout << fixed << setprecision(2) << p[i] << "x" << i;
-		if(i != 0) cout << " + ";
-	}
-	cout << endl;
-}
-
 int main() {
-	ios_base::sync_with_stdio(false);
-	cin.tie(NULL);
-	cout.tie(NULL);
-	
-	vector<Double> X, Y;
-	Long n;
-	cin >> n;
-	REP(i , n){
-		Long x , y;
-		cin >> x >> y;
-		X.pb(x);
-		Y.pb(y);
-	}
-	print("lagrange", lagrange(X, Y));
-	
 	return 0;
 }
