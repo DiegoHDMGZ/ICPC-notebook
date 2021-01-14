@@ -6,7 +6,6 @@ using namespace std;
 typedef long long Long;
 
 const int MX = 2e5;
-const int ALPH = 26;
 struct SuffixAutomaton{
 	int len[2 * MX];
 	int link[2 * MX];
