@@ -7,20 +7,20 @@ using namespace std;
 
 typedef long long Long;
 
-Long getBit(Long mask, Long i){
-	return (mask >> i) & 1LL;
+int getBit(Long mask, int i){
+	return (mask >> i) & 1;
 }
 
-void turnOn(Long &mask, Long i){
-	mask = mask | (1LL << i);
+Long turnOn(Long mask, int i){
+	return mask | (1LL << i);
 }
 
-void turnOff(Long &mask, Long i){
-	mask = mask & (~(1LL << i));
+int turnOff(Long mask, int i){
+	return mask & (~(1LL << i));
 }
 
-void changeBit(Long &mask, Long i){
-	mask = mask ^ (1LL << i);
+int changeBit(Long mask, int i){
+	return mask ^ (1LL << i);
 }
 
 //__builtin_popcount() : number of bits on
