@@ -5,11 +5,18 @@ using namespace std;
 
 typedef long long Long;
 
+/*
+Properties:
+If the string s is the longest string in state u
+then all suffixes of s of length [len[link[u]] + 1, len[u]] are in state u
+*/
+
 const int MX = 2e5;
 struct SuffixAutomaton{
-	int len[2 * MX];
-	int link[2 * MX];
+	int len[2 * MX]; //the longest length of the substrings of this state
+	int link[2 * MX]; //the state with the maximum suffix not contain in current state
 	map<int, int> to[2 * MX]; //<= 3n - 4 transitions 
+	bool terminal[2 * MX];
 	int last;
 	int sz;
 	
@@ -48,8 +55,35 @@ struct SuffixAutomaton{
 		}
 	}
 	
+	void markTerminal() {
+		int u = last;
+		while (u != 0) {
+			terminal[u] = true;
+			u = link[u];
+		}
+	}
+	
 	void build(string &s) {
 		for (char c : s) addLetter(c);
+		markTerminal();
+	}
+	
+	int feed(string &t) {
+		int u = 0;
+		for (int i = 0; i < t.size(); i++) {
+			if (to[u][t[i]] == 0) return -1;
+			u = to[u][t[i]];
+		}
+		return u;
+	}
+	
+	bool isSuffix(string &t) {
+		int u = feed(t);
+		return u != -1 && terminal[u];
+	}
+	
+	bool find(string &t) {
+		return feed(t) != -1;
 	}
 	
 	Long countSubstrings() {
