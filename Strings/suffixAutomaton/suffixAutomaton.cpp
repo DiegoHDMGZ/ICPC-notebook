@@ -7,8 +7,12 @@ typedef long long Long;
 
 /*
 Properties:
-If the string s is the longest string in state u
+-If the string s is the longest string in state u
 then all suffixes of s of length [len[link[u]] + 1, len[u]] are in state u
+-The transitions form a DAG
+-All substrings in some state, appears with the same ending position
+-The number of path from some state to the final state
+is equal to the size of ending positions (the number of occurrences)
 */
 
 const int MX = 2e5;
