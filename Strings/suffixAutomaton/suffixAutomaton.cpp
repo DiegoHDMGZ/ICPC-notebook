@@ -11,7 +11,7 @@ Properties:
 then all suffixes of s of length [len[link[u]] + 1, len[u]] are in state u
 -The transitions form a DAG
 -All substrings in some state, appears with the same ending position
--The number of path from some state to some final state
+-The number of path from some state to some terminal state
 is equal to the size of ending positions (the number of occurrences)
 */
 
