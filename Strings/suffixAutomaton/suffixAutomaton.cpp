@@ -11,8 +11,8 @@ Properties:
 then all suffixes of s of length [len[link[u]] + 1, len[u]] are in state u
 -The transitions form a DAG
 -All substrings in some state, appears with the same ending position
--The number of path from some state to some terminal state
-is equal to the size of ending positions (the number of occurrences)
+-The size of the ending positions (the number of occurrences) of a state
+is the number of paths from that state to some terminal state
 */
 
 const int MX = 2e5;
@@ -75,7 +75,7 @@ struct SuffixAutomaton{
 	int feed(string &t) {
 		int u = 0;
 		for (int i = 0; i < t.size(); i++) {
-			if (to[u][t[i]] == 0) return -1;
+			if (to[u].find(t[i]) == to[u].end()) return -1;
 			u = to[u][t[i]];
 		}
 		return u;
