@@ -7,7 +7,7 @@ typedef long long Long;
 
 const Long MX = 2001;
 
-struct PartialSum{
+struct DifferenceArray{
 	Long A[MX];
 	Long difConst[MX + 1];
 	Long difArith[MX + 1];
@@ -67,7 +67,7 @@ struct PartialSum{
 	Long query(Long pos) { //O(1)
 		return A[pos];
 	}
-}ps;
+}df;
 
 int main() {
 	return 0;
