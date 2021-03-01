@@ -1,0 +1,2 @@
+From elsantodel90:
+for x in "D"*.in ; do echo $x; time "./D.exe" < "$x"; echo "***************************"; done
