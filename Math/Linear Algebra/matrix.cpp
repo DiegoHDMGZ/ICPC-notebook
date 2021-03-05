@@ -63,8 +63,8 @@ Matrix operator *(const Matrix &a, const Matrix &b){ //O( n^3)
 	return c;
 }
 
-void print(Matrix a , string nombre){
-	cout << nombre << " = " << endl;
+void print(Matrix a , string name){
+	cout << name << " = " << endl;
 	Long n = a.size();
 	Long m = a[0].size();
 	for(Long i = 0; i < n; i++){
