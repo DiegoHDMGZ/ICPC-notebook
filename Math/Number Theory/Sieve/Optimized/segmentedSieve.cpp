@@ -10,6 +10,7 @@ bool isPrime[MX];
 vector<Long> primes;
 
 void sieve(){ //O(MX)
+	//generate all the primes up to sqrt(R) for the range [L, R]
 	//x = i * p. p is the smallest prime factor
 	fill(isPrime, isPrime + MX , true);
 	isPrime[0] = false;
