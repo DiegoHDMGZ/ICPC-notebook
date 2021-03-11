@@ -6,7 +6,13 @@ using namespace std;
 
 typedef long long Long;
 
-const Long MX = 1e5;
+/*
+We have "n" linear functions yi = mi x + bi
+There are queries for the maximum y for a given x among all the functions. 
+
+For minimum just put the negative of mi and bi.
+*/
+
 
 struct Line{
 	mutable Long m , b , rInter;
@@ -45,6 +51,10 @@ struct CHT{
 	}
 	
 	Long div(Long a, Long b){ //floored division
+		//CAREFUL ! this won't produced the right convex envelope
+		//but the maxY function will still work for integers
+		//if you need the correct convex envelope, use double division
+		//or multiplication in "bad" function
 		return a / b - ((a ^ b) < 0 && a % b); 
 	}
 	

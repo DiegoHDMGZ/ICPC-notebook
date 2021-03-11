@@ -13,7 +13,6 @@ There are queries for the maximum y for a given x among all the functions.
 For minimum just put the negative of mi and bi.
 */
 
-const Long MX = 2e5;
 const Long INF = 1e18;
 
 struct Line{
@@ -38,6 +37,10 @@ struct CHT{
 	set<Line , less<>> envelope;
 	
 	Long div(Long a, Long b){ //floored division
+		//CAREFUL ! this won't produced the right convex envelope
+		//but the maxY function will still work for integers
+		//if you need the correct convex envelope, use double division
+		//or multiplication in "bad" function
 		return a / b - ((a ^ b) < 0 && a % b); 
 	}
 	
