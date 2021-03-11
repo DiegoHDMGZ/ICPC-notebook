@@ -44,7 +44,7 @@ struct Hash{
 		return hash(l , r) == hashInverse(l , r);
 	}
 
-	void precalc(string &s) { //O(n)
+	void build(string &s) { //O(n)
 		Long n = s.size();
 		pot = hashPref = vector<Long>(n);
 		hashSuf = vector<Long>(n + 1);
@@ -71,9 +71,9 @@ struct MultiHash{
 		}
 	}
 	
-	void precalc(string &s) {
+	void build(string &s) {
 		for (int i = 0; i < hashes.size(); i++) {
-			hashes[i].precalc(s);
+			hashes[i].build(s);
 		}
 	}
 	
