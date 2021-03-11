@@ -10,7 +10,8 @@ const int ALPH = 256;
 
 struct SuffixArray {
 	vector<int> suffixArray;
-	vector<int> lcp;
+	vector<int> lcp; 
+	//lcp[i] = largest common preffix of sa[i] and sa[i + 1] (in sorted list) 
 	
 	vector<int> sortCyclic(string &s) { //O(n log n)
 		int n = s.size();
@@ -85,7 +86,7 @@ struct SuffixArray {
 	}
 
 	//Suffix array: contain starting indexes of the all the suffixes (sorted)
-	void build(string &s) { //O(n log n)
+	SuffixArray(string &s) { //O(n log n)
 		char minChar = 'a' - 1;
 		s += minChar;
 		suffixArray = sortCyclic(s);
