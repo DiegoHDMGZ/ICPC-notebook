@@ -15,7 +15,7 @@ Long sub(Long a, Long b) {
 }
 
 Long operate(Long a, Long b, Long (*op)(Long, Long)) {
-	return (*op)(a, b);
+	return op(a, b);
 }
 
 int main() {
