@@ -26,7 +26,7 @@ struct MaxQueue{
 	
 	void pop(){ //O(1) amortized
 		if (s2.empty()) {
-			//s1 = inverse(s2)
+			//s2 = inverse(s1)
 			while (!s1.empty()) {
 				Long element = s1.top().first;
 				s1.pop();
