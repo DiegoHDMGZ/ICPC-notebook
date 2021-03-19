@@ -12,15 +12,15 @@ int getBit(Long mask, int i){
 }
 
 void turnOn(Long &mask, int i){
-	return mask | (1LL << i);
+	mask |= (1LL << i);
 }
 
 void turnOff(Long &mask, int i){
-	return mask & (~(1LL << i));
+	mask &= (~(1LL << i));
 }
 
 void changeBit(Long &mask, int i){
-	return mask ^ (1LL << i);
+	mask ^= (1LL << i);
 }
 
 //__builtin_popcount() : number of bits on
