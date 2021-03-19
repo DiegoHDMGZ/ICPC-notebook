@@ -11,15 +11,15 @@ int getBit(Long mask, int i){
 	return (mask >> i) & 1;
 }
 
-Long turnOn(Long mask, int i){
+void turnOn(Long &mask, int i){
 	return mask | (1LL << i);
 }
 
-int turnOff(Long mask, int i){
+void turnOff(Long &mask, int i){
 	return mask & (~(1LL << i));
 }
 
-int changeBit(Long mask, int i){
+void changeBit(Long &mask, int i){
 	return mask ^ (1LL << i);
 }
 
