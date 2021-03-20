@@ -3,25 +3,20 @@
 #define REP(i, n) for (Long i = 0; i < (Long)n; i++)
 using namespace std;
 
+//source : https://github.com/peon-pasado/kactl/blob/master/content/number-theory/Factor.h
 typedef long long Long;
+typedef unsigned long long ULong;
+typedef long double Double;
 
-Long add(Long a, Long b, Long mod) {
-	if (a + b < mod) return a + b;
-	return a + b - mod;
+//Works for numbers < 2^63
+ULong mult(ULong a, ULong b, ULong M) {
+	Long ret = a * b - M * ULong(Double(a) * Double(b) / Double(M));
+	return ret + M * (ret < 0) - M * (ret >= (Long)M);
 }
-
-Long mult(Long a, Long b, Long mod) {
+/*Long mult(__int128 a, __int128 b, Long mod) {
 	//Use fastMult or 128-bit integer
-	Long ans = 0;
-	while (b > 0) {
-		if (b & 1) { //b % 2 == 1
-			ans = add(ans ,a , mod);
-		}
-		a = add(a , a , mod);
-		b >>= 1; //b /= 2
-	}
-	return ans;
-}
+	return (a * b) % mod;
+}*/
 
 Long fastPow(Long a, Long b , Long mod) { //O(log b)
 	Long ans = 1;
@@ -81,21 +76,30 @@ Long random(Long a, Long b) {
 	return uniform_int_distribution<Long>(a , b)(rng);
 }
 
-Long getFactor(Long n) { //O(n^(1/4) log n) average
+const int BUCKET = 40;
+
+Long getFactor(Long n) {
 	if (isPrime(n)) return n;
-	Long x = random(0 , n - 1), k = 2, d = 1, i = 1;
-	Long y = x, c = random(0, n - 1);
-	while (d == 1) {
-		i++;
-		x = mult(x, x, n);
-		x = add(x, c , n);
-		d = __gcd(abs(y - x), n);
-		if (i == k) {
-			y = x;
-			k *= 2;
-		}
+	auto f = [n](Long x) { return mult(x, x, n) + 1; };
+	//x = 0 will also work
+	Long x = random(0, n - 1), y = x;
+	int t = 0, i = 1;
+	Long product = 2;
+	while (true) {
+		t++;
+		if (x == y) x = ++i, y = f(x);
+		Long cum = mult(abs(y - x), product, n);
+		if (cum != 0) product = cum;
+		x = f(x);
+		y = f(f(y));
+		if (t == BUCKET) {
+			t = 0;
+			Long ans = __gcd(product, n);
+        	if (ans != 1) {
+        		return getFactor(ans);
+			}
+        }
 	}
-	return getFactor(d);
 }
 
 vector<pair<Long, Long>> factorize(Long n) {
