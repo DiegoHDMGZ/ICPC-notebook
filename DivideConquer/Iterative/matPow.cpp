@@ -53,7 +53,7 @@ Matrix matPow( Matrix a, Long b ){ //O(n^3 log b) only square matrix
 		ans[i][i] = 1;
 	}
 	while(b > 0){
-		if(b & 1 == 1){ //b % 2 == 1
+		if(b & 1){ //b % 2 == 1
 			ans = ans * a;
 		}
 		a = a * a;

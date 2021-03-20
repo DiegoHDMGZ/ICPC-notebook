@@ -14,7 +14,7 @@ Long add(Long a, Long b, Long mod) {
 Long fastMult(Long a, Long b, Long mod) {
 	Long ans = 0;
 	while (b > 0) {
-		if (b & 1 == 1) { //b % 2 == 1
+		if (b & 1) { //b % 2 == 1
 			ans = add(ans ,a , mod);
 		}
 		a = add(a , a , mod);
