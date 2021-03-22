@@ -14,15 +14,15 @@ For minimum just put the negative of mi and bi.
 */
 
 
-struct Line{
-	mutable Long m , b , rInter;
+struct Line {
+	mutable Long m , b , r;
 	Line(){}
-	Line(Long m , Long b, Long rInter) : 
-		m(m), b(b) , rInter(rInter){}
+	Line(Long m , Long b, Long r) : 
+		m(m), b(b) , r(r){}
 	Line(Long m , Long b) : 
-		m(m), b(b) , rInter(0){}
+		m(m), b(b) , r(0){}
 	
-	Long val(Long x){
+	Long val(Long x) {
 		return m * x + b;
 	}
 };
@@ -35,7 +35,7 @@ struct cmpLine {
 
 struct cmpInter {
 	bool operator() (const Line &L1, const Line &L2) const {
-		return L1.rInter < L2.rInter;
+		return L1.r < L2.r;
 	}
 };
 
@@ -45,12 +45,7 @@ struct CHT{
 	set<Line , cmpLine> envelope;
 	set<Line, cmpInter> envelopeQuery;
 	
-	void clear(){
-		envelope.clear();
-		envelopeQuery.clear();
-	}
-	
-	Long div(Long a, Long b){ //floored division
+	Long div(Long a, Long b) { //floored division
 		//CAREFUL ! this won't produced the right convex envelope
 		//but the maxY function will still work for integers
 		//if you need the correct convex envelope, use double division
@@ -58,63 +53,50 @@ struct CHT{
 		return a / b - ((a ^ b) < 0 && a % b); 
 	}
 	
-	Long intersect(Line l1, Line l2){
+	Long intersect(Line l1, Line l2) {
 		return div(l1.b - l2.b , l2.m - l1.m );
 	}
 	
-	bool bad(Line l1, Line l2, Line l3){
+	bool bad(Line l1, Line l2, Line l3) {
 		//tells if l2 is bad an can be eliminated by l3
 		return intersect(l2 , l3) <= intersect(l1, l2);
 	}
 	
-	void addLine(Line L){ //O(log n)
-		L.m *= -1;
-		L.b *= -1;
-		L.rInter = INF;
+	void addLine(Line L) { //O(log n)
+		L.r = INF;
 		auto it = envelope.lower_bound(L);
-		if(it != envelope.end()){ //same slope
-			if(it->m == L.m){
-				if(it->b >= L.b){
-					return;
-				} else {
-					envelopeQuery.erase(*it);
-					it = envelope.erase(it);
-				}
+		if (it != envelope.end() && it->m == L.m) { //same slope
+			if(it->b >= L.b) return;
+			else {
+				envelopeQuery.erase(*it);
+				it = envelope.erase(it);
 			}
 		}
-		if(it != envelope.begin()){
-			if(it != envelope.end()){
-				if(bad(*prev(it), L , *it)){ //L is not necessary
-					return;
-				} 
+		if (it != envelope.begin()) {
+			if (it != envelope.end() && bad(*prev(it), L , *it)) {
+				//L is not necessary
+				return;
 			}
 			it--;
-			while(it != envelope.begin()){ //left elimination
-				if(bad(*prev(it), *it, L)){
+			while (it != envelope.begin()) { //left elimination
+				if (bad(*prev(it), *it, L)) {
 					envelopeQuery.erase(*it);
 					it = envelope.erase(it);
 					it--;
-				} else {
-					break;
-				}
+				} else break;
 			}
-			envelopeQuery.lower_bound(*it)->rInter = intersect(*it, L);
-			it->rInter = intersect(*it, L);
-			
+			envelopeQuery.lower_bound(*it)->r = intersect(*it, L);
+			it->r = intersect(*it, L);
 		} 
-		
 		it = envelope.upper_bound(L);
-		
-		if(it != envelope.end()){
-			while(next(it) != envelope.end()){ //right elimination
-				if(bad(L , *it, *next(it))){
+		if (it != envelope.end()) {
+			while (next(it) != envelope.end()) { //right elimination
+				if (bad(L , *it, *next(it))) {
 					envelopeQuery.erase(*it);
 					it = envelope.erase(it);
-				} else {
-					break;
-				}
+				} else break;
 			}
-			L.rInter = intersect(L , *it);
+			L.r = intersect(L , *it);
 		}
 		envelope.insert(L);
 		envelopeQuery.insert(L);
@@ -123,10 +105,9 @@ struct CHT{
 	Long maxY(Long x){ //O(log n)
 		assert(!envelopeQuery.empty());
 		Line L = *envelopeQuery.lower_bound(Line(0,0, x));
-		return -L.val(x);
+		return L.val(x);
 	}
-	
-}cht;
+};
 
 int main() {
 	return 0;
