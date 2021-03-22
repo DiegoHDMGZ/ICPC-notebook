@@ -9,10 +9,11 @@ typedef long long Long;
 /*
 We have "n" linear functions yi = mi x + bi
 There are queries for the maximum y for a given x among all the functions. 
+Trick: Construct the lower envelope hull
 
 For minimum just put the negative of mi and bi.
+Or change the comparator sign in cmp, in check function and in same slope case
 */
-
 
 struct Line {
 	mutable Long m , b , r;
@@ -22,7 +23,7 @@ struct Line {
 	Line(Long m , Long b) : 
 		m(m), b(b) , r(0){}
 	
-	Long val(Long x) {
+	Long getVal(Long x) {
 		return m * x + b;
 	}
 };
@@ -105,7 +106,7 @@ struct CHT{
 	Long maxY(Long x){ //O(log n)
 		assert(!envelopeQuery.empty());
 		Line L = *envelopeQuery.lower_bound(Line(0,0, x));
-		return L.val(x);
+		return L.getVal(x);
 	}
 };
 

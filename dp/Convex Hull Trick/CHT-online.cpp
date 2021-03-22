@@ -9,9 +9,10 @@ typedef long long Long;
 /*
 We have "n" linear functions yi = mi x + bi
 There are queries for the maximum y for a given x among all the functions. 
+Trick: Construct the lower envelope hull
 
 For minimum just put the negative of mi and bi.
-Or change the comparator sign in cmp, and in check and in same slope case
+Or change the comparator sign in cmp, in check function and in same slope case
 */
 
 const Long INF = 1e18;
@@ -30,7 +31,7 @@ struct Line {
 		return r < x;
 	}
 	
-	Long val(Long x) {
+	Long getVal(Long x) {
 		return m * x + b;
 	}
 };
@@ -89,7 +90,7 @@ struct CHT{
 	Long maxY(Long x) { //O(log n)
 		assert(!envelope.empty());
 		Line L = *envelope.lower_bound(x);
-		return L.val(x);
+		return L.getVal(x);
 	}
 	
 };

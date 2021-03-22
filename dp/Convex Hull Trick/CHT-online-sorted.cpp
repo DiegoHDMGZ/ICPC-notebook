@@ -7,9 +7,11 @@ using namespace std;
 typedef long long Long;
 
 /*
-We have "n" linear functions yi = mi x + bi
+We have linear functions yi = mi x + bi that will be added
+in increasing order of m.
+
 There are queries for the maximum y for a given x among all the functions. 
-Trick: Construct the lower envelope hull
+The queries are sorted in increasing/decreasing order of x
 
 For minimum just put the negative of mi and bi.
 Or change the comparator sign in cmp, and in check and in same slope case
@@ -20,36 +22,14 @@ struct Line{
 	Line() {}
 	Line(Long m , Long b) : m(m), b(b){}
 	
-	bool operator < (const Line &other) const {
-		if (m == other.m) return b > other.b;
-		return m < other.m;
-	}
-	
 	Long getVal(Long x) {
 		return m * x + b;
 	}
 };
 
 struct CHT{
-	vector<Line> envelope;
-	
-	bool check(Long mid, Long x) {
-		return envelope[mid + 1].getVal(x) - envelope[mid].getVal(x) <= 0;
-	}
+	deque<Line> envelope;
 
-	Long search(Long low , Long high, Long x) { //O(log n)
-		// F F F... T T T
-		if (!check(high - 1, x)) return envelope[high].getVal(x); //all F
-		if (check(low, x)) return envelope[low].getVal(x); //all T
-		while (high - low > 1) { 
-			Long mid = low + (high - low) / 2;
-			if (check(mid , x)) high = mid;
-			else low = mid;
-		}
-		//2 values low -> F and high-> T
-		return envelope[high].getVal(x);
-	}
-	
 	Long div(Long a, Long b) { //floored division
 		//CAREFUL ! this won't produced the right convex envelope
 		//but the maxY function will still work for integers
@@ -68,12 +48,16 @@ struct CHT{
 		return intersect(l2 , l3) <= intersect(l1, l2);
 	}
 
-	void addLine(Line l3) {
+	void addLine(Line l3) { 
 		if(envelope.empty()) {
 			envelope.push_back(l3);
 			return;
 		}
-		if(l3.m == envelope.back().m) return;
+		if(l3.m == envelope.back().m) {
+			if (l3.b > envelope.back().b) {
+				envelope.pop_back();
+			} else return;
+		}
 		if(envelope.size() <= 1) {
 			envelope.push_back(l3);
 			return;
@@ -90,20 +74,22 @@ struct CHT{
 		}
 		envelope.push_back(l3);
 	}
-
-	void build(vector<Line> &lines){ //O(n log n)
-		sort(lines.begin(), lines.end());
-		for(Line l : lines){
-			addLine(l);
-		}
-	}
 	
-	Long maxY(Long x){ //O(log n)
+	Long maxY(Long x){ //O(1) amortized
 		assert(!envelope.empty());
-		if (envelope.size() == 1) {
-			return envelope[0].getVal(x);
+		//x increasing
+		while (envelope.size() >= 2 && envelope[0].getVal(x) < envelope[1].getVal(x)) {
+			envelope.pop_front();
 		}
-		return search(0, (Long)envelope.size() - 1, x);
+		return envelope[0].getVal(x);
+		
+		//x decreasing
+		/*int sz = envelope.size();
+		while (sz >= 2 && envelope[sz - 1].getVal(x) < envelope[sz - 2].getVal(x)) {
+			envelope.pop_back();
+			sz--;
+		}
+		return envelope.back().getVal(x);*/
 	}
 };
 
