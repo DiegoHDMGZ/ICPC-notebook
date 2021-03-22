@@ -31,7 +31,7 @@ Long gcd(Long a, Long b, Long &x, Long &y) { //O(min(loga,logb))
 	return g;
 }
 
-bool CRT(pair<Long, Long> p1, pair<Long ,Long> p2, pair<Long ,Long> &resp) {
+bool CRT(pair<Long, Long> p1, pair<Long ,Long> p2, pair<Long ,Long> &ans) {
 	if(p1.second < p2.second) {
 		swap(p1 , p2);
 	}
@@ -53,7 +53,7 @@ bool CRT(pair<Long, Long> p1, pair<Long ,Long> p2, pair<Long ,Long> &resp) {
 	aux = (aux % den) * p1.first % lcm;
 	aux = normalize(aux, lcm); 
 	aux = (aux + p1.second) % lcm;
-	resp = make_pair(lcm , aux);
+	ans = make_pair(lcm , aux);
 	return true;
 }
 
