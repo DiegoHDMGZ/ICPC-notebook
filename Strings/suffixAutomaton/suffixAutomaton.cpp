@@ -14,6 +14,14 @@ then all suffixes of s of length [len[link[u]] + 1, len[u]] are in state u
 -Each path represent a unique substring
 -The size of the ending positions (the number of occurrences) of a state
 is the number of paths from that state to some terminal state
+-The suffix links form a tree
+-Each leaf of the tree have a preffix as their longest suffix
+
+Observations:
+*If you put a special character $ at the end of the string
+then all the suffixes will be in the last node
+*If you put a special character $ at the beggining of the string
+then each prefix will "have" a differentleaf in the tree of the suffix links
 */
 
 const int MX = 2e5;
