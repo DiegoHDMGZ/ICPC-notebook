@@ -14,7 +14,7 @@ struct Trie{
 	bool term[MX]; //terminal node
 	Long nodes = 1;
 	
-	void init() {
+	void clear() {
 		for (Long i = 0; i < nodes; i++) {
 			term[i] = 0;
 			for (int j = 0; j < ALPH; j++) {
