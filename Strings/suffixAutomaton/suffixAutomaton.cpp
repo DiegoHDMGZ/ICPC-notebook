@@ -22,6 +22,7 @@ struct SuffixAutomaton{
 	int link[2 * MX]; //the state with the maximum suffix not contain in current state
 	map<int, int> to[2 * MX]; //<= 3n - 4 transitions 
 	bool terminal[2 * MX];
+	//int firstPos[2 * MX]; first ending position
 	int last;
 	int sz;
 	
@@ -38,6 +39,7 @@ struct SuffixAutomaton{
 			link[i] = -1;
 			to[i].clear();
 			terminal[i] = false;
+			//firstPos[i] = -1;
 		}
 		last = 0;
 		sz = 1;
@@ -47,6 +49,7 @@ struct SuffixAutomaton{
 		int p = last;
 		last = sz++; 
 		len[last] = len[p] + 1;
+		//firstPos[last] = len[p];
 		while (p != -1 && to[p][c] == 0) {
 			to[p][c] = last;
 			p = link[p];
@@ -61,6 +64,7 @@ struct SuffixAutomaton{
 			return;
 		}
 		int clone = sz++;
+		//firstPos[clone] = firstPos[q];
 		to[clone] = to[q];
 		link[clone] = link[q];
 		link[last] = link[q] = clone;
