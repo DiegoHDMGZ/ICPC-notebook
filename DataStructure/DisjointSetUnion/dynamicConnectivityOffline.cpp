@@ -97,6 +97,7 @@ struct Query{
 		type(type), l(id), r(id), u(min(u , v)), v(max(u , v)){}
 	bool operator <(const Query &other) const {
 		if (type == QUERY) return true;
+		if (other.type == QUERY) return false;
 		return make_pair(make_pair(u , v), l) 
 		< make_pair(make_pair(other.u , other.v), other.l);
 	}
@@ -182,5 +183,31 @@ namespace DynamicConnectivity{
 };
 
 int main() {
+	Long n, m;
+	cin >> n >> m;
+	vector<Query> queries;
+	for (int i = 0; i < m; i++) {
+		char op;
+		cin >> op;
+		if (op == '+') {
+			Long u, v;
+			cin >> u >> v;
+			u--;
+			v--;
+			queries.push_back(Query(ADD, i , u, v));
+		} else if(op == '-') {
+			Long u, v;
+			cin >> u >> v;
+			u--;
+			v--;
+			queries.push_back(Query(REMOVE, i, u, v));
+		} else {
+			queries.push_back(Query(QUERY, i));
+		}
+	}
+	vector<Long> answer = DynamicConnectivity::getAnswer(n, queries);
+	for (Long i = 0; i < answer.size(); i++) {
+		cout << answer[i] << "\n";
+	}
 	return 0;
 }
