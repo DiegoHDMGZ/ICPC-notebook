@@ -11,6 +11,7 @@ struct DSU{
 	Long parent[MX];
 	Long size[MX];
 	Long parity[MX];
+	bool bipartite;
 	
 	void make_set(Long u) { //O(1)
 		parent[u] = u;
@@ -22,6 +23,7 @@ struct DSU{
 		for (int i = 0; i < n; i++) {
 			make_set(i);
 		}
+		bipartite = true;
 	}
 	
 	pair<Long,Long> find(Long u) { //O(1) amortized
@@ -38,8 +40,7 @@ struct DSU{
 		return find(u).second;
 	}
 	
-	bool join(Long u, Long v) { //O(1) amortized
-		//true if is still bipartite after adding the edge
+	void join(Long u, Long v) { //O(1) amortized
 		auto pu = find(u);
 		auto pv = find(v);
 		u = pu.first;
@@ -51,9 +52,8 @@ struct DSU{
 			parent[u] = v;
 			size[v] += size[u];
 			parity[u] ^= pu.second ^ pv.second ^ 1;
-			return true;
 		} else {
-			return pu.second != pv.second;
+			bipartite &= pu.second != pv.second;
 		}
 	}
 }dsu;
