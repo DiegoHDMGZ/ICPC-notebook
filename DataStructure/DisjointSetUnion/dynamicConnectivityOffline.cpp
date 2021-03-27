@@ -9,7 +9,7 @@ typedef long long Long;
 /*
 add(u, v) — add an edge u − v into the graph;
 remove(u, v) — add an edge u − v into the graph;
-query() — return number of components
+query() — return number of components / is the graph bipartite / etc
 */
 
 const int MX = 3e5;
@@ -96,6 +96,7 @@ struct Query{
 	Query(Long type, Long id, Long u = -1, Long v = -1) :
 		type(type), l(id), r(id), u(min(u , v)), v(max(u , v)){}
 	bool operator <(const Query &other) const {
+		if (type == QUERY) return true;
 		return make_pair(make_pair(u , v), l) 
 		< make_pair(make_pair(other.u , other.v), other.l);
 	}
@@ -108,11 +109,12 @@ namespace DynamicConnectivity{
 		int i = 0;
 		while (i < queries.size()) {
 			if (queries[i].type == QUERY) {
-				//get
+				//queries
 				ans.push_back(queries[i]);
 				i++;
 			} else {
-				//range
+				//change add-remove type by range type
+				//range represents the interval in which the edge is activated
 				assert(queries[i].type == ADD);
 				Query newQuery = queries[i];
 				newQuery.type = RANGE;
