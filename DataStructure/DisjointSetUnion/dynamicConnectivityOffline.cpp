@@ -107,7 +107,7 @@ namespace DynamicConnectivity{
 		vector<Query> ans;
 		int i = 0;
 		while (i < queries.size()) {
-			if (queries[i].type == 1) {
+			if (queries[i].type == QUERY) {
 				//get
 				ans.push_back(queries[i]);
 				i++;
