@@ -10,6 +10,7 @@ typedef long long Long;
 add(u, v) — add an edge u − v into the graph;
 remove(u, v) — add an edge u − v into the graph;
 query() — return number of components / is the graph bipartite / etc
+or query(u, v) - return if u and v are in the same component / etc
 */
 
 const int MX = 3e5;
@@ -96,8 +97,8 @@ struct Query{
 	Query(Long type, Long id, Long u = -1, Long v = -1) :
 		type(type), l(id), r(id), u(min(u , v)), v(max(u , v)){}
 	bool operator <(const Query &other) const {
-		if (type == QUERY) return true;
 		if (other.type == QUERY) return false;
+		if (type == QUERY) return true;
 		return make_pair(make_pair(u , v), l) 
 		< make_pair(make_pair(other.u , other.v), other.l);
 	}
