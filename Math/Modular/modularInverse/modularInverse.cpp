@@ -15,7 +15,7 @@ Long mult(Long a, Long b) {
 Long fastPow(Long a, Long b) { //O(logb)
 	Long ans = 1;
 	while (b > 0) {
-		if ((b & 1) == 1) { 
+		if (b & 1) { 
 			ans = mult(ans , a);
 		}
 		a = mult(a , a);
