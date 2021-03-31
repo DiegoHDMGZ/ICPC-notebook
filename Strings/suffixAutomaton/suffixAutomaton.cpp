@@ -34,25 +34,6 @@ struct SuffixAutomaton{
 	int last;
 	int sz;
 	
-	SuffixAutomaton() {
-		last = 0;
-		sz = 1;
-		link[0] = -1;
-		len[0] = 0;
-	}
-	
-	void clear() {
-		for (int i = 0; i < sz; i++) {
-			len[i] = 0;
-			link[i] = -1;
-			to[i].clear();
-			terminal[i] = false;
-			//firstPos[i] = -1;
-		}
-		last = 0;
-		sz = 1;
-	}
-	
 	void addLetter(char c) { //Overall O(n)
 		int p = last;
 		last = sz++; 
@@ -92,6 +73,17 @@ struct SuffixAutomaton{
 	}
 	
 	void build(string &s) {
+		link[0] = -1;
+		len[0] = 0;
+		for (int i = 0; i < sz; i++) {
+			len[i] = 0;
+			link[i] = -1;
+			to[i].clear();
+			terminal[i] = false;
+			//firstPos[i] = -1;
+		}
+		last = 0;
+		sz = 1;
 		for (char c : s) addLetter(c);
 		markTerminal();
 	}
