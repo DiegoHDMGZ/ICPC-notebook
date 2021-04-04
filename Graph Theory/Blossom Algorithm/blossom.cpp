@@ -1,7 +1,6 @@
 #include <bits/stdc++.h>
 #define debug(x) cout << #x << " = " << x << endl
 #define REP(i,n) for(Long i = 0; i < (Long)n; i++)
-#define pb push_back
 using namespace std;
 
 typedef long long Long;
@@ -25,8 +24,8 @@ struct Graph{
 	}
 	
 	void addEdge(Long u , Long v){
-		adj[u].pb(v);
-		adj[v].pb(u);
+		adj[u].push_back(v);
+		adj[v].push_back(u);
 	}
 	
 	Long lca(Long u , Long v , Long n){ //O(n)
