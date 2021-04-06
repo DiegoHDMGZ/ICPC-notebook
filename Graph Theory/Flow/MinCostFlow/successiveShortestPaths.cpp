@@ -108,6 +108,7 @@ struct Graph{
 	}
 	pair<Long,Long> minCostFlow(Long s, Long t, Long n){ 
 		//O(n * m |f| ) = O(n * m * (nU))
+		//Initially no negative cycles
 		//<maxFlow, minCost>
 		pair<Long,Long> inc;
 		pair<Long,Long> ans = {0,0};
