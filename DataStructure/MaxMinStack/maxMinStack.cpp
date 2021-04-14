@@ -16,7 +16,7 @@ struct MaxStack{
 	}
 	
 	void add(Long newElement) { //O(1) amortized
-		Long newVal = s.empty() ? newElement : min(newElement, s.top().second);
+		Long newVal = s.empty() ? newElement : f(newElement, s.top().second);
 		s.push({newElement , newVal});
 	}
 	
