@@ -116,6 +116,7 @@ struct Graph{
 	
 	pair<Long,Long> minCostFlow(Long s, Long t, Long n){ 
 		//O(m log n *  |f| ) = O(m log n *(nU))
+		//Initially no negative cycles
 		//<maxFlow, minCost>
 		spfa(s , n); //not necessary if there is no negative edges
 		pair<Long,Long> inc;
