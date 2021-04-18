@@ -32,6 +32,7 @@ struct Basis{
 			int pos = 63 - __builtin_clzll(A[best]);
 			for (int j = 0; j < n ;j++) {
 				if (blocked[j]) continue;
+				if (A[j] == 0) continue;
 				int pos2 = 63 - __builtin_clzll(A[j]);
 				if (pos == pos2) {
 					A[j] ^= A[best];
