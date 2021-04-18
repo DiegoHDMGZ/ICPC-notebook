@@ -9,8 +9,8 @@ int getBit(Long mask, int pos) {
 	return (mask >> pos) & 1;
 }
 
-struct Base{
-	vector<Long> base;
+struct Basis{
+	vector<Long> basis;
 	
 	//gauss elimination
 	vector<Long> getBasis(vector<Long> &A) {
@@ -50,12 +50,12 @@ struct Base{
 		return ans;
 	}
 
-	Base(vector<Long> A) {
-		base = getBasis(A);
+	Basis(vector<Long> A) {
+		basis = getBasis(A);
 	}
 	
 	Long minXor(Long x) {
-		for (Long c : base) {
+		for (Long c : basis) {
 			x = min(x ^ c, x);
 		}
 		return x;
