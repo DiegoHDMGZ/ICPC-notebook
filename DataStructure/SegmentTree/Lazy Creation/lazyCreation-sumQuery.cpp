@@ -19,7 +19,7 @@ struct Node{
 	
 	void push(Long tl, Long tr) { //O(1)
 		//Create children if they are NULL
-		if(!left){
+		if (left == nullptr) {
 			left = new Node();
 			right = new Node();
 		}
