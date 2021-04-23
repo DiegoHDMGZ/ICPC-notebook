@@ -38,22 +38,19 @@ struct Graph {
 		return u;
 	}
 	
-	void build(int root = 0) {
+	void build(int root = 0, int p = -1) {
 		findSize(root);
 		int centroid = findCentroid(root, size[root]);
 		vis[centroid] = true;
-		for (int v : adj[root]) {
+		parent[centroid] = p;
+		for (int v : adj[centroid]) {
 			if (!vis[v]) {
-				parent[v] = centroid;
-				build(v);
+				build(v, centroid);
 			}
 		}
 	}
 }G; 
 
 int main() {
-	ios_base::sync_with_stdio(false);
-	cin.tie(0);
-
 	return 0;
 }
