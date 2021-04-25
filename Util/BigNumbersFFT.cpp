@@ -1,7 +1,6 @@
 #include <bits/stdc++.h>
 #define debug(x) cout << #x << " = " << x << endl
 #define REP(i,n) for(Long i = 0; i < (Long)n; i++)
-#define pb push_back
 
 using namespace std;
 
@@ -124,7 +123,7 @@ struct Big{
 	Long sgn;
 	
 	Big(){
-		digits.pb(0);
+		digits.push_back(0);
 		sgn = 1;
 	}
 	
@@ -152,11 +151,11 @@ struct Big{
 			i++;
 		}
 		while(i < v.size()){
-			transf.pb(v[i]);
+			transf.push_back(v[i]);
 			i++;
 		}
 		if(transf.size() == 0){
-			transf.pb(0);   
+			transf.push_back(0);   
 		}
 		if(transf.size()==1 && transf[0] == 0) {
 			s = 1;
