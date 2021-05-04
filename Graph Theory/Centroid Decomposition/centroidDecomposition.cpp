@@ -44,9 +44,9 @@ struct Graph {
 		return u;
 	}
 	
-	void build(int root = 0, int p = -1) {
-		findSize(root);
-		int centroid = findCentroid(root, size[root]);
+	void build(int u = 0, int p = -1) {
+		findSize(u);
+		int centroid = findCentroid(u, size[u]);
 		vis[centroid] = true;
 		parent[centroid] = p;
 		for (int v : adj[centroid]) {
