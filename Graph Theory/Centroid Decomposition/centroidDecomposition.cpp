@@ -5,6 +5,12 @@ using namespace std;
 
 typedef long long Long;
 
+/*
+Property :
+A path from u to v in the original tree can be decomposed into
+the path from u to centroid.lca(u , v) and from centroid.lca(u , v) to v
+*/
+
 const int MX = 1e5;
 struct Graph {
 	vector<int> adj[MX];
