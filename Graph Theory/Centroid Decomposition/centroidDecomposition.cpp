@@ -13,10 +13,10 @@ the path from u to centroid.lca(u , v) and from centroid.lca(u , v) to v
 
 const int MX = 1e5;
 struct Graph {
-	vector<int> adj[MX];
+	vector<int> adj[MX]; //original tree
 	int size[MX];
 	bool vis[MX];
-	int parent[MX];
+	int parent[MX]; //parent in the centroid decomposition tree
 	
 	void addEdge(int u, int v) {
 		adj[u].push_back(v);
