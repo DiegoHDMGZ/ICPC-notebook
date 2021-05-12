@@ -72,18 +72,12 @@ struct Point{
 		Long n = poly.size();
 		Point P = Point(*this);
 		if(n == 1) {
-			if(P == poly[0]) {
-				return 0;
-			} else{
-				return -1;
-			}
+			if (P == poly[0]) return 0;
+			else return -1;
 		}
 		if(n == 2) {
-			if(P.inSegment(poly[0] , poly[1])) {
-				return 0;
-			} else{
-				return -1;
-			}
+			if(P.inSegment(poly[0] , poly[1])) return 0;
+			else return -1;
 		}
 		//verify if the angle of the point lies between the angle of p0p1 and p0pn-1
 		if(poly[0].cross(poly[1] , P)  != 0 
@@ -101,14 +95,9 @@ struct Point{
 			high = low;
 		} else {
 			while(high - low > 1){ 
-				Long mid= (low + high) / 2;
-				
-				if(poly[0].cross(poly[mid] , P) <= 0){
-					high = mid;
-				} 
-				else {
-					low = mid;
-				}
+				Long mid = (low + high) / 2;
+				if(poly[0].cross(poly[mid] , P) <= 0) high = mid;
+				else low = mid;
 			}
 		}
 		if(!P.inTriangle(poly[0] , poly[high - 1] , poly[high])) {
@@ -127,9 +116,8 @@ struct Point{
 	}
 	
 	void debugPoint(string nombre){
-		cout << nombre << " = ( " << fixed << setprecision(2) <<  x << " , " << y  << " ) " << endl; 
+		cout << nombre << " = ( " << fixed << setprecision(2) << x << " , " << y  << " ) " << endl; 
 	}
-	
 };
 
 
@@ -146,23 +134,7 @@ void prepare(vector<Point> &poly) {
 	rotate(poly.begin() , poly.begin() + pos , poly.end());
 }
 
-
 int main() {
-	/*ios_base::sync_with_stdio(false);
-	cin.tie(NULL);
-	*/
-/*
-6
-1 2
--3 -2
-2 -8
-8 -8
-14 0
-8 4
-
-8 4
-
-*/
 	vector<Point> v;
 	cout << "N = ";
 	Long N;
