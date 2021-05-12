@@ -16,18 +16,18 @@ Long sgn(Long val) {
 }
 
 struct Point{
-	Long x,y;
+	Long x, y;
 	
-	Point() : x(0), y(0){}
+	Point() : x(0), y(0) {}
 	Point(Long x, Long y) : x(x), y(y) {}
 
-	Point operator -= (const Point &t){
+	Point operator -= (const Point &t) {
 		x -= t.x;
 		y -= t.y;
 		return *this;
 	}
 
-	Point operator - (const Point &t) const{
+	Point operator - (const Point &t) const {
 		return Point(*this) -= t;
 	}
 	
@@ -39,11 +39,11 @@ struct Point{
 		return x * P.y - y * P.x;
 	}
 	
-	Long cross(const Point &a , const Point &b) const {
+	Long cross(const Point &a, const Point &b) const {
 		return (a - *this).cross(b - *this);
 	}
 	
-	bool inTriangle(Point A, Point B , Point C) {
+	bool inTriangle(Point A, Point B, Point C) {
 		//compare areas
 		Point P = Point(*this);
 		Long a1 = abs(A.cross(B , C));
@@ -61,7 +61,7 @@ struct Point{
 		return false;
 	}
 	
-	Long inPolygon( vector<Point> &poly ) { //O(log n)
+	Long inPolygon( vector<Point> &poly) { //O(log n)
 		//works with convex polygons in counter-clockwise order
 		//use prepare (poly) before using it
 		//-1 : outside
@@ -78,42 +78,42 @@ struct Point{
 			else return -1;
 		}
 		//verify if the angle of the point lies between the angle of p0p1 and p0pn-1
-		if(poly[0].cross(poly[1] , P)  != 0 
-			&& sgn(poly[0].cross(poly[1] , P)  ) != sgn(poly[0].cross(poly[1] , poly[n - 1]) )) {
+		if(poly[0].cross(poly[1] , P) != 0 
+			&& sgn(poly[0].cross(poly[1] , P)) != sgn(poly[0].cross(poly[1] , poly[n - 1]))) {
 			return -1;
 		}
 		if(poly[0].cross(P , poly[n - 1]) != 0 
-			&& sgn(poly[0].cross(P , poly[n - 1]) ) != sgn(poly[0].cross(poly[1] , poly[n - 1]) )) {
+			&& sgn(poly[0].cross(P , poly[n - 1])) != sgn(poly[0].cross(poly[1] , poly[n - 1]))) {
 			return -1;
 		}
 	
 		Long low = 2;
 		Long high = n - 1;
-		if(poly[0].cross(poly[low], P) <= 0){
+		if (poly[0].cross(poly[low], P) <= 0) {
 			high = low;
 		} else {
-			while(high - low > 1){ 
+			while (high - low > 1) { 
 				Long mid = (low + high) / 2;
-				if(poly[0].cross(poly[mid] , P) <= 0) high = mid;
+				if (poly[0].cross(poly[mid] , P) <= 0) high = mid;
 				else low = mid;
 			}
 		}
-		if(!P.inTriangle(poly[0] , poly[high - 1] , poly[high])) {
+		if (!P.inTriangle(poly[0] , poly[high - 1] , poly[high])) {
 			return -1;
 		}
-		if(P.inSegment(poly[high - 1] , poly[high] )) {
+		if (P.inSegment(poly[high - 1] , poly[high])) {
 			return 0;
 		}
-		if(P.inSegment(poly[0] , poly[1] )) {
+		if (P.inSegment(poly[0] , poly[1])) {
 			return 0;
 		}
-		if(P.inSegment(poly[0], poly[n - 1] )) {
+		if (P.inSegment(poly[0], poly[n - 1])) {
 			return 0;
 		}
 		return 1;
 	}
 	
-	void debugPoint(string nombre){
+	void debugPoint(string nombre) {
 		cout << nombre << " = ( " << fixed << setprecision(2) << x << " , " << y  << " ) " << endl; 
 	}
 };
@@ -123,9 +123,8 @@ void prepare(vector<Point> &poly) {
 	//make sure the first point have minimum x (minimum y in case of ties)
 	Long sz = poly.size();
 	Long pos = 0;
-	
 	for(Long i = 1; i < sz; i++) {
-		if(make_pair(poly[i].x , poly[i].y) < make_pair(poly[pos].x , poly[pos].y) ) {
+		if(make_pair(poly[i].x , poly[i].y) < make_pair(poly[pos].x , poly[pos].y)) {
 			pos = i;
 		}
 	}
