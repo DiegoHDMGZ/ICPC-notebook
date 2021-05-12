@@ -1,8 +1,6 @@
 #include <bits/stdc++.h>
 #define debug(x) cout << #x << " = " << x << endl
 #define REP(i,n) for(Long i = 0; i < (Long)n; i++)
-#define pb push_back
-
 using namespace std;
 
 typedef long long Long;
@@ -135,32 +133,5 @@ void prepare(vector<Point> &poly) {
 }
 
 int main() {
-	vector<Point> v;
-	cout << "N = ";
-	Long N;
-	cin >> N;
-	
-	cout << "Puntos (antihorario):" << endl;
-	REP(i , N) {
-		Point P;
-		cin >> P.x >> P.y;
-		v.pb(P);
-	}
-	prepare(v);
-	cout << "queries : " << endl;
-	while(true) {
-		Point target;
-		cin >> target.x >> target.y;
-		Long x = target.inPolygon(v);
-		if(x >= 0) {
-			if(x == 0) {
-				cout << "Borde" << endl;
-			} else{
-				cout << "Dentro" << endl;
-			}
-		} else {
-			cout << "Fuera" << endl;
-		}
-	}
 	return 0;
 }
