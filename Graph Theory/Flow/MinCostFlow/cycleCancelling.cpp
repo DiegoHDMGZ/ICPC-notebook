@@ -20,19 +20,17 @@ struct Graph{
 	Long level[MX];
 	Long nextEdge[MX];
 	Edge* parent[MX];
-	vector<Edge*> E;
 	
-	void clear(Long N = MX){
-		for(Long i = 0 ; i < N; i++){
+	void clear(Long N = MX) {
+		for (Long i = 0 ; i < N; i++) {
 			adj[i].clear();
 			level[i] = -1;
 			nextEdge[i] = 0;
 			parent[i] = NULL;
 		}
-		E.clear();
 	}
 	
-	void addEdge(Long u, Long v, Long w, Long cost, bool dir){
+	void addEdge(Long u, Long v, Long w, Long cost, bool dir) {
 		Edge *forward = new Edge(u , v , w, cost);
 		Edge *backward = new Edge(v , u , 0, -cost);
 		forward->rev = backward;
@@ -40,25 +38,21 @@ struct Graph{
 
 		adj[u].push_back(forward);
 		adj[v].push_back(backward);
-		E.push_back(forward);
-		E.push_back(backward);
 		
-		if(!dir){
+		if (!dir) {
 			forward = new Edge(v , u , w, cost);
 			backward = new Edge(u , v , 0, -cost);
 			forward->rev = backward;
 			backward->rev = forward;
 			adj[v].push_back(forward);
 			adj[u].push_back(backward);
-			E.push_back(forward);
-			E.push_back(backward);
 		}
 	}
 	
-	pair<Long,Long> dfs(Long u, Long t ,Long f){ 
+	pair<Long,Long> dfs(Long u, Long t ,Long f) { 
 		//<flow, sumCost>
 		if(u == t) return {f , 0};
-		for(Long &i = nextEdge[u]; i < adj[u].size(); i++){
+		for (Long &i = nextEdge[u]; i < adj[u].size(); i++) {
 			Edge *e = adj[u][i];
 			Long v = e->to;
 			Long cf = e->cap - e->flow;
@@ -66,27 +60,27 @@ struct Graph{
 			
 			pair<Long,Long> ret = dfs(v, t, min(f, cf) );
 			
-			if(ret.first > 0){
+			if (ret.first > 0) {
 				e->flow += ret.first;
 				e->rev->flow -= ret.first;
 				Long cost = e->cost * ret.first;
 				return {ret.first , cost + ret.second};
 			}
 		}
-		return {0,0};
+		return {0, 0};
 	}
 	
-	bool bfs(Long s, Long t ){ //O(E)
+	bool bfs(Long s, Long t){ //O(E)
 		deque<Long> q; 
 		q.push_back(s);
 		level[s] = 0;
-		while(!q.empty()){
+		while (!q.empty()) {
 			Long u = q.front();
 			q.pop_front();
-			for(Edge *e: adj[u]){
+			for (Edge *e: adj[u]) {
 				Long v = e->to;
 				Long cf = e->cap - e->flow;
-				if(level[v] == -1 && cf > 0){
+				if (level[v] == -1 && cf > 0) {
 					level[v] = level[u] + 1;
 					q.push_back(v);
 				}
@@ -100,9 +94,9 @@ struct Graph{
 		//and for any vertex except s and t either incoming or outgoing edge is unique.
 		Long flow = 0;
 		Long cost = 0;
-		while(true){ //O(V) iterations
+		while (true) { //O(V) iterations
 			fill(level, level + n, -1);
-			if(!bfs(s, t) ){
+			if (!bfs(s, t)) {
 				break;
 			}
 			//after bfs, the graph is a DAG
@@ -117,59 +111,68 @@ struct Graph{
 		return {flow, cost};
 	}
 	
-	Long costCycle(Long u, Long n){
-		REP( i , n) {
+	Long costCycle(Long u, Long n) {
+		REP(i, n) {
 			u = parent[u]->from; //go back n times just in case
 			//There is no loss as this is a cycle
 		}
 		Long cf = INF;
 		Long cur = u;
-		while(true ){
+		while (true) {
 			cf = min(cf , parent[cur]->cap - parent[cur]->flow);
 			cur = parent[cur]->from;
-			if(cur == u){
+			if (cur == u) {
 				break;
 			}
 		}
 		cur = u;
 		Long cost = 0;
-		while(true ){
+		while (true) {
 			cost += cf * parent[cur]->cost;
 			parent[cur]->flow += cf;
 			parent[cur]->rev->flow -= cf;
 			cur = parent[cur]->from;
-			if(cur == u){
+			if (cur == u) {
 				break;
 			}
 		}
 		return cost;
 	}
 	
-	Long bellmanFord(Long n){ //O(nm)
+	Long spfa(Long n) { //O(EV)
 		vector<Long> d(n, 0);
-		Long m = E.size();
-		Long negaCycle; //negative cycle flag
-		
-		REP(i , n) {
-			negaCycle = -1; 
-			REP ( j , m ) {
-				if (d[E[j]->from] < INF && E[j]->cap - E[j]->flow > 0) {
-					if (d[E[j]->to] > d[E[j]->from] + E[j]->cost) {
-						d[E[j]->to] = max(-INF ,d[E[j]->from] + E[j]->cost); //avoiding overflow
-						parent[E[j]->to] = E[j];
-						negaCycle = E[j]->to;
+		queue<Long> q;
+		vector<bool> inQueue(n , true);
+		vector<Long> cnt(n, 0);
+		for (int u = 0; u < n; u++) {
+			q.push(u);
+		}
+		while (!q.empty()) {
+			Long u = q.front();
+			q.pop();
+			inQueue[u] = false;
+			cnt[u]++;
+			if (cnt[u] == n + 1) {
+				//negative cycle
+				return costCycle(u, n);
+			}
+			for (Edge* e : adj[u]) {
+				Long v = e->to;
+				Long cf = e->cap - e->flow;
+				Long w = e->cost;
+				if (cf > 0 && d[u] + w < d[v]) {
+					d[v] = d[u] + w;
+					parent[v] = e;
+					if (!inQueue[v]) {
+						q.push(v);
+						inQueue[v] = true;
 					}
 				}
 			}
-			if(negaCycle == -1) break;
 		}
 		
-		if(negaCycle == -1){
-			return 0; //no negative cycle
-		}
-		else{
-			return costCycle(negaCycle, n);
-		}
+		// no negative cycle
+		return 0;
 	
 	}
 	
@@ -179,18 +182,13 @@ struct Graph{
 		pair<Long,Long> ans = maxFlow(s, t , n);
 		Long inc;
 		do{
-			inc = bellmanFord(n );
+			inc = spfa(n);
 			ans.second += inc;
 		}while(inc < 0);
 		return ans;
 	}
 } G;
 
-
 int main() {
-	ios_base::sync_with_stdio(false);
-	cin.tie(NULL);
-	cout.tie(NULL);
-
 	return 0;
 }
