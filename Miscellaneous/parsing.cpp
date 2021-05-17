@@ -3,7 +3,7 @@ using namespace std;
 
 typedef long long Long;
 
-vector<Long> parsing(string &s) {
+vector<Long> parse(string &s) {
 	Long tokens;  
 	stringstream in(s);
 	vector<Long> out;
