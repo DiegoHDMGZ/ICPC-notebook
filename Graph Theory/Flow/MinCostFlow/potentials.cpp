@@ -28,7 +28,7 @@ struct Path{
 
 struct Graph{
 	vector<Edge*> adj[MX];
-	Edge *parent[MX];
+	Edge* parent[MX];
 	Long pot[MX];
 	bool inQueue[MX];
 	

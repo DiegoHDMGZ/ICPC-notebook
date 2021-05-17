@@ -17,7 +17,7 @@ struct Edge{
 
 struct Graph{
 	vector<Edge*> adj[MX];
-	Edge *parent[MX];
+	Edge* parent[MX];
 	vector<Edge*> E;
 	
 	void clear(Long N = MX){
