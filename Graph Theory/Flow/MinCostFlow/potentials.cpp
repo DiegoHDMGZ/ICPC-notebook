@@ -1,7 +1,6 @@
 #include <bits/stdc++.h>
 #define debug(x) cout << #x << " = " << x << endl
 #define REP(i,n) for(Long i = 0; i < (Long)n; i++)
-#define pb push_back
 using namespace std;
 
 typedef long long Long;
@@ -46,16 +45,16 @@ struct Graph{
 		Edge *backward = new Edge(v , u , 0, -cost);
 		forward->rev = backward;
 		backward->rev = forward;
-		adj[u].pb(forward);
-		adj[v].pb(backward);
+		adj[u].push_back(forward);
+		adj[v].push_back(backward);
 		
 		if(!dir){
 			forward = new Edge(v , u , w, cost);
 			backward = new Edge(u , v , 0, -cost);
 			forward->rev = backward;
 			backward->rev = forward;
-			adj[v].pb(forward);
-			adj[u].pb(backward);
+			adj[v].push_back(forward);
+			adj[u].push_back(backward);
 		}
 	}
 	
