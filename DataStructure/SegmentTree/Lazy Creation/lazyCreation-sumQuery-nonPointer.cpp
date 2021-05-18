@@ -21,8 +21,9 @@ struct SegmentTree {
 	int nodes;
 	Long maxN;
 	
-	SegmentTree() {
+	void build(Long n) {
 		nodes = 1;
+		maxN = n;
 	}
 	
 	void clear(Long n) {
