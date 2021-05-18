@@ -21,7 +21,11 @@ struct SegmentTree {
 	int nodes;
 	Long maxN;
 	
-	void clear(int n) {
+	SegmentTree() {
+		nodes = 1;
+	}
+	
+	void clear(Long n) {
 		for (int i = 0; i <= nodes; i++) {
 			left[i] = 0;
 			right[i] = 0;
