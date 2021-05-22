@@ -25,7 +25,7 @@ struct Graph{
 		cost[v][u] = -c;
 	}
 	
-	void spfa(Long s , Long n){ //O(nm)
+	void spfa(Long s , Long n){ //O(E V)
 		for(Long i = 0; i < n; i++){
 			pot[i] = INF;
 		}
@@ -50,9 +50,8 @@ struct Graph{
 	}
 	
 	
-	pair<Long,Long> dijkstra(Long s, Long t, Long n){ //O(n^2)
+	pair<Long,Long> dijkstra(Long s, Long t, Long n){ //O(V^2)
 		//<flow, cost>
-		
 		vector<Long> d(n , INF);
 		vector<bool> vis(n , false);
 		vector<Long> residualCap(n, 0);
@@ -105,7 +104,8 @@ struct Graph{
 	
 	
 	pair<Long,Long> minCostFlow(Long s, Long t, Long n){ 
-		//O(n^2 *  |f| ) = O(n^2 *(nU))
+		//O(V^2 * maxFlow)
+		//maxFlow <= V * U, where U is the maximum capacity
 		//Initially no negative cycles
 		//<maxFlow, minCost>
 		spfa(s  , n); //not necessary if there is no negative edges

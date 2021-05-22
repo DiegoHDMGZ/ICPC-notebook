@@ -36,7 +36,7 @@ struct Graph{
 		cost[v][u] = -c;
 	}
 	
-	void spfa(Long s , Long n){ //O(nm)
+	void spfa(Long s , Long n){ //O(E V)
 		for(Long i = 0; i < n; i++){
 			pot[i] = INF;
 		}
@@ -61,7 +61,7 @@ struct Graph{
 	}
 	
 	
-	pair<Long,Long> dijkstra(Long s, Long t, Long n){ //O(m log n)
+	pair<Long,Long> dijkstra(Long s, Long t, Long n){ //O(E log V)
 		//<flow, cost>
 		priority_queue<Path , vector<Path> , greater<Path>> q;
 		vector<Long> d(n , INF);
@@ -114,7 +114,8 @@ struct Graph{
 	
 	
 	pair<Long,Long> minCostFlow(Long s, Long t, Long n){ 
-		//O(m log n *  |f| ) = O(m log n *(nU))
+		//O(E log V *  maxFlow)
+		//maxFlow <= V * U, where U is the maximum capacity
 		//Initially no negative cycles
 		//<maxFlow, minCost>
 		spfa(s , n); //not necessary if there is no negative edges

@@ -21,12 +21,12 @@ struct Graph{
 	Long nextEdge[MX];
 	Edge* parent[MX];
 	
-	void clear(Long N = MX) {
-		for (Long i = 0 ; i < N; i++) {
+	void clear(int n) {
+		for (Long i = 0 ; i < n; i++) {
 			adj[i].clear();
 			level[i] = -1;
 			nextEdge[i] = 0;
-			parent[i] = NULL;
+			parent[i] = nullptr;
 		}
 	}
 	
@@ -139,7 +139,7 @@ struct Graph{
 		return cost;
 	}
 	
-	Long spfa(Long n) { //O(EV)
+	Long spfa(Long n) { //O(E V)
 		vector<Long> d(n, 0);
 		queue<Long> q;
 		vector<bool> inQueue(n , true);
@@ -177,7 +177,8 @@ struct Graph{
 	}
 	
 	pair<Long,Long> minCostFlow(Long s, Long t, Long n){ 
-		//O(dinic + nm * |totalCost|) = O(dinic + nm * (mUC))
+		//O(dinic + EV * |totalCost|) = O(dinic + EV * (mUC))
+		// |totalCost| <= E * U * C, where U is max cap and C max cost
 		//<maxFlow, minCost>
 		pair<Long,Long> ans = maxFlow(s, t , n);
 		Long inc;
