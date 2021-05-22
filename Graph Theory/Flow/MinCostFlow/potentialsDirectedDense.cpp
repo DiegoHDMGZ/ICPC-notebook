@@ -17,6 +17,20 @@ struct Graph{
 	Long pot[MX];
 	bool inQueue[MX];
 	
+	void clear(int n) {
+		for (Long i = 0 ; i < n; i++) {
+			adj[i].clear();
+			pot[i] = 0;
+			parent[i] = -1;
+			for (Long j = 0; j < n; j++) {
+				cap[i][j] = 0;
+				flow[i][j] = 0;
+				cost[i][j] = 0;
+			}
+		}
+	}
+	
+	
 	void addEdge(Long u, Long v, Long w, Long c){
 		adj[u].push_back(v);
 		adj[v].push_back(u);
