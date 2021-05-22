@@ -43,7 +43,7 @@ struct Graph{
 	
 	void addEdge(Long u, Long v, Long w, Long cost, bool dir) {
 		Edge forward(u, v, w, cost);
-		Edge backward(v,u,0,-cost);
+		Edge backward(v, u, 0, -cost);
 		indRev[u].push_back(adj[v].size());
 		indRev[v].push_back(adj[u].size());
 		adj[u].push_back(forward);
