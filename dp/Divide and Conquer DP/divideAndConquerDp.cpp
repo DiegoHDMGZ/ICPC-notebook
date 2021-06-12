@@ -44,7 +44,8 @@ void calculate(Long l, Long r, Long g, Long optL, Long optR) {
 	calculate(mid + 1 , r, g, opt, optR);
 }
 
-Long minCost(Long n, Long k, vector<Long> &S) {
+Long minCost(vector<Long> &S, int k) {
+	int n = S.size();
     for (int i = 0; i < n; i++) {
         pref[i + 1] = pref[i] + S[i];
     }
