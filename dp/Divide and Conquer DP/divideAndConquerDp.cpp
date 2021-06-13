@@ -9,6 +9,7 @@ typedef long long Long;
 //dp[r][1] = cost(0 , r)
 //opt[r][g] <= opt[r + 1][g] -> Appyl D&C
 //Quadrangle Inequality should hold:
+//For all a < b < c < d
 //cost(a, d) - cost(b, d) >= cost(a, c) - cost(b, c)  
 //(For maximization is the opposite sign)
 //You can use induction in the following:
