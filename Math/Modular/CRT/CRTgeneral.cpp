@@ -48,7 +48,7 @@ bool CRT(pair<Long, Long> p1, pair<Long ,Long> p2, pair<Long ,Long> &ans) {
 	//num = (a1 + x * r * d1 / g) % lcm
 	//Property : (ca) % (cb) = c * (a % b)
 	//=> num = (a1 + ( (x * r / g) % (d2/g) ) * d1 ) % lcm
-	Long aux = x* (r / g );
+	Long aux = x * (r / g );
 	Long den = p2.first / g;
 	aux = (aux % den) * p1.first % lcm;
 	aux = normalize(aux, lcm); 
