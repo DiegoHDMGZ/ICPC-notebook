@@ -7,7 +7,7 @@ using namespace std;
 typedef long long Long;
 
 //Property: the solutions given holds the following:
-//x <= |b / gcd(a, b)| , y <= |a / gcd(a, b)|
+//|x| <= |b / gcd(a, b)| , |y| <= |a / gcd(a, b)|
 Long gcd(Long a, Long b, Long &x, Long &y) { //O(min(loga,logb))
 	if(b == 0){
 		if(a >= 0) {
