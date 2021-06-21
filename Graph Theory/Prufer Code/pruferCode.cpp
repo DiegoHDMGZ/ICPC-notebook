@@ -28,7 +28,7 @@ struct Graph{
 		parent[u] = p;
 		for(Long v : adj[u]){
 			if(v == p) continue;
-			dfs(v, p);
+			dfs(v, u);
 		}
 	}
 };
