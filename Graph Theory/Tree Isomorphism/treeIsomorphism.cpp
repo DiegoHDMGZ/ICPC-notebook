@@ -75,7 +75,7 @@ struct Tree{
 					code.push_back(label[v]);
 				}
 			}
-			code.push_back(-1);
+			code.push_back(-1); //layer separator
 		}
 		
 		return code;
