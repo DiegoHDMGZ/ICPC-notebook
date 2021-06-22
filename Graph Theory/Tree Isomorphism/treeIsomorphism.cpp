@@ -77,10 +77,9 @@ struct Tree{
 			}
 			code.push_back(-1); //layer separator
 		}
-		
 		return code;
 	}
-}tree;
+} tree;
 
 int main() {
 	return 0;
