@@ -1,7 +1,6 @@
 #include <bits/stdc++.h>
 #define debug(x) cout << #x << " = " << x << endl
 #define REP(i , n) for(int i = 0; i < (int)n ; i++)
-#define pb push_back
 
 using namespace std;
 
@@ -32,8 +31,8 @@ struct BlockCutTree{
 	vector<int> adj[MX2];
 	
 	void addEdge(int u , int v){
-		adj[u].pb(v);
-		adj[v].pb(u);
+		adj[u].push_back(v);
+		adj[v].push_back(u);
 	}
 	
 	void clear(int N){
@@ -82,8 +81,8 @@ struct Graph{
 		clear(MX);
 	}
 	void addEdge(int u , int v){
-		adj[u].pb(v);
-		adj[v].pb(u);
+		adj[u].push_back(v);
+		adj[v].push_back(u);
 	}
 	
 	void addArticulation(int u){
