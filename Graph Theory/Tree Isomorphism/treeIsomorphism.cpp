@@ -6,17 +6,17 @@ using namespace std;
 typedef long long Long;
 
 const int MX = 1e5;
-const int INF = 1e9;
 struct Tree{
 	vector<int> adj[MX];
 	int depth[MX];
+	int parent[MX];
 	vector<int> layers[MX];
 	int label[MX];
+	int maxDepth;
 	
 	void clear(int n) {
 		for (int i = 0; i < n; i++) {
 			adj[i].clear();
-			depth[i] = INF;
 			layers[i].clear();
 		}
 	}
@@ -26,28 +26,20 @@ struct Tree{
 		adj[v].push_back(u);
 	}
 	
-	int bfs(int root, int n){
-		queue<int> q;
-		q.push(root);
-		depth[root] = 0;
-		int maxDepth = 0;
-		while (!q.empty()) {
-			int u = q.front();
-			maxDepth = max(maxDepth, depth[u]);
-			q.pop();
-			layers[depth[u]].push_back(u);
-			for(int v : adj[u]){
-				if (depth[v] == INF) {
-					depth[v] = depth[u] + 1;
-					q.push(v);
-				}
-			}
+	void dfs(int u, int p = -1){
+		maxDepth = max(maxDepth, depth[u]);
+		parent[u] = p;
+		layers[depth[u]].push_back(u);
+		for(int v : adj[u]){
+			if(v == p) continue;
+			depth[v] = depth[u] + 1;
+			dfs(v, u);
 		}
-		return maxDepth;
 	}
 	
 	vector<int> encode(int root, int n) {
-		int maxDepth = bfs(root, n);
+		maxDepth = 0;
+		dfs(root, n);
 		vector<int> code;
 		for (int d = maxDepth; d >= 0; d--) {
 			vector<pair<vector<int>, int>> sortedNodes;
@@ -63,6 +55,7 @@ struct Tree{
 				}
 				sortedNodes.push_back({children, u});
 			}
+			layers[d].clear();
 			sort(sortedNodes.begin(), sortedNodes.end());
 			label[sortedNodes[0].second] = 0;
 			for (int i = 1; i < sortedNodes.size(); i++) {
