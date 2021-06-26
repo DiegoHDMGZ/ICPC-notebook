@@ -39,7 +39,7 @@ struct Tree{
 	
 	vector<int> encode(int root, int n) {
 		maxDepth = 0;
-		dfs(root, n);
+		dfs(root);
 		vector<int> code;
 		for (int d = maxDepth; d >= 0; d--) {
 			vector<pair<vector<int>, int>> sortedNodes;
