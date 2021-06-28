@@ -18,7 +18,7 @@ typedef long long Long;
 //Then if f is convex (f''(x) >= 0), the quadrangle inequality holds
 //Also: cost(a, c + 1) = f(A + x), cost(a + 1 , c + 1) = f(A)
 //cost(a, c) = f(B + x) , cost(a + 1, c) = f(B), A = B + y
-//Notice that x = S_a and y = S_c
+//Notice that x = S_a and y = S_(c + 1)
 
 const int MX = 3000;
 Long dp[MX][MX + 1];
