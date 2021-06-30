@@ -114,15 +114,14 @@ struct Tree{
 	
 	vector<int> encode(int n) {
 		vector<int> centroids = getCentroids(n);
-		vector<int> code1 = encode(centroids[0], n);
+		vector<int> ans = encode(centroids[0], n);
 		if (centroids.size() == 1) {
-			return code1;
+			return ans;
 		}
 		vector<int> code2 = encode(centroids[1], n);
-		if (code1 < code2) {
-			swap(code1, code2);
+		if (ans < code2) {
+			swap(ans, code2);
 		}
-		vector<int> ans = code1;
 		ans.push_back(-2); //tree separator
 		for (int c : code2) ans.push_back(c);
 		return ans;
