@@ -102,7 +102,6 @@ struct Tree{
 	
 	vector<int> getCentroids(int n) {
 		findSize(0);
-		
 		vector<int> ans = {findCentroid(0, n)};
 		for (int v : adj[ans[0]]) {
 			if (2 * size[v] == n) {
