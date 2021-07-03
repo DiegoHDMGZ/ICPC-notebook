@@ -29,11 +29,11 @@ Long cost(Long l, Long r) {
 
 const Long INF = 1e18;
 
-void calculate(Long l, Long r, Long g, Long optL, Long optR) {
+void calculate(int l, int r, int g, int optL, int optR) {
 	if (l > r) return;
-	Long mid = (l + r) / 2;
+	int mid = (l + r) / 2;
 	dp[mid][g] = INF;
-	Long opt = optL;
+	int opt = optL;
 	for (int i = optL; i <= min(optR, mid - 1); i++) {
 		Long curCost = dp[i][g - 1] + cost(i + 1, mid);
 		if (curCost < dp[mid][g]) {
