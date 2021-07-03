@@ -14,7 +14,7 @@ void sieve(){ //O(MX log log MX)
 	isPrime[0] = isPrime[1] = false;
 	for(Long i = 2; i  < MX; i++){
 		if(isPrime[i]) {
-			primes.pb(i);
+			primes.push_back(i);
 			if(i * i < MX){
 				for(Long j = i * i; j < MX; j += i){
 					isPrime[j] = false;
