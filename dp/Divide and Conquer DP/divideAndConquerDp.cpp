@@ -13,12 +13,12 @@ typedef long long Long;
 //cost(a, d) - cost(b, d) >= cost(a, c) - cost(b, c)  
 //(For maximization is the opposite sign)
 //You can use induction in the following:
-//cost(a, c + 1) - cost(a + 1, c + 1) >= cost(a, c) - cost(a + 1, c)
+//cost(l, r) - cost(l + 1, r) >= cost(l, r - 1) - cost(l + 1, r - 1)
 //Also, if cost(l, r) = f(S_l + ... + S_r) and all S_i are positive
 //Then if f is convex (f''(x) >= 0), the quadrangle inequality holds
-//Also: cost(a, c + 1) = f(A + x), cost(a + 1 , c + 1) = f(A)
-//cost(a, c) = f(B + x) , cost(a + 1, c) = f(B), A = B + y
-//Notice that x = S_a and y = S_(c + 1)
+//Also: cost(l, r) = f(A + x), cost(l + 1 , r) = f(A)
+//cost(l, r - 1) = f(B + x) , cost(l + 1, r - 1) = f(B), A = B + y
+//Notice that x = S_l and y = S_r
 
 const int MX = 3000;
 Long dp[MX][MX + 1];
