@@ -22,7 +22,7 @@ typedef long long Long;
 
 const int MX = 3000;
 Long dp[MX][MX + 1];
-Long pref[MX];
+Long pref[MX + 1];
 Long cost(Long l, Long r) {
     return (pref[r + 1] - pref[l]) * (pref[r + 1] - pref[l]);
 }
