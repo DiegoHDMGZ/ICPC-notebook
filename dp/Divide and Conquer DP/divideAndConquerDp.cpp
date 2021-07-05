@@ -24,7 +24,7 @@ const int MX = 3000;
 Long dp[MX][MX + 1];
 Long pref[MX + 1];
 Long cost(Long l, Long r) {
-    return (pref[r + 1] - pref[l]) * (pref[r + 1] - pref[l]);
+	return (pref[r + 1] - pref[l]) * (pref[r + 1] - pref[l]);
 }
 
 const Long INF = 1e18;
@@ -47,20 +47,20 @@ void calculate(int l, int r, int g, int optL, int optR) {
 
 Long minCost(vector<Long> &S, int k) {
 	int n = S.size();
-    for (int i = 0; i < n; i++) {
-        pref[i + 1] = pref[i] + S[i];
-    }
-    for (int i = 0; i < n; i++) {
-        dp[i][1] = cost(0, i);
-    }
-    k = min(k, n);
-    for (int g = 2; g <= k; g++) {
-        calculate(0, n - 1, g, 0 , n - 1);
-    }
-    return dp[n - 1][k];
+	for (int i = 0; i < n; i++) {
+		pref[i + 1] = pref[i] + S[i];
+	}
+	for (int i = 0; i < n; i++) {
+		dp[i][1] = cost(0, i);
+	}
+	k = min(k, n);
+	for (int g = 2; g <= k; g++) {
+		calculate(0, n - 1, g, 0 , n - 1);
+	}
+	return dp[n - 1][k];
 }
 
 
 int main() {
-    return 0;
+	return 0;
 }
