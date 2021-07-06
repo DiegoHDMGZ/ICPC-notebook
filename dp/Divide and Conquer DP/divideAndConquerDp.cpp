@@ -55,7 +55,8 @@ Long minCost(vector<Long> &S, int k) {
 	}
 	k = min(k, n);
 	for (int g = 2; g <= k; g++) {
-		calculate(0, n - 1, g, 0 , n - 1);
+		calculate(0, n - 1, g, 0 , n - 1); 
+		//you can put l = optL = g - 2 to optimize the dp
 	}
 	return dp[n - 1][k];
 }
