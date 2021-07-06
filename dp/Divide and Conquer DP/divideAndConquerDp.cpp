@@ -32,11 +32,11 @@ const Long INF = 1e18;
 void calculate(int l, int r, int g, int optL, int optR) {
 	if (l > r) return;
 	int mid = (l + r) / 2;
-	dp[mid][g] = INF;
+	dp[mid][g] = INF; //change this for maximization
 	int opt = optL;
 	for (int i = optL; i <= min(optR, mid - 1); i++) {
 		Long curCost = dp[i][g - 1] + cost(i + 1, mid);
-		if (curCost < dp[mid][g]) {
+		if (curCost < dp[mid][g]) { //change sign for maximization
 			dp[mid][g] = curCost;
 			opt = i;
 		}
