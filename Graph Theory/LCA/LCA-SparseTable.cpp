@@ -54,7 +54,7 @@ struct Graph {
 		tIn[u] = timer++;
 		first[u] = euler.size();
 		euler.push_back({depth[u], u });
-		for (int v : adj[u] ) {
+		for (int v : adj[u]) {
 			if(p != v){
 				depth[v] = depth[u] + 1;
 				dfs(v , u);
