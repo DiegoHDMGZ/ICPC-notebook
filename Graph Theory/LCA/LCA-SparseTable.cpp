@@ -7,10 +7,10 @@ using namespace std;
 typedef long long Long;
 
 const Long MX = 1e5;
-const Long loga = 32 - __builtin_clz(MX);
+const Long LG = 32 - __builtin_clz(MX);
 
 struct SparseTable{
-	pair<Long,Long> st[2 * MX][loga + 1]; //<min depth , node>
+	pair<Long,Long> st[2 * MX][LG + 1]; //<min depth , node>
 	
 	pair<Long,Long> f(pair<Long,Long> a, pair<Long,Long> b){
 		return min(a , b);
