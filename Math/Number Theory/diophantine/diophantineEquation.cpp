@@ -119,7 +119,7 @@ vector<pair<Long,Long> > getAllSolutions(Long a, Long b, Long c, Long lx, Long r
 	if(kMin > kMax) return {};
 
 	for(Long k = kMin; k <= kMax; k++){
-		ans.push_back({x0 + k * (b / g) , y0 - k * (b / g)});
+		ans.push_back({x0 + k * (b / g) , y0 - k * (a / g)});
 	}
 	return ans;
 }
