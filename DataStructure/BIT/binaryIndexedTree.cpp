@@ -20,18 +20,18 @@ struct BIT{
 	
 	Long query(Long x) { //O(log n)
 		x += EXTRA;
-		Long sum = 0;
+		Long ans = 0;
 		while (x > 0) {
-			sum += tree[x];
+			ans += tree[x];
 			x -= (x & -x);
 		}
-		return sum;
+		return ans;
 	}
 	
-	void update(Long x, Long add) { //O(log n)
+	void update(Long x, Long val) { //O(log n)
 		x += EXTRA;
 		while (x < MX + EXTRA) {
-			tree[x] += add;
+			tree[x] += val;
 			x += (x & -x);
 		}
 	}
