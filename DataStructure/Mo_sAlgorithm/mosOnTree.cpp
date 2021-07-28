@@ -178,14 +178,13 @@ struct Mo{
 			}
 			Long u = G.node[l];
 			Long v = G.node[r];
-			if (queries[i].lca != u && queries[i].lca != v) {
+			if(queries[i].lca != u && queries[i].lca != v){
 				//Case 2
 				change(G.tIn[queries[i].lca], acum, A);
-			}
-			answer[queries[i].id] = acum;
-			if (queries[i].lca != u && queries[i].lca != v) {
-				//Case 2
+				answer[queries[i].id] = acum;
 				change(G.tIn[queries[i].lca], acum, A);
+			} else {
+				answer[queries[i].id] = acum;
 			}
 		}
 		return answer;
