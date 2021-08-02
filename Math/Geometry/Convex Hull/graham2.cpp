@@ -7,10 +7,9 @@ using namespace std;
 typedef long long Long;
 
 struct Point{
-	Long x,y;
+	Long x, y;
 	
-	Point() : x(0), y(0) {}
-	Point(Long x, Long y) : x(x) , y(y){}
+	Point(Long x = 0, Long y = 0) : x(x) , y(y){}
 
 	Point operator -= (const Point &t){
 		x -= t.x;
@@ -33,10 +32,6 @@ struct Point{
 	bool operator == (const Point &P) const {
 		return x == P.x && y == P.y;
 	}
-	
-	void debugPoint(string nombre){
-		cout << nombre << " = ( " << fixed << setprecision(2) <<  x << " , " << y  << " ) " << endl; 
-	}
 };
 
 bool cmp(const Point &P1 , const Point &P2) {
@@ -47,7 +42,7 @@ bool cmp(const Point &P1 , const Point &P2) {
 }
 
 vector<Point> convexHull(vector<Point> &v) { //O( n log n)
-//gives the convex hull in counter clockwise order
+	//gives the convex hull in counter clockwise order
 	Long n = v.size();
 	sort(v.begin(),v.end(), cmp);
 	
@@ -93,22 +88,6 @@ vector<Point> convexHull(vector<Point> &v) { //O( n log n)
 }
 
 int main() {
-	ios_base::sync_with_stdio(false);
-	cin.tie(NULL);
-	cout.tie(NULL);
-
-	vector<Point> v;
-	Long n;
-	cin >> n;
-	REP(i , n) {
-		Point P;
-		cin >> P.x >> P.y;
-		v.pb(P); 
-	}
-	vector<Point> hull = convexHull(v);
-	REP(i , hull.size()) {
-		hull[i].debugPoint("hull[" + to_string(i) + "]");
-	}
 	return 0;
 }
 

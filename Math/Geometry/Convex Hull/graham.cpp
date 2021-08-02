@@ -1,16 +1,14 @@
 #include <bits/stdc++.h>
 #define debug(x) cout << #x << " = " << x << endl
 #define REP(i,n) for(Long i = 0; i < (Long)n; i++)
-#define pb push_back
 using namespace std;
 
 typedef long long Long;
 
 struct Point{
-	Long x,y;
+	Long x, y;
 	
-	Point() : x(0), y(0) {}
-	Point(Long x, Long y) : x(x) , y(y){}
+	Point(Long x = 0, Long y = 0) : x(x) , y(y){}
 
 	Point operator -= (const Point &t){
 		x -= t.x;
@@ -33,10 +31,6 @@ struct Point{
 	bool operator == (const Point &P) const {
 		return x == P.x && y == P.y;
 	}
-	
-	void debugPoint(string nombre){
-		cout << nombre << " = ( " << fixed << setprecision(2) <<  x << " , " << y  << " ) " << endl; 
-	}
 };
 
 Point center;
@@ -53,7 +47,7 @@ bool cmp(const Point &P1 , const Point &P2) {
 }
 
 vector<Point> convexHull(vector<Point> &v) { //O( n log n)
-//gives the convex hull in counter clockwise order
+	//gives the convex hull in counter clockwise order
 	center = v[0];
 	Long n = v.size();
 	REP(i , n) {
@@ -70,8 +64,8 @@ vector<Point> convexHull(vector<Point> &v) { //O( n log n)
 	if(n < 3) {
 		return v;
 	}
-	hull.pb(v[0]);
-	hull.pb(v[1]);
+	hull.push_back(v[0]);
+	hull.push_back(v[1]);
 	for(Long i = 2 ; i < n; i++) {
 		Long sz = hull.size();
 		Point prev1 = hull[sz - 1];
@@ -83,28 +77,11 @@ vector<Point> convexHull(vector<Point> &v) { //O( n log n)
 			prev1 = hull[sz - 1];
 			prev2 = hull[sz - 2];
 		}
-		hull.pb(v[i]);
+		hull.push_back(v[i]);
 	}
 	return hull;
 }
 
 int main() {
-	ios_base::sync_with_stdio(false);
-	cin.tie(NULL);
-	cout.tie(NULL);
-
-	vector<Point> v;
-	Long n;
-	cin >> n;
-	REP(i , n) {
-		Point P;
-		cin >> P.x >> P.y;
-		v.pb(P); 
-	}
-	vector<Point> hull = convexHull(v);
-	REP(i , hull.size()) {
-		hull[i].debugPoint("hull[" + to_string(i) + "]");
-	}
 	return 0;
 }
-
