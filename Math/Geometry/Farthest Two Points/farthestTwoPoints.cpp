@@ -101,8 +101,7 @@ vector<Point> convexHull(vector<Point> &v) { //O( n log n)
 
 pair<Point,Point> farthestPair(vector<Point> &v) { //O(n log n)
 	vector<Point> P = convexHull(v);
-	Long n = P.size();
-	
+	int n = P.size();
 	if(n <= 1) {
 		return make_pair(P[0], P[0]);
 	}
@@ -112,24 +111,31 @@ pair<Point,Point> farthestPair(vector<Point> &v) { //O(n log n)
 	vector<pair<Point,Point> > antipodal;
 	
 	Long i = 0;
-	Long j = (i + 2) % n;
-	while( i < n) { //O(n)
+	Long j = i + 2;
+	auto nextPos = [&](int pos) {
+		if (pos + 1 < n) return pos + 1;
+		return 0;
+	};
+	auto prevPos = [&](int pos) {
+		if (pos - 1 >= 0) return pos - 1;
+		return n - 1;
+	};
+	while (i < n) { //O(n)
 		//Find the maximum distance from edge hull[i - j]
-		Line L(P[i] , P[(i + 1) % n]);
+		Line L(P[i] , P[nextPos(i)]);
 		Long d = L.calc(P[j]);
-		j = (j + 1) % n;	
-		while(d < L.calc(P[j])) {
+		j = nextPos(j);	
+		while (d < L.calc(P[j])) {
 			d = L.calc(P[j]);
-			j = (j + 1) % n;
+			j = nextPos(j);
 		}
-		Long ant = (j - 1 + n) % n;
-		antipodal.push_back({P[i] , P[ant]});
-		antipodal.push_back({P[(i + 1) % n] , P[ant]});
+		antipodal.push_back({P[i] , P[prevPos(j)]});
+		antipodal.push_back({P[nextPos(i)] , P[ prevPos(j)]});
 		if(L.calc(P[j]) == d) {
 			antipodal.push_back({P[i] , P[j]});
-			antipodal.push_back({P[(i + 1) % n] , P[j]});
+			antipodal.push_back({P[nextPos(i)] , P[j]});
 		}
-		j = (j - 1 + n) % n;
+		j = prevPos(j);
 		i++;
 	}
 	Long maxDist = -1;
