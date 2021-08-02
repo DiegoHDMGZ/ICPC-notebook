@@ -1,41 +1,21 @@
 #include <bits/stdc++.h>
 #define debug(x) cout << #x << " = " << x << endl
 #define REP(i,n) for(Long i = 0; i < (Long)n; i++)
-#define pb push_back
 using namespace std;
 
 typedef long long Long;
 
-const Long INF = 1e18;
 struct Point{
-	Long x,y;
+	Long x, y;
 	
-	Point(){
-		x = 0;
-		y = 0;
-	}
-	Point(Long _x, Long _y){
-		x = _x, y = _y;
-	}
+	Point(Long x = 0, Long y = 0) : x(x) , y(y){}
 
-	Point operator += (const Point &t){
-		x += t.x;
-		y += t.y;
-		return *this;
-	}
 	Point operator -= (const Point &t){
 		x -= t.x;
 		y -= t.y;
 		return *this;
 	}
-	Point operator *= (Long t){
-		x *= t;
-		y *= t;
-		return *this;
-	}
-	Point operator +(const Point &t) const {
-		return Point(*this) += t;
-	}
+
 	Point operator - (const Point &t) const{
 		return Point(*this) -= t;
 	}
@@ -50,10 +30,6 @@ struct Point{
 	
 	bool operator == (const Point &P) const {
 		return x == P.x && y == P.y;
-	}
-	
-	void debugPoint(string nombre){
-		cout << nombre << " = ( " << fixed << setprecision(2) <<  x << " , " << y  << " ) " << endl; 
 	}
 };
 
@@ -72,10 +48,6 @@ struct Line{
 	Long calc(Point P) {
 		return P.x * A + P.y * B + C;
 	}
-	
-	void debugLine(string nombre){
-		cout << nombre << " : " << A << "x + " << B << "y + " << C << " = 0" << endl;
-	}
 };
 
 Point center;
@@ -91,35 +63,9 @@ bool cmp(const Point &P1 , const Point &P2) {
 	return center.cross(P1 , P2) > 0;
 }
 
-void prepare(vector<Point> &v) { //O(n)
-	Long n = v.size();
-	vector<Point> transf;
-	Long i = 1;
-	transf.pb(v[0]);
-	while(i < n) {
-		if(v[i] == v[0]) {
-			i++;
-			continue;
-		}
-		if(i + 1< n ) {
-			if(v[0].cross(v[i] , v[i + 1]) == 0) {
-				while(i + 1 < n && v[0].cross(v[i] , v[i + 1]) == 0) {
-					i++;
-				}
-				transf.pb(v[i]);
-				i++;
-				continue;
-			}
-		} 
-		transf.pb(v[i]);
-		i++;
-	}
-	v = transf;
-}
-
 vector<Point> convexHull(vector<Point> &v) { //O( n log n)
-//gives the convex hull in counter clockwise order
-	center = Point(INF , INF);
+	//gives the convex hull in counter clockwise order
+	center = v[0];
 	Long n = v.size();
 	REP(i , n) {
 		if( make_pair(v[i].y , v[i].x) < make_pair(center.y , center.x) ) {
@@ -127,38 +73,38 @@ vector<Point> convexHull(vector<Point> &v) { //O( n log n)
 		}
 	}
 	sort(v.begin(),v.end(), cmp);
-	
-	prepare(v);
+	auto it = unique(v.begin(), v.end());
+	v.resize(distance(v.begin(),it));
 	n = v.size();
 	vector<Point> hull;
+	
 	if(n < 3) {
 		return v;
 	}
-	hull.pb(v[0]);
-	hull.pb(v[1]);
-	hull.pb(v[2]);
-	for(Long i = 3 ; i < n; i++) {
+	hull.push_back(v[0]);
+	hull.push_back(v[1]);
+	for(Long i = 2 ; i < n; i++) {
 		Long sz = hull.size();
-		Point ant1 = hull[sz - 1];
-		Point ant2 = hull[sz - 2];
-		while(ant1.cross(v[i] , ant2) <= 0) {
+		Point prev1 = hull[sz - 1];
+		Point prev2 = hull[sz - 2];
+		while(prev1.cross(v[i] , prev2) <= 0) {
 			hull.pop_back();
 			sz--;
-			ant1 = hull[sz - 1];
-			ant2 = hull[sz - 2];
+			if(sz < 2) break;
+			prev1 = hull[sz - 1];
+			prev2 = hull[sz - 2];
 		}
-		hull.pb(v[i]);
+		hull.push_back(v[i]);
 	}
 	return hull;
 }
 
-
-pair<Point,Point> farthestPair(vector<Point> &v) { //O( n log n)
+pair<Point,Point> farthestPair(vector<Point> &v) { //O(n log n)
 	vector<Point> P = convexHull(v);
 	Long n = P.size();
 	
 	if(n <= 1) {
-		return make_pair(Point(-INF, - INF)  , Point(-INF , -INF));
+		return make_pair(P[0], P[0]);
 	}
 	if(n == 2) {
 		return make_pair(P[0] , P[1]);
@@ -177,11 +123,11 @@ pair<Point,Point> farthestPair(vector<Point> &v) { //O( n log n)
 			j = (j + 1) % n;
 		}
 		Long ant = (j - 1 + n) % n;
-		antipodal.pb({P[i] , P[ant]});
-		antipodal.pb({P[(i + 1) % n] , P[ant]});
+		antipodal.push_back({P[i] , P[ant]});
+		antipodal.push_back({P[(i + 1) % n] , P[ant]});
 		if(L.calc(P[j]) == d) {
-			antipodal.pb({P[i] , P[j]});
-			antipodal.pb({P[(i + 1) % n] , P[j]});
+			antipodal.push_back({P[i] , P[j]});
+			antipodal.push_back({P[(i + 1) % n] , P[j]});
 		}
 		j = (j - 1 + n) % n;
 		i++;
@@ -198,40 +144,6 @@ pair<Point,Point> farthestPair(vector<Point> &v) { //O( n log n)
 }
 
 int main() {
-	ios_base::sync_with_stdio(false);
-	cin.tie(NULL);
-	cout.tie(NULL);
-/*
-14
-3 2
-5 6
-2 2
--5 8
-6 4
-10 2
-3 3
-7 7
-0 5
-4 4
-2 7
-6 6
-5 5
--5 3
-
-*/
-	vector<Point> v;
-	Long n;
-	cin >> n;
-	REP(i , n) {
-		Point P;
-		cin >> P.x >> P.y;
-		v.pb(P); 
-	}
-	pair<Point,Point> f = farthestPair(v);
-	
-	f.first.debugPoint("P1");
-	f.second.debugPoint("P2");
-	
 	return 0;
 }
 
