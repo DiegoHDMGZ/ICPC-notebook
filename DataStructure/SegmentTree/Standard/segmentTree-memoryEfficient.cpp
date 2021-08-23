@@ -29,7 +29,7 @@ struct SegmentTree{
 		} else {
 			Long tm = (tl + tr) / 2;
 			Long left = id + 1;
-			Long right = id + 2 * (tm - tl + 1) ;
+			Long right = id + 2 * (tm - tl + 1);
 			build(a, left, tl, tm);
 			build(a, right, tm + 1, tr);
 			t[id] = combine(t[left] , t[right]);
@@ -47,7 +47,7 @@ struct SegmentTree{
 		}
 		Long tm = (tl + tr) / 2;
 		Long left = id + 1;
-		Long right = id + 2 * (tm - tl + 1) ;
+		Long right = id + 2 * (tm - tl + 1);
 		if (r < tm + 1) {
 			//only left child
 			return query(l , r , left , tl , tm);
@@ -71,7 +71,7 @@ struct SegmentTree{
 		} else{
 			Long tm = (tl + tr) / 2;
 			Long left = id + 1;
-			Long right = id + 2 * (tm - tl + 1) ;
+			Long right = id + 2 * (tm - tl + 1);
 			if (pos <= tm) {
 				update(pos, val, left, tl, tm);
 			} else {
