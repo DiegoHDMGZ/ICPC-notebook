@@ -4,7 +4,7 @@ using namespace std;
 typedef long long Long;
 
 struct MaxQueue{
-	stack<pair<Long, Long>> s1, s2; // (value , maximum)
+	stack<pair<Long, Long>> s1, s2; // (value , answer)
 	
 	Long f(Long a, Long b) {
 		return max(a, b);
@@ -19,32 +19,27 @@ struct MaxQueue{
 		}
 	}
 	
-	void add(Long newElement){ //O(1) amortized
-		Long aux = s1.empty() ? newElement : f(newElement, s1.top().second);
-		s1.push(make_pair(newElement,aux));
+	void add(Long val){ //O(1) amortized
+		Long ans = s1.empty() ? val : f(val, s1.top().second);
+		s1.push(make_pair(val, ans));
 	}
 	
 	void pop(){ //O(1) amortized
 		if (s2.empty()) {
-			//s2 = inverse(s1)
+			//s2 = reverse(s1)
 			while (!s1.empty()) {
-				Long element = s1.top().first;
+				Long val = s1.top().first;
 				s1.pop();
-				Long aux = s2.empty() ? element : f(element, s2.top().second);
-				s2.push(make_pair(element,aux));
+				Long ans = s2.empty() ? val : f(val, s2.top().second);
+				s2.push(make_pair(val, ans));
 			}
 		}
-		
 		s2.pop();
 	}
 	
 	void clear() {
-		while (!s1.empty()) {
-			s1.pop();
-		}
-		while (!s2.empty()) {
-			s2.pop();
-		}
+		while (!s1.empty()) s1.pop();
+		while (!s2.empty()) s2.pop();
 	}
 }mq;
 
