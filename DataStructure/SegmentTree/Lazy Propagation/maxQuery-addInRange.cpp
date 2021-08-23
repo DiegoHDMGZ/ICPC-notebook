@@ -1,8 +1,6 @@
 #include <bits/stdc++.h>
 #define debug(x) cout << #x << " = " << x << endl
 #define REP(i, n) for (Long i = 0; i < (Long)n; i++)
-#define pb push_back
-
 using namespace std;
 
 typedef long long Long;
@@ -13,12 +11,12 @@ Long combine(Long x, Long y){
 }
 
 struct SegmentTree {
-	Long t[4 * MX];
-	Long lazy[4 * MX];
+	Long t[2 * MX];
+	Long lazy[2 * MX];
 	Long maxN;
 	
 	void clear(Long n) {
-		for(Long i = 0; i < 4 * n; i++) {
+		for(Long i = 0; i < 2 * n; i++) {
 			t[i] = 0;
 			lazy[i] = 0;
 		}
@@ -31,8 +29,8 @@ struct SegmentTree {
 			t[id] = a[tl];
 		} else{
 			Long tm = (tl + tr) / 2;
-			Long left = 2 * id;
-			Long right = 2 * id + 1;
+			Long left = id + 1;
+			Long right = id + 2 * (tm - tl + 1);
 			build(a, left, tl, tm);
 			build(a, right, tm + 1, tr);
 			t[id] = combine(t[left], t[right]);
@@ -44,9 +42,10 @@ struct SegmentTree {
 		build(a , 1 , 0 , maxN - 1);
 	}
 	
-	void push(Long id) { //O(1)
-		Long left = 2 * id;
-		Long right = 2 * id + 1;
+	void push(Long id, Long tl, Long tr) { //O(1)
+		Long tm = (tl + tr) / 2;
+		Long left = id + 1;
+		Long right = id + 2 * (tm - tl + 1);
 		//Apply the lazy value of the node to the children
 		t[left] += lazy[id]; 
 		t[right] += lazy[id]; 
@@ -64,9 +63,9 @@ struct SegmentTree {
 			return t[id];
 		}
 		Long tm = (tl + tr) / 2;
-		Long left = 2 * id;
-		Long right = 2 * id + 1;
-		push(id);
+		Long left = id + 1;
+		Long right = id + 2 * (tm - tl + 1);
+		push(id, tl, tr);
 		if (r < tm + 1) {
 			return query(l , r , left , tl , tm);
 		} else if(tm < l) {
@@ -76,7 +75,7 @@ struct SegmentTree {
 		}
 	}
 	
-	Long query(Long l , Long r) {
+	Long query(Long l, Long r) {
 		assert(maxN > 0);
 		return query(l , r , 1 , 0 , maxN - 1);
 	}
@@ -90,9 +89,9 @@ struct SegmentTree {
 			lazy[id] += val;
 		} else{
 			Long tm = (tl + tr) / 2;
-			Long left = 2 * id;
-			Long right = 2 * id + 1 ;
-			push(id);
+			Long left = id + 1;
+			Long right = id + 2 * (tm - tl + 1);
+			push(id, tl, tr);
 			update(l, r, val , left, tl, tm);
 			update(l, r, val , right, tm + 1, tr);
 			t[id] = combine(t[left], t[right]);

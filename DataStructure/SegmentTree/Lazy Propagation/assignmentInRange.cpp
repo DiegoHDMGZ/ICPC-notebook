@@ -1,8 +1,6 @@
 #include <bits/stdc++.h>
 #define debug(x) cout << #x << " = " << x << endl
 #define REP(i,n) for(Long i = 0; i < (Long)n; i++)
-#define pb push_back
-
 using namespace std;
 
 typedef long long Long;
@@ -10,12 +8,12 @@ typedef long long Long;
 const Long MX = 1e5;
 
 struct SegmentTree{
-	Long lazy[4 * MX];
-	bool marked[4 * MX];
+	Long lazy[2 * MX];
+	bool marked[2 * MX];
 	Long maxN;
 	
 	void clear(Long n) {
-		for(Long i = 0; i < 4 * n; i++) {
+		for(Long i = 0; i < 2 * n; i++) {
 			lazy[i] = 0;
 			marked[i] = false;
 		}
@@ -28,8 +26,8 @@ struct SegmentTree{
 			lazy[id] = a[tl];
 		} else{
 			Long tm = (tl + tr) / 2;
-			Long left = 2 * id;
-			Long right = 2 * id + 1 ;
+			Long left = id + 1;
+			Long right = id + 2 * (tm - tl + 1);
 			build(a, left, tl, tm);
 			build(a, right, tm + 1, tr);
 			lazy[id] = 0;
@@ -41,15 +39,14 @@ struct SegmentTree{
 		build(a , 1 , 0 , maxN - 1);
 	}
 	
-	void push(Long id) { //O(1)
+	void push(Long id, Long tl, Long tr) { //O(1)
 		if (marked[id]) {
-			Long left = 2 * id;
-			Long right = 2 * id + 1 ;
-			
+			Long tm = (tl + tr) / 2;
+			Long left = id + 1;
+			Long right = id + 2 * (tm - tl + 1);
 			//aggregate the lazy value to the lazy value of the children
 			lazy[left] = lazy[right] = lazy[id];
 			marked[left] = marked[right] = true;
-			
 			//restart the lazy value
 			marked[id] = false;
 		}
@@ -61,9 +58,9 @@ struct SegmentTree{
 			return lazy[id];
 		}
 		Long tm = (tl + tr) / 2;
-		Long left = 2 * id;
-		Long right = 2 * id + 1 ;
-		push(id);
+		Long left = id + 1;
+		Long right = id + 2 * (tm - tl + 1);
+		push(id, tl, tr);
 		if (pos <= tm) {
 			return query(pos, left , tl, tm);
 		} else{
@@ -85,9 +82,9 @@ struct SegmentTree{
 			marked[id] = true;
 		} else {
 			Long tm = (tl + tr) / 2;
-			Long left = 2 * id;
-			Long right = 2 * id + 1 ;
-			push(id);
+			Long left = id + 1;
+			Long right = id + 2 * (tm - tl + 1);
+			push(id, tl, tr);
 			update(l, r, val , left, tl, tm);
 			update(l, r, val , right, tm + 1, tr);
 		}

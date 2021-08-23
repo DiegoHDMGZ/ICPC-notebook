@@ -1,7 +1,6 @@
 #include <bits/stdc++.h>
 #define debug(x) cout << #x << " = " << x << endl
 #define REP(i, n) for (Long i = 0; i < (Long)n; i++)
-#define pb push_back
 using namespace std;
 
 typedef long long Long;
@@ -9,7 +8,6 @@ const Long MX = 1e5;
 
 struct SegmentTree {
 	Long t[2 * MX];
-
 	Long maxN;
 	
 	void clear(Long n) {
