@@ -4,7 +4,7 @@ using namespace std;
 typedef long long Long;
 
 struct MaxStack{
-	stack<pair<Long, Long>> s; // (value , maximum)
+	stack<Long> s;
 	
 	Long f(Long a, Long b) {
 		return max(a, b);
@@ -12,12 +12,12 @@ struct MaxStack{
 
 	Long get() { //O(1) amortized
 		if (s.empty()) return 0;
-		return s.top().second;
+		return s.top();
 	}
 	
-	void add(Long newElement) { //O(1) amortized
-		Long newVal = s.empty() ? newElement : f(newElement, s.top().second);
-		s.push({newElement , newVal});
+	void add(Long val) { //O(1) amortized
+		Long ans = s.empty() ? val : f(val, s.top());
+		s.push(ans);
 	}
 	
 	void pop() { //O(1) amortized
@@ -25,9 +25,7 @@ struct MaxStack{
 	}
 	
 	void clear() {
-		while (!s.empty()) {
-			s.pop();
-		}
+		while (!s.empty()) s.pop();
 	}
 }ms;
 
