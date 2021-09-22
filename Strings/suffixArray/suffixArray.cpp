@@ -7,7 +7,6 @@ using namespace std;
 typedef long long Long;
 
 const int ALPH = 256;
-
 struct SuffixArray {
 	vector<int> suffixArray;
 	vector<int> lcp; 
@@ -95,7 +94,7 @@ struct SuffixArray {
 		buildLCP(s);
 	}
 		
-	/*int getLCP(int l, int r) {
+	/*int getLcp(int l, int r) {
 		assert(l != r);
 		int minPos = min(pos[l], pos[r]);
 		int maxPos = max(pos[l], pos[r]);
@@ -103,6 +102,27 @@ struct SuffixArray {
 	}*/
 };
 
+/*bool cmp(const pair<int, int> &a, const pair<int, int> &b) { //O(1)
+	//compare two substrings. Return true if a < b
+	if (a == b) return false;
+	int lcp = sa.getLCP(a.first, b.first);
+	if (a.second < a.first + lcp) {
+		if (b.second < b.first + lcp) {
+			int szA = a.second - a.first + 1;
+			int szB = b.second - b.first + 1;
+			if (szA != szB) {
+				return szA < szB;
+			}
+			return a < b;
+		} else {
+			return true;
+		}
+	} else if (b.second < b.first + lcp) {
+		return false;
+	}
+	return sa.pos[a.first] < sa.pos[b.first];
+}*/
+	
 int main() {
 	return 0;
 }
