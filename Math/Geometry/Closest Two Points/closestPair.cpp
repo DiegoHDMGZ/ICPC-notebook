@@ -1,21 +1,19 @@
 #include <bits/stdc++.h>
 #define debug(x) cout << #x << " = " << x << endl
 #define REP(i,n) for(Long i = 0; i < (Long)n; i++)
-#define pb push_back
 using namespace std;
 
 typedef long long Long;
 
 struct Point{
-	Long x,y;
+	Long x, y;
 	
 	Point(){
 		x = 0;
 		y = 0;
 	}
-	Point(Long _x, Long _y){
-		x = _x, y = _y;
-	}
+	Point(Long x, Long y):
+		x(x), y(y){}
 
 	Point operator += (const Point &t){
 		x += t.x;
@@ -46,11 +44,6 @@ struct Point{
 	bool operator != (const Point &P) const {
 		return !(P == Point(*this));
 	}
-
-	void debugPoint(string nombre){
-		cout << nombre << " = ( " << fixed << setprecision(2) <<  x << " , " << y  << " ) " << endl; 
-	}
-	
 };
 
 bool cmpX(const Point &P1 , const Point &P2) {
@@ -91,19 +84,19 @@ pair<Point,Point> closestPair(vector<Point> &X , vector<Point> &Y) { //O(n log n
 	vector<Point> YR;
 	Long mid = n / 2;
 	for(Long i = 0; i < mid; i++) {
-		XL.pb(X[i]);
+		XL.push_back(X[i]);
 		if(cmpX(Y[i] , X[mid])) {
-			YL.pb(Y[i]);
+			YL.push_back(Y[i]);
 		} else {
-			YR.pb(Y[i]);
+			YR.push_back(Y[i]);
 		}
 	}
 	for(Long i = mid; i < n; i++) {
-		XR.pb(X[i]);
+		XR.push_back(X[i]);
 		if(cmpX(Y[i] , X[mid])) {
-			YL.pb(Y[i]);
+			YL.push_back(Y[i]);
 		} else {
-			YR.pb(Y[i]);
+			YR.push_back(Y[i]);
 		}
 	}
 	
@@ -113,7 +106,7 @@ pair<Point,Point> closestPair(vector<Point> &X , vector<Point> &Y) { //O(n log n
 	vector<Point> YP;
 	for(Long i = 0; i < n; i++) { 
 		if((X[mid].x - Y[i].x) * (X[mid].x - Y[i].x) <= d) {
-			YP.pb(Y[i]);
+			YP.push_back(Y[i]);
 		}
 	}
 	Long sz = YP.size();
@@ -134,7 +127,7 @@ pair<Point, Point> closestPair(vector<Point> &v) { //O( n log n)
 	vector<Point> Y = v;
 	sort(X.begin() , X.end() , cmpX);
 	sort(Y.begin() , Y.end() , cmpY);
-	REP(i , n - 1) {
+	REP(i, n - 1) {
 		if(X[i] == X[i + 1]) {
 			return {X[i] , X[i + 1]};
 		}
@@ -143,36 +136,6 @@ pair<Point, Point> closestPair(vector<Point> &v) { //O( n log n)
 }
 
 int main() {
-	ios_base::sync_with_stdio(false);
-	cin.tie(NULL);
-	cout.tie(NULL);
-/*
-9
-18 -2
-10 3
--47 4
-33 3
--25 0
--13 4
--13 -2
--35 0
-24 2
-Rpta: minSquareDist = 36 con (-13 , 4) y (-13, -2)
-
-*/
-	vector<Point> v;
-	Long n;
-	cin >> n;
-	REP(i , n) {
-		Point P;
-		cin >> P.x >> P.y;
-		v.pb(P); 
-	}
-	pair<Point,Point> f = closestPair(v);
-	
-	f.first.debugPoint("P1");
-	f.second.debugPoint("P2");
-	
 	return 0;
 }
 
