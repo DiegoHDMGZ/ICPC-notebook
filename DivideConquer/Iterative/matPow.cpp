@@ -46,7 +46,7 @@ Matrix operator *(const Matrix &a, const Matrix &b){ //O( n^3)
 }
 
 
-Matrix matPow( Matrix a, Long b ){ //O(n^3 log b) only square matrix
+Matrix matPow(Matrix a, Long b ){ //O(n^3 log b) only square matrix
 	Long n = a.size();
 	Matrix ans = Matrix(n , vector<Long>(n , 0));
 	for(Long i = 0; i < n; i++){
