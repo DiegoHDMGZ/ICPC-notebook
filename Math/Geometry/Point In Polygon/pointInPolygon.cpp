@@ -114,6 +114,10 @@ struct Point{
 };
 
 void prepare(vector<Point> &poly) {
+	//make sure the polygon is in counter-clockwise order 
+	if (poly.size() >= 3 && poly[1].cross(poly[2], poly[0]) < 0) {
+		reverse(poly.begin(), poly.end());
+	}
 	//make sure the first point have minimum x (minimum y in case of ties)
 	Long sz = poly.size();
 	Long pos = 0;
