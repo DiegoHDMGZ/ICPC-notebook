@@ -113,7 +113,7 @@ Long quad(Point P) {
 	return 4;
 } 
 
-bool antiClockwise(const Point &A, const Point &B , Point center) {
+bool counterClockwise(const Point &A, const Point &B , Point center) {
 	if(quad(A - center) != quad(B - center)) {
 		return quad(A - center) < quad(B - center);
 	}
