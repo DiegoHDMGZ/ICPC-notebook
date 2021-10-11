@@ -6,7 +6,7 @@
 using namespace std;
 
 typedef long long Long;
-typedef vector<vector<Long> > Matrix;
+typedef vector<vector<Long>> Matrix;
 
 const Long MOD = 1e9 + 7;
 Long add(Long a , Long b ){
