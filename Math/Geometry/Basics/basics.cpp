@@ -265,7 +265,6 @@ bool intersectSegment(Point A, Point B, Point C, Point D) {
 		//same line
 		return intersectAxis(A.x, B.x, C.x, D.x ) && intersectAxis(A.y ,B.y , C.y , D.y);
 	}
-	
 	return sgn(A.cross(B, C)) != sgn(A.cross(B , D)) && sgn(C.cross(D, A)) != sgn(C.cross(D, B));
 }
 
