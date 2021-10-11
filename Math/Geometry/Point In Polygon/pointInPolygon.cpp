@@ -5,6 +5,8 @@ using namespace std;
 
 typedef long long Long;
 
+enum Location{OUTSIDE, BOUNDARY, INSIDE};
+
 Long sgn(Long val) {
 	if(val > 0) {
 		return 1;
@@ -64,27 +66,24 @@ struct Point{
 	Long inPolygon( vector<Point> &poly) { //O(log n)
 		//works with convex polygons in counter-clockwise order
 		//use prepare (poly) before using it
-		//-1 : outside
-		//0 : boundary
-		//1 : inside
 		Long n = poly.size();
 		Point P = Point(*this);
 		if(n == 1) {
-			if (P == poly[0]) return 0;
-			else return -1;
+			if (P == poly[0]) return Location::BOUNDARY;
+			else return Location::OUTSIDE;
 		}
 		if(n == 2) {
-			if(P.inSegment(poly[0] , poly[1])) return 0;
-			else return -1;
+			if(P.inSegment(poly[0] , poly[1])) return Location::BOUNDARY;
+			else return Location::OUTSIDE;
 		}
 		//verify if the angle of the point lies between the angle of p0p1 and p0pn-1
 		if(poly[0].cross(poly[1] , P) != 0 
 			&& sgn(poly[0].cross(poly[1] , P)) != sgn(poly[0].cross(poly[1] , poly[n - 1]))) {
-			return -1;
+			return Location::OUTSIDE;
 		}
 		if(poly[0].cross(P , poly[n - 1]) != 0 
 			&& sgn(poly[0].cross(P , poly[n - 1])) != sgn(poly[0].cross(poly[1] , poly[n - 1]))) {
-			return -1;
+			return Location::OUTSIDE;
 		}
 	
 		Long low = 2;
@@ -99,25 +98,20 @@ struct Point{
 			}
 		}
 		if (!P.inTriangle(poly[0] , poly[high - 1] , poly[high])) {
-			return -1;
+			return Location::OUTSIDE;
 		}
 		if (P.inSegment(poly[high - 1] , poly[high])) {
-			return 0;
+			return Location::BOUNDARY;
 		}
 		if (P.inSegment(poly[0] , poly[1])) {
-			return 0;
+			return Location::BOUNDARY;
 		}
 		if (P.inSegment(poly[0], poly[n - 1])) {
-			return 0;
+			return Location::BOUNDARY;
 		}
-		return 1;
-	}
-	
-	void debugPoint(string nombre) {
-		cout << nombre << " = ( " << fixed << setprecision(2) << x << " , " << y  << " ) " << endl; 
+		return Location::INSIDE;
 	}
 };
-
 
 void prepare(vector<Point> &poly) {
 	//make sure the first point have minimum x (minimum y in case of ties)
