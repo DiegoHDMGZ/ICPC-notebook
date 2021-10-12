@@ -1,7 +1,4 @@
 #include <bits/stdc++.h>
-#define debug(x) cout << #x << " = " << x << endl
-#define REP(i , n) for(Long i = 0; i < (Long)n ; i++)
-#define pb push_back
 #define getMatrix(n , m) Matrix(n , vector<Long>(m, 0))
 using namespace std;
 
@@ -25,49 +22,48 @@ Long mult(Long a, Long b){
 }
 
 
-Matrix operator *(const Matrix &a, const Matrix &b){ //O( n^3)
-	Long n1 = a.size();
-	Long m1 = a[0].size();
-	Long n2 = b.size();
-	Long m2 = b[0].size();
+Matrix operator *(const Matrix &A, const Matrix &B){ //O( n^3)
+	Long n1 = A.size();
+	Long m1 = A[0].size();
+	Long n2 = B.size();
+	Long m2 = B[0].size();
 	assert(m1 == n2);
 	
 	Long n = n1;
 	Long m = m2;
-	Matrix c(n, vector<Long>(m , 0));
+	Matrix C(n, vector<Long>(m , 0));
 	for(Long i = 0; i < n; i++){
 		for(Long j = 0; j < m; j++){
 			for(Long k = 0; k < m1; k++){
-				c[i][j] = add(c[i][j] , mult(a[i][k] , b[k][j]));
+				C[i][j] = add(C[i][j] , mult(A[i][k] , B[k][j]));
 			}
 		}
 	}
-	return c;
+	return C;
 }
 
-
-Matrix matPow(Matrix a, Long b ){ //O(n^3 log b) only square matrix
-	Long n = a.size();
+Matrix matPow(Matrix A, Long b){ //O(n^3 log b) only square matrix
+	Long n = A.size();
 	Matrix ans = Matrix(n , vector<Long>(n , 0));
 	for(Long i = 0; i < n; i++){
 		ans[i][i] = 1;
 	}
 	while(b > 0){
 		if(b & 1){ //b % 2 == 1
-			ans = ans * a;
+			ans = ans * A;
 		}
-		a = a * a;
+		A = A * A;
 		b >>= 1; //b /= 2;
 	}
 	return ans;
 }
 
-void print(Matrix &a){
-	Long n = a.size();
-	Long m = a[0].size();
+void print(Matrix &A){
+	Long n = A.size();
+	Long m = A[0].size();
 	for(Long i = 0; i < n; i++){
 		for(Long j = 0; j < m; j++){
-			cout << a[i][j] << " ";
+			cout << A[i][j] << " ";
 		}
 		cout << endl;
 	}
@@ -75,19 +71,6 @@ void print(Matrix &a){
 
 int main(){
 	ios_base::sync_with_stdio(false);
-	cin.tie(NULL);
-	cout.tie(NULL);
-
-	Long n , b ,mod;
-	cin >> n >> b >> mod;
-	Matrix a(n , vector<Long>(n));
-	REP(i , n){
-		REP(j , n){
-			cin >> a[i][j];
-		}
-	}
-	
-	Matrix c = matPow(a , b );
-	print(c);
+	cin.tie(0);
 	return 0;
 }
