@@ -42,7 +42,6 @@ struct Graph{
 		}
 		queue<int> q;
 		vector<bool> inQueue(n , false);
-		vector<bool> cycle(n, false);
 		d[s] = 0;
 		inQueue[s] = true;
 		q.push(s);
@@ -63,19 +62,18 @@ struct Graph{
 							q.push(v);
 							inQueue[v] = true;
 						}
-						if (phase == n - 1) {
-							cycle[v] = true;
-						}
 					}
 				}
 			}
 			phase++;
 		}
-		if (phase < n) {
+		if (q.empty()) {
 			return false;
 		}
-		for (int u = 0; u < n; u++) {
-			if (cycle[u] && d[u] != -INF) {
+		while (!q.empty()) {
+			int u = q.front();
+			q.pop();
+			if (d[u] != -INF) {
 				dfs(u, u);
 			}
 		}
