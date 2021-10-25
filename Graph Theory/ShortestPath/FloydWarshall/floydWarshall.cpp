@@ -55,6 +55,8 @@ struct Graph{
 			cycle.push_back(v);
 			v = parent[u][v];
 		}
+		cycle.push_back(cycle[0]);
+		reverse(cycle.begin(), cycle.end()); //directed cycle
 		return cycle;
 	}
 	

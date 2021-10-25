@@ -100,6 +100,8 @@ struct Graph{
 			cycle.push_back(u);
 			u = parent[u];
 		}
+		cycle.push_back(cycle[0]);
+		reverse(cycle.begin(), cycle.end()); //directed cycle
 		return cycle;
 	}
 	
