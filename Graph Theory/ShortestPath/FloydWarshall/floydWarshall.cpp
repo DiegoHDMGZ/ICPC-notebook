@@ -67,7 +67,7 @@ struct Graph{
 					if (d[u][k] == INF) continue;
 					if (d[k][v] == INF) continue;
 					if (d[u][k] + d[k][v] < d[u][v]) {
-						d[u][v] = d[u][k] + d[k][v];
+						d[u][v] = max(-INF, d[u][k] + d[k][v]);
 						parent[u][v] = parent[k][v];
 					}
 				}
