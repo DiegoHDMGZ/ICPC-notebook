@@ -58,7 +58,7 @@ struct Graph{
 	vector<int> getEulerianCycle(int n, int start = -1) {
 		//it has to be weakly connected (but it can be isolated vertices)
 		//in all vertices, indegree = outdegree
-		//if not eulerian cycle exist, returns empty
+		//if no eulerian cycle exists, an empty array is returned
 		for(int u = 0; u < n; u++) {
 			if (indegree[u] != outdegree[u]) return {};
 			if (outdegree[u] > 0 && start == -1) start = u;
@@ -72,7 +72,7 @@ struct Graph{
 		//in all vertices, indegree = outdegree except for two vertices. 
 		//The first with outdegree - indegree = 1
 		//The last with indegree - outdegree = 1
-		//if not eulerian path exist, returns empty
+		//if no eulerian path exists, an empty array is returned
 		int first = -1;
 		int last = -1;
 		for (int u = 0; u < n; u++) {

@@ -63,7 +63,7 @@ struct Graph{
 	vector<int> getEulerianCycle(int n, int start = -1) {
 		//it has to be connected (but it can be isolated vertices)
 		//all vertices have to have even degree
-		//if not eulerian cycle exist, returns empty
+		//if no eulerian cycle exists, an empty array is returned
 		for (int u = 0; u < n; u++) {
 			if ((adj[u].size() & 1) != 0) return {};
 			if (adj[u].size() > 0 && start == -1) start = u;
@@ -75,7 +75,7 @@ struct Graph{
 	vector<int> getEulerianPath(int n, int start = -1) {
 		//it has to be connected (but it can be isolated vertices)
 		//there has to be exactly 2 nodes with odd degree
-		//if not eulerian path exist, returns empty
+		//if no eulerian path exists, an empty array is returned
 		vector<int> odd;
 		for (int u = 0; u < n; u++) {
 			if ((adj[u].size() & 1) == 1) {
