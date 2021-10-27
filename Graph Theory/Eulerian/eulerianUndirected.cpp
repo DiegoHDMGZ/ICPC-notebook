@@ -1,87 +1,91 @@
 #include <bits/stdc++.h>
 #define debug(x) cout << #x << " = " << x << endl
-#define REP(i,n) for(Long i = 0; i < (Long)n; i++)
-#define pb push_back
+#define REP(i, n) for(Long i = 0; i < (Long)n; i++)
 using namespace std;
 
 typedef long long Long;
 
-//http://www.math.caltech.edu/~2014-15/1term/ma006a/class8.pdf
+//Theory: http://www.math.caltech.edu/~2014-15/1term/ma006a/class8.pdf
+//Eulerian Path: A path (with possible repeated vertices) that visits
+//every edge exactly once
+//Eulerian cycle: An eulerian path that start and ends in the same vertex
 
-const Long MX = 1e5;
+const int MX = 1e5;
 
 struct Graph{
-	vector<Long> adj[MX];
-	vector<pair<Long,Long>> edges;
+	vector<int> adj[MX];
+	vector<pair<int, int>> edges;
 
-	void clear(Long n){
+	void clear(int n) {
 		edges.clear();
-		REP(i , n){
+		REP(i, n) {
 			adj[i].clear();
 		}
 	}
-	void addEdge(Long u , Long v){
+	void addEdge(int u, int v) {
 		adj[u].push_back(v);
 		adj[v].push_back(u);
 		edges.push_back({u, v});
 	}
 
-	vector<Long> hierholzer(Long n, Long start = 0){
-		vector<vector<pair<Long,Long>>> endpoint(n);
-		for(Long i = 0; i < edges.size(); i++){
+	vector<int> hierholzer(int n, int start) {
+		vector<vector<pair<int, int>>> endpoint(n);
+		for (int i = 0; i < edges.size(); i++) {
 			auto e = edges[i];
-			Long u = e.first;
-			Long v = e.second;
+			int u = e.first;
+			int v = e.second;
 			endpoint[u].push_back({v , i});
 			endpoint[v].push_back({u, i});
 		}
-
 		vector<bool> used(edges.size(), false);
-		vector<Long> curPath = {start};
-		vector<Long> path;
-		while(!curPath.empty()){
-			Long u = curPath.back();
-			while(!endpoint[u].empty() && used[endpoint[u].back().second]){
+		vector<int> curPath = {start};
+		vector<int> path;
+		while (!curPath.empty()) {
+			int u = curPath.back();
+			while (!endpoint[u].empty() && used[endpoint[u].back().second]) {
 				endpoint[u].pop_back();
 			}
-			if(endpoint[u].empty()){
-				path.push_back(curPath.back());
+			if (endpoint[u].empty()) {
+				path.push_back(u);
 				curPath.pop_back();
-			} else{
-				Long v = endpoint[u].back().first;
+			} else {
+				int v = endpoint[u].back().first;
 				curPath.push_back(v);
 				used[endpoint[u].back().second] = true;
 				endpoint[u].pop_back();
 			}
 		}
+		if (path.size() != edges.size() + 1) return {};
 		reverse(path.begin(), path.end());
 		return path;
 	}
 
-	vector<Long> getEulerianCycle(Long n){
-		//it has to be connected 
+	vector<int> getEulerianCycle(int n, int start = -1) {
+		//it has to be connected (but it can be isolated vertices)
 		//all vertices have to have even degree
-		for(Long u = 0; u < n; u++){
-			if((adj[u].size() & 1) != 0) {
-				return {}; //no cycle
-			}
+		//if not eulerian cycle exist, returns empty
+		for (int u = 0; u < n; u++) {
+			if ((adj[u].size() & 1) != 0) return {};
+			if (adj[u].size() > 0 && start == -1) start = u;
 		}
-		return hierholzer(n);
+		if (start == -1) start = 0;
+		return hierholzer(n, start);
 	}
 
-	vector<Long> getEulerianPath(Long n){
-		//it has to be connected 
+	vector<int> getEulerianPath(int n, int start = -1) {
+		//it has to be connected (but it can be isolated vertices)
 		//there has to be exactly 2 nodes with odd degree
-		vector<Long> odd;
-		for(Long u = 0; u < n; u++){
-			if((adj[u].size() & 1) == 1){
+		//if not eulerian path exist, returns empty
+		vector<int> odd;
+		for (int u = 0; u < n; u++) {
+			if ((adj[u].size() & 1) == 1) {
 				odd.push_back(u);
 			}
 		}
-		if(odd.size() != 2) return {}; //no path
-		
-		vector<Long> path = hierholzer(n , odd[0]);
-		return path;
+		if (odd.size() != 2) return {};
+		if (start == -1) start = odd[0];
+		if (start != odd[0] && start != odd[1]) return {};
+		return hierholzer(n , start);
 	}
 }G;
 
