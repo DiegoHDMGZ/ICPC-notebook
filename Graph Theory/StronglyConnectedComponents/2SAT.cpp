@@ -52,7 +52,8 @@ struct TwoSat {
 		}
 	}
 	
-	vector<bool> solve(int n) { //O(V + E)
+	vector<bool> solve() { //O(V + E)
+		int n = adj.size();
 		n *= 2;
 		order.clear();
 		numComponent = 0;

@@ -43,7 +43,8 @@ struct Graph {
 		}
 	}
 	
-	void calculateSCC(int n) { //O(V + E)
+	void calculateSCC() { //O(V + E)
+		int n = adj.size();
 		order.clear();
 		numComponent = 0;
 		vis.resize(n, false);
