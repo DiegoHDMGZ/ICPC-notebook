@@ -7,24 +7,20 @@ using namespace std;
 typedef long long Long;
 const Long MX = 1e5;
 
-//In a directed graph , a Strongly connected component (SCC) is a maximal subgraph 
+//In a directed graph, a Strongly connected component (SCC) is a maximal subgraph 
 //such that each vertex is reachable from every other vertex
 //The graph can be condensed in their scc to form a DAG
 
 struct Graph {
-	vector<int> adj[MX];
-	vector<int> rev[MX];
-	bool vis[MX];
-	vector<int> order;
+	vector<vector<int>> adj;
+	vector<vector<int>> rev;
+	vector<bool> vis;
+	vector<int> order, scc;
 	int numComponent;
-	int scc[MX];
 	
-	void clear(Long n) {
-		REP(i, n) {
-			adj[i].clear();
-			rev[i].clear();
-			vis[i] = false;
-		}
+	Graph(int n) {
+		adj.resize(n);
+		rev.resize(n);
 	}
 	
 	void addEdge(int u, int v) {
@@ -50,9 +46,10 @@ struct Graph {
 	void calculateSCC(int n) { //O(V + E)
 		order.clear();
 		numComponent = 0;
+		vis.resize(n, false);
+		scc.resize(n, -1);
 		for (int u = 0; u < n; u++) {
 			if (!vis[u]) dfs(u);
-			scc[u] = -1;
 		}
 		for (int i = 0; i < n; i++) {
 			int u = order[n - 1 - i];
@@ -62,7 +59,7 @@ struct Graph {
 			}
 		}
 	}
-} G;
+};
 
 int main() {
 	return 0;
