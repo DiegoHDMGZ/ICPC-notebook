@@ -16,11 +16,11 @@ struct SegmentTree {
 	int lastVersion;
 	int nodes;
 	
-	int combine(int x, int y){
+	Long combine(Long x, Long y){
 		return x + y;
 	}
 	
-	int build(vector<int> &a, int tl, int tr) { //O(n)
+	int build(vector<Long> &a, int tl, int tr) { //O(n)
 		int node = nodes++;
 		if (tl == tr){
 			sum[node] = a[tl];
@@ -34,7 +34,7 @@ struct SegmentTree {
 		}
 	}
 	
-	void build(vector<int> &a) {
+	void build(vector<Long> &a) {
 		nodes = 1;
 		maxN = a.size();
 		roots[0] = build(a, 0, maxN - 1);
