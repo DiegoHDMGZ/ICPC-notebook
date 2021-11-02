@@ -8,8 +8,10 @@ typedef long long Long;
 typedef unsigned long long ULong;
 typedef long double Double;
 
-//Works for numbers < 2^63
+//Works for numbers < 2^63 and a, b < M
 ULong mult(ULong a, ULong b, ULong M) {
+	//a %= M
+	//b %= M
 	Long ret = a * b - M * ULong(Double(a) * Double(b) / Double(M));
 	return ret + M * (ret < 0) - M * (ret >= (Long)M);
 }
