@@ -6,8 +6,8 @@ using namespace std;
 
 typedef long long Long;
 
-const Long MX = 1e5;
-const Long LG = 32 - __builtin_clz(MX);
+const int MX = 1e5;
+const int LG = 32 - __builtin_clz(MX);
 
 struct Graph {
 	vector<int> adj[MX];
@@ -17,8 +17,8 @@ struct Graph {
 	int timer;
 	int anc[MX][LG];
 	
-	void clear(Long n){
-		for(Long i = 0; i < n; i++){
+	void clear(int n) {
+		for (int i = 0; i < n; i++) {
 			adj[i].clear();
 		}
 	}
@@ -88,6 +88,18 @@ struct Graph {
 			return true;
 		}
 		return false;
+	}
+	
+	int kthAncestor(int u, int k) { //O(log n)
+		int jump = 0;
+		while (k > 0) {
+			if (k % 2 == 1) {
+				u = anc[u][jump];
+			}
+			jump++;
+			k /= 2;
+		}
+		return u;
 	}
 } G;
 
