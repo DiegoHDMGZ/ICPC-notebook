@@ -1,7 +1,6 @@
 #include <bits/stdc++.h>
 #define debug(x) cout << #x << " = " << x << endl
 #define REP(i,n) for(Long i = 0; i < (Long)n; i++)
-#define pb push_back
 using namespace std;
 
 typedef long long Long;
@@ -10,27 +9,25 @@ const Long MX = 4e5;
 
 struct Edge{
 	Long u, v;
-	Edge(Long u , Long v) : u(u) , v(v){
-	}
-	Edge(){
-	}
+	Edge(){}
+	Edge(Long u , Long v): u(u) , v(v){}
 };
 
 struct Graph {
-	vector <Long> adj[MX];
+	vector<int> adj[MX];
 	bool vis[MX];
-	Long tIn[MX];//entry time
-	Long low[MX];
+	int tIn[MX];//entry time
+	int low[MX];
 	//if S[u] = {Set of this node and all of its sucessors} 
 	//low[u] = min entry time of S[u] U {all parents of S[u]}
-	Long timer;
-	vector<Edge> bridge;
-	vector<Long> articulation;
+	int timer;
+	vector<Edge> bridges;
+	vector<int> articulations;
 	bool isArticulation[MX];
-	map<Long,bool> isBridge[MX];
+	map<int, bool> isBridge[MX];
 	
-	void clear(Long N = MX) {
-		REP( i , N) {
+	void clear(int n) {
+		REP(i , n) {
 			adj[i].clear();
 			vis[i] = false;
 			tIn[i] = 0;
@@ -38,86 +35,56 @@ struct Graph {
 			isArticulation[i] = false;
 			isBridge[i].clear();
 		}
-		bridge.clear();
-		articulation.clear();
+		bridges.clear();
+		articulations.clear();
 	}
 	
-	void addEdge(Long u, Long v) {
-		adj[u].pb(v);
-		adj[v].pb(u);
+	void addEdge(int u, int v) {
+		adj[u].push_back(v);
+		adj[v].push_back(u);
 	}
 	
-	void dfs(Long u, Long p = -1){ //O(N + M)
+	void dfs(int u, int p = -1) { //O(V + E)
 		vis[u] = true;
 		tIn[u] = low[u] = timer++;
-		Long children = 0;
-		for(Long v : adj[u]) {
-			if(v == p) continue;
-			if(vis[v]) {
+		int children = 0;
+		for (int v : adj[u]) {
+			if (v == p) continue;
+			if (vis[v]) {
 				low[u] = min(low[u] , tIn[v]);
 			} else {
 				dfs(v , u);
 				low[u] = min(low[u] , low[v]);
-				if(low[v] > tIn[u]) {
-					bridge.pb(Edge(u , v));
-					isBridge[min(u,v)][max(u,v)] = true;
+				if (low[v] > tIn[u]) {
+					bridges.push_back(Edge(u, v));
+					isBridge[min(u, v)][max(u, v)] = true;
 				}
-				if(low[v] >= tIn[u] && p != -1 && !isArticulation[u]) {
-					articulation.pb(u);
+				if (low[v] >= tIn[u] && p != -1 && !isArticulation[u]) {
+					articulations.push_back(u);
 					isArticulation[u] = true;
 				}
 				children++;
-				if(p == -1 && children > 1){
-					if(!isArticulation[u]){
+				if (p == -1 && children > 1) {
+					if (!isArticulation[u]) {
 						isArticulation[u] = true;
-						articulation.push_back(u);
+						articulations.push_back(u);
 					}
 				}
 			}
 		}
 	}
 	
-	void calculate(Long n) { //O(N + M)
+	void calculate(int n) { //O(V + E)
 		timer = 0;
-		for(Long i = 0; i < n; i++) {
-			if(!vis[i]) {
-				dfs(i);
+		for (int u = 0; u < n; u++) {
+			if (!vis[u]) {
+				dfs(u);
 			}
 		}
-	}
-	
-	void printBridges() {
-		cout << "Bridges = ";
-		REP(i , bridge.size()){
-			cout << "( " << bridge[i].u + 1 << " - " << bridge[i].v + 1 << " ) ; ";
-		}
-	} 	
-	
-	void printArticulations() {
-		cout << "Articulations = ";
-		REP(i , articulation.size()) {
-			cout << articulation[i] + 1 << " ";
-		}
-		cout << endl;
 	}
 } G;
 
 int main() {
-	ios_base::sync_with_stdio(false);
-	cin.tie(NULL);
-	cout.tie(NULL);
-	
-	Long n, m;
-	cin >> n >> m;
-	REP(i , m) {
-		Long u , v;
-		cin >> u >> v;
-		G.addEdge(u , v);
-	}
-	G.calculate(n);
-	G.printArticulations();
-	G.printBridges();
-	
 	return 0;
 }
 
