@@ -46,19 +46,19 @@ struct Graph{
 		inQueue[s] = true;
 		q.push(s);
 		int phase = 0;
-		while(!q.empty() && phase < n){
+		while (!q.empty() && phase < n) {
 			int sz = q.size();
 			REP(i, sz) {
 				int u = q.front();
 				q.pop();
 				inQueue[u] = false;
-				for(auto e : adj[u]){
+				for (auto e : adj[u]) {
 					int v = e.first;
 					Long w = e.second;
-					if(d[u] + w < d[v]){
+					if (d[u] + w < d[v]) {
 						d[v] = d[u] + w;
 						parent[v] = u;
-						if(!inQueue[v]){
+						if (!inQueue[v]) {
 							q.push(v);
 							inQueue[v] = true;
 						}
@@ -67,9 +67,7 @@ struct Graph{
 			}
 			phase++;
 		}
-		if (q.empty()) {
-			return false;
-		}
+		if (q.empty()) return false;
 		while (!q.empty()) {
 			int u = q.front();
 			q.pop();
@@ -80,14 +78,14 @@ struct Graph{
 		return true;
 	}
 	
-	vector<Long> getNegativeCycle(Long u, Long n){
+	vector<int> getNegativeCycle(int u, int n) {
 		assert(d[u] == -INF);
 		u = reachedBy[u];
 		//go back n times to find a cycle
 		for (int i = 0; i < n; i++) {
 			u = parent[u]; 
 		}
-		vector<Long> cycle = {u};
+		vector<int> cycle = {u};
 		u = parent[u];
 		while (u != cycle[0]) {
 			cycle.push_back(u);
@@ -98,12 +96,10 @@ struct Graph{
 		return cycle;
 	}
 	
-	vector<Long> getPath(Long u){
-		if (d[u] == INF) {
-			return {};
-		}
-		vector<Long> path;
-		while(u != -1){
+	vector<int> getPath(int u){
+		if (d[u] == INF) return {};
+		vector<int> path;
+		while (u != -1) {
 			path.push_back(u);
 			u = parent[u];
 		}
