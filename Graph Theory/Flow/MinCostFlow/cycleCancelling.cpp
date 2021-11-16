@@ -135,40 +135,37 @@ struct Graph{
 		return cost;
 	}
 	
-	Long spfa(Long n) { //O(E V)
+	Long spfa(int n) { //O(E V)
 		vector<Long> d(n, 0);
-		queue<Long> q;
+		queue<int> q;
 		vector<bool> inQueue(n , true);
-		vector<Long> cnt(n, 0);
-		for (int u = 0; u < n; u++) {
-			q.push(u);
-		}
-		while (!q.empty()) {
-			Long u = q.front();
-			q.pop();
-			inQueue[u] = false;
-			cnt[u]++;
-			if (cnt[u] == n + 1) {
-				//negative cycle
-				return costCycle(u, n);
-			}
-			for (Edge* e : adj[u]) {
-				Long v = e->to;
-				Long cf = e->cap - e->flow;
-				Long w = e->cost;
-				if (cf > 0 && d[u] + w < d[v]) {
-					d[v] = d[u] + w;
-					parent[v] = e;
-					if (!inQueue[v]) {
-						q.push(v);
-						inQueue[v] = true;
+		for (int u = 0; u < n; u++) q.push(u);
+		int phase = 0;
+		while (!q.empty() && phase < n) {
+			int sz = q.size();
+			REP(i, sz) {
+				int u = q.front();
+				q.pop();
+				inQueue[u] = false;
+				for (Edge* e : adj[u]) {
+					int v = e->to;
+					Long cf = e->cap - e->flow;
+					Long w = e->cost;
+					if (cf > 0 && d[u] + w < d[v]) {
+						d[v] = d[u] + w;
+						parent[v] = e;
+						if (!inQueue[v]) {
+							q.push(v);
+							inQueue[v] = true;
+						}
 					}
 				}
 			}
+			phase++;
 		}
+		if (!q.empty()) return costCycle(q.front(), n);
 		// no negative cycle
 		return 0;
-	
 	}
 	
 	pair<Long,Long> minCostFlow(int s, int t, int n){ 
