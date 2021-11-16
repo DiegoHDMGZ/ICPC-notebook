@@ -102,6 +102,7 @@ struct Graph{
 		}
 		return {cf, cost};
 	}
+	
 	pair<Long, Long> minCostFlow(int s, int t, int n) { 
 		//O(E * V * maxFlow )
 		//maxFlow <= V * U, where U is the maximum capacity
