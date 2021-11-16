@@ -57,18 +57,18 @@ struct Graph{
 		}
 	}
 	
-	void spfa(Long s, Long n) { //O(E V)
-		for (Long i = 0; i < n; i++) pot[i] = INF;
-		queue<Long> q;
+	void spfa(int s, int n) { //O(E V)
+		for (int i = 0; i < n; i++) pot[i] = INF;
+		queue<int> q;
 		pot[s] = 0;
 		inQueue[s] = true;
 		q.push(s);
 		while (!q.empty()) {
-			Long u = q.front();
+			int u = q.front();
 			q.pop();
 			inQueue[u] = false;
 			for (Edge e : adj[u]) {
-				Long v = e.to;
+				int v = e.to;
 				if (e.cap - e.flow > 0 && pot[u] + e.cost < pot[v]) {
 					pot[v] = pot[u] + e.cost;
 					if (!inQueue[v]) {
@@ -80,7 +80,7 @@ struct Graph{
 		}
 	}
 	
-	pair<Long, Long> dijkstra(Long s, Long t, Long n) { //O(E log V)
+	pair<Long, Long> dijkstra(int s, int t, int n) { //O(E log V)
 		//<flow, cost>
 		priority_queue<Path, vector<Path>, greater<Path>> q;
 		vector<Long> d(n, INF);
@@ -92,16 +92,16 @@ struct Graph{
 		while (!q.empty()) {
 			Path p = q.top();
 			q.pop();
-			Long u = p.node;
+			int u = p.node;
 			if (p.weight != d[u]) continue;
 			for (int i = 0; i < adj[u].size(); i++) {
 				Edge e = adj[u][i];
-				Long v = e.to;
+				int v = e.to;
 				Long cf = e.cap - e.flow;
 				Long cost = e.cost + pot[u] - pot[v];
 				if (cf > 0 && d[u] + cost < d[v]) {
 					d[v] = d[u] + cost;
-					q.push(Path(v,d[v]));
+					q.push(Path(v, d[v]));
 					residualCap[v] = min(residualCap[u],cf);
 					parent[v] = u;
 					parentInd[v] = i;
@@ -109,9 +109,9 @@ struct Graph{
 			}
 		}
 		if (d[t] == INF) return {0, 0};
-		for (Long i = 0; i < n; i++) pot[i] += d[i];
+		for (int i = 0; i < n; i++) pot[i] += d[i];
 		Long cf = residualCap[t];
-		Long cur = t;
+		int cur = t;
 		while (true) {
 			int p = parent[cur];
 			int indP = parentInd[cur];
@@ -125,16 +125,16 @@ struct Graph{
 		return {cf, pot[t] * cf};
 	}
 	
-	pair<Long,Long> minCostFlow(Long s, Long t, Long n) {
+	pair<Long, Long> minCostFlow(int s, int t, int n) {
 		//O(E log V * maxFlow)
 		//maxFlow <= V * U, where U is the maximum capacity
 		//Initially no negative cycles
 		//<maxFlow, minCost>
-		spfa(s,n);
-		pair<Long,Long> inc; //not necessary if there is no negative edges
-		pair<Long,Long> ans = {0, 0};
+		spfa(s, n);
+		pair<Long, Long> inc; //not necessary if there is no negative edges
+		pair<Long, Long> ans = {0, 0};
 		do {
-			inc = dijkstra(s,t,n);
+			inc = dijkstra(s, t, n);
 			ans.first += inc.first;
 			ans.second += inc.second;
 		} while(inc.first > 0);

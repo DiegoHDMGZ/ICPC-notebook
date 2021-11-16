@@ -51,12 +51,12 @@ struct Graph{
 		}
 	}
 	
-	pair<Long,Long> spfa(Long s , Long t, Long n) { //O(E V)
+	pair<Long, Long> spfa(int s , int t, int n) { //O(E V)
 		vector<Long> d(n, INF);
 		vector<Long> cnt(n , 0);
 		vector<bool> inQueue(n , false);
 		d[s] = 0;
-		queue<Long> q;
+		queue<int> q;
 		inQueue[s] = true;
 		q.push(s);
 		while (!q.empty()) {
@@ -81,7 +81,7 @@ struct Graph{
 		if (d[t] == INF) return {0,0};
 		
 		Long cf = INF;
-		Long cur = t;
+		int cur = t;
 		while (true) {
 			cf = min(cf , parent[cur]->cap - parent[cur]->flow);
 			cur = parent[cur]->from;
@@ -89,7 +89,6 @@ struct Graph{
 				break;
 			}
 		}
-		
 		cur = t;
 		Long cost = 0;
 		while (true) {
@@ -101,23 +100,20 @@ struct Graph{
 				break;
 			}
 		}
-		
 		return {cf, cost};
-	
 	}
-	pair<Long,Long> minCostFlow(Long s, Long t, Long n) { 
+	pair<Long, Long> minCostFlow(int s, int t, int n) { 
 		//O(E * V * maxFlow )
 		//maxFlow <= V * U, where U is the maximum capacity
 		//Initially no negative cycles
 		//<maxFlow, minCost>
 		pair<Long,Long> inc;
-		pair<Long,Long> ans = {0, 0};
+		pair<Long, Long> ans = {0, 0};
 		do {
 			inc = spfa(s, t, n);
 			ans.first += inc.first;
 			ans.second += inc.second;
-		} while(inc.first > 0);
-		
+		} while (inc.first > 0);
 		return ans;
 	}
 } G;
