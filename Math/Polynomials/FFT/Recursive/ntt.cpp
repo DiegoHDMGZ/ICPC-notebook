@@ -10,7 +10,7 @@ typedef long long Long;
 //r = primiteve root of MOD
 //wn = r^c
 
-const Long MOD = 998244353; //MOD = 2^23 * 19 + 1
+const Long MOD = 998244353; //MOD = 2^23 * 119 + 1
 
 const Long root = 3;//primitive root of MOD
 const Long rootInv = 332748118;//inverse modular of root
