@@ -69,7 +69,7 @@ struct Field{
 	}
 };
 
-void ntt(vector<Field> &a, Field wn) { //O(n log n)
+void ntt(vector<Field> &a, const Field &wn) { //O(n log n)
 	//n must be a power of 2
 	int n = a.size();
 	if (n == 1) return;

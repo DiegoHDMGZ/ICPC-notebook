@@ -9,7 +9,7 @@ typedef complex<Double> Complex;
 
 const Double PI = acos(-1);
 
-void fft(vector<Complex> &a, Complex wn) { //O(n log n)
+void fft(vector<Complex> &a, const Complex &wn) { //O(n log n)
 	//n must be a power of 2
 	int n = a.size();
 	if (n == 1) return;

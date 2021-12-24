@@ -79,7 +79,7 @@ int bitReverse(int x, int lg) {
 }
 
 
-void ntt(vector<Field> &a, vector<Field> wn) { //O(n log n)
+void ntt(vector<Field> &a, const vector<Field> &wn) { //O(n log n)
 	//n must be a power of 2
 	int n = a.size();
 	int lg = 31 - __builtin_clz(n);
