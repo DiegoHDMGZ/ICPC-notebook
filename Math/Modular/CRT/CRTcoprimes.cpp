@@ -14,11 +14,8 @@ typedef long long Long;
 
 Long gcd(Long a, Long b, Long &x, Long &y) { //O(min(loga,logb))
 	if (b == 0){
-		if (a >= 0) {
-			x = 1;
-		} else {
-			x = -1;
-		}
+		if (a >= 0) x = 1;
+		else x = -1;
 		y = 0;
 		return abs(a);
 	}
@@ -29,11 +26,10 @@ Long gcd(Long a, Long b, Long &x, Long &y) { //O(min(loga,logb))
 	return g;
 }
 
-Long modInverseGCD(Long a, Long mod) { //O(min(log a,log mod))
+Long invert(Long a, Long mod) { //O(min(log a,log mod))
 	//a , mod coprime
 	Long x, y;
 	Long g = gcd(a, mod ,x, y);
-	
 	if (g != 1) return -1;
 	if (x >= 0) return x;
 	else return x + mod;
@@ -41,16 +37,12 @@ Long modInverseGCD(Long a, Long mod) { //O(min(log a,log mod))
 
 Long CRT(vector<Long> &mods, vector<Long> &res) { //O( |d| log n)
 	Long n = 1;
-	
 	Long k = mods.size();
-	for(Long i = 0; i < k; i++){
-		n *= mods[i];
-	}
-	
+	for (Long i = 0; i < k; i++) n *= mods[i];
 	Long x = 0;
-	for(Long i = 0; i < k; i++){
+	for (Long i = 0; i < k; i++) {
 		Long m = n / mods[i];
-		Long c = m * modInverseGCD(m , mods[i]) % n;
+		Long c = m * invert(m , mods[i]) % n;
 		Long aux = c * res[i] % n;
 		x = (x + aux) % n;
 	}

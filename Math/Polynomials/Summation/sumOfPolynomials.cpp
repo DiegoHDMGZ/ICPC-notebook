@@ -32,12 +32,12 @@ Long fastPow(Long a, Long b) { //O(logb)
 	return ans;
 }
 
-Long modInverse(Long a) { //O(log mod) , mod prime , (a , mod) coprimes
+Long invert(Long a) { //O(log mod) , mod prime , (a , mod) coprimes
 	return fastPow(a, MOD - 2);
 }
 
 Long divide(Long a, Long b) {
-	return mult(a , modInverse(b));
+	return mult(a , invert(b));
 }
 
 polynomial operator +(const polynomial &A, const polynomial &B) {

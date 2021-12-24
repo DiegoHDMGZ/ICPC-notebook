@@ -87,7 +87,7 @@ Long fastPow(Long a, Long b ){ //O(logb)
 	return ans;
 }
 
-Long modInverse(Long a){ //O(logm) , m prime , a , m coprimes
+Long invert(Long a){ //O(logm) , m prime , a , m coprimes
 	return fastPow(a, MOD - 2);
 }
 
@@ -109,7 +109,7 @@ Long determinant(Matrix M){
 			return 0;
 		}
 		det = mult(det , M[i][i] );
-		Long x = modInverse(M[i][i]);
+		Long x = invert(M[i][i]);
 		for(Long j = i + 1; j < n; j++){
 			M[i][j] = mult(M[i][j] , x);
 		}
@@ -147,7 +147,7 @@ Long linearSystem(Matrix M, vector<Long> &ans) {
 			continue;
 		}
 		position[col] = row;
-		Long x = modInverse(M[row][col]);
+		Long x = invert(M[row][col]);
 		for(Long j = col ; j <= m; j++){
 			M[row][j] = mult(M[row][j] , x);
 		}
@@ -210,7 +210,7 @@ Matrix inverse(Matrix M){
 			}
 		}
 		assert(M[i][i] != 0);
-		Long x = modInverse(M[i][i]);
+		Long x = invert(M[i][i]);
 		for(Long j = 0; j < n; j++){
 			M[i][j] = mult(M[i][j] , x);
 			ans[i][j] = mult(ans[i][j] , x);

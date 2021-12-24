@@ -34,12 +34,12 @@ Long fastPow(Long a, Long b){ //O(logb)
 	return ans;
 }
 
-Long modInverse(Long a){
+Long invert(Long a){
 	return fastPow(a , MOD - 2);
 }
 
 Long divide(Long a, Long b){
-	return mult(a, modInverse(b));
+	return mult(a, invert(b));
 }
 
 polynomial operator *(const polynomial &a, const polynomial &b) {
@@ -99,7 +99,7 @@ polynomial lagrange(vector<Long> &X, vector<Long> &Y){ //O(n^2)
 		f = f * polynomial({MOD - X[i] , 1});
 	}
 	for(int i = 0; i < X.size(); i++){
-		polynomial cur = polynomial({mult(Y[i] , modInverse(derivative(f , X[i])))}) * f;
+		polynomial cur = polynomial({mult(Y[i] , invert(derivative(f , X[i])))}) * f;
 		cur = ruffini(cur , X[i]);
 		ans = ans + cur;
 	}

@@ -33,7 +33,7 @@ Long fastPow(Long a, Long b) { //O(logb)
 	return ans;
 }
 
-Long modInverse(Long a) { //O(log mod) , mod prime , (a , mod) coprimes
+Long invert(Long a) { //O(log mod) , mod prime , (a , mod) coprimes
 	return fastPow(a, MOD - 2);
 }
 
@@ -60,7 +60,7 @@ void precalc() {
 	fact[0] = inv[0] = 1;
 	for (Long i = 1; i < MX; i++) {
 		fact[i] = mult(i, fact[i - 1]);
-		inv[i] = modInverse(fact[i]);
+		inv[i] = invert(fact[i]);
 	}
 }
 

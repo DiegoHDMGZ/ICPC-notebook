@@ -28,12 +28,12 @@ Long fastPow(Long a, Long b) { //O(log b)
 	return ans;
 }
 
-Long modInverse(Long a) {
+Long invert(Long a) {
 	return fastPow(a, MOD - 2);
 }
 
 Long divide(Long a, Long b) {
-	return mult(a, modInverse(b));
+	return mult(a, invert(b));
 }
 
 struct Field{
