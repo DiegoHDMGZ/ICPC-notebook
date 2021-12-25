@@ -8,7 +8,6 @@ typedef long long Long;
 //MOD = 2^k * c + 1
 //r = primitive root of MOD
 //wn = r^c
-
 const Long MOD = 998244353; //MOD = 2^23 * 119 + 1
 const Long root = 3;//primitive root of MOD
 const Long rootInv = 332748118;//modular inverse of root
@@ -179,12 +178,14 @@ polynomial getRange(const polynomial &a, int l, int r) {
 }
 
 polynomial shift(const polynomial &a, int k) {
+	//multiply polynomial by x^k
 	auto ans = a;
 	ans.insert(ans.begin(), k, 0);
 	return ans;
 }
 
 polynomial invert(polynomial &a, int n) {
+	assert(!a.empty() && a[0].val != 0);
 	polynomial ans = {Field(1) / a[0]};
 	int sz = 1;
 	while (sz < n) {
@@ -199,6 +200,34 @@ polynomial invert(polynomial &a, int n) {
 	return truncate(ans, n);
 }
 
+void normalize(polynomial &a) {
+	while (!a.empty() && a.back().val == 0) a.pop_back();
+}
+
+polynomial operator /(const polynomial &a, const polynomial &b) {
+	int n = a.size();
+	int m = b.size();
+	if (m > n) return polynomial({});
+	assert(b[m - 1].val != 0);
+	polynomial aR = a;
+	reverse(aR.begin(), aR.end());
+	polynomial bR = b;
+	reverse(bR.begin(), bR.end());
+	polynomial ans = truncate(aR, n - m + 1) * invert(bR, n - m + 1);
+	ans = truncate(ans, n - m + 1);
+	reverse(ans.begin(), ans.end());
+	normalize(ans);
+	return ans;
+} 
+
+polynomial operator %(const polynomial &a, const polynomial &b) {
+	int n = a.size();
+	int m = b.size();
+	if (m > n) return a;
+	polynomial ans = a - b * (a / b);
+	normalize(ans);
+	return ans;
+}
 int main() {
 	return 0;
 }
