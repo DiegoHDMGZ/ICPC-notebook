@@ -30,7 +30,7 @@ void fft(vector<Complex> &a, const Complex &wn) { //O(n log n)
 
 typedef vector<Long> polynomial;
 
-polynomial operator *(const polynomial &a, const polynomial &b) {
+polynomial operator *(const polynomial &a, const polynomial &b) { //O(n log n)
 	vector<Complex> fa(a.begin(), a.end());
 	vector<Complex> fb(b.begin(), b.end());
 	Long n = 1;

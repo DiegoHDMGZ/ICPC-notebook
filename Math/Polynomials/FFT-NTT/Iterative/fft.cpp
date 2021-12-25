@@ -9,7 +9,7 @@ typedef complex<Double> Complex;
 
 const Double PI = acos(-1);
 
-int bitReverse(int x, int lg) {
+int bitReverse(int x, int lg) { //O(lg)
 	int ans = 0;
 	for (int i = 0; i < lg; i++) {
 		ans = ans * 2 + x % 2;
@@ -45,7 +45,7 @@ void fft(vector<Complex> &a, bool invert) { //O(n log n)
 
 typedef vector<Long> polynomial;
 
-polynomial operator *(const polynomial &a, const polynomial &b) {
+polynomial operator *(const polynomial &a, const polynomial &b) { //O(n log n)
 	vector<Complex> fa(a.begin(), a.end());
 	vector<Complex> fb(b.begin(), b.end());
 	Long n = 1;

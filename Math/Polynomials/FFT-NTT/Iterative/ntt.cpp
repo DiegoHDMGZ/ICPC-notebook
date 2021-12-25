@@ -68,7 +68,7 @@ struct Field{
 	}
 };
 
-int bitReverse(int x, int lg) {
+int bitReverse(int x, int lg) { //O(lg)
 	int ans = 0;
 	for (int i = 0; i < lg; i++) {
 		ans = ans * 2 + x % 2;
@@ -104,7 +104,7 @@ void ntt(vector<Field> &a, const vector<Field> &wn) { //O(n log n)
 
 typedef vector<Long> polynomial;
 
-polynomial operator *(const polynomial &a, const polynomial &b) {
+polynomial operator *(const polynomial &a, const polynomial &b) { //O(n log n)
 	int n = 1;
 	vector<Field> fa(a.begin(), a.end());
 	vector<Field> fb(b.begin(), b.end());

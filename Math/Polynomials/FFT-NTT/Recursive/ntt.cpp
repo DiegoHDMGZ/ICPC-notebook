@@ -89,7 +89,7 @@ void ntt(vector<Field> &a, const Field &wn) { //O(n log n)
 
 typedef vector<Long> polynomial;
 
-polynomial operator *(const polynomial &a, const polynomial &b) {
+polynomial operator *(const polynomial &a, const polynomial &b) { //O(n log n)
 	int n = 1;
 	vector<Field> fa(a.begin(), a.end());
 	vector<Field> fb(b.begin(), b.end());

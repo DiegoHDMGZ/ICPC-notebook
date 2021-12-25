@@ -80,7 +80,7 @@ istream & operator >>(istream &in, Field &number){
 	return in;
 }
 
-int bitReverse(int x, int lg) {
+int bitReverse(int x, int lg) { //O(lg)
 	int ans = 0;
 	for (int i = 0; i < lg; i++) {
 		ans = ans * 2 + x % 2;
@@ -116,7 +116,7 @@ void ntt(vector<Field> &a, vector<Field> wn) { //O(n log n)
 
 typedef vector<Field> polynomial;
 
-polynomial operator +(const polynomial &a, const polynomial &b) {
+polynomial operator +(const polynomial &a, const polynomial &b) { //O(n)
 	int n = max(a.size(), b.size());
 	polynomial ans(n);
 	for (int i = 0; i < n; i++) {
@@ -127,7 +127,7 @@ polynomial operator +(const polynomial &a, const polynomial &b) {
 	return ans;
 } 
 
-polynomial operator -(const polynomial &a, const polynomial &b) {
+polynomial operator -(const polynomial &a, const polynomial &b) { //O(n)
 	int n = max(a.size(), b.size());
 	polynomial ans(n);
 	for (int i = 0; i < n; i++) {
@@ -139,7 +139,7 @@ polynomial operator -(const polynomial &a, const polynomial &b) {
 } 
 
 
-polynomial operator *(const polynomial &a, const polynomial &b) {
+polynomial operator *(const polynomial &a, const polynomial &b) { //O(n log n)
 	int n = 1;
 	vector<Field> fa(a.begin(), a.end());
 	vector<Field> fb(b.begin(), b.end());
@@ -166,25 +166,25 @@ polynomial operator *(const polynomial &a, const polynomial &b) {
 	return ans;
 } 
 
-polynomial truncate(const polynomial &a, int n) {
+polynomial truncate(const polynomial &a, int n) { //O(n)
 	n = min(n, (int)a.size());
 	return polynomial(a.begin(), a.begin() + n);
 }
 
-polynomial getRange(const polynomial &a, int l, int r) {
+polynomial getRange(const polynomial &a, int l, int r) { //O(r - l)
 	l = min(l, (int)a.size());
 	r = min(r, (int)a.size());
 	return polynomial(a.begin() + l, a.begin() + r);
 }
 
-polynomial shift(const polynomial &a, int k) {
+polynomial shift(const polynomial &a, int k) { //O(k)
 	//multiply polynomial by x^k
 	auto ans = a;
 	ans.insert(ans.begin(), k, 0);
 	return ans;
 }
 
-polynomial invert(polynomial &a, int n) {
+polynomial invert(polynomial &a, int n) { //O(n log n)
 	assert(!a.empty() && a[0].val != 0);
 	polynomial ans = {Field(1) / a[0]};
 	int sz = 1;
@@ -204,7 +204,7 @@ void normalize(polynomial &a) {
 	while (!a.empty() && a.back().val == 0) a.pop_back();
 }
 
-polynomial operator /(const polynomial &a, const polynomial &b) {
+polynomial operator /(const polynomial &a, const polynomial &b) { //O(n log n)
 	int n = a.size();
 	int m = b.size();
 	if (m > n) return polynomial({});
@@ -220,7 +220,7 @@ polynomial operator /(const polynomial &a, const polynomial &b) {
 	return ans;
 } 
 
-polynomial operator %(const polynomial &a, const polynomial &b) {
+polynomial operator %(const polynomial &a, const polynomial &b) { //O(n log n)
 	int n = a.size();
 	int m = b.size();
 	if (m > n) return a;
