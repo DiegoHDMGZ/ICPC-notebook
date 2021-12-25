@@ -6,111 +6,126 @@ using namespace std;
 
 typedef long long Long;
 
-const Long MOD = 998244353; //MOD = 2^23 * 19 + 1
-const Long root = 3;//primitve root of MOD
-const Long rootInv = 332748118;//inverse modular of root
+const Long MOD = 998244353; //MOD = 2^23 * 119 + 1
+const Long root = 3;//primitive root of MOD
+const Long rootInv = 332748118;//modular inverse of root
 
-struct Field{
-	Long num;
-	Field(Long num = 0) : num(num){}
-	
-	Field operator + (const Field &F) const {
-		return (num + F.num) % MOD;
-	}
-	
-	Field operator - (const Field &F) const {
-		return (num - F.num + MOD) % MOD;
-	}
-	
-	Field operator * (const Field &F) const {
-		return (num * F.num) % MOD;
-	}
-	
-	Field operator *= (const Field &F)  {
-		num *= F.num;
-		num %= MOD;
-		return *this;
-	}
-};
-
-const Field inv2 = Field(499122177);//mod inverse of 2
-
-Long mult(Long a, Long b){
-	return (a * b ) % MOD;
+Long mult(Long a, Long b) {
+	return (a * b) % MOD;
 }
 
-Long fastPow(Long a, Long b ){ //O(logb)
+Long fastPow(Long a, Long b) { //O(log b)
 	Long ans = 1;
-	while(b > 0){
-		if(b & 1 == 1){ //b % 2 == 1
-			ans = mult(ans ,a );
-		}
-		a = mult(a , a  );
-		b >>= 1; //b /= 2;
+	while (b > 0) {
+		if (b & 1) ans = mult(ans, a);
+		a = mult(a, a);
+		b >>= 1;
 	}
 	return ans;
 }
 
+Long invert(Long a) {
+	return fastPow(a, MOD - 2);
+}
 
-void ntt(vector<Field> &a, bool invert, Field wn){ //O(n log n)
+Long divide(Long a, Long b) {
+	return mult(a, invert(b));
+}
+
+struct Field{
+	Long val;
+	Field(Long val = 0) {
+		this->val = val % MOD;
+	}
+	
+	Field operator +(const Field &F) const {
+		return (val + F.val) % MOD;
+	}
+	
+	Field operator -(const Field &F) const {
+		return (val - F.val + MOD) % MOD;
+	}
+	
+	Field operator *(const Field &F) const {
+		return mult(val, F.val);
+	}
+	
+	Field operator *=(const Field &F)  {
+		val = mult(val, F.val);
+		return *this;
+	}
+	
+	Field operator /(const Field &F) const {
+		return divide(val, F.val);
+	}
+	
+	Field operator /=(const Field &F)  {
+		val = divide(val, F.val);
+		return *this;
+	}
+};
+
+int bitReverse(int x, int lg) { //O(lg)
+	int ans = 0;
+	for (int i = 0; i < lg; i++) {
+		ans = ans * 2 + x % 2;
+		x /= 2;
+	}
+	return ans;
+}
+
+void ntt(vector<Field> &a, const vector<Field> &wn) { //O(n log n)
 	//n must be a power of 2
-	Long n = a.size();
-	if(n == 1){
-		return;
+	int n = a.size();
+	int lg = 31 - __builtin_clz(n);
+	for (int i = 0; i < n; i++) {
+		int target = bitReverse(i, lg);
+		if (i < target) swap(a[i], a[target]);
 	}
-
-	Field w (1);
-	vector<Field> even(n / 2), odd(n / 2);
-	for(Long i = 0; 2 * i < n; i++){
-		even[i] = a[2 * i];
-		odd[i] = a[2 * i + 1];
-	}
-
-	ntt(even, invert, wn * wn);
-	ntt(odd, invert, wn * wn);
-	for(Long i = 0; 2 * i < n; i++){
-		a[i] = even[i] + w * odd[i];
-		a[i + n / 2] = even[i] - w * odd[i];
-		if(invert){
-			a[i] *= inv2;
-			a[i + n / 2] *= inv2;
+	int e = 0;
+	for (int len = 2; len <= n; len *= 2) {
+		for (int l = 0; l < n; l += len) {
+			Field w(1);
+			for (int d = 0; d < len / 2; d++) {
+				Field even = a[l + d];
+				Field odd = a[l + d + len / 2] * w;
+				a[l + d] = even + odd;
+				a[l + d + len / 2] = even - odd;
+				w *= wn[e]; 
+			}
 		}
-		w *= wn;
+		e++;
 	}
 }
 
 typedef deque<Long> poly;
 
-poly operator *(const poly &a, const poly &b) {
-
-	Long n = 1;
+poly operator *(const poly &a, const poly &b) { //O(n log n)
+	int n = 1;
 	vector<Field> fa(a.begin(), a.end());
 	vector<Field> fb(b.begin(), b.end());
-	
-	while(n < a.size() + b.size()){
-		n <<= 1;
-	}
+	while(n < a.size() + b.size()) n <<= 1;
 	fa.resize(n);
 	fb.resize(n);
+	int lg = 31 - __builtin_clz(n);
+	vector<Field> wn(lg);
+	wn[lg - 1] = Field(fastPow(root , (MOD - 1) / n));
+	for (int i = lg - 2; i >= 0; i--) wn[i] = wn[i + 1] * wn[i + 1];
+	ntt(fa, wn);
+	ntt(fb, wn);
 	
-	Field wn(fastPow(root , (MOD - 1) / n));
-	
-	ntt(fa, false , wn );
-	ntt(fb, false, wn );
-	
-	for(Long i = 0; i < n; i++){
+	for (int i = 0; i < n; i++) {
 		fa[i] *= fb[i];
+		fa[i] /= n;
 	}
-	wn = Field(fastPow(rootInv , (MOD - 1) / n));
-	ntt(fa, true, wn );
+	wn[lg - 1] = Field(fastPow(rootInv , (MOD - 1) / n));
+	for (int i = lg - 2; i >= 0; i--) wn[i] = wn[i + 1] * wn[i + 1];
+	ntt(fa, wn);
 	
-	poly ans((Long)a.size() + (Long)b.size() - 1);
-	for(Long i = 0; i < ans.size(); i++){
-		ans[i] = fa[i].num;
-	}
+	poly ans((int)a.size() + (int)b.size() - 1);
+	for (int i = 0; i < ans.size(); i++) ans[i] = fa[i].val;
 	return ans;
 } 
-
 
 void eraseTrailing(deque<Long> &v){
 	while(v.size() > 1 && v[0] == 0){
