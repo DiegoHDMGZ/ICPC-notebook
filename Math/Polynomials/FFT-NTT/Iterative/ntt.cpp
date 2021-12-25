@@ -77,7 +77,6 @@ int bitReverse(int x, int lg) { //O(lg)
 	return ans;
 }
 
-
 void ntt(vector<Field> &a, const vector<Field> &wn) { //O(n log n)
 	//n must be a power of 2
 	int n = a.size();
