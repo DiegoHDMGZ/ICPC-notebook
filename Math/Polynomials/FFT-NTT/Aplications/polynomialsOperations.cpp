@@ -89,7 +89,6 @@ int bitReverse(int x, int lg) { //O(lg)
 	return ans;
 }
 
-
 void ntt(vector<Field> &a, vector<Field> wn) { //O(n log n)
 	//n must be a power of 2
 	int n = a.size();
@@ -201,7 +200,7 @@ polynomial invert(polynomial &a, int n) { //O(n log n)
 }
 
 void normalize(polynomial &a) {
-	while (!a.empty() && a.back().val == 0) a.pop_back();
+	while (a.size() > 1 && a.back().val == 0) a.pop_back();
 }
 
 polynomial operator /(const polynomial &a, const polynomial &b) { //O(n log n)
@@ -228,6 +227,56 @@ polynomial operator %(const polynomial &a, const polynomial &b) { //O(n log n)
 	normalize(ans);
 	return ans;
 }
+
+void buildEvaluate(vector<polynomial> &ans, int id, int l, int r, const vector<Long> &X) {
+	//O(n log^2 n)
+	if (l == r) {
+		ans[id] = {-X[l], 1};
+	} else {
+		int m = (l + r) / 2;
+		int left = id + 1;
+		int right = id + 2 * (m - l + 1);
+		buildEvaluate(ans, left, l, m, X);
+		buildEvaluate(ans, right, m + 1, r, X);
+		ans[id] = ans[left] * ans[right];
+	}
+}
+
+void evaluate(int id, int l, int r, const polynomial &a, const vector<polynomial> &tree, vector<Long> &ans) {
+	//O(n log^2 n)
+	if (l == r) {
+		assert(a.size() == 1);
+		ans[l] = a[0].val;
+	} else {
+		int m = (l + r) / 2;
+		int left = id + 1;
+		int right = id + 2 * (m - l + 1);
+		evaluate(left, l, m, a % tree[left], tree, ans);
+		evaluate(right, m + 1, r, a % tree[right], tree, ans);
+	}
+}
+
+const int threshold = 30;
+vector<Long> evaluate(const polynomial &a, const vector<Long> &X) {
+	//O(n log^2 n)
+	int n = X.size();
+	if (n <= threshold) {
+		vector<Long> ans(n);
+		for (int k = 0; k < n; k++) {
+			Field x = X[k];
+			for (int i = (int)a.size() - 1; i >= 0; i--) {
+				ans[k] = (Field(ans[k]) * x + a[i]).val;
+			}
+		}
+		return ans;
+	}
+	vector<polynomial> tree(2 * n);
+	buildEvaluate(tree, 1, 0, n - 1, X);
+	vector<Long> ans(n);
+	evaluate(1, 0, n - 1, a, tree, ans);
+	return ans;
+}
+
 int main() {
 	return 0;
 }
