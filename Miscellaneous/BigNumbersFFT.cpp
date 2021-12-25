@@ -79,9 +79,9 @@ void ntt(vector<Field> &a, bool invert, Field wn){ //O(n log n)
 	}
 }
 
-typedef deque<Long> polynomial;
+typedef deque<Long> poly;
 
-polynomial operator *(const polynomial &a, const polynomial &b) {
+poly operator *(const poly &a, const poly &b) {
 
 	Long n = 1;
 	vector<Field> fa(a.begin(), a.end());
@@ -104,7 +104,7 @@ polynomial operator *(const polynomial &a, const polynomial &b) {
 	wn = Field(fastPow(rootInv , (MOD - 1) / n));
 	ntt(fa, true, wn );
 	
-	polynomial ans((Long)a.size() + (Long)b.size() - 1);
+	poly ans((Long)a.size() + (Long)b.size() - 1);
 	for(Long i = 0; i < ans.size(); i++){
 		ans[i] = fa[i].num;
 	}

@@ -4,7 +4,7 @@
 using namespace std;
 
 typedef long long Long;
-typedef vector<Long> polynomial;
+typedef vector<Long> poly;
 
 const Long MOD = 1e9 + 7;
 
@@ -23,9 +23,7 @@ Long sub(Long a, Long b) {
 Long fastPow(Long a, Long b) { //O(logb)
 	Long ans = 1;
 	while (b > 0) {
-		if (b & 1 == 1) { 
-			ans = mult(ans , a);
-		}
+		if (b & 1) ans = mult(ans , a);
 		a = mult(a , a);
 		b >>= 1; 
 	}
@@ -40,17 +38,13 @@ Long divide(Long a, Long b) {
 	return mult(a , invert(b));
 }
 
-polynomial operator +(const polynomial &A, const polynomial &B) {
-	polynomial ans(max(A.size(), B.size()));
+poly operator +(const poly &A, const poly &B) {
+	poly ans(max(A.size(), B.size()));
 	for (Long i = 0; i < max(A.size(), B.size()); i++) {
 		Long a = 0;
-		if (i < A.size()) {
-			a = A[i];
-		}
+		if (i < A.size()) a = A[i];
 		Long b = 0;
-		if (i < B.size()) {
-			b = B[i];
-		}
+		if (i < B.size()) b = B[i];
 		ans[i] = add(a, b);
 	}
 	return ans;
@@ -60,7 +54,7 @@ const Long MX = 5002;
 
 struct Summation {
 	Long stirling[MX][MX];
-	polynomial coef;
+	poly coef;
 	
 	void precalc() { //O(n^2)
 		stirling[0][0] = 1;
@@ -78,16 +72,16 @@ struct Summation {
 		precalc();
 	}
 
-	polynomial transformFalling(Long c, Long n) { //O(n)
-		polynomial p(n + 1, 0);
+	poly transformFalling(Long c, Long n) { //O(n)
+		poly p(n + 1, 0);
 		for (Long i = 0; i <= n; i++) {
 			p[i] = mult(stirling[n][i], c);
 		}
 		return p;
 	}
 	
-	void build(polynomial &p) { //O(n^2)
-		polynomial fallings;
+	void build(poly &p) { //O(n^2)
+		poly fallings;
 		for (Long i = 0; i < p.size(); i++) {
 			fallings = fallings + transformFalling(p[i], i);
 		}
@@ -118,7 +112,7 @@ int main() {
 	
 	Long n;
 	cin >> n;
-	polynomial p(n + 1);
+	poly p(n + 1);
 	for (Long i = n; i >= 0; i--) {
 		cin >> p[i];
 	}

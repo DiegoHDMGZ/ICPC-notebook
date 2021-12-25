@@ -1,12 +1,11 @@
 #include <bits/stdc++.h>
 #define debug(x) cout << #x << " = " << x << endl
 #define REP(i,n) for(Long i = 0; i < (Long)n; i++)
-#define pb push_back
 using namespace std;
 
 typedef long long Long;
 
-typedef vector<Long> polynomial;
+typedef vector<Long> poly;
 
 const Long MOD = 1e9 + 7;
 
@@ -42,10 +41,10 @@ Long divide(Long a, Long b){
 	return mult(a, invert(b));
 }
 
-polynomial operator *(const polynomial &a, const polynomial &b) {
+poly operator *(const poly &a, const poly &b) {
 	Long n = a.size();
 	Long m = b.size();
-	polynomial ans(n + m - 1 , 0);
+	poly ans(n + m - 1 , 0);
 	REP(i , n){
 		REP(j , m){
 			ans[i + j] = add(ans[i + j] , mult(a[i] , b[j]));
@@ -54,10 +53,10 @@ polynomial operator *(const polynomial &a, const polynomial &b) {
 	return ans;
 } 
 
-polynomial operator +(const polynomial &a, const polynomial &b){
+poly operator +(const poly &a, const poly &b){
 	Long n = a.size();
 	Long m = b.size();
-	polynomial ans(max(n , m) , 0);
+	poly ans(max(n , m) , 0);
 	for(int i = 0; i < max(n , m); i++){
 		Long x = 0 , y = 0;
 		if(i < a.size()) x = a[i];
@@ -67,7 +66,7 @@ polynomial operator +(const polynomial &a, const polynomial &b){
 	return ans;
 }
 
-Long derivative(polynomial &p, Long x){
+Long derivative(poly &p, Long x){
 	if(p.size() == 1){
 		return {0};
 	}
@@ -80,9 +79,9 @@ Long derivative(polynomial &p, Long x){
 	return ans;
 }
 
-polynomial ruffini(polynomial &p , Long c){
+poly ruffini(poly &p , Long c){
 	Long n = p.size();
-	polynomial ans(n - 1);
+	poly ans(n - 1);
 	Long r = 0;
 	for(Long i = n - 2; i >= 0; i--){
 		ans[i] = add(p[i + 1] , r);
@@ -91,15 +90,15 @@ polynomial ruffini(polynomial &p , Long c){
 	return ans;
 }
 
-polynomial lagrange(vector<Long> &X, vector<Long> &Y){ //O(n^2)
+poly lagrange(vector<Long> &X, vector<Long> &Y){ //O(n^2)
 	//hidden constant
-	polynomial ans(X.size(), 0);
-	polynomial f = {1};
+	poly ans(X.size(), 0);
+	poly f = {1};
 	for(int i = 0; i < X.size(); i++){
-		f = f * polynomial({MOD - X[i] , 1});
+		f = f * poly({MOD - X[i] , 1});
 	}
 	for(int i = 0; i < X.size(); i++){
-		polynomial cur = polynomial({mult(Y[i] , invert(derivative(f , X[i])))}) * f;
+		poly cur = poly({mult(Y[i] , invert(derivative(f , X[i])))}) * f;
 		cur = ruffini(cur , X[i]);
 		ans = ans + cur;
 	}

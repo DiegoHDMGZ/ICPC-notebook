@@ -113,11 +113,11 @@ void ntt(vector<Field> &a, vector<Field> wn) { //O(n log n)
 	}
 }
 
-typedef vector<Field> polynomial;
+typedef vector<Field> poly;
 
-polynomial operator +(const polynomial &a, const polynomial &b) { //O(n)
+poly operator +(const poly &a, const poly &b) { //O(n)
 	int n = max(a.size(), b.size());
-	polynomial ans(n);
+	poly ans(n);
 	for (int i = 0; i < n; i++) {
 		Field valA = (i < a.size()) ? a[i] : 0;
 		Field valB = (i < b.size()) ? b[i] : 0;
@@ -126,9 +126,9 @@ polynomial operator +(const polynomial &a, const polynomial &b) { //O(n)
 	return ans;
 } 
 
-polynomial operator -(const polynomial &a, const polynomial &b) { //O(n)
+poly operator -(const poly &a, const poly &b) { //O(n)
 	int n = max(a.size(), b.size());
-	polynomial ans(n);
+	poly ans(n);
 	for (int i = 0; i < n; i++) {
 		Field valA = (i < a.size()) ? a[i] : 0;
 		Field valB = (i < b.size()) ? b[i] : 0;
@@ -138,7 +138,7 @@ polynomial operator -(const polynomial &a, const polynomial &b) { //O(n)
 } 
 
 
-polynomial operator *(const polynomial &a, const polynomial &b) { //O(n log n)
+poly operator *(const poly &a, const poly &b) { //O(n log n)
 	int n = 1;
 	vector<Field> fa(a.begin(), a.end());
 	vector<Field> fb(b.begin(), b.end());
@@ -160,32 +160,32 @@ polynomial operator *(const polynomial &a, const polynomial &b) { //O(n log n)
 	for (int i = lg - 2; i >= 0; i--) wn[i] = wn[i + 1] * wn[i + 1];
 	ntt(fa, wn);
 	
-	polynomial ans((int)a.size() + (int)b.size() - 1);
+	poly ans((int)a.size() + (int)b.size() - 1);
 	for (int i = 0; i < ans.size(); i++) ans[i] = fa[i].val;
 	return ans;
 } 
 
-polynomial truncate(const polynomial &a, int n) { //O(n)
+poly truncate(const poly &a, int n) { //O(n)
 	n = min(n, (int)a.size());
-	return polynomial(a.begin(), a.begin() + n);
+	return poly(a.begin(), a.begin() + n);
 }
 
-polynomial getRange(const polynomial &a, int l, int r) { //O(r - l)
+poly getRange(const poly &a, int l, int r) { //O(r - l)
 	l = min(l, (int)a.size());
 	r = min(r, (int)a.size());
-	return polynomial(a.begin() + l, a.begin() + r);
+	return poly(a.begin() + l, a.begin() + r);
 }
 
-polynomial shift(const polynomial &a, int k) { //O(k)
-	//multiply polynomial by x^k
+poly shift(const poly &a, int k) { //O(k)
+	//multiply poly by x^k
 	auto ans = a;
 	ans.insert(ans.begin(), k, 0);
 	return ans;
 }
 
-polynomial invert(polynomial &a, int n) { //O(n log n)
+poly invert(poly &a, int n) { //O(n log n)
 	assert(!a.empty() && a[0].val != 0);
-	polynomial ans = {Field(1) / a[0]};
+	poly ans = {Field(1) / a[0]};
 	int sz = 1;
 	while (sz < n) {
 		//ans <- ans + (ans - a * ans * ans)
@@ -199,36 +199,36 @@ polynomial invert(polynomial &a, int n) { //O(n log n)
 	return truncate(ans, n);
 }
 
-void normalize(polynomial &a) {
+void normalize(poly &a) {
 	while (a.size() > 1 && a.back().val == 0) a.pop_back();
 }
 
-polynomial operator /(const polynomial &a, const polynomial &b) { //O(n log n)
+poly operator /(const poly &a, const poly &b) { //O(n log n)
 	int n = a.size();
 	int m = b.size();
-	if (m > n) return polynomial({});
+	if (m > n) return poly({});
 	assert(b[m - 1].val != 0);
-	polynomial aR = a;
+	poly aR = a;
 	reverse(aR.begin(), aR.end());
-	polynomial bR = b;
+	poly bR = b;
 	reverse(bR.begin(), bR.end());
-	polynomial ans = truncate(aR, n - m + 1) * invert(bR, n - m + 1);
+	poly ans = truncate(aR, n - m + 1) * invert(bR, n - m + 1);
 	ans = truncate(ans, n - m + 1);
 	reverse(ans.begin(), ans.end());
 	normalize(ans);
 	return ans;
 } 
 
-polynomial operator %(const polynomial &a, const polynomial &b) { //O(n log n)
+poly operator %(const poly &a, const poly &b) { //O(n log n)
 	int n = a.size();
 	int m = b.size();
 	if (m > n) return a;
-	polynomial ans = a - b * (a / b);
+	poly ans = a - b * (a / b);
 	normalize(ans);
 	return ans;
 }
 
-void buildEvaluate(vector<polynomial> &ans, int id, int l, int r, const vector<Long> &X) {
+void buildEvaluate(vector<poly> &ans, int id, int l, int r, const vector<Long> &X) {
 	//O(n log^2 n)
 	if (l == r) {
 		ans[id] = {-X[l], 1};
@@ -242,7 +242,7 @@ void buildEvaluate(vector<polynomial> &ans, int id, int l, int r, const vector<L
 	}
 }
 
-void evaluate(int id, int l, int r, const polynomial &a, const vector<polynomial> &tree, vector<Long> &ans) {
+void evaluate(int id, int l, int r, const poly &a, const vector<poly> &tree, vector<Long> &ans) {
 	//O(n log^2 n)
 	if (l == r) {
 		assert(a.size() == 1);
@@ -257,7 +257,7 @@ void evaluate(int id, int l, int r, const polynomial &a, const vector<polynomial
 }
 
 const int threshold = 30;
-vector<Long> evaluate(const polynomial &a, const vector<Long> &X) {
+vector<Long> evaluate(const poly &a, const vector<Long> &X) {
 	//O(n log^2 n)
 	int n = X.size();
 	if (n <= threshold) {
@@ -270,7 +270,7 @@ vector<Long> evaluate(const polynomial &a, const vector<Long> &X) {
 		}
 		return ans;
 	}
-	vector<polynomial> tree(2 * n);
+	vector<poly> tree(2 * n);
 	buildEvaluate(tree, 1, 0, n - 1, X);
 	vector<Long> ans(n);
 	evaluate(1, 0, n - 1, a, tree, ans);

@@ -102,9 +102,9 @@ void ntt(vector<Field> &a, const vector<Field> &wn) { //O(n log n)
 	}
 }
 
-typedef vector<Long> polynomial;
+typedef vector<Long> poly;
 
-polynomial operator *(const polynomial &a, const polynomial &b) { //O(n log n)
+poly operator *(const poly &a, const poly &b) { //O(n log n)
 	int n = 1;
 	vector<Field> fa(a.begin(), a.end());
 	vector<Field> fb(b.begin(), b.end());
@@ -126,7 +126,7 @@ polynomial operator *(const polynomial &a, const polynomial &b) { //O(n log n)
 	for (int i = lg - 2; i >= 0; i--) wn[i] = wn[i + 1] * wn[i + 1];
 	ntt(fa, wn);
 	
-	polynomial ans((int)a.size() + (int)b.size() - 1);
+	poly ans((int)a.size() + (int)b.size() - 1);
 	for (int i = 0; i < ans.size(); i++) ans[i] = fa[i].val;
 	return ans;
 } 

@@ -7,13 +7,12 @@ using namespace std;
 typedef long long Long;
 typedef long double Double;
 
-typedef vector<Double> polynomial;
+typedef vector<Double> poly;
 
-
-polynomial operator *(const polynomial &a, const polynomial &b) {
+poly operator *(const poly &a, const poly &b) {
 	Long n = a.size();
 	Long m = b.size();
-	polynomial ans(n + m - 1 , 0);
+	poly ans(n + m - 1 , 0);
 	REP(i , n){
 		REP(j , m){
 			ans[i + j] +=a[i] * b[j];
@@ -22,10 +21,10 @@ polynomial operator *(const polynomial &a, const polynomial &b) {
 	return ans;
 } 
 
-polynomial operator +(const polynomial &a, const polynomial &b){
+poly operator +(const poly &a, const poly &b){
 	Long n = a.size();
 	Long m = b.size();
-	polynomial ans(max(n , m) , 0);
+	poly ans(max(n , m) , 0);
 	for(int i = 0; i < max(n , m); i++){
 		Double x = 0 , y = 0;
 		if(i < a.size()) x = a[i];
@@ -35,7 +34,7 @@ polynomial operator +(const polynomial &a, const polynomial &b){
 	return ans;
 }
 
-Double derivative(polynomial &p, Double x){
+Double derivative(poly &p, Double x){
 	if(p.size() == 1){
 		return {0};
 	}
@@ -48,9 +47,9 @@ Double derivative(polynomial &p, Double x){
 	return ans;
 }
 
-polynomial ruffini(polynomial &p , Double c){
+poly ruffini(poly &p , Double c){
 	Long n = p.size();
-	polynomial ans(n - 1);
+	poly ans(n - 1);
 	Double r = 0;
 	for(Long i = n - 2; i >= 0; i--){
 		ans[i] = p[i + 1] + r;
@@ -59,15 +58,15 @@ polynomial ruffini(polynomial &p , Double c){
 	return ans;
 }
 
-polynomial lagrange(vector<Double> &X, vector<Double> &Y){ //O(n^2)
+poly lagrange(vector<Double> &X, vector<Double> &Y){ //O(n^2)
 	//hidden constant
-	polynomial ans(X.size(), 0);
-	polynomial f = {1};
+	poly ans(X.size(), 0);
+	poly f = {1};
 	for(int i = 0; i < X.size(); i++){
-		f = f * polynomial({- X[i] , 1});
+		f = f * poly({- X[i] , 1});
 	}
 	for(int i = 0; i < X.size(); i++){
-		polynomial cur = polynomial({Y[i] / derivative(f , X[i])}) * f;
+		poly cur = poly({Y[i] / derivative(f , X[i])}) * f;
 		cur = ruffini(cur , X[i]);
 		ans = ans + cur;
 	}

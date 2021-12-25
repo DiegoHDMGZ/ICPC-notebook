@@ -28,9 +28,9 @@ void fft(vector<Complex> &a, const Complex &wn) { //O(n log n)
 	}
 }
 
-typedef vector<Long> polynomial;
+typedef vector<Long> poly;
 
-polynomial operator *(const polynomial &a, const polynomial &b) { //O(n log n)
+poly operator *(const poly &a, const poly &b) { //O(n log n)
 	vector<Complex> fa(a.begin(), a.end());
 	vector<Complex> fb(b.begin(), b.end());
 	Long n = 1;
@@ -49,7 +49,7 @@ polynomial operator *(const polynomial &a, const polynomial &b) { //O(n log n)
 	wn = polar((Double)1 , -2.0 * PI / n); //inverse
 	fft(fa, wn);
 	
-	polynomial ans(a.size() + b.size() - 1);
+	poly ans(a.size() + b.size() - 1);
 	for (int i = 0; i < ans.size(); i++) ans[i] = round(fa[i].real());
 	return ans;
 } 
