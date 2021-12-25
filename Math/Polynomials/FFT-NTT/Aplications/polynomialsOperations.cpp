@@ -163,7 +163,17 @@ poly operator *(const poly &a, const poly &b) { //O(n log n)
 	poly ans((int)a.size() + (int)b.size() - 1);
 	for (int i = 0; i < ans.size(); i++) ans[i] = fa[i].val;
 	return ans;
-} 
+}
+
+poly derivate(const poly &a) {
+	if (a.size() <= 1) return {0};
+	int n = a.size();
+	poly ans(n - 1);
+	for (int i = 1; i < n; i++) {
+		ans[i - 1] = a[i] * i; 
+	}
+	return ans;
+}
 
 poly truncate(const poly &a, int n) { //O(n)
 	n = min(n, (int)a.size());
@@ -260,6 +270,9 @@ const int threshold = 30;
 vector<Long> evaluate(const poly &a, const vector<Long> &X) {
 	//O(n log^2 n)
 	int n = X.size();
+	if (a.size() <= 1) {
+		return vector<Long>(n, a.empty() ? 0 : a[0].val);
+	}
 	if (n <= threshold) {
 		vector<Long> ans(n);
 		for (int k = 0; k < n; k++) {
@@ -275,6 +288,32 @@ vector<Long> evaluate(const poly &a, const vector<Long> &X) {
 	vector<Long> ans(n);
 	evaluate(1, 0, n - 1, a, tree, ans);
 	return ans;
+}
+
+poly interpolate(int id, int l, int r, const vector<Long> &d, const vector<poly> &tree) {
+	//O(n log^2 n)
+	if (l == r) {
+		return {d[l]};
+	} else {
+		int m = (l + r) / 2;
+		int left = id + 1;
+		int right = id + 2 * (m - l + 1);
+		poly leftPoly = interpolate(left, l, m, d, tree);
+		poly rightPoly = interpolate(right, m + 1, r , d, tree);
+		return leftPoly * tree[right] + rightPoly * tree[left];
+	}
+}
+
+poly interpolate(vector<Long> &X, vector<Long> &Y) {
+	int n = X.size();
+	vector<poly> tree(2 * n);
+	buildEvaluate(tree, 1, 0, n - 1, X);
+	poly p = tree[1];
+	vector<Long> d = evaluate(derivate(p), X);
+	for (int i = 0; i < n; i++) {
+		d[i] = divide(Y[i], d[i]);
+	}
+	return interpolate(1, 0, n - 1, d, tree);
 }
 
 int main() {
