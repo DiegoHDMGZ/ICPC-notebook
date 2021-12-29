@@ -8,7 +8,7 @@ typedef long long Long;
 //dp[r][g] = min{dp[i][g - 1] + cost(i + 1, r) , i < r }
 //dp[r][1] = cost(0 , r)
 //opt[r][g] <= opt[r + 1][g] -> Appyl D&C
-//Quadrangle Inequality should hold:
+//A sufficient condition in cost is Quadrangle Inequality:
 //For all a < b < c < d
 //cost(a, d) - cost(b, d) >= cost(a, c) - cost(b, c)  
 //(For maximization is the opposite sign)
