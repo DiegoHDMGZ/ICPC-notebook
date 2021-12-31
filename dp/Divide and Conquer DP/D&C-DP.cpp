@@ -5,14 +5,16 @@ using namespace std;
 
 typedef long long Long;
 
-//dp[r][g] = min{dp[i][g - 1] + cost(i + 1, r) , i < r }
-//dp[r][1] = cost(0 , r)
-//opt[r][g] <= opt[r + 1][g] -> Appyl D&C
+//Min cost array partition
+//dp[i][k]: Min cost partition for array [0 ... i] into k subarrays
+//dp[i][k] = min{dp[p][k - 1] + cost(p + 1, r) , p < i}
+//dp[i][1] = cost(0 , i)
+//opt[i][k] <= opt[i + 1][k] -> Appyl D&C
 //A sufficient condition in cost is Quadrangle Inequality:
 //For all a < b < c < d
 //cost(a, d) - cost(b, d) >= cost(a, c) - cost(b, c)  
 //(For maximization is the opposite sign)
-//You can use induction in the following:
+//You can use induction in the following form:
 //cost(l, r) - cost(l + 1, r) >= cost(l, r - 1) - cost(l + 1, r - 1)
 //Also, if cost(l, r) = f(S_l + ... + S_r) and all S_i are positive
 //Then if f is convex (f''(x) >= 0), the quadrangle inequality holds
@@ -29,38 +31,33 @@ Long cost(Long l, Long r) {
 
 const Long INF = 1e18;
 
-void calculate(int l, int r, int g, int optL, int optR) {
+void calculate(int l, int r, int k, int optL, int optR) {
 	if (l > r) return;
-	int mid = (l + r) / 2;
-	dp[mid][g] = INF; //change this for maximization
+	int i = (l + r) / 2;
+	dp[i][k] = INF; //change this for maximization
 	int opt = optL;
-	for (int i = optL; i <= min(optR, mid - 1); i++) {
-		Long curCost = dp[i][g - 1] + cost(i + 1, mid);
-		if (curCost < dp[mid][g]) { //change sign for maximization
-			dp[mid][g] = curCost;
-			opt = i;
+	for (int p = optL; p <= min(optR, i - 1); p++) {
+		Long curCost = dp[p][k - 1] + cost(p + 1, i);
+		if (curCost < dp[i][k]) { //change sign for maximization
+			dp[i][k] = curCost;
+			opt = p;
 		}
 	}
-	calculate(l, mid - 1, g, optL, opt);
-	calculate(mid + 1 , r, g, opt, optR);
+	calculate(l, i - 1, k, optL, opt);
+	calculate(i + 1 , r, k, opt, optR);
 }
 
-Long minCost(vector<Long> &S, int k) {
+Long minCost(vector<Long> &S, int K) { //O(nm log n)
 	int n = S.size();
-	for (int i = 0; i < n; i++) {
-		pref[i + 1] = pref[i] + S[i];
+	for (int i = 0; i < n; i++) pref[i + 1] = pref[i] + S[i];
+	for (int i = 0; i < n; i++) dp[i][1] = cost(0, i);
+	K = min(K, n);
+	for (int k = 2; k <= K; k++) {
+		calculate(0, n - 1, k, 0 , n - 1); 
+		//you can put l = optL = k - 2 to optimize the dp
 	}
-	for (int i = 0; i < n; i++) {
-		dp[i][1] = cost(0, i);
-	}
-	k = min(k, n);
-	for (int g = 2; g <= k; g++) {
-		calculate(0, n - 1, g, 0 , n - 1); 
-		//you can put l = optL = g - 2 to optimize the dp
-	}
-	return dp[n - 1][k];
+	return dp[n - 1][K];
 }
-
 
 int main() {
 	return 0;
