@@ -33,7 +33,7 @@ Long cost(Long l, Long r) {
 
 const Long INF = 1e18;
 
-void calculate(int l, int r, int k, int optL, int optR) {
+void calculate(int l, int r, int k, int optL, int optR) { //O(n log n)
 	if (l > r) return;
 	int i = (l + r) / 2;
 	dp[i][k] = INF; //change this for maximization
@@ -49,7 +49,7 @@ void calculate(int l, int r, int k, int optL, int optR) {
 	calculate(i + 1 , r, k, opt, optR);
 }
 
-Long minCost(vector<Long> &A, int K) { //O(nm log n)
+Long minCost(vector<Long> &A, int K) { //O(nK log n)
 	int n = A.size();
 	for (int i = 0; i < n; i++) pref[i + 1] = pref[i] + A[i];
 	for (int i = 0; i < n; i++) dp[i][1] = cost(0, i);
