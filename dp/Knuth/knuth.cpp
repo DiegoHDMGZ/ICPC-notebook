@@ -28,7 +28,6 @@ So we want to prove f(A + x) - f(A) >= f(B + x) - f(B)
 Even more, if f''(x) >= 0, then the last inequality is satisfied
 */
 
-const int MX = 3000;
 Long cost(Long l, Long r) {
 	return 0;
 }
