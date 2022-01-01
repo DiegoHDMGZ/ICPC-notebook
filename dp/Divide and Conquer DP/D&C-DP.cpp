@@ -26,9 +26,8 @@ Notice that x = S_l and y = S_r
 
 const int MX = 3000;
 Long dp[MX][MX + 1];
-Long pref[MX + 1];
 Long cost(Long l, Long r) {
-	return (pref[r + 1] - pref[l]) * (pref[r + 1] - pref[l]);
+	return 0;
 }
 
 const Long INF = 1e18;
@@ -49,9 +48,7 @@ void calculate(int l, int r, int k, int optL, int optR) { //O(n log n)
 	calculate(i + 1 , r, k, opt, optR);
 }
 
-Long minCost(vector<Long> &A, int K) { //O(nK log n)
-	int n = A.size();
-	for (int i = 0; i < n; i++) pref[i + 1] = pref[i] + A[i];
+Long minCost(int n, int K) { //O(nK log n)
 	for (int i = 0; i < n; i++) dp[i][1] = cost(0, i);
 	K = min(K, n);
 	for (int k = 2; k <= K; k++) {
