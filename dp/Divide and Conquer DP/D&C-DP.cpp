@@ -25,7 +25,6 @@ cost(l, r - 1) = f(B + x) , cost(l + 1, r - 1) = f(B), A = B + y
 Notice that x = S_l and y = S_r
 So we want to prove f(A + x) - f(A) >= f(B + x) - f(B)
 Even more, if f''(x) >= 0, then the last inequality is satisfied
-
 */
 
 const int MX = 3000;
