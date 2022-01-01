@@ -47,9 +47,9 @@ void calculate(int l, int r, int k, int optL, int optR) {
 	calculate(i + 1 , r, k, opt, optR);
 }
 
-Long minCost(vector<Long> &S, int K) { //O(nm log n)
-	int n = S.size();
-	for (int i = 0; i < n; i++) pref[i + 1] = pref[i] + S[i];
+Long minCost(vector<Long> &A, int K) { //O(nm log n)
+	int n = A.size();
+	for (int i = 0; i < n; i++) pref[i + 1] = pref[i] + A[i];
 	for (int i = 0; i < n; i++) dp[i][1] = cost(0, i);
 	K = min(K, n);
 	for (int k = 2; k <= K; k++) {
