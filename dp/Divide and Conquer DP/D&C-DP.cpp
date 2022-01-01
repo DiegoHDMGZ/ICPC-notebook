@@ -5,22 +5,24 @@ using namespace std;
 
 typedef long long Long;
 
-//Min cost array partition
-//dp[i][k]: Min cost partition for array [0 ... i] into k subarrays
-//dp[i][k] = min{dp[p][k - 1] + cost(p + 1, r) , p < i}
-//dp[i][1] = cost(0 , i)
-//opt[i][k] <= opt[i + 1][k] -> Appyl D&C
-//A sufficient condition in cost is Quadrangle Inequality:
-//For all a < b < c < d
-//cost(a, d) - cost(b, d) >= cost(a, c) - cost(b, c)  
-//(For maximization is the opposite sign)
-//You can use induction in the following form:
-//cost(l, r) - cost(l + 1, r) >= cost(l, r - 1) - cost(l + 1, r - 1)
-//Also, if cost(l, r) = f(S_l + ... + S_r) and all S_i are positive
-//Then if f is convex (f''(x) >= 0), the quadrangle inequality holds
-//Also: cost(l, r) = f(A + x), cost(l + 1 , r) = f(A)
-//cost(l, r - 1) = f(B + x) , cost(l + 1, r - 1) = f(B), A = B + y
-//Notice that x = S_l and y = S_r
+/*
+Min cost array partition
+dp[i][k]: Min cost partition for array [0 ... i] into k subarrays
+dp[i][k] = min{dp[p][k - 1] + cost(p + 1, r) , p < i}
+dp[i][1] = cost(0 , i)
+opt[i][k] <= opt[i + 1][k] -> Appyl D&C
+A sufficient condition in cost is Quadrangle Inequality:
+For all a < b < c < d
+cost(a, d) - cost(b, d) >= cost(a, c) - cost(b, c)  
+(For maximization is the opposite sign)
+You can use induction in the following form:
+cost(l, r) - cost(l + 1, r) >= cost(l, r - 1) - cost(l + 1, r - 1)
+Also, if cost(l, r) = f(S_l + ... + S_r) and all S_i are positive
+Then if f is convex (f''(x) >= 0), the quadrangle inequality holds
+Also: cost(l, r) = f(A + x), cost(l + 1 , r) = f(A)
+cost(l, r - 1) = f(B + x) , cost(l + 1, r - 1) = f(B), A = B + y
+Notice that x = S_l and y = S_r
+*/
 
 const int MX = 3000;
 Long dp[MX][MX + 1];
