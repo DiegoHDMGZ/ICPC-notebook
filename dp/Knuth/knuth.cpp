@@ -28,6 +28,10 @@ So we want to prove f(A + x) - f(A) >= f(B + x) - f(B)
 Even more, if f''(x) >= 0, then the last inequality is satisfied
 */
 
+const int MX = 3000;
+Long dp[MX][MX];
+int opt[MX][MX];
+
 Long cost(Long l, Long r) {
 	return 0;
 }
@@ -35,8 +39,6 @@ Long cost(Long l, Long r) {
 const Long INF = 1e18;
 
 Long minCost(int n) { //O(n^2)
-	vector<vector<Long>> dp(n, vector<Long>(n));
-	vector<vector<int>> opt(n, vector<int>(n));
 	for (int l = 0; l + 1 < n; l++) {
 		dp[l][l + 1] = cost(l, l + 1);
 		opt[l][l + 1] = l;

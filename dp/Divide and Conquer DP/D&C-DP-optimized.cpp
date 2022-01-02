@@ -28,6 +28,8 @@ Even more, if f''(x) >= 0, then the last inequality is satisfied
 */
 
 const int MX = 3000;
+Long dp[MX][MX + 1];
+int opt[MX][MX + 1];
 Long cost(Long l, Long r) {
 	return 0;
 }
@@ -35,8 +37,6 @@ Long cost(Long l, Long r) {
 const Long INF = 1e18;
 
 Long minCost(int n, int K) { //O(n^2)
-	vector<vector<Long>> dp(n, vector<Long>(K + 1));
-	vector<vector<int>> opt(n + 1, vector<int>(K + 1));
 	for (int i = 0; i < n; i++) {
 		dp[i][1] = cost(0, i);
 		opt[i][1] = 0;
