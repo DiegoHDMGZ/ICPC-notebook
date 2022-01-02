@@ -45,7 +45,7 @@ Long minCost(int n) { //O(n^2)
 		for (int l = 0; l + d < n; l++) {
 			int r = l + d;
 			dp[l][r] = INF;
-			for (int m = opt[l][r - 1]; m <= min(r - 1, opt[l + 1][r]); m++) {
+			for (int m = opt[l][r - 1]; m <= opt[l + 1][r]; m++) {
 				Long curCost = dp[l][m] + dp[m + 1][r] + cost(l, r);
 				if (curCost < dp[l][r]) {
 					dp[l][r] = curCost;
