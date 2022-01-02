@@ -9,7 +9,7 @@ typedef long long Long;
 Array Merging DP
 dp[l][r]: Min cost of merging elements in [l, r] into a single subarray
 dp[l][r] = min{dp[l][m] + dp[m + 1][r] + cost(l, r) , l <= m < r}
-dp[l][l] = cost(l, l), usually cost(l, l) = 0
+dp[l][l + 1] = cost(l, l + 1), usually cost(l, l) = 0
 opt[l][r - 1] <= opt[l][r] <= opt[l + 1][r]
 A sufficient condition in cost is Quadrangle Inequality and monotonicity:
 For all a < b < c < d
@@ -37,11 +37,11 @@ const Long INF = 1e18;
 Long minCost(int n) { //O(n^2)
 	vector<vector<Long>> dp(n, vector<Long>(n));
 	vector<vector<int>> opt(n, vector<int>(n));
-	for (int l = 0; l < n; l++) {
-		dp[l][l] = cost(l, l);
-		opt[l][l] = l;
+	for (int l = 0; l + 1 < n; l++) {
+		dp[l][l + 1] = cost(l, l + 1);
+		opt[l][l + 1] = l;
 	}
-	for (int d = 1; d < n; d++) {
+	for (int d = 2; d < n; d++) {
 		for (int l = 0; l + d < n; l++) {
 			int r = l + d;
 			dp[l][r] = INF;
