@@ -8,7 +8,7 @@ typedef long long Long;
 
 // (a^x)% mod = (a^r) % mod. 
 // If a, mod are coprimes
-//Fermat's little theorem : r = x % (mod-1) , mod prime
+// Fermat's little theorem : r = x % (mod-1) , mod prime
 // Euler's theorem : r = x % phi(mod) 
 
 const int MOD = 1e9 + 7;
