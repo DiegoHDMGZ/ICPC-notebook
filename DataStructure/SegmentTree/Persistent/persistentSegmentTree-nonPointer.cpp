@@ -26,7 +26,7 @@ struct SegmentTree {
 			sum[node] = a[tl];
 			return node;
 		} else{
-			Long tm = (tl + tr) / 2;
+			int tm = (tl + tr) / 2;
 			left[node] = build(a, tl, tm);
 			right[node] = build(a, tm + 1 , tr);
 			sum[node] = combine(sum[left[node]], sum[right[node]]);
