@@ -51,7 +51,3 @@ Long primitiveRoot(Long mod) { //O( mod log mod log phi(mod) + sqrt(mod))
 	}
 	return -1;
 }
-
-int main() {
-	return 0;
-}

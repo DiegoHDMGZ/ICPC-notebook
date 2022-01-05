@@ -66,7 +66,3 @@ Long discreteLog(Long a, Long r, Long mod) {  //O(sqrt (mod) log mod)
 	}
 	return -1;
 }
-
-int main() {
-	return 0;
-}
