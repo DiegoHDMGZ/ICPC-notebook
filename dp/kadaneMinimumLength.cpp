@@ -16,8 +16,8 @@ Long kadane(vector<Long> &v, Long L) {
 	Long maxEndingHere = acum[L];
 
 	for (Long i = L; i < n; i++) {
-		maxEndingHere = max(acum[i + 1] - acum[i + 1 - L],maxEndingHere+v[i]);
-		maxSoFar = max(maxSoFar,maxEndingHere);
+		maxEndingHere = max(acum[i + 1] - acum[i + 1 - L], maxEndingHere + v[i]);
+		maxSoFar = max(maxSoFar, maxEndingHere);
 	}
 	return maxSoFar;
 }
