@@ -21,7 +21,6 @@ Long mult(Long a, Long b){
 	return (a * b) % MOD;
 }
 
-
 Matrix operator *(const Matrix &A, const Matrix &B){ //O( n^3)
 	Long n1 = A.size();
 	Long m1 = A[0].size();
