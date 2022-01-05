@@ -1,7 +1,6 @@
 #include <bits/stdc++.h>
 #define debug(x) cout << #x << " = " << x << endl
 #define REP(i,n) for(Long i = 0; i < (Long)n; i++)
-#define pb push_back
 using namespace std;
 
 typedef long long Long;
@@ -12,7 +11,7 @@ typedef long long Long;
 // a ^ (kp) % m = (r * a ^ q ) % m  (using inverse modular)
 // f1(p) = f2(q)
 // k = sqrt(m) lead to the best complexity time
-//Baby step - Gian Step Algorithm
+// Baby step - Gian Step Algorithm
 
 Long mult(Long a, Long b, Long mod) {
 	a %= mod;
