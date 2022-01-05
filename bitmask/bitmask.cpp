@@ -1,8 +1,6 @@
 #include <bits/stdc++.h>
 #define debug(x) cout << #x << " = " << x << endl
 #define REP(i,n) for(Long i = 0; i < (Long)n; i++)
-#define pb push_back
-
 using namespace std;
 
 typedef long long Long;
@@ -26,19 +24,11 @@ void changeBit(Long &mask, int i){
 //__builtin_popcount() : number of bits on
 
 int main() {
-	Long n = 8;
-
-	for (Long mask = 0; mask < (1LL << n); mask++) {
-		cout << mask << " : ";
-		for (Long i = 0; i < n; i++) {
-			if (getBit(mask, i) == 1) cout << " " << i;
-		}
-		cout << endl;
-	}
+	int n = 8;
 	//transverse all submask
-	for (Long mask = 0; mask < (1LL << n); mask++) {
+	for (int mask = 0; mask < (1 << n); mask++) {
 		//s 0 is present in all submask
-		for (Long s = mask; s > 0; s = (s - 1) & mask) {
+		for (int s = mask; s > 0; s = (s - 1) & mask) {
 			
 		}
 	}
