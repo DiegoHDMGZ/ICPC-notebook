@@ -5,19 +5,9 @@ using namespace std;
 
 typedef long long Long;
 
-//https://napocaro.files.wordpress.com/2015/02/david_m-_burton_elementary_number_theory_sixth_bookfi-org.pdf
-
-//g is a primitive root modulo n if and only if for any integer "a" such that gcd(a,n)=1, there exists an integer k such that:
-// (g ^ k) ≡ a (mod n).
-
-//Definition : Let n > 1 and gcd(a , n) = 1. The order of "a" modulo "n" is the smallest positive integer
-//k such that (a ^ k) = 1 (mod n). 
-
-//If g is primitive root modulo n, then gcd(g, n) = 1 and "g" is of order phi(n)
-//Hence, to know if a number is a primitive root modulo n, we must check that there is no such a "p" (p < phi(n) ) that a ^ p = 1 (mod n)
-//Additionally, if this "p" exists, it has to be a divisor of phi(n)
-//Hence , we just have to check all the divisors of the form  phi(n) / pi  [pi prime factor of phi(n)] 
-//because other divisor d satisfy : d |  phi(n) / pi
+//g is a primitive root modulo n if and only if for any integer "a" 
+//such that gcd(a,n)=1, there exists an integer k such that:
+//(g ^ k) ≡ a (mod n).
 
 Long mult(Long a, Long b, Long mod) {
 	a %= mod;
