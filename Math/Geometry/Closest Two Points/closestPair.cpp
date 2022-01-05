@@ -121,7 +121,7 @@ pair<Point,Point> closestPair(vector<Point> &X , vector<Point> &Y) { //O(n log n
 	return ans;
 }
 
-pair<Point, Point> closestPair(vector<Point> &v) { //O( n log n)
+pair<Point, Point> closestPair(vector<Point> &v) { //O(n log n)
 	Long n = v.size();
 	vector<Point> X = v;
 	vector<Point> Y = v;
