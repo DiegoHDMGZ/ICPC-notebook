@@ -53,7 +53,8 @@ Long comb(Long N, Long M, Long mod) { //O(1)
 	return ( (fact[N] * inv[M]) % mod ) * inv[N-M] % mod; 
 }
 
-Long lucas(Long N, Long M, Long mod) { //O(log N + log M)
+//call init(MOD) before
+Long combLucas(Long N, Long M, Long mod) { //O(log N + log M)
 	//mod is prime
 	Long resp = 1;
 	while(N > 0 || M > 0) {
@@ -63,11 +64,4 @@ Long lucas(Long N, Long M, Long mod) { //O(log N + log M)
 	}
 	
 	return resp;
-}
-
-const Long MOD = 1e9 + 7;
-
-int main() {
-	init(MOD);
-	return 0;
 }
