@@ -99,6 +99,7 @@ Long discreteLog(Long a , Long r , Long mod) {  //O(sqrt (mod) log mod)
 Long discreteRoot(Long a, Long r, Long mod) {
 	Long g = primitiveRoot(mod);
 	Long y = discreteLog(fastPow(g, a, mod) ,r, mod);
+	if (y == -1) return -1;
 	return fastPow(g , y ,mod);
 }
 
