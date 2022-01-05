@@ -58,7 +58,6 @@ Long dist(Point P1 , Point P2) {
 	return abs(P1.x - P2.x) + abs(P1.y - P2.y);
 }
 
-
 pair<Point, Point> combine(pair<Point, Point> D1, pair<Point, Point> D2) { //O(1)
 	if(dist(D1.first , D1.second) > dist(D2.first, D2.second)) {
 		swap(D1 , D2);

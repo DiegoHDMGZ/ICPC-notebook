@@ -58,7 +58,6 @@ Long squareDist(Point P1 , Point P2) {
 	return (P1.x - P2.x) * (P1.x - P2.x) + (P1.y - P2.y) * (P1.y - P2.y);
 }
 
-
 pair<Point, Point> combine(pair<Point, Point> D1, pair<Point, Point> D2) { //O(1)
 	if(squareDist(D1.first , D1.second) > squareDist(D2.first, D2.second)) {
 		swap(D1 , D2);
