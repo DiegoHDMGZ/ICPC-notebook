@@ -20,24 +20,21 @@ typedef long long Long;
 //Hence , we just have to check all the divisors of the form  phi(n) / pi  [pi prime factor of phi(n)] 
 //because other divisor d satisfy : d |  phi(n) / pi
 
-Long mult(Long a, Long b, Long mod){
+Long mult(Long a, Long b, Long mod) {
 	a %= mod;
 	b %= mod;
-	return (a * b ) % mod;
+	return (a * b) % mod;
 }
 
-Long fastPow(Long a, Long b , Long mod){ //O(logb)
+Long fastPow(Long a, Long b, Long mod) { //O(log b)
 	Long ans = 1;
-	while(b > 0){
-		if(b & 1 == 1){ //b % 2 == 1
-			ans = mult(ans ,a , mod);
-		}
-		a = mult(a , a  , mod);
-		b >>= 1; //b /= 2;
+	while (b > 0) {
+		if (b & 1) ans = mult(ans, a, mod);
+		a = mult(a, a, mod);
+		b >>= 1;
 	}
 	return ans;
 }
-
 
 Long primitiveRoot(Long mod) { //O( mod log mod log phi(mod) + sqrt(mod))  
 	Long phi = mod - 1; // phi = euler(mod) for not prime mods
@@ -45,29 +42,23 @@ Long primitiveRoot(Long mod) { //O( mod log mod log phi(mod) + sqrt(mod))
 	Long n = phi;
 	Long i = 2;
 	vector<Long> v;
-	while(i * i <= n ) {
-		if(n % i == 0) {
-			v.pb(phi / i);
-			while(n % i == 0) {
-				n /= i;
-			}
+	while (i * i <= n) {
+		if (n % i == 0) {
+			v.push_back(phi / i);
+			while (n % i == 0) n /= i;
 		}
 		i++;
 	}
-	
-	if(n > 1) {
-		v.pb(phi / n);
-	}
-	
+	if(n > 1) v.push_back(phi / n);
 	for(Long ans = 2; ans <= mod; ans++) {
 		bool ok = true;
-		REP(i , v.size()) {
-			if(fastPow(ans , v[i] , mod) == 1) {
+		REP(i, v.size()) {
+			if (fastPow(ans, v[i], mod) == 1) {
 				ok = false;
 				break;
 			}
 		}
-		if(ok) {
+		if (ok) {
 			return ans;
 		}
 	}
@@ -75,9 +66,5 @@ Long primitiveRoot(Long mod) { //O( mod log mod log phi(mod) + sqrt(mod))
 }
 
 int main() {
-	ios_base::sync_with_stdio(false);
-	cin.tie(NULL);
-	debug(primitiveRoot(16  ));
 	return 0;
 }
-
