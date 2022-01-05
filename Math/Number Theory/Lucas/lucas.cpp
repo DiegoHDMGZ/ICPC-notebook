@@ -7,7 +7,7 @@ using namespace std;
 
 typedef long long Long;
 
-//Luchas Theorem :
+//Lucas's Theorem :
 //For non-negative integers m and n, and a prime integer p
 //C(m , n) = Prod (mi, ni) (mod p)
 //where mi , ni are the p-expansions of m and n respectively.
