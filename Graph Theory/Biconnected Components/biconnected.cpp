@@ -4,8 +4,6 @@
 
 using namespace std;
 
-//https://www.spoj.com/problems/POLQUERY/
-
 //biconnected component is a maximal subgrah that does not have articulation points
 
 struct Edge{
