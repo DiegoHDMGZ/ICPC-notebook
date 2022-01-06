@@ -4,6 +4,12 @@
 using namespace std;
 
 typedef long long Long;
+
+//Usage: 
+//call sieve()
+//call segmentedSieve(L , R)
+//For each query X, use isPrimeRange[X - L]
+
 const Long MX = 2e6;
 bool isPrime[MX];
 vector<Long> primes;
@@ -50,21 +56,4 @@ void segmentedSieve(Long l, Long r) { //O( (r - l) * log log (r - l) )
 	if(l == 1) {
 		isPrimeRange[0] = false;
 	}
-}
-
-int main() {
-	ios_base::sync_with_stdio(false);
-	cin.tie(NULL);
-	cout.tie(NULL);
-	sieve();
-	Long l , r;
-	cin >> l >> r;
-	segmentedSieve(l , r);
-
-	Long x;
-	cin >> x;
-	if(isPrimeRange[x - l]) {
-		cout << "prime" << endl;
-	}
-	return 0;
 }
