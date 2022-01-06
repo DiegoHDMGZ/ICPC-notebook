@@ -50,7 +50,7 @@ struct Graph{
 	bool isArticulation[MX];
 	map<int,bool> isBridge[MX];
 	
-	int bcn[MX]; //biconnected component of node. Articulation are considered separated
+	int bcn[MX]; //biconnected component of node. Articulations are considered separated
 	map<int,int> bce[MX]; //biconnected component of edge
 	vector<int> articulation;
 	vector<Edge> bridge;
