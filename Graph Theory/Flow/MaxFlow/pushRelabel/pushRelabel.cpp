@@ -103,9 +103,3 @@ struct Graph{
 		return -e[s];
 	}
 } G;
-
-
-int main(){
-
-	return 0;
-}

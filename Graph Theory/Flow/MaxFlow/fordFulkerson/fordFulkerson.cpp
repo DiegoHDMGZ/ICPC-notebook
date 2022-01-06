@@ -68,7 +68,3 @@ struct Graph{
 		return ans;
 	}
 } G;
-
-int main(){
-	return 0;
-}
