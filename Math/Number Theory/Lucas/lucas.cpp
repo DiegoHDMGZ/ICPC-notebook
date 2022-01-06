@@ -16,52 +16,49 @@ const Long MX = 100;
 Long fact[MX];
 Long inv[MX];
 
-Long mult(Long a, Long b, Long mod){
-	return (a * b ) % mod;
+Long mult(Long a, Long b, Long mod) {
+	return (a * b) % mod;
 }
 
-Long fastPow(Long a, Long b , Long mod){ //O(logb)
+Long fastPow(Long a, Long b , Long mod) { //O(log b)
 	Long ans = 1;
-	while(b > 0){
-		if(b & 1 == 1){ //b % 2 == 1
-			ans = mult(ans ,a , mod);
-		}
+	while (b > 0) {
+		if(b & 1) ans = mult(ans ,a , mod);
 		a = mult(a , a  , mod);
-		b >>= 1; //b /= 2;
+		b >>= 1;
 	}
 	return ans;
 }
 
-Long invert(Long a, Long m){ //O(logm) , m prime , a , m coprimes
-	return fastPow(a,m-2,m);
+Long invert(Long a, Long m) { //O(log m) , m prime , a , m coprimes
+	return fastPow(a, m - 2, m);
 }
 
 void init(Long mod) { //O(mod)
 	fact[0] = 1;
 	inv[0] = 1;
-	
-	for(Long i = 1; i <= mod; i++) {
-		fact[i] = (fact[i-1] * i) % mod;
-		inv[i] = invert(fact[i] , mod);
+	for (int i = 1; i < mod; i++) {
+		fact[i] = mult(fact[i-1], i, mod);
+	}
+	inv[mod - 1] = invert(fact[mod - 1], mod);
+	for (int i = mod - 2; i >= 0; i--) {
+		inv[i] = mult(inv[i + 1], i + 1, mod);
 	}
 }
 
 Long comb(Long N, Long M, Long mod) { //O(1)
-	if(N < M){
-		return 0;
-	}
-	return ( (fact[N] * inv[M]) % mod ) * inv[N-M] % mod; 
+	if(N < M) return 0;
+	return mult(mult(fact[N], inv[M], mod), inv[N - M], mod); 
 }
 
 //call init(MOD) before
 Long combLucas(Long N, Long M, Long mod) { //O(log N + log M)
 	//mod is prime
-	Long resp = 1;
-	while(N > 0 || M > 0) {
-		resp = (resp * comb(N % mod, M % mod , mod)) % mod;
+	Long ans = 1;
+	while (N > 0 || M > 0) {
+		ans = mult(ans, comb(N % mod, M % mod , mod), mod);
 		N /= mod;
 		M /= mod; 
 	}
-	
-	return resp;
+	return ans;
 }
