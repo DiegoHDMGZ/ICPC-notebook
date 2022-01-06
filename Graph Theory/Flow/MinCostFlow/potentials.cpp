@@ -130,8 +130,8 @@ struct Graph{
 		//maxFlow <= V * U, where U is the maximum capacity
 		//Initially no negative cycles
 		//<maxFlow, minCost>
-		spfa(s, n);
-		pair<Long, Long> inc; //not necessary if there is no negative edges
+		spfa(s, n); //not necessary if there is no negative edges
+		pair<Long, Long> inc; 
 		pair<Long, Long> ans = {0, 0};
 		do {
 			inc = dijkstra(s, t, n);
