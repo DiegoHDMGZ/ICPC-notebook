@@ -4,32 +4,23 @@
 using namespace std;
 
 typedef long long Long;
+typedef __int128 Big;
 
 Long add(Long a, Long b, Long mod) {
-	return (a + b ) % mod;
+	return (a + b) % mod;
 }
 
-Long mult(Long a, Long b, Long mod) {
+Long mult(Big a, Big b, Long mod) {
 	//Use fastMult or 128-bit integer
-	Long ans = 0;
-	while (b > 0) {
-		if (b & 1 == 1) { //b % 2 == 1
-			ans = add(ans ,a , mod);
-		}
-		a = add(a , a , mod);
-		b >>= 1; //b /= 2
-	}
-	return ans;
+	return (a * b) % mod;
 }
 
 Long fastPow(Long a, Long b , Long mod) { //O(log b)
 	Long ans = 1;
 	while (b > 0) {
-		if (b & 1 == 1) { //b % 2 == 1
-			ans = mult(ans ,a , mod);
-		}
+		if (b & 1 == 1)  ans = mult(ans ,a , mod);
 		a = mult(a , a  , mod);
-		b >>= 1; //b /= 2;
+		b >>= 1;
 	}
 	return ans;
 }
@@ -37,15 +28,11 @@ Long fastPow(Long a, Long b , Long mod) { //O(log b)
 bool checkComposite(Long a, Long d, Long s, Long n) {
 	//O(log n) with 128 bit
 	//O(log^2 n) with divide and conquer mult
-	Long x = fastPow(a , d, n);
-	if (x == 1 || x == n - 1) {
-		return false;
-	}
+	Long x = fastPow(a, d, n);
+	if (x == 1 || x == n - 1) return false;
 	for (int i = 1; i < s; i++) {
 		x = mult(x, x, n);
-		if (x == n - 1) {
-			return false;
-		}
+		if (x == n - 1) return false;
 	}
 	return true;
 }
@@ -53,9 +40,7 @@ bool checkComposite(Long a, Long d, Long s, Long n) {
 bool isPrime(Long n) { 
 	//O(log n * |base|) with 128-bit
 	//O(log^2 n * |base|) with divide and conquer
-	if (n <= 1) {
-		return false;
-	}
+	if (n <= 1) return false;
 	Long d = n - 1;
 	Long s = 0;
 	while ((d & 1) == 0) {
@@ -72,8 +57,4 @@ bool isPrime(Long n) {
 		}
 	}
 	return true;
-}
-
-int main() {
-	return 0;
 }
