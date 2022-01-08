@@ -93,7 +93,8 @@ struct SuffixArray {
 		s.pop_back();
 		buildLCP(s);
 	}
-		
+	
+	//return the lcp of the suffixes s[l...n - 1] and s[r...n - 1]
 	/*int getLcp(int l, int r) {
 		assert(l != r);
 		int minPos = min(pos[l], pos[r]);
