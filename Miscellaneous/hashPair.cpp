@@ -7,7 +7,7 @@ using namespace std;
 
 typedef long long Long;
 
-struct hash_pair { 
+struct HashPair { 
 	template <class T1, class T2> 
 	size_t operator()(const pair<T1, T2>& p) const
 	{ 
@@ -17,7 +17,7 @@ struct hash_pair {
 	} 
 };
 
-unordered_map<pair<Long,Long> , Long , hash_pair> m;
+unordered_map<pair<Long,Long> , Long , HashPair> m;
 
 int main(){
 	ios_base::sync_with_stdio(false);

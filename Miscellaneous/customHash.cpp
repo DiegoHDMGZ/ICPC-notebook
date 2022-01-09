@@ -4,7 +4,7 @@ using namespace std;
 typedef long long Long;
 
 //Source: https://codeforces.com/blog/entry/62393
-struct custom_hash {
+struct CustomHash {
     static uint64_t splitmix64(uint64_t x) {
         // http://xorshift.di.unimi.it/splitmix64.c
         x += 0x9e3779b97f4a7c15;
@@ -19,7 +19,7 @@ struct custom_hash {
     }
 };
 
-unordered_map<Long, Long, custom_hash> s;
+unordered_map<Long, Long, CustomHash> s;
 
 int main() {
 	return 0;
