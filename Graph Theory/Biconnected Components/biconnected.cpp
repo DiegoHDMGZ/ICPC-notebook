@@ -4,7 +4,7 @@
 
 using namespace std;
 
-//biconnected component is a maximal subgrah that does not have articulation points
+//biconnected component is a maximal subgraph that does not have articulation points
 
 struct Edge{
 	int u, v;
