@@ -5,6 +5,16 @@ using namespace std;
 
 typedef long long Long;
 
+//Problem: You are given an array A of n integers and Q queries
+//In each query you will be given an integer X. Find the minimum value
+//Find the minimum value of the xor of X and the xor 
+//of any subsequence of A
+
+//Solution:
+//Treat every integer as a binary vector with d bits
+//Use gaussian elimination to obtain the basis of size O(d)
+//Each query can be answer in O(d)
+
 int getBit(Long mask, int pos) {
 	return (mask >> pos) & 1;
 }
@@ -13,7 +23,7 @@ struct Basis{
 	vector<Long> basis;
 	
 	//gauss elimination
-	vector<Long> getBasis(vector<Long> &A) {
+	vector<Long> getBasis(vector<Long> &A) { //O(n * d), d = O(log A_i)
 		int n = A.size();
 		if (A.empty()) return {};
 		vector<Long> ans;
@@ -55,7 +65,7 @@ struct Basis{
 		basis = getBasis(A);
 	}
 	
-	Long minXor(Long x) {
+	Long minXor(Long x) { //O(d) = O(log A_i)
 		for (Long c : basis) {
 			x = min(x ^ c, x);
 		}
