@@ -5,14 +5,12 @@
 using namespace std;
 
 //biconnected component is a maximal subgraph that does not have articulation points
-
+//Inside any biconnected component, every pair of edges lie on a common simple cycle
 struct Edge{
 	int u, v;
-	Edge(int u , int v) : u(min(u , v)) , v(max(u,v)){
-	}
-	Edge(){
-	}
-	
+	Edge(int u , int v) : u(min(u , v)) , v(max(u,v)){}
+	Edge(){}
+
 	bool operator == (const Edge &E) const {
 		return E.u == u && E.v == v;
 	}
