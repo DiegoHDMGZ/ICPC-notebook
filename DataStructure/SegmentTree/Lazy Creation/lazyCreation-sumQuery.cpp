@@ -29,11 +29,11 @@ struct Node{
 		left->sum += lazy * szLeft;
 		right->sum += lazy * szRight;
 		
-		//aggregate the lazy value of the node to the lazy value of the children
+		//Aggregate the lazy value
 		left->lazy  += lazy;
 		right->lazy += lazy;
 		
-		//restart the lazy value
+		//Restart the lazy value
 		lazy = 0;
 	}
 };

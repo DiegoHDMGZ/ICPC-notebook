@@ -46,11 +46,11 @@ struct SegmentTree {
 		sum[left[id]] += szLeft * lazy[id];
 		sum[right[id]] += szRight * lazy[id];
 		
-		//aggregate the lazy value of the node to the lazy value of the children
+		//Aggregate the lazy value
 		lazy[left[id]] += lazy[id];
 		lazy[right[id]] += lazy[id];
 		
-		//restart the lazy value
+		//Restart the lazy value
 		lazy[id] = 0;
 	}
 	
