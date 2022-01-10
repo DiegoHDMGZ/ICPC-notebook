@@ -10,14 +10,14 @@ const Long MX = 1e5;
 struct SegmentTree{
 	Long lazy[2 * MX];
 	bool marked[2 * MX];
-	Long maxN;
+	Long n;
 	
 	void clear(Long n) {
 		for(Long i = 0; i < 2 * n; i++) {
 			lazy[i] = 0;
 			marked[i] = false;
 		}
-		maxN = n;
+		this->n = n;
 	}
 	
 	void build(vector<Long> &a, Long id , Long tl, Long tr) { //O(n)
@@ -35,8 +35,8 @@ struct SegmentTree{
 	}
 	
 	void build(vector<Long> &a) {
-		maxN = a.size();
-		build(a , 1 , 0 , maxN - 1);
+		n = a.size();
+		build(a , 1 , 0 , n - 1);
 	}
 	
 	void push(Long id, Long tl, Long tr) { //O(1)
@@ -69,8 +69,8 @@ struct SegmentTree{
 	}
 	
 	Long query(Long pos) {
-		assert(maxN > 0);
-		return query(pos , 1 , 0 , maxN - 1);
+		assert(n > 0);
+		return query(pos , 1 , 0 , n - 1);
 	}
 	
 	void update(Long l, Long r, Long val, Long id, Long tl, Long tr) { //O(logn)
@@ -91,11 +91,7 @@ struct SegmentTree{
 	}
 	
 	void update(Long l , Long r, Long val) {
-		assert(maxN > 0);
-		update(l , r , val, 1 , 0 , maxN - 1);
+		assert(n > 0);
+		update(l , r , val, 1 , 0 , n - 1);
 	}
 } st;
-
-int main() {
-	return 0;
-}

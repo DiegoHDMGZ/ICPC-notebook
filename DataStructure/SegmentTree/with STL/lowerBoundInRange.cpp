@@ -14,13 +14,13 @@ Long combine(Long x, Long y){
 
 struct SegmentTree {
 	vector<Long> t[2 * MX]; //O(nlogn)
-	Long maxN;
+	Long n;
 	
 	void clear(Long n) { 
-		for(Long i = 0; i < 2 * n; i++) {
+		for (Long i = 0; i < 2 * n; i++) {
 			t[i].clear();
 		}
-		maxN = n;
+		this->n = n;
 	}
 
 	void build(vector<Long> &a, Long id, Long tl, Long tr) { //O(nlogn)
@@ -37,22 +37,17 @@ struct SegmentTree {
 	}
 	
 	void build(vector<Long> &a) {
-		maxN = a.size();
-		build(a , 1 , 0 , maxN - 1);
+		n = a.size();
+		build(a , 1 , 0 , n - 1);
 	}
 
-	Long query(Long l , Long r, Long x, Long id, Long tl, Long tr) { //O(log²n)
+	Long query(Long l , Long r, Long x, Long id, Long tl, Long tr) { //O(logï¿½n)
 		//find the smallest number greater or equal to x
-		if(tr < l || tl > r){
-			return INF;
-		}
+		if (tr < l || tl > r) return INF;
 		if (l <= tl && tr <= r) {
 			auto it = lower_bound(t[id].begin(), t[id].end(), x);
-			if (it != t[id].end()) {
-				return *it;
-			} else {
-				return INF;
-			}
+			if (it != t[id].end()) return *it;
+			else return INF;
 		}
 		Long tm = (tl + tr) / 2;
 		Long left = id + 1;
@@ -61,12 +56,7 @@ struct SegmentTree {
 	}
 	
 	Long query(Long l , Long r, Long x) {
-		assert(maxN > 0);
-		return query(l , r , x , 1 , 0 , maxN - 1);
+		assert(n > 0);
+		return query(l , r , x , 1 , 0 , n - 1);
 	}
-
 } st;
-
-int main() {
-	return 0;
-}

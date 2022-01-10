@@ -15,21 +15,21 @@ Long combine(Long x, Long y){
 struct SegmentTree {
 	multiset<Long> t[2 * MX]; //O(nlogn)
 	Long curVal[MX];
-	Long maxN;
+	Long n;
 	
 	void clear(Long n) {
-		for(Long i = 0; i < 2 * n; i++) {
+		for (Long i = 0; i < 2 * n; i++) {
 			t[i].clear();
 			curVal[i] = INF;
 		}
-		maxN = n;
+		this->n = n;
 	}
 	
-	void build(vector<Long> &a, Long id, Long tl, Long tr) { //O(nlog²n)
+	void build(vector<Long> &a, Long id, Long tl, Long tr) { //O(n log^2 n)
 		if (tl == tr) {
 			t[id] = {a[tl]};
 			curVal[tl] = a[tl];
-		} else{
+		} else {
 			Long tm = (tl + tr) / 2;
 			Long left = id + 1;
 			Long right = id + 2 * (tm - tl + 1) ;
@@ -41,60 +41,46 @@ struct SegmentTree {
 	}
 	
 	void build(vector<Long> &a) {
-		maxN = a.size();
-		assert(maxN > 0);
-		build(a , 1 , 0 , maxN - 1);
+		n = a.size();
+		assert(n > 0);
+		build(a , 1 , 0 , n - 1);
 	}
 
-	Long query(Long l, Long r, Long x, Long id, Long tl, Long tr) { //O(log²n)
+	Long query(Long l, Long r, Long x, Long id, Long tl, Long tr) { //O(log^2 n)
 		//find the smallest number greater or equal to X
-		if (tr < l || tl > r) {
-			return INF;
-		}
-
+		if (tr < l || tl > r) return INF;
 		if (l <= tl && tr <= r) {
 			auto it = t[id].lower_bound(x);
-			if (it != t[id].end()) {
-				return *it;
-			} else {
-				return INF;
-			}
+			if (it != t[id].end()) return *it;
+			else return INF;
 		}
 		Long tm = (tl + tr) / 2;
 		Long left = id + 1;
 		Long right = id + 2 * (tm - tl + 1) ;
-
 		return combine(query(l, r, x , left, tl, tm) , query(l, r, x , right, tm + 1, tr));
 	}
 	
 	Long query(Long l , Long r , Long x) {
-		assert(maxN > 0);
-		return query(l , r , x , 1 , 0 , maxN - 1);
+		assert(n > 0);
+		return query(l , r , x , 1 , 0 , n - 1);
 	}
 
-	void update(Long pos, Long val, Long id, Long tl, Long tr) { //O(log²n)
+	void update(Long pos, Long val, Long id, Long tl, Long tr) { //O(log^2 n)
 		t[id].erase(t[id].find(curVal[pos]));
 		t[id].insert(val);
 		if(tl == tr){
 			curVal[pos] = val;
-		} else{
+		} else {
 			Long tm = (tl + tr) / 2;
 			Long left = id + 1;
 			Long right = id + 2 * (tm - tl + 1) ;
-			if (pos <= tm) {
-				update(pos, val, left, tl, tm);
-			} else {
-				update(pos, val , right, tm + 1, tr);
-			}
+			if (pos <= tm) update(pos, val, left, tl, tm);
+			else update(pos, val , right, tm + 1, tr);
 		} 
 	}
 	
 	void update(Long pos , Long val) {
-		assert(maxN > 0);
-		update(pos , val , 1 , 0 , maxN - 1);
+		assert(n > 0);
+		update(pos , val , 1 , 0 , n - 1);
 	}
 } st;
-
-int main() {
-	return 0;
-}

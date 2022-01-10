@@ -13,14 +13,14 @@ Long combine(Long x, Long y){
 struct SegmentTree {
 	Long t[2 * MX];
 	Long lazy[2 * MX];
-	Long maxN;
+	Long n;
 	
 	void clear(Long n) {
 		for(Long i = 0; i < 2 * n; i++) {
 			t[i] = 0;
 			lazy[i] = 0;
 		}
-		maxN = n;
+		this->n = n;
 	}
 	
 	void build(vector<Long> &a, Long id, Long tl, Long tr) { //O(n)
@@ -38,8 +38,8 @@ struct SegmentTree {
 	}
 	
 	void build(vector<Long> &a) {
-		maxN = a.size();
-		build(a , 1 , 0 , maxN - 1);
+		n = a.size();
+		build(a , 1 , 0 , n - 1);
 	}
 	
 	void push(Long id, Long tl, Long tr) { //O(1)
@@ -76,8 +76,8 @@ struct SegmentTree {
 	}
 	
 	Long query(Long l, Long r) {
-		assert(maxN > 0);
-		return query(l , r , 1 , 0 , maxN - 1);
+		assert(n > 0);
+		return query(l , r , 1 , 0 , n - 1);
 	}
 
 	void update(Long l, Long r, Long val, Long id, Long tl, Long tr) { //O(logn)
@@ -99,11 +99,7 @@ struct SegmentTree {
 	}
 	
 	void update(Long l , Long r, Long val) {
-		assert(maxN > 0);
-		update(l, r , val , 1 , 0 , maxN - 1);
+		assert(n > 0);
+		update(l, r , val , 1 , 0 , n - 1);
 	}
 } st;
-
-int main(){
-	return 0;
-}

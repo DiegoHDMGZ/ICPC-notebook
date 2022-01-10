@@ -19,22 +19,17 @@ struct SegmentTree {
 	int left[MX2];
 	int right[MX2];
 	int nodes;
-	Long maxN;
+	Long n;
 	
 	void build(Long n) {
-		nodes = 1;
-		maxN = n;
-	}
-	
-	void clear(Long n) {
-		for (int i = 0; i <= nodes; i++) {
+		for (int i = 1; i <= nodes; i++) {
 			left[i] = 0;
 			right[i] = 0;
 			sum[i] = 0;
 			lazy[i] = 0;
 		}
 		nodes = 1;
-		maxN = n;
+		this->n = n;
 	}
 	
 	void push(int id, Long tl , Long tr) { //O(1)
@@ -60,33 +55,27 @@ struct SegmentTree {
 	}
 	
 	Long query(Long l, Long r, int id , Long tl, Long tr ) { //O(logn)
-		if (l <= tl && tr <= r) {
-			return sum[id];
-		}
+		if (l <= tl && tr <= r) return sum[id];
 		Long tm = (tl + tr) / 2;
 		push(id, tl , tr);
-		if(r < tm + 1){
-			return query(l , r , left[id] , tl , tm);
-		}else if(tm < l){
-			return query(l , r, right[id] , tm + 1 , tr);  
-		} else{
+		if (r < tm + 1) return query(l , r , left[id] , tl , tm);
+		else if (tm < l) return query(l , r, right[id] , tm + 1 , tr);  
+		else{
 			return combine(query(l, r, left[id], tl, tm) , query(l, r, right[id], tm + 1, tr));
 		}
 	}
 	
 	Long query(Long l , Long r) {
-		assert(maxN > 0);
-		return query(l , r , 1 , 0 , maxN - 1);
+		assert(n > 0);
+		return query(l , r , 1 , 0 , n - 1);
 	}
 
 	void update(Long l, Long r, Long val, int id, Long tl , Long tr) { //O(logn)
-		if(tr < l || tl > r){
-			return;
-		}
+		if (tr < l || tl > r) return;
 		if (l <= tl && tr <= r) {
 			sum[id] += (tr - tl + 1) * val;
 			lazy[id] += val;
-		}else{
+		} else {
 			Long tm = (tl + tr) / 2;
 			push(id, tl , tr);
 			update(l, r, val , left[id], tl, tm);
@@ -96,12 +85,7 @@ struct SegmentTree {
 	}
 	
 	void update(Long l , Long r, Long val) {
-		assert(maxN > 0);
-		update(l, r , val , 1 , 0 , maxN - 1);
+		assert(n > 0);
+		update(l, r , val , 1 , 0 , n - 1);
 	}
 }st;
-
-
-int main() {
-	return 0;
-}

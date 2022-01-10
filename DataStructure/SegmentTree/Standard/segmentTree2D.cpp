@@ -15,7 +15,7 @@ Long combine(Long x , Long y) {
 
 struct SegmentTree{
 	Long t[2 * MXX][2 * MXY];
-	Long maxN, maxM;
+	Long n, m;
 	
 	void clear(Long n , Long m) {
 		for (Long i = 0 ; i < 2 * n; i++) {
@@ -23,8 +23,8 @@ struct SegmentTree{
 				t[i][j] = 0;
 			}
 		}
-		maxN = n;
-		maxM = m;
+		this->n = n;
+		this->m = m;
 	}
 	
 	void buildY(vector<vector<Long>> &a, Long idX, Long tlX, Long trX, Long idY, Long tlY, Long trY) {
@@ -59,9 +59,9 @@ struct SegmentTree{
 	}
 	
 	void build(vector<vector<Long>> &a) { //O(mn)
-		maxN = a.size();
-		maxM = a[0].size();
-		build(a, 1, 0, maxN - 1, maxM - 1);
+		n = a.size();
+		m = a[0].size();
+		build(a, 1, 0, n - 1, m - 1);
 	}
 
 	Long queryY(Long idX, Long lY, Long rY, Long idY, Long tlY, Long trY) {
@@ -94,7 +94,7 @@ struct SegmentTree{
 		if (rX < tmX + 1) {
 			//only left child
 			return query(lX , rX , lY, rY, leftX , tlX , tmX, trY);
-		}else if (tmX < lX) {
+		} else if (tmX < lX) {
 			//only right child
 			return query(lX , rX, lY, rY , rightX , tmX + 1 , trX , trY); 
 		} else {
@@ -105,7 +105,7 @@ struct SegmentTree{
 	}
 	
 	Long query(Long lX ,Long rX, Long lY, Long rY) { //O(log n log m)
-		return query(lX , rX , lY, rY , 1 , 0 , maxN - 1 , maxM - 1);
+		return query(lX , rX , lY, rY , 1 , 0 , n - 1 , m - 1);
 	}
 
 	void updateY(Long posX, Long posY, Long val, Long idX, Long tlX, Long trX, Long idY, Long tlY, Long trY) {
@@ -146,10 +146,6 @@ struct SegmentTree{
 	}
 	
 	void update(Long posX, Long posY, Long val) { //O(log n log m)
-		update(posX, posY, val , 1 , 0 , maxN - 1 , maxM - 1);
+		update(posX, posY, val , 1 , 0 , n - 1 , m - 1);
 	}
 } st;
-
-int main(){
-	return 0;
-}

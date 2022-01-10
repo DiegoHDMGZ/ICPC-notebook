@@ -34,9 +34,9 @@ struct Node{
 
 struct SegmentTree {
 	vector<Node*> roots; //O(n + Q log n)
-	Long maxN;
+	Long n;
 	
-	Long combine(Long x, Long y){
+	Long combine(Long x, Long y) {
 		return x + y;
 	}
 	
@@ -56,38 +56,30 @@ struct SegmentTree {
 	SegmentTree(){}
 	
 	SegmentTree(vector<Long> &a) {
-		maxN = a.size();
-		roots = {build(a, 0, maxN - 1)};
+		n = a.size();
+		roots = {build(a, 0, n - 1)};
 	}
 
 	Long query(Long l, Long r, Node* node, Long tl, Long tr) { //O(log n)
-		if (l <= tl && tr <= r) {
-			return node->sum;
-		}
+		if (l <= tl && tr <= r) return node->sum;
 		Long tm = (tl + tr) / 2;
 		auto children = node->push(tl, tr);
-		if(r < tm + 1){
-			return query(l , r, children.first  , tl , tm);
-		} else if(tm < l){
-			return query( l , r , children.second , tm + 1 , tr);  
-		} else{
-			return combine(query(l, r, children.first, tl, tm) , query(l, r, children.second, tm + 1, tr));
-		}
+		if (r < tm + 1) return query(l , r, children.first  , tl , tm);
+		else if (tm < l) return query( l , r , children.second , tm + 1 , tr);  
+		else return combine(query(l, r, children.first, tl, tm) , query(l, r, children.second, tm + 1, tr));
 	}
 	
 	Long query(Long l , Long r, Long version = -1) { 
 		//query in the version (or the last version if it's -1)
-		assert(maxN > 0);
+		assert(n > 0);
 		if (version == -1) {
 			version = (Long)roots.size() - 1;
 		}
-		return query(l , r  ,roots[version] ,  0 , maxN - 1);
+		return query(l , r  ,roots[version] ,  0 , n - 1);
 	}
 
 	void update(Long l, Long r, Long val, Node* node, Long tl, Long tr) { //O(log n)
-		if(tr < l || tl > r){
-			return ;
-		}
+		if (tr < l || tl > r) return ;
 		if (l <= tl && tr <= r) {
 			Long sz = tr - tl + 1;
 			node->sum += val * sz;
@@ -104,16 +96,12 @@ struct SegmentTree {
 	void update(Long l, Long r, Long val, Long version = -1) {
 		//update a past version and append the new version to the history
 		//(or update the last version if it's -1)
-		assert(maxN > 0);
+		assert(n > 0);
 		if (version == -1) {
 			version = (Long)roots.size() - 1;
 		}
 		Node* newRoot = new Node(*roots[version]);
-		update(l, r , val , newRoot , 0 , maxN - 1);
+		update(l, r , val , newRoot , 0 , n - 1);
 		roots.push_back(newRoot);
 	}
 };
-
-int main() {
-	return 0;
-}

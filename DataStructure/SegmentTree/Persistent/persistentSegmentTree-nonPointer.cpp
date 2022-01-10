@@ -12,7 +12,7 @@ struct SegmentTree {
 	Long sum[MX2];
 	int left[MX2];
 	int right[MX2];
-	int maxN;
+	int n;
 	int lastVersion;
 	int nodes;
 	
@@ -36,32 +36,26 @@ struct SegmentTree {
 	
 	void build(vector<Long> &a) {
 		nodes = 1;
-		maxN = a.size();
-		roots[0] = build(a, 0, maxN - 1);
+		n = a.size();
+		roots[0] = build(a, 0, n - 1);
 		lastVersion = 0;
 	}
 
 	Long query(int l, int r, int node, Long tl, Long tr) { //O(log n)
-		if (l <= tl && tr <= r) {
-			return sum[node];
-		}
+		if (l <= tl && tr <= r) return sum[node];
 		int tm = (tl + tr) / 2;
-		if(r < tm + 1){
-			return query(l, r, left[node], tl , tm);
-		} else if(tm < l){
-			return query(l, r, right[node], tm + 1 , tr);  
-		} else{
-			return combine(query(l, r, left[node], tl, tm) , query(l, r, right[node], tm + 1, tr));
-		}
+		if(r < tm + 1) return query(l, r, left[node], tl , tm);
+		else if(tm < l) return query(l, r, right[node], tm + 1 , tr);  
+		else return combine(query(l, r, left[node], tl, tm) , query(l, r, right[node], tm + 1, tr));
 	}
 	
 	Long query(int l , int r, int version = -1) { 
 		//query in the version (or the last version if it's -1)
-		assert(maxN > 0);
+		assert(n > 0);
 		if (version == -1) {
 			version = lastVersion;
 		}
-		return query(l, r, roots[version], 0, maxN - 1);
+		return query(l, r, roots[version], 0, n - 1);
 	}
 	
 
@@ -87,15 +81,11 @@ struct SegmentTree {
 	void update(int pos, Long val, int version = -1) {
 		//update a past version and append the new version to the history
 		//(or update the last version if it's -1)
-		assert(maxN > 0);
+		assert(n > 0);
 		if (version == -1) {
 			version = lastVersion;
 		}
 		lastVersion++;
-		roots[lastVersion] = update(pos, val, roots[version] , 0 , maxN - 1);
+		roots[lastVersion] = update(pos, val, roots[version] , 0 , n - 1);
 	}	
 }st;
-
-int main() {
-	return 0;
-}

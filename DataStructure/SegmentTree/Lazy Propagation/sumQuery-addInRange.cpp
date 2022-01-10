@@ -6,28 +6,28 @@ typedef long long Long;
 
 const Long MX = 1e5;
 
-Long combine(Long x, Long y){
+Long combine(Long x, Long y) {
 	return x + y;
 }
 
 struct SegmentTree {
 	Long t[2 * MX];
 	Long lazy[2 * MX];
-	Long maxN;
+	Long n;
 	
 	void clear(Long n) {
-		for(Long i = 0; i < 2 * n; i++) {
+		for (Long i = 0; i < 2 * n; i++) {
 			t[i] = 0;
 			lazy[i] = 0;
 		}
-		maxN = n;
+		this->n = n;
 	}
 	
 	void build(vector<Long> &a, Long id, Long tl, Long tr) { //O(n)
 		lazy[id] = 0;
 		if (tl == tr) {
 			t[id] = a[tl];
-		}else{
+		} else {
 			Long tm = (tl + tr) / 2;
 			Long left = id + 1;
 			Long right = id + 2 * (tm - tl + 1);
@@ -38,8 +38,8 @@ struct SegmentTree {
 	}
 	
 	void build(vector<Long> &a) {
-		maxN = a.size();
-		build(a , 1 , 0 , maxN - 1);
+		n = a.size();
+		build(a , 1 , 0 , n - 1);
 	}
 	
 	void push(Long id, Long tl, Long tr) { //O(1)
@@ -61,36 +61,28 @@ struct SegmentTree {
 	}
 
 	Long query(Long l, Long r, Long id, Long tl, Long tr) { //O(logn)
-		if (l <= tl && tr <= r) {
-			return t[id];
-		}
+		if (l <= tl && tr <= r) return t[id];
 		Long tm = (tl + tr) / 2;
 		Long left = id + 1;
 		Long right = id + 2 * (tm - tl + 1);
 		push(id, tl , tr);
-		if (r < tm + 1) {
-			return query(l , r , left , tl , tm);
-		} else if (tm < l) {
-			return query(l , r, right , tm + 1 , tr);  
-		} else{
-			return combine(query(l, r, left, tl, tm) , query(l, r, right, tm + 1, tr));
-		}
+		if (r < tm + 1) return query(l , r , left , tl , tm);
+		else if (tm < l) return query(l , r, right , tm + 1 , tr);  
+		else return combine(query(l, r, left, tl, tm) , query(l, r, right, tm + 1, tr));
 	}
 	
 	Long query(Long l , Long r) {
-		assert(maxN > 0);
-		return query(l , r , 1 , 0 , maxN - 1);
+		assert(n > 0);
+		return query(l , r , 1 , 0 , n - 1);
 	}
 
 	void update(Long l, Long r, Long val, Long id, Long tl, Long tr) { //O(logn)
-		if (tr < l || tl > r) {
-			return;
-		}
+		if (tr < l || tl > r) return;
 		if (l <= tl && tr <= r) {
 			Long sz = tr - tl + 1;
 			t[id] += val * sz;
 			lazy[id] += val;
-		} else{
+		} else {
 			Long tm = (tl + tr) / 2;
 			Long left = id + 1;
 			Long right = id + 2 * (tm - tl + 1);
@@ -102,11 +94,7 @@ struct SegmentTree {
 	}
 	
 	void update(Long l, Long r, Long val) {
-		assert(maxN > 0);
-		update(l, r , val , 1 , 0 , maxN - 1);
+		assert(n > 0);
+		update(l, r , val , 1 , 0 , n - 1);
 	}
 } st;
-
-int main() {
-	return 0;
-}
