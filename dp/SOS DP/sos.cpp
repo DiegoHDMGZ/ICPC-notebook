@@ -13,7 +13,7 @@ int changeBit(int mask, int pos) {
 	return mask ^ (1 << pos);
 }
 
-//dp[mask][i] = sum over submasks that differs only in the first i bits
+//dp[mask][i] = sum over submasks that can only differ in the first i bits
 //dp[mask][0] = A[mask]
 //dp[mask][i] = dp[mask][i - 1] , if (i - 1)-th bit off
 //dp[mask][i] = dp[mask][i - 1] + dp[mask xor 2^(i - 1)], if (i - 1)-th bit is on 
