@@ -68,7 +68,7 @@ struct SegmentTree {
 		if (l <= tl && tr <= r) {
 			//aggregate update
 			lazy[id] += val;
-		}else {
+		} else {
 			Long tm = (tl + tr) / 2;
 			Long left = id + 1;
 			Long right = id + 2 * (tm - tl + 1);
