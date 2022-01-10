@@ -41,7 +41,7 @@ struct SegmentTree {
 		build(a , 1 , 0 , n - 1);
 	}
 
-	Long query(Long l , Long r, Long x, Long id, Long tl, Long tr) { //O(log�n)
+	Long query(Long l , Long r, Long x, Long id, Long tl, Long tr) { //O(log^2 n)
 		//find the smallest number greater or equal to x
 		if (tr < l || tl > r) return INF;
 		if (l <= tl && tr <= r) {
