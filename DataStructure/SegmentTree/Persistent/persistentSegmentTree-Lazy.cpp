@@ -22,14 +22,11 @@ struct Node{
 		Node* newRight = new Node(*right);
 		newLeft->sum += lazy * szLeft;
 		newRight->sum += lazy * szRight;
-		
-		//aggregate the lazy value of the node to the lazy value of the children
+		//Aggregate the lazy value
 		newLeft->lazy  += lazy;
 		newRight->lazy += lazy;
-		
 		return {newLeft, newRight};
 	}
-	
 };
 
 struct SegmentTree {
