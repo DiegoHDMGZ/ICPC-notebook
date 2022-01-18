@@ -15,7 +15,7 @@ void sieve() { //O(MX)
 	//x = i * p. p is the smallest prime factor
 	fill(isPrime, isPrime + MX , true);
 	isPrime[1] = false;
-	for (Long i = 2; i  < MX; i++) {
+	for (Long i = 2; i < MX; i++) {
 		if (isPrime[i]) {
 			primes.push_back(i);
 			fact[i] = i;
