@@ -201,6 +201,10 @@ struct Line{
 		//minimum distance from point to line
 		return fabs(evaluate(P)) / sqrt(square(A) + square(B));
 	}
+	Line translate(Double d) {
+		//return a line that is at a (signed) distance d of the line
+		return Line(A, B, C + d * sqrt(A * A + B * B));
+	}
 };
 
 Double det(Double a, Double b, Double c, Double d) {
@@ -288,7 +292,8 @@ vector<Point> intersect(Circle C1, Circle C2) {
 	return ans;
 }
 
-vector<Line> getTangents(Circle C, Point P) {
+vector<Line> getTangentLines(Circle C, Point P) {
+	//return the tangent lines of a circle C that pass through P
 	if (dist(P, C.center) < C.r - EPS) return {};
 	if (dist(P, C.center) < C.r + EPS) {
 		Point Q = P + (C.center - P).ort();
@@ -304,8 +309,48 @@ vector<Line> getTangents(Circle C, Point P) {
 	return {L1, L2};
 }
 
-vector<Line> getTangents(Point P, Circle C) {
-	return getTangents(C, P);
+vector<Circle> getTangentCircles(Line L, Point P, Double r) {
+	//return a circle with radious r, tangent to a line L and
+	//passing through P
+	vector<Line> lines = {L.translate(r), L.translate(-r)};
+	vector<Circle> ans;
+	for (auto line : lines) {
+		auto inter = intersect(Circle(P, r), line);
+		for (auto C : inter) ans.push_back(Circle(C, r));
+	}
+	return ans;
+}
+
+vector<Circle> getTangentCircles(Line L1, Line L2, Double r) {
+	//return a list of circles with radious r, tangent to L1 and L2
+	//the lines must be non parallel
+	vector<Line> lines1 = {L1.translate(r), L1.translate(-r)};
+	vector<Line> lines2 = {L2.translate(r), L2.translate(-r)};
+	vector<Circle> ans;
+	for (auto line1 : lines1) {
+		for (auto line2 : lines2) {
+			auto inter = intersect(line1, line2);
+			if (inter.size() == 1) ans.push_back(Circle(inter[0], r));
+		}
+	}
+	return ans;
+}
+
+vector<Circle> getTangentCircles(Circle C1, Circle C2, Double r) {
+	//return a list of circles with radious r, tangent to C1 and C2
+	//the tangents circle must not enclose any of the given circles
+	//the circles must be disjoint
+	assert(dist(C1.center, C2.center) > C1.r + C2.r + EPS);
+	auto inter = intersect(Circle(C1.center, r + C1.r), Circle(C2.center, r + C2.r));
+	vector<Circle> ans;
+	for (auto P : inter) {
+		ans.push_back(Circle(P, r));
+	}
+	return ans;
+}
+
+vector<Line> getTangentLines(Point P, Circle C) {
+	return getTangentLines(C, P);
 }
 //Triangle functions
 struct Triangle {
