@@ -395,3 +395,8 @@ struct Triangle {
 		return ans;
 	}
 };
+
+istream & operator >> (istream &in, Point &A){
+	in >> A.x >> A.y;
+	return in;
+}
