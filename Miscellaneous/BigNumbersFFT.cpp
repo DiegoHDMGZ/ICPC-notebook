@@ -213,12 +213,6 @@ struct Big{
 		return false;
 	}
 	
-	friend ostream & operator << (ostream &out, const Big &c);
-	friend istream & operator >> (istream &in,  Big &c);
-	
-	friend Big operator +(const Big &other);
-	friend Big operator -(const Big &x);
-	
 	Big operator +(const Big &other) const {
 		deque<Long> ans;
 		deque<Long> a = digits;
