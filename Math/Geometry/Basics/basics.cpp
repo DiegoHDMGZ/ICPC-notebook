@@ -395,4 +395,3 @@ struct Triangle {
 		return ans;
 	}
 };
-
