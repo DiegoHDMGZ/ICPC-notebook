@@ -288,7 +288,7 @@ vector<Point> intersect(Circle C1, Circle C2) {
 	return ans;
 }
 
-vector<Line> findTangents(Point P, Circle C) {
+vector<Line> getTangents(Circle C, Point P) {
 	if (dist(P, C.center) < C.r - EPS) return {};
 	if (dist(P, C.center) < C.r + EPS) {
 		Point Q = P + (C.center - P).ort();
@@ -304,6 +304,9 @@ vector<Line> findTangents(Point P, Circle C) {
 	return {L1, L2};
 }
 
+vector<Line> getTangents(Point P, Circle C) {
+	return getTangents(C, P);
+}
 //Triangle functions
 struct Triangle {
 	Point A, B, C;
