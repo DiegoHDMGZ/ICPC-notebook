@@ -63,11 +63,8 @@ struct Point{
 	Point ort() {
 		return Point(-y, x);
 	}
-	Double dot(const Point &other) {
-		return x * other.x + y * other.y;
-	}
-	Double cross(const Point &P) const {
-		return x * P.y - y * P.x;
+	Double cross(const Point &other) const {
+		return x * other.y - y * other.x;
 	}
 	Double cross(const Point &A, const Point &B) const {
 		//Given the current point P, this calculate PA x PB
@@ -76,6 +73,14 @@ struct Point{
 };
 
 typedef Point Vector;
+
+//dot and cross products
+Double dot(Point A, Point B) {
+	return A.x * B.x + A.y * B.y;
+}
+Double cross(Point A, Point B) {
+	return A.x * B.y - A.y * B.x;
+}
 
 //additional point operators with double
 Point operator *(Double a, Point b) {
@@ -115,7 +120,7 @@ Vector getProj(Vector A, Vector B) {
 	//projection of A on to B
 	assert(B.abs() > EPS);
 	Vector unitB = B / B.abs();
-	return unitB * (A.dot(B)) / B.abs();
+	return unitB * (dot(A, B)) / B.abs();
 }
 
 Vector bisect(Vector A, Vector B) {
@@ -124,7 +129,7 @@ Vector bisect(Vector A, Vector B) {
 
 Double getSimpleAngle(Vector A, Vector B) {
 	//return angle in [0 , PI] and does not have orientation
-	Double num = A.dot(B);
+	Double num = dot(A, B);
 	Double den = A.abs() * B.abs();
 	assert(fabs(den) >= EPS);
 	Double cosine = num / den;
@@ -136,7 +141,7 @@ Double getSimpleAngle(Vector A, Vector B) {
 Double getAngle(Vector A, Vector B) {
 	//return angle from A to B (order matters) in [0 , 2 * PI]
 	Double ang = getSimpleAngle(A, B);
-	int sineSgn = getSgn(A.cross(B));
+	int sineSgn = getSgn(cross(A, B));
 	if (sineSgn < 0) ang = 2 * PI - ang;
 	return ang;
 }
@@ -197,15 +202,18 @@ struct Line{
 	Double evaluate(Point P) {
 		return A * P.x + B * P.y + C;
 	}
-	Double dist(const Point &P) {
-		//minimum distance from point to line
-		return fabs(evaluate(P)) / sqrt(square(A) + square(B));
-	}
-	Line translate(Double d) {
-		//return a line that is at a (signed) distance d of the line
-		return Line(A, B, C + d * sqrt(A * A + B * B));
-	}
 };
+
+Double dist(Line L, Point P) {
+	//minimum distance from point to line
+	return fabs(L.evaluate(P)) / sqrt(square(L.A) + square(L.B));
+}
+
+Line translate(Line L, Double d) {
+	//return a line that is at a (signed) distance d of the line
+	return Line(L.A, L.B, L.C + d * sqrt(square(L.A) + square(L.B)));
+}
+
 
 Double det(Double a, Double b, Double c, Double d) {
 	return a * d - b * c;
@@ -312,7 +320,7 @@ vector<Line> getTangentLines(Circle C, Point P) {
 vector<Circle> getTangentCircles(Line L, Point P, Double r) {
 	//return a circle with radious r, tangent to a line L and
 	//passing through P
-	vector<Line> lines = {L.translate(r), L.translate(-r)};
+	vector<Line> lines = {translate(L, r), translate(L, -r)};
 	vector<Circle> ans;
 	for (auto line : lines) {
 		auto inter = intersect(Circle(P, r), line);
@@ -324,8 +332,8 @@ vector<Circle> getTangentCircles(Line L, Point P, Double r) {
 vector<Circle> getTangentCircles(Line L1, Line L2, Double r) {
 	//return a list of circles with radious r, tangent to L1 and L2
 	//the lines must be non parallel
-	vector<Line> lines1 = {L1.translate(r), L1.translate(-r)};
-	vector<Line> lines2 = {L2.translate(r), L2.translate(-r)};
+	vector<Line> lines1 = {translate(L1, r), translate(L1, -r)};
+	vector<Line> lines2 = {translate(L2, r), translate(L2, -r)};
 	vector<Circle> ans;
 	for (auto line1 : lines1) {
 		for (auto line2 : lines2) {
