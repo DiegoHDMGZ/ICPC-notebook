@@ -9,12 +9,16 @@ typedef long double Double;
 const Double EPS = 1e-10;
 const Double PI = acos(-1);
 
+bool near(Double a, Double b) {
+	return fabs(a - b) < EPS;
+}
+
 Double square(Double x) {
 	return x * x;
 }
 
 int getSgn(Double x) {
-	if (fabs(x) < EPS) return 0;
+	if (near(x, 0)) return 0;
 	if (x > 0) return 1;
 	return -1;
 }
@@ -32,7 +36,7 @@ struct Point{
 		return Point(x * t, y * t);
 	}
 	Point operator /(Double t) const {
-		assert(fabs(t) > EPS);
+		assert(!near(t, 0));
 		return Point(x / t, y / t);
 	}
 	Point operator +=(const Point &other) {
@@ -52,7 +56,7 @@ struct Point{
 		return *this;
 	}
 	bool operator ==(const Point &P) const {
-		return fabs(x - P.x) < EPS && fabs(y - P.y) < EPS;
+		return near(x, P.x) && near(y, P.y);
 	}
 	Double abs2() {
 		return x * x + y * y;
@@ -118,7 +122,7 @@ bool counterClockwise(const Point &A, const Point &B, Point &center) {
 //Vector Functions
 Vector getProj(Vector A, Vector B) {
 	//projection of A on to B
-	assert(B.abs() > EPS);
+	assert(!near(B.abs(), 0));
 	Vector unitB = B / B.abs();
 	return unitB * (dot(A, B)) / B.abs();
 }
@@ -131,7 +135,7 @@ Double getSimpleAngle(Vector A, Vector B) {
 	//return angle in [0 , PI] and does not have orientation
 	Double num = dot(A, B);
 	Double den = A.abs() * B.abs();
-	assert(fabs(den) >= EPS);
+	assert(!near(den, 0));
 	Double cosine = num / den;
 	if (cosine > 1 - EPS) return 0;
 	if (cosine < -1 + EPS) return PI;
@@ -170,7 +174,7 @@ struct Segment {
 	Segment(){}
 	Segment(Point A, Point B): A(A), B(B){}
 	bool contains(const Point &P) const {
-		if (fabs(A.cross(B, P)) < EPS) {
+		if (near(A.cross(B, P), 0)) {
 			return between(P.x, A.x, B.x) && between(P.y, A.y, B.y);
 		}
 		return false;
@@ -219,15 +223,15 @@ Double det(Double a, Double b, Double c, Double d) {
 	return a * d - b * c;
 }
 
-vector<Point> intersect(Line &L1, Line &L2) {
+vector<Point> intersect(Line L1, Line L2) {
 	//empty vector -> Parallel lines
 	//size 1 -> One point of intersection
 	//size 2 -> Equivalent Lines
 	Double den = det(L1.A, L1.B, L2.A, L2.B);
 	Double x = -det(L1.C, L1.B, L2.C, L2.B);
 	Double y = -det(L1.A, L1.C, L2.A, L2.C);
-	if (fabs(den) < EPS) {
-		if (fabs(x) < EPS && fabs(y) < EPS) return vector<Point>(2);
+	if (near(den, 0)) {
+		if (near(x, 0) &&  near(y, 0)) return vector<Point>(2);
 		else return {};
 	}
 	Point ans(x, y);
@@ -252,7 +256,7 @@ vector<Point> intersect(Line L, Circle C) {
 	Double y0 = -L.B * L.C / den;
 	Double diff = square(C.r) - square(L.C) / den;
 	vector<Point> ans;
-	if(fabs(diff) < EPS){
+	if(near(diff, 0)){
 		//distance between line and center is equal to r
 		ans = {Point(x0, y0)};
 	} else if (diff < EPS){
@@ -372,7 +376,7 @@ struct Triangle {
 		//compare areas
 		Double a1 = fabs(A.cross(B, C));
 		Double a2 = fabs(P.cross(A, B)) + fabs(P.cross(A, C)) + fabs(P.cross(B, C));
-		return fabs(a1 - a2) < EPS;
+		return near(a1, a2);
 	} 
 	
 	Circle circumcircle() {
