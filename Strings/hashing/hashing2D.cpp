@@ -46,7 +46,6 @@ struct Hash{
 	vector<vector<Field>> hashPref;
 	
 	Hash(Long mod, Long base) {
-		//other mod 1e9 + 1269
 		this->mod = mod;
 		this->base = base;
 		MOD = mod;
@@ -59,7 +58,7 @@ struct Hash{
 	}
 	
 	Long hash(int x, int y){ //O(1)
-		if(x < 0 || y < 0) return 0;
+		if (x < 0 || y < 0) return 0;
 		return hashPref[x][y].val;
 	}
 	
