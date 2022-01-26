@@ -34,15 +34,15 @@ struct Hash{
 	Long mod, base;
 	vector<Field> power, hashPref, hashSuf;
 	
-	Hash(Long mod, Long base) {
-		//other mod 1e9 + 1269
+	Hash(Long mod, Long base, string &s) {
 		this->mod = mod;
 		this->base = base;
+		build(s);
 	}
 	
 	Long hash(int l, int r) { //O(1)
 		MOD = mod;
-		if(l == 0) return hashPref[r].val;
+		if (l == 0) return hashPref[r].val;
 		return (hashPref[r] - hashPref[l - 1] * power[r - l + 1]).val;
 	}
 
@@ -79,14 +79,10 @@ struct MultiHash{
 	static vector<Long> bases;
 	vector<Hash> hashes;
 	
-	MultiHash() {
-		for (Long i = 0; i < mods.size(); i++) {
-			hashes.push_back(Hash(mods[i], bases[i]));
+	MultiHash(string &s) {
+		for (int i = 0; i < mods.size(); i++) {
+			hashes.push_back(Hash(mods[i], bases[i], s));
 		}
-	}
-	
-	void build(string &s) {
-		for (int i = 0; i < hashes.size(); i++) hashes[i].build(s);
 	}
 	
 	vector<Long> hash(int l, int r) {
