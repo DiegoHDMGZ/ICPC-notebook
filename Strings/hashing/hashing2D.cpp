@@ -7,67 +7,88 @@ using namespace std;
 
 typedef long long Long;
 
-Long mult(Long a, Long b, Long mod){
-	return (a * b) % mod;
-}
+Long MOD;
 
-Long add(Long a, Long b, Long mod){
-	return (a + b) % mod;
-}
-
-Long sub(Long a , Long b, Long mod){
-	return (a - b + mod) % mod;
-}
+struct Field {
+	Long val;
+	Field(Long val = 0) : val(val){}
+	Field operator +(const Field &other) const {
+		if (val + other.val < MOD) return val + other.val;
+		return val + other.val - MOD;
+	}
+	Field operator -(const Field &other) const {
+		if (val - other.val >= 0) return val - other.val;
+		return val - other.val + MOD;
+	}
+	Field operator *(const Field &other) const {
+		return (val * other.val) % MOD;
+	}
+	Field operator +=(const Field &other) {
+		*this = *this + other;
+		return *this;
+	}
+	Field operator -=(const Field &other) {
+		*this = *this - other;
+		return *this;
+	}
+};
 
 Long minChar = (Long)'0';
+
+int toInt(char c) {
+	return c - minChar + 1;
+}
 
 const int MX = 1000;
 struct Hash{
 	Long mod, base;
-	vector<Long> pot;
-	vector<vector<Long>> hashPref;
+	vector<Field> power;
+	vector<vector<Field>> hashPref;
 	
-	Hash(Long mod = 1e9 + 7 , Long base = 67) {
+	Hash(Long mod, Long base) {
 		//other mod 1e9 + 1269
 		this->mod = mod;
 		this->base = base;
-		hashPref = vector<vector<Long>>(MX, vector<Long>(MX));
-		pot = vector<Long>(MX * MX);
-		pot[0] = 1;
+		MOD = mod;
+		hashPref = vector<vector<Field>>(MX, vector<Field>(MX));
+		power = vector<Field>(MX * MX);
+		power[0] = 1;
 		for (int i = 1; i < MX * MX; i++) {
-			pot[i] = mult(pot[i - 1] , base , mod);
+			power[i] = power[i - 1] * base;
 		}
 	}
 	
-	Long hash(Long x, Long y){ //O(1)
+	Long hash(int x, int y){ //O(1)
 		if(x < 0 || y < 0) return 0;
-		return hashPref[x][y];
+		return hashPref[x][y].val;
 	}
 	
-	Long hash(Long x1, Long y1, Long x2 , Long y2){ //O(1)
-		Long sz = hashPref.size();
-		Long ans = hash(x2 , y2);
-		ans = sub(ans , mult(hash(x2, y1 - 1) , pot[y2 - y1 + 1] , mod)  , mod); 
-		ans = sub(ans , mult(hash(x1 - 1 , y2) , pot[sz * (x2 - x1 + 1)], mod) , mod  );
-		ans = add(ans , mult(hash(x1 - 1 , y1 - 1) , pot[sz * (x2 - x1 + 1) + (y2 - y1 + 1)] , mod) , mod);
-		return ans;
+	Long hash(int x1, int y1, int x2 , int y2){ //O(1)
+		MOD = mod;
+		int sz = hashPref.size();
+		Field ans = hash(x2 , y2);
+		ans -= power[y2 - y1 + 1] * hash(x2, y1 - 1); 
+		ans -= power[sz * (x2 - x1 + 1)] * hash(x1 - 1, y2);
+		ans += power[sz * (x2 - x1 + 1) + (y2 - y1 + 1)] * hash(x1 - 1, y1 - 1);
+		return ans.val;
 	}
 
-	void precalc(vector<vector<char>> &A){ //O(n * m)
-		Long n = A.size();
-		Long m = A[0].size();
-		Long sz = hashPref.size();
+	void build(vector<string> &A){ //O(n * m)
+		MOD = mod;
+		int n = A.size();
+		int m = A[0].size();
+		int sz = hashPref.size();
 		for (int i = 0; i < n; i++) {
 			for (int j = 0; j < m; j++){
-				hashPref[i][j] = A[i][j] - minChar + 1;
-				if(i > 0) {
-					hashPref[i][j] = add(hashPref[i][j] , mult(hashPref[i - 1][j] , pot[sz] , mod) , mod);
+				hashPref[i][j] = toInt(A[i][j]);
+				if (i > 0) {
+					hashPref[i][j] += hashPref[i - 1][j] * power[sz];
 				}
-				if(j > 0){
-					hashPref[i][j] = add(hashPref[i][j] , mult(hashPref[i][j - 1] , base, mod) , mod);
+				if (j > 0){
+					hashPref[i][j] += hashPref[i][j - 1] * base;
 				}
-				if(i > 0 && j > 0){
-					hashPref[i][j] = sub(hashPref[i][j] , mult(mult(base , pot[sz] , mod), hashPref[i - 1][j - 1] , mod) , mod);
+				if (i > 0 && j > 0){
+					hashPref[i][j] -= power[sz] * hashPref[i - 1][j - 1] * base;
 				}
 			}
 		}
@@ -75,23 +96,23 @@ struct Hash{
 };
 
 struct MultiHash{
+	static vector<Long> mods;
+	static vector<Long> bases;
 	vector<Hash> hashes;
-	
-	MultiHash(vector<Long> mods, vector<Long> bases) {
-		for (Long i = 0; i < mods.size(); i++) {
+
+	MultiHash() {
+		for (int i = 0; i < mods.size(); i++) {
 			hashes.push_back(Hash(mods[i], bases[i]));
 		}
 	}
 	
-	void precalc(vector<vector<char>> &s) {
-		for (int i = 0; i < hashes.size(); i++) {
-			hashes[i].precalc(s);
-		}
+	void build(vector<string> &s) {
+		for (int i = 0; i < hashes.size(); i++) hashes[i].build(s);
 	}
 	
-	vector<Long> hash(Long x1, Long y1, Long x2, Long y2) {
+	vector<Long> hash(int x1, int y1, int x2, int y2) {
 		vector<Long> ans;
-		for (Long i = 0; i < hashes.size(); i++) {
+		for (int i = 0; i < hashes.size(); i++) {
 			ans.push_back(hashes[i].hash(x1, y1, x2, y2));
 		}
 		return ans;
@@ -112,7 +133,5 @@ vector<Long> getBases(vector<Long> mods) {
 	}
 	return ans;
 }
-
-int main(){
-	return 0;
-}
+vector<Long> MultiHash::mods = {(Long)1e9 + 7 , (Long)1e9 + 1269};
+vector<Long> MultiHash::bases = getBases(mods);

@@ -1,91 +1,103 @@
 #include <bits/stdc++.h>
 #define REP(i , n) for(Long i = 0; i < (Long)n; i++)
 #define debug(x) cout << #x << " = " << x << endl;
-#define pb push_back
 
 using namespace std;
 
 typedef long long Long;
 
-Long mult(Long a, Long b, Long mod){
-	return (a * b) % mod;
-}
+Long MOD;
 
-Long add(Long a, Long b, Long mod){
-	return (a + b) % mod;
-}
-
-Long sub(Long a , Long b, Long mod){
-	return (a - b + mod) % mod;
-}
+struct Field {
+	Long val;
+	Field(Long val = 0) : val(val){}
+	Field operator +(const Field &other) const {
+		if (val + other.val < MOD) return val + other.val;
+		return val + other.val - MOD;
+	}
+	Field operator -(const Field &other) const {
+		if (val - other.val >= 0) return val - other.val;
+		return val - other.val + MOD;
+	}
+	Field operator *(const Field &other) const {
+		return (val * other.val) % MOD;
+	}
+};
 
 Long minChar = (Long)'0';
 
+int toInt(char c) {
+	return c - minChar + 1;
+}
+
 struct Hash{
 	Long mod, base;
-	vector<Long> pot, hashPref, hashSuf;
+	vector<Field> power, hashPref, hashSuf;
 	
-	Hash(Long mod = 1e9 + 7 , Long base = 67) {
+	Hash(Long mod, Long base) {
 		//other mod 1e9 + 1269
 		this->mod = mod;
 		this->base = base;
 	}
 	
-	Long hash(Long l, Long r) { //O(1)
-		if(l == 0) return hashPref[r];
-		return sub(hashPref[r] , mult(hashPref[l - 1] , pot[r - l + 1], mod) , mod);
+	Long hash(int l, int r) { //O(1)
+		MOD = mod;
+		if(l == 0) return hashPref[r].val;
+		return (hashPref[r] - hashPref[l - 1] * power[r - l + 1]).val;
 	}
 
-	Long hashInverse(Long l, Long r) { //O(1)
-		return sub(hashSuf[l], mult(hashSuf[r + 1], pot[r - l + 1], mod) , mod);
+	Long hashInverse(int l, int r) { //O(1)
+		MOD = mod;
+		return (hashSuf[l] - hashSuf[r + 1] * power[r - l + 1]).val;
 	}
 	
-	bool isPalindrome(Long l, Long r) { //O(1)
+	bool isPalindrome(int l, int r) { //O(1)
 		return hash(l , r) == hashInverse(l , r);
 	}
 
 	void build(string &s) { //O(n)
+		MOD = mod;
 		Long n = s.size();
-		pot = hashPref = vector<Long>(n);
-		hashSuf = vector<Long>(n + 1);
-		pot[0] = 1;
-		hashPref[0] = s[0] - minChar + 1;
+		power = hashPref = vector<Field>(n);
+		hashSuf = vector<Field>(n + 1);
+		power[0] = 1;
+		hashPref[0] = toInt(s[0]);
 		for (int i = 1; i < n; i++) {
-			hashPref[i] = add(mult(hashPref[i - 1], base, mod), s[i] - minChar + 1, mod);
-			pot[i] = mult(pot[i - 1] , base , mod);
+			hashPref[i] = hashPref[i - 1] * base + toInt(s[i]);
+			power[i] = power[i - 1] * base;
 		}
 		hashSuf[n] = 0;
-		hashSuf[n - 1] = s[n - 1] - minChar + 1;
+		hashSuf[n - 1] = toInt(s[n - 1]);
 		for (int i = n - 2; i >= 0; i--) {
-			hashSuf[i] = add(mult(hashSuf[i + 1] , base, mod),  s[i] - minChar + 1, mod);
+			hashSuf[i] = hashSuf[i + 1] * base + toInt(s[i]);
 		}
 	}
 };
 
 struct MultiHash{
+	static vector<Long> mods;
+	static vector<Long> bases;
 	vector<Hash> hashes;
 	
-	MultiHash(vector<Long> mods, vector<Long> bases) {
+	MultiHash() {
 		for (Long i = 0; i < mods.size(); i++) {
 			hashes.push_back(Hash(mods[i], bases[i]));
 		}
 	}
 	
 	void build(string &s) {
-		for (int i = 0; i < hashes.size(); i++) {
-			hashes[i].build(s);
-		}
+		for (int i = 0; i < hashes.size(); i++) hashes[i].build(s);
 	}
 	
-	vector<Long> hash(Long l, Long r) {
+	vector<Long> hash(int l, int r) {
 		vector<Long> ans;
-		for (Long i = 0; i < hashes.size(); i++) {
+		for (int i = 0; i < hashes.size(); i++) {
 			ans.push_back(hashes[i].hash(l, r));
 		}
 		return ans;
 	}
 	
-	bool isPalindrome(Long l, Long r) {
+	bool isPalindrome(int l, int r) {
 		for (Long i = 0; i < hashes.size(); i++) {
 			if (!hashes[i].isPalindrome(l , r)) {
 				return false;
@@ -109,7 +121,5 @@ vector<Long> getBases(vector<Long> mods) {
 	}
 	return ans;
 }
-
-int main(){
-	return 0;
-}
+vector<Long> MultiHash::mods = {(Long)1e9 + 7 , (Long)1e9 + 1269};
+vector<Long> MultiHash::bases = getBases(mods);
