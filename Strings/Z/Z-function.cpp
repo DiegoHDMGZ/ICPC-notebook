@@ -3,7 +3,9 @@ using namespace std;
 
 typedef long long Long;
 
-vector<int> z_function(string &s) {
+//Z[i] = the maximum length of a string that is a prefix and,
+//at the same time, a suffix that start at i
+vector<int> zFunction(string &s) {
 	int n = s.size();
 	vector<int> Z(n, 0);
 	Z[0] = n;
