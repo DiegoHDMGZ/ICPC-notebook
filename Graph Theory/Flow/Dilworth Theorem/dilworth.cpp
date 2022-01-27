@@ -115,7 +115,7 @@ struct Graph{
 	}
 	
 	void addEdge(Long u , Long v){
-		adj[u].pb(v);
+		adj[u].push_back(v);
 		indegree[v]++;
 	}
 	
@@ -126,7 +126,7 @@ struct Graph{
 		deque<Long> q;
 		REP(i , n){
 			if(indegree[i] == 0){
-				q.pb(i);
+				q.push_back(i);
 			}
 		}
 		Long cnt = 0;
@@ -142,7 +142,7 @@ struct Graph{
 			for(Long v : adj[u]){
 				indegree[v]--;
 				if(indegree[v] == 0){
-					q.pb(v);
+					q.push_back(v);
 				}
 				for(Long x : parents[u]){
 					parents[v].insert(x);

@@ -38,7 +38,7 @@ struct SuperSet{
 
 	void add(Long l, Long r, Long c) { //O(log n)
 		Long ind = v.size();
-		v.pb(Segment(l , r , c));
+		v.push_back(Segment(l , r , c));
 		endPoint.insert({l, ind});
 		endPoint.insert({r , ind});
 		cnt[c] += r - l + 1;
