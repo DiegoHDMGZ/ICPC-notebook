@@ -28,9 +28,7 @@ struct ModInt {
 		Long b = other.val;
 		ModInt a = val;
 		while (b > 0) {
-			if (b & 1) {
-				ans += a;
-			}
+			if (b & 1) ans += a;
 			a += a;
 			b >>= 1;
 		}
@@ -57,9 +55,7 @@ struct ModInt {
 		ModInt ans = 1;
 		ModInt a = val;
 		while (b > 0) {
-			if (b & 1) {
-				ans *= a;
-			}
+			if (b & 1) ans *= a;
 			a *= a;
 			b >>= 1;
 		}
