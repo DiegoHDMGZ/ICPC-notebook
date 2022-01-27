@@ -9,25 +9,25 @@ typedef long long Long;
 
 Long MOD;
 
-struct Field {
+struct ModInt {
 	Long val;
-	Field(Long val = 0) : val(val){}
-	Field operator +(const Field &other) const {
+	ModInt(Long val = 0) : val(val){}
+	ModInt operator +(const ModInt &other) const {
 		if (val + other.val < MOD) return val + other.val;
 		return val + other.val - MOD;
 	}
-	Field operator -(const Field &other) const {
+	ModInt operator -(const ModInt &other) const {
 		if (val - other.val >= 0) return val - other.val;
 		return val - other.val + MOD;
 	}
-	Field operator *(const Field &other) const {
+	ModInt operator *(const ModInt &other) const {
 		return (val * other.val) % MOD;
 	}
-	Field operator +=(const Field &other) {
+	ModInt operator +=(const ModInt &other) {
 		*this = *this + other;
 		return *this;
 	}
-	Field operator -=(const Field &other) {
+	ModInt operator -=(const ModInt &other) {
 		*this = *this - other;
 		return *this;
 	}
@@ -42,15 +42,15 @@ int toInt(char c) {
 const int MX = 1000;
 struct Hash{
 	Long mod, base;
-	vector<Field> power;
-	vector<vector<Field>> hashPref;
+	vector<ModInt> power;
+	vector<vector<ModInt>> hashPref;
 	
 	Hash(Long mod, Long base) {
 		this->mod = mod;
 		this->base = base;
 		MOD = mod;
-		hashPref = vector<vector<Field>>(MX, vector<Field>(MX));
-		power = vector<Field>(MX * MX);
+		hashPref = vector<vector<ModInt>>(MX, vector<ModInt>(MX));
+		power = vector<ModInt>(MX * MX);
 		power[0] = 1;
 		for (int i = 1; i < MX * MX; i++) {
 			power[i] = power[i - 1] * base;
@@ -65,7 +65,7 @@ struct Hash{
 	Long hash(int x1, int y1, int x2 , int y2){ //O(1)
 		MOD = mod;
 		int sz = hashPref.size();
-		Field ans = hash(x2 , y2);
+		ModInt ans = hash(x2 , y2);
 		ans -= power[y2 - y1 + 1] * hash(x2, y1 - 1); 
 		ans -= power[sz * (x2 - x1 + 1)] * hash(x1 - 1, y2);
 		ans += power[sz * (x2 - x1 + 1) + (y2 - y1 + 1)] * hash(x1 - 1, y1 - 1);

@@ -8,18 +8,18 @@ typedef long long Long;
 
 Long MOD;
 
-struct Field {
+struct ModInt {
 	Long val;
-	Field(Long val = 0) : val(val){}
-	Field operator +(const Field &other) const {
+	ModInt(Long val = 0) : val(val){}
+	ModInt operator +(const ModInt &other) const {
 		if (val + other.val < MOD) return val + other.val;
 		return val + other.val - MOD;
 	}
-	Field operator -(const Field &other) const {
+	ModInt operator -(const ModInt &other) const {
 		if (val - other.val >= 0) return val - other.val;
 		return val - other.val + MOD;
 	}
-	Field operator *(const Field &other) const {
+	ModInt operator *(const ModInt &other) const {
 		return (val * other.val) % MOD;
 	}
 };
@@ -32,7 +32,7 @@ int toInt(char c) {
 
 struct Hash{
 	Long mod, base;
-	vector<Field> power, hashPref, hashSuf;
+	vector<ModInt> power, hashPref, hashSuf;
 	
 	Hash(Long mod, Long base, string &s) {
 		this->mod = mod;
@@ -58,8 +58,8 @@ struct Hash{
 	void build(string &s) { //O(n)
 		MOD = mod;
 		Long n = s.size();
-		power = hashPref = vector<Field>(n);
-		hashSuf = vector<Field>(n + 1);
+		power = hashPref = vector<ModInt>(n);
+		hashSuf = vector<ModInt>(n + 1);
 		power[0] = 1;
 		hashPref[0] = toInt(s[0]);
 		for (int i = 1; i < n; i++) {
