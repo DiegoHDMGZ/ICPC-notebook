@@ -412,3 +412,8 @@ istream & operator >> (istream &in, Point &A){
 	in >> A.x >> A.y;
 	return in;
 }
+
+ostream & operator << (ostream &out, const Point &A){
+	out << A.x << " " << A.y;
+	return out;
+}
