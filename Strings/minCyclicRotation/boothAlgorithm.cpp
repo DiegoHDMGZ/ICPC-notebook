@@ -7,7 +7,7 @@ typedef long long Long;
 
 //Booth's Algorithm
 
-string minCyclicRotation(string s) { //O(n)
+string minRotation(string s) { //O(n)
 	int n = s.size();
 	string t = s + s;
 	int opt = 0;
