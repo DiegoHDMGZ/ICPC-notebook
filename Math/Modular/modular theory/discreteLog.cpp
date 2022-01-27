@@ -11,7 +11,7 @@ typedef long long Long;
 // a ^ (kp) % m = (r * a ^ q ) % m  (using inverse modular)
 // f1(p) = f2(q)
 // k = sqrt(m) lead to the best complexity time
-// Baby step - Gian Step Algorithm
+// Baby step - Giant Step Algorithm
 
 Long mult(Long a, Long b, Long mod) {
 	a %= mod;
