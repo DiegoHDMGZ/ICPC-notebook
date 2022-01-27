@@ -19,14 +19,14 @@ Matrix operator +(const Matrix &a , const Matrix &b){ //O(n * m)
 	
 	Matrix c = getMatrix(n , m);
 	for(Long i = 0; i < n; i++){
-		for(Long j = 0; j <m; j++){
+		for(Long j = 0; j < m; j++){
 			c[i][j] = a[i][j] + b[i][j];
 		}
 	}
 	return c;
 }
 
-Matrix operator *(const Matrix &a, const Matrix &b){ //O( n^3)
+Matrix operator *(const Matrix &a, const Matrix &b){ //O(n^3)
 	Long n1 = a.size();
 	Long m1 = a[0].size();
 	Long n2 = b.size();
@@ -46,7 +46,7 @@ Matrix operator *(const Matrix &a, const Matrix &b){ //O( n^3)
 	return c;
 }
 
-Double determinant(Matrix M){
+Double determinant(Matrix M) { //O(n^3)
 	assert(M.size() == M[0].size());
 	Long n = M.size();
 	Double det = 1.0;
@@ -77,25 +77,7 @@ Double determinant(Matrix M){
 	return det;
 }
 
-void print(Matrix a, string name){
-	cout << name << " = " << endl;
-	Long n = a.size();
-	Long m = a[0].size();
-	for(Long i = 0; i < n; i++){
-		for(Long j = 0; j < m; j++){
-			if(fabs(a[i][j]) < EPS) {
-				cout << 0 << " ";
-			} else {
-				cout << a[i][j] << " ";
-			}
-			
-		}
-		cout << endl;
-	}
-	cout << endl;
-}
-
-Long linearSystem(Matrix M, vector<Double> &ans) {
+Long linearSystem(Matrix M, vector<Double> &ans) { //O(m * n * min(n, m))
 	//AX = b
 	//M = [A|b]
 	Long n = M.size();
@@ -158,8 +140,7 @@ Long linearSystem(Matrix M, vector<Double> &ans) {
 	return 1;
 }
 
-
-Matrix inverse(Matrix M){
+Matrix inverse(Matrix M) { //O(n^3)
 	assert(M.size() == M[0].size());
 	Long n = M.size();
 	Matrix ans = getMatrix(n , n);
