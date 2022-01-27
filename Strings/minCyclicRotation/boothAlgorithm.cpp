@@ -5,7 +5,7 @@ using namespace std;
 
 typedef long long Long;
 
-//Booth Algorithm
+//Booth's Algorithm
 
 string minCyclicRotation(string s) { //O(n)
 	int n = s.size();
