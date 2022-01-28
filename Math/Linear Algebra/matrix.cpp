@@ -23,6 +23,9 @@ struct ModInt {
 		if (val - other.val >= 0) return val - other.val;
 		return val - other.val + MOD;
 	}
+	ModInt operator -() const {
+		return MOD - val;
+	}
 	ModInt operator *(const ModInt &other) const {
 		return (val * other.val) % MOD;
 	}
@@ -151,7 +154,7 @@ int findPivot(Matrix &M, int row, int col) {
 
 ModInt determinant(Matrix M){ //O(n^3)
 	assert(M.size() == M[0].size());
-	Long n = M.size();
+	int n = M.size();
 	ModInt det = 1;
 	for (int i = 0; i < n; i++) {
 		int pivot = findPivot(M, i, i);
@@ -181,16 +184,11 @@ Matrix invert(Matrix M) { //O(n^3)
 	assert(M.size() == M[0].size());
 	int n = M.size();
 	Matrix ans = identity(n);
-	
 	for (int i = 0; i < n; i++) {
-		if (M[i][i] == 0) {
-			for (int j = i + 1; j < n; j++) {
-				if (M[j][i] != 0) {
-					swap(M[i], M[j]);
-					swap(ans[i], ans[j]);
-					break;
-				} 
-			}
+		int pivot = findPivot(M, i, i);
+		if (i != pivot) {
+			swap(M[i], M[pivot]);
+			swap(ans[i], ans[pivot]);
 		}
 		if (M[i][i] == 0) return {};
 		ModInt inv = M[i][i].invert();
@@ -212,25 +210,45 @@ Matrix invert(Matrix M) { //O(n^3)
 	return ans;
 }
 
-int linearSystem(Matrix M, vector<Long> &ans) { //O(m * n * min(n, m))
+struct Solution {
+	//Solution for the linear system solver
+	vector<ModInt> X;
+	vector<vector<ModInt>> basis;
+	//All solutions are X + a linear combination of the vector of basis
+	//empty X means no solution
+	//Any X but empty basis means unique solution
+};
+
+Solution linearSystem(Matrix M) { //O(m * n * min(n, m))
 	//AX = b
 	//M = [A|b]
-	Long n = M.size();
-	Long m = (Long)M[0].size() - 1;
-	
-	Long row = 0;
-	vector<int> position(m, -1);
+	Solution solution;
+	int n = M.size();
+	int m = (int)M[0].size() - 1;
+	//n equations, m variables
+	int row = 0;
+	vector<int> dependent(n, -1);
 	for (int col = 0; col < m; col++) {
-		if (row == n) break;
-		int pivot = findPivot(M, row, col);
-		swap(M[row], M[pivot]);
-		if (M[row][col] == 0) continue;
-		position[col] = row;
+		if (row < n) {
+			int pivot = findPivot(M, row, col);
+			swap(M[row], M[pivot]);
+		}
+		if (row == n || M[row][col] == 0) {
+			//independent variable
+			vector<ModInt> vec(m);
+			vec[col] = 1;
+			for (int i = 0; i < row; i++) {
+				vec[dependent[i]] = -M[i][col];
+			}
+			solution.basis.push_back(vec);
+			continue;
+		}
+		if (row == n) continue;
+		dependent[row] = col;
 		ModInt inv = M[row][col].invert();
 		for (int j = col ; j <= m; j++) {
 			M[row][j] *= inv;
 		}
-		
 		for (int i = 0; i < n; i++) {
 			if (i == row) continue;
 			if (M[i][col] != 0){
@@ -242,27 +260,21 @@ int linearSystem(Matrix M, vector<Long> &ans) { //O(m * n * min(n, m))
 		}
 		row++;
 	}
-	ans = vector<Long>(m, 0);
-	bool infinite = false;
-	for (int i = 0; i < m; i++) {
-		if (position[i] != -1) {
-			ans[i] = M[position[i]][m].val;
-		} else {
-			infinite = true;
-		}
+	solution.X = vector<ModInt>(m, 0);
+	for (int i = 0; i < n; i++) {
+		if (dependent[i] != -1) {
+			solution.X[dependent[i]] = M[i][m];
+		} 
 	}
 	for (int i = 0; i < n; i++) {
-		bool allZero = true;
-		for (int j = 0; j < m; j++) {
-			if (M[i][j] != 0) {
-				allZero = false;
+		if (M[i][m] != 0) {
+			M[i].pop_back();
+			if (M[i] == vector<ModInt>(m)) {
+				solution.X = {};
+				solution.basis = {};
+				return solution;
 			}
 		}
-		if (allZero && M[i][m] != 0) {
-			ans = {};
-			return 0;
-		}
 	}
-	if (infinite) return 2;
-	return 1;
+	return solution;
 }
