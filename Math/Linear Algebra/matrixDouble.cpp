@@ -47,18 +47,23 @@ Matrix operator *(const Matrix &a, const Matrix &b){ //O(n^3)
 	return c;
 }
 
+int findPivot(Matrix &M, int row, int col) {
+	//heuristic to find pivot
+	int pivot = row;
+	for (int i = row + 1; i < M.size(); i++) {
+		if(fabs(M[i][col]) > fabs(M[pivot][col])){
+			pivot = i;
+		} 
+	}
+	return pivot;
+}
+
 Double determinant(Matrix M) { //O(n^3)
 	assert(M.size() == M[0].size());
 	int n = M.size();
 	Double det = 1.0;
 	for (int i = 0; i < n; i++) {
-		int pivot = i;
-		//heuristic to find pivot
-		for (int j = i + 1; j < n; j++) {
-			if(fabs(M[j][i]) > fabs(M[pivot][i])){
-				pivot = j;
-			} 
-		}
+		int pivot = findPivot(M, i, i);
 		if (near(M[pivot][i], 0)) return 0;
 		if (i != pivot) {
 			swap(M[i] , M[pivot]);
@@ -86,12 +91,7 @@ int linearSystem(Matrix M, vector<Double> &ans) { //O(m * n * min(n, m))
 	vector<int> position(m, -1);
 	for (int col = 0; col < m; col++) {
 		if (row == n) break;
-		int pivot = row;
-		for (int i = row + 1; i < n; i++){
-			if (fabs(M[i][col]) > fabs(M[pivot][col])) {
-				pivot = i;
-			} 
-		}
+		int pivot = findPivot(M, row, col);
 		if (row != pivot) swap(M[row] , M[pivot]);
 		if (near(M[row][col], 0)) continue;
 		position[col] = row;
@@ -147,18 +147,12 @@ Matrix inverse(Matrix M) { //O(n^3)
 	Matrix ans = identity(n);
 
 	for (int i = 0; i < n; i++) {
-		int pivot = i;
-		//heuristic to find pivot
-		for (int j = i + 1; j < n; j++) {
-			if (fabs(M[j][i]) > fabs(M[pivot][i])) {
-				pivot = j;
-			} 
-		}
+		int pivot = findPivot(M, i, i);
 		if (i != pivot) {
 			swap(M[i], M[pivot]);
 			swap(ans[i], ans[pivot]);
 		}
-		assert(!near(M[i][i], 0));
+		if (near(M[i][i], 0)) return {};
 		double c = M[i][i];
 		for (int j = 0; j < n; j++) {
 			M[i][j] /= c;

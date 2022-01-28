@@ -124,25 +124,29 @@ Matrix operator *(const Matrix &a, const Matrix &b) { //O(n^3)
 	return c;
 }
 
+int findPivot(Matrix &M, int row, int col) {
+	if (M[row][col] != 0) return row;
+	for (int i = row + 1; i < M.size(); i++) {
+		if(M[i][col] != 0) return i;
+	}
+	return row;
+}
+
 ModInt determinant(Matrix M){ //O(n^3)
 	assert(M.size() == M[0].size());
 	Long n = M.size();
 	ModInt det = 1;
 	for (int i = 0; i < n; i++) {
-		if (M[i][i] == 0) {
-			for (int j = i + 1; j < n; j++) {
-				if (M[j][i] != 0 ) {
-					swap(M[i], M[j]);
-					det *= ModInt(-1);
-					break;
-				} 
-			}
+		int pivot = findPivot(M, i, i);
+		if (pivot != i) {
+			swap(M[i], M[pivot]);
+			det *= ModInt(-1);
 		}
 		if (M[i][i] == 0) return 0;
 		det *= M[i][i];
-		ModInt x = M[i][i].invert();
+		ModInt inv = M[i][i].invert();
 		for (int j = i + 1; j < n; j++){
-			M[i][j] *= x;
+			M[i][j] *= inv;
 		}
 		
 		for (int j = i + 1; j < n; j++) {
@@ -166,21 +170,13 @@ int linearSystem(Matrix M, vector<Long> &ans) { //O(m * n * min(n, m))
 	vector<int> position(m, -1);
 	for (int col = 0; col < m; col++) {
 		if (row == n) break;
-		if (M[row][col] == 0) {
-			for(Long i = row + 1; i < n; i++){
-				if(M[i][col] != 0 ){
-					swap(M[i], M[row]);
-					break;
-				} 
-			}
-		}
-		if (M[row][col] == 0) {
-			continue;
-		}
+		int pivot = findPivot(M, row, col);
+		swap(M[row], M[pivot]);
+		if (M[row][col] == 0) continue;
 		position[col] = row;
-		ModInt x = M[row][col].invert();
+		ModInt inv = M[row][col].invert();
 		for (int j = col ; j <= m; j++) {
-			M[row][j] *= x;
+			M[row][j] *= inv;
 		}
 		
 		for (int i = 0; i < n; i++) {
@@ -240,13 +236,12 @@ Matrix inverse(Matrix M) { //O(n^3)
 				} 
 			}
 		}
-		assert(M[i][i] != 0);
-		ModInt x = M[i][i].invert();
+		if (M[i][i] == 0) return {};
+		ModInt inv = M[i][i].invert();
 		for (int j = 0; j < n; j++) {
-			M[i][j] *= x;
-			ans[i][j] *= x;
+			M[i][j] *= inv;
+			ans[i][j] *= inv;
 		}
-		
 		for (int j = 0; j < n; j++) {
 			if (j == i) continue;
 			if (M[j][i] != 0) {
@@ -260,3 +255,4 @@ Matrix inverse(Matrix M) { //O(n^3)
 	}
 	return ans;
 }
+
