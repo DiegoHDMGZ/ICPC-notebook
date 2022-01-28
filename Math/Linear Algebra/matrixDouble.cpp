@@ -1,7 +1,6 @@
 #include <bits/stdc++.h>
 #define debug(x) cout << #x << " = " << x << endl
 #define REP(i , n) for(Long i = 0; i < (Long)n ; i++)
-#define pb push_back
 #define getMatrix(n , m) Matrix(n , vector<Double>(m, 0))
 using namespace std;
 
@@ -11,15 +10,18 @@ typedef long double Double;
 const Double EPS = 1e-6;
 typedef vector<vector<Double>> Matrix;
 
+Double near(Double a, Double b) {
+	return fabs(a - b) < EPS;
+}
+
 Matrix operator +(const Matrix &a , const Matrix &b){ //O(n * m)
-	Long n = a.size();
-	Long m = a[0].size();
+	int n = a.size();
+	int m = a[0].size();
 	assert(a.size() == b.size() );
 	assert(a[0].size() == b[0].size());
-	
 	Matrix c = getMatrix(n , m);
-	for(Long i = 0; i < n; i++){
-		for(Long j = 0; j < m; j++){
+	for (int i = 0; i < n; i++){
+		for (int j = 0; j < m; j++){
 			c[i][j] = a[i][j] + b[i][j];
 		}
 	}
@@ -27,18 +29,17 @@ Matrix operator +(const Matrix &a , const Matrix &b){ //O(n * m)
 }
 
 Matrix operator *(const Matrix &a, const Matrix &b){ //O(n^3)
-	Long n1 = a.size();
-	Long m1 = a[0].size();
-	Long n2 = b.size();
-	Long m2 = b[0].size();
+	int n1 = a.size();
+	int m1 = a[0].size();
+	int n2 = b.size();
+	int m2 = b[0].size();
 	assert(m1 == n2);
-	
-	Long n = n1;
-	Long m = m2;
+	int n = n1;
+	int m = m2;
 	Matrix c = getMatrix(n, m);
-	for(Long i = 0; i < n; i++){
-		for(Long j = 0; j < m; j++){
-			for(Long k = 0; k < m1; k++){
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < m; j++) {
+			for (int k = 0; k < m1; k++) {
 				c[i][j] += a[i][k] * b[k][j];
 			}
 		}
@@ -48,28 +49,26 @@ Matrix operator *(const Matrix &a, const Matrix &b){ //O(n^3)
 
 Double determinant(Matrix M) { //O(n^3)
 	assert(M.size() == M[0].size());
-	Long n = M.size();
+	int n = M.size();
 	Double det = 1.0;
-	for(Long i = 0; i < n; i++){
-		Long pivot = i;
+	for (int i = 0; i < n; i++) {
+		int pivot = i;
 		//heuristic to find pivot
-		for(Long j = i + 1; j < n; j++){
-			if(fabs(M[j][i]) > fabs(M[pivot][i]) ){
+		for (int j = i + 1; j < n; j++) {
+			if(fabs(M[j][i]) > fabs(M[pivot][i])){
 				pivot = j;
 			} 
 		}
-		if(fabs(M[pivot][i]) < EPS) {
-			return 0;
-		}
-		if(i != pivot){
+		if (near(M[pivot][i], 0)) return 0;
+		if (i != pivot) {
 			swap(M[i] , M[pivot]);
 			det *= -1.0;
 		}
 		det *= M[i][i];
-		for(Long j = i + 1; j < n; j++){
-			if(fabs(M[j][i]) >= EPS){
-				for(Long k = i + 1; k < n; k++){
-					M[j][k] -= (Double)M[i][k] * M[j][i] / M[i][i];
+		for (int j = i + 1; j < n; j++) {
+			if (!near(M[j][i], 0)) {
+				for (int k = i + 1; k < n; k++) {
+					M[j][k] -= M[i][k] * M[j][i] / M[i][i];
 				}
 			}
 		}
@@ -77,37 +76,33 @@ Double determinant(Matrix M) { //O(n^3)
 	return det;
 }
 
-Long linearSystem(Matrix M, vector<Double> &ans) { //O(m * n * min(n, m))
+int linearSystem(Matrix M, vector<Double> &ans) { //O(m * n * min(n, m))
 	//AX = b
 	//M = [A|b]
-	Long n = M.size();
-	Long m = (Long)M[0].size() - 1;
+	int n = M.size();
+	int m = (Long)M[0].size() - 1;
 	
-	Long row = 0;
-	vector<Long> position(m, -1);
-	for (Long col = 0; col < m; col++) {
+	int row = 0;
+	vector<int> position(m, -1);
+	for (int col = 0; col < m; col++) {
 		if (row == n) break;
-		Long pivot = row;
-		for(Long i = row + 1; i < n; i++){
-			if(fabs(M[i][col]) > fabs(M[pivot][col]) ){
+		int pivot = row;
+		for (int i = row + 1; i < n; i++){
+			if (fabs(M[i][col]) > fabs(M[pivot][col])) {
 				pivot = i;
 			} 
 		}
-		if(row != pivot){
-			swap(M[row] , M[pivot]);
-		}
-		if (fabs(M[row][col]) <= EPS) {
-			continue;
-		}
+		if (row != pivot) swap(M[row] , M[pivot]);
+		if (near(M[row][col], 0)) continue;
 		position[col] = row;
-		for(Long j = col + 1; j <= m; j++){
+		for (int j = col + 1; j <= m; j++) {
 			M[row][j] /= M[row][col];
 		}
 		M[row][col] = 1;
-		for(Long i = 0; i < n; i++){
+		for (int i = 0; i < n; i++) {
 			if (i == row) continue;
-			if(fabs(M[i][col]) >= EPS){
-				for(Long j = col + 1; j <= m; j++){
+			if (!near(M[i][col], 0)) {
+				for (int j = col + 1; j <= m; j++) {
 					M[i][j] -= M[row][j] * M[i][col];
 				}
 				M[i][col] = 0;
@@ -117,7 +112,7 @@ Long linearSystem(Matrix M, vector<Double> &ans) { //O(m * n * min(n, m))
 	}
 	ans = vector<Double>(m, 0);
 	bool infinite = false;
-	for (Long i = 0; i < m; i++) {
+	for (int i = 0; i < m; i++) {
 		if (position[i] != -1) {
 			ans[i] = M[position[i]][m];
 		} else {
@@ -127,7 +122,7 @@ Long linearSystem(Matrix M, vector<Double> &ans) { //O(m * n * min(n, m))
 	for (int i = 0; i < n; i++) {
 		bool allZero = true;
 		for (int j = 0; j < m; j++) {
-			if (M[i][j] != 0) {
+			if (!near(M[i][j], 0)) {
 				allZero = false;
 			}
 		}
@@ -140,47 +135,45 @@ Long linearSystem(Matrix M, vector<Double> &ans) { //O(m * n * min(n, m))
 	return 1;
 }
 
+Matrix identity(int n) { //O(n)
+	Matrix ans = getMatrix(n , n);
+	for (int i = 0; i < n; i++) ans[i][i] = 1;
+	return ans;
+}
+
 Matrix inverse(Matrix M) { //O(n^3)
 	assert(M.size() == M[0].size());
-	Long n = M.size();
-	Matrix ans = getMatrix(n , n);
-	for(Long i = 0; i < n; i++){
-		ans[i][i] = 1;
-	}
-	
-	for(Long i = 0; i < n; i++){
-		Long pivot = i;
+	int n = M.size();
+	Matrix ans = identity(n);
+
+	for (int i = 0; i < n; i++) {
+		int pivot = i;
 		//heuristic to find pivot
-		for(Long j = i + 1; j < n; j++){
-			if(fabs(M[j][i]) > fabs(M[pivot][i]) ){
+		for (int j = i + 1; j < n; j++) {
+			if (fabs(M[j][i]) > fabs(M[pivot][i])) {
 				pivot = j;
 			} 
 		}
-	
-		if(i != pivot){
-			swap(M[i] , M[pivot]);
+		if (i != pivot) {
+			swap(M[i], M[pivot]);
 			swap(ans[i], ans[pivot]);
 		}
-		assert(fabs(M[i][i]) >= EPS);
+		assert(!near(M[i][i], 0));
 		double c = M[i][i];
-		for(Long j = 0; j < n; j++){
+		for (int j = 0; j < n; j++) {
 			M[i][j] /= c;
 			ans[i][j] /= c;
 		}
-		for(Long j = 0; j < n; j++){
+		for (int j = 0; j < n; j++){
 			if (j == i) continue;
-			if(fabs(M[j][i]) >= EPS){
+			if (!near(M[j][i], 0)){
 				double c = M[j][i];
-				for(Long k = 0; k < n; k++){
-					M[j][k] -= M[i][k] * c   ;
+				for (int k = 0; k < n; k++) {
+					M[j][k] -= M[i][k] * c;
 					ans[j][k] -= ans[i][k] * c; 
 				}
 			}
 		}
 	}
 	return ans;
-}
-
-int main(){
-	return 0;
 }
