@@ -7,6 +7,16 @@ using namespace std;
 
 typedef long long Long;
 
+/*
+//To work with Doubles, change ModInt to Double and use the 
+//near function for comparisons.
+//Also use an heuristic pivot selection
+typedef long double Double;
+const Double EPS = 1e-6;
+Double near(Double a, Double b) {
+	return fabs(a - b) < EPS;
+}
+*/
 const Long MOD = 1e9 + 7;
 struct ModInt {
 	Long val;
@@ -152,6 +162,19 @@ int findPivot(Matrix &M, int row, int col) {
 	return row;
 }
 
+/*
+//heuristic for doubles
+int findPivot(Matrix &M, int row, int col) {
+	int pivot = row;
+	for (int i = row + 1; i < M.size(); i++) {
+		if(fabs(M[i][col]) > fabs(M[pivot][col])){
+			pivot = i;
+		} 
+	}
+	return pivot;
+}
+*/
+
 ModInt determinant(Matrix M){ //O(n^3)
 	assert(M.size() == M[0].size());
 	int n = M.size();
@@ -162,15 +185,14 @@ ModInt determinant(Matrix M){ //O(n^3)
 			swap(M[i], M[pivot]);
 			det *= ModInt(-1);
 		}
-		if (M[i][i] == 0) return 0;
+		if (M[i][i] == 0) return 0; //use near for Double
 		det *= M[i][i];
-		ModInt inv = M[i][i].invert();
+		ModInt inv = ModInt(1) / M[i][i];
 		for (int j = i + 1; j < n; j++){
 			M[i][j] *= inv;
 		}
-		
 		for (int j = i + 1; j < n; j++) {
-			if (M[j][i] != 0) {
+			if (M[j][i] != 0) { //use !near for Doubles
 				for (int k = i + 1; k < n; k++) {
 					M[j][k] -= M[i][k] * M[j][i];
 				}
@@ -190,15 +212,15 @@ Matrix invert(Matrix M) { //O(n^3)
 			swap(M[i], M[pivot]);
 			swap(ans[i], ans[pivot]);
 		}
-		if (M[i][i] == 0) return {};
-		ModInt inv = M[i][i].invert();
+		if (M[i][i] == 0) return {}; //use near for Doubles
+		ModInt inv = ModInt(1) / M[i][i];
 		for (int j = 0; j < n; j++) {
 			M[i][j] *= inv;
 			ans[i][j] *= inv;
 		}
 		for (int j = 0; j < n; j++) {
 			if (j == i) continue;
-			if (M[j][i] != 0) {
+			if (M[j][i] != 0) { //Use !near for Doubles
 				ModInt c = M[j][i];
 				for (int k = 0; k < n; k++){
 					M[j][k] -= M[i][k] * c;
@@ -233,7 +255,7 @@ Solution linearSystem(Matrix M) { //O(m * n * min(n, m))
 			int pivot = findPivot(M, row, col);
 			swap(M[row], M[pivot]);
 		}
-		if (row == n || M[row][col] == 0) {
+		if (row == n || M[row][col] == 0) { //use near for Doubles
 			//independent variable
 			vector<ModInt> vec(m);
 			vec[col] = 1;
@@ -245,13 +267,13 @@ Solution linearSystem(Matrix M) { //O(m * n * min(n, m))
 		}
 		if (row == n) continue;
 		dependent[row] = col;
-		ModInt inv = M[row][col].invert();
+		ModInt inv = ModInt(1) / M[row][col];
 		for (int j = col ; j <= m; j++) {
 			M[row][j] *= inv;
 		}
 		for (int i = 0; i < n; i++) {
 			if (i == row) continue;
-			if (M[i][col] != 0){
+			if (M[i][col] != 0) { //use !near for Doubles
 				for (int j = col + 1; j <= m; j++) {
 					M[i][j] -= M[row][j] * M[i][col];
 				}
@@ -267,9 +289,9 @@ Solution linearSystem(Matrix M) { //O(m * n * min(n, m))
 		} 
 	}
 	for (int i = 0; i < n; i++) {
-		if (M[i][m] != 0) {
+		if (M[i][m] != 0) { //use !near for Doubles
 			M[i].pop_back();
-			if (M[i] == vector<ModInt>(m)) {
+			if (M[i] == vector<ModInt>(m, 0)) { //use near for Doubles
 				solution.X = {};
 				solution.basis = {};
 				return solution;
