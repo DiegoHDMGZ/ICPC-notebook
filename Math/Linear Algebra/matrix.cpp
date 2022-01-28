@@ -1,123 +1,154 @@
 #include <bits/stdc++.h>
 #define debug(x) cout << #x << " = " << x << endl
 #define REP(i , n) for(Long i = 0; i < (Long)n ; i++)
-#define pb push_back
-#define getMatrix(n , m) Matrix(n , vector<Long>(m, 0))
+#define getMatrix(n , m) Matrix(n , vector<ModInt>(m, 0))
 
 using namespace std;
 
 typedef long long Long;
 
-typedef vector<vector<Long>> Matrix;
-
 const Long MOD = 1e9 + 7;
-
-Long add(Long a , Long b ){
-	return (a + b) % MOD;
-}
-
-Long sub(Long a, Long b){
-	return (a - b + MOD) % MOD;
-}
-
-Long mult(Long a, Long b){
-	if(a * b < 0){
-		return sub( 0 , abs(a * b) % MOD );
+struct ModInt {
+	Long val;
+	ModInt(Long val = 0) {
+		val %= MOD;
+		if (val < 0) val += MOD;
+		this->val = val;
 	}
-	return (a * b) % MOD;
+	ModInt operator +(const ModInt &other) const {
+		if (val + other.val < MOD) return val + other.val;
+		return val + other.val - MOD;
+	}
+	ModInt operator -(const ModInt &other) const {
+		if (val - other.val >= 0) return val - other.val;
+		return val - other.val + MOD;
+	}
+	ModInt operator *(const ModInt &other) const {
+		return (val * other.val) % MOD;
+	}
+	ModInt operator +=(const ModInt &other) {
+		*this = *this + other;
+		return *this;
+	}
+	ModInt operator -=(const ModInt &other) {
+		*this = *this - other;
+		return *this;
+	}
+	ModInt operator *=(const ModInt &other) {
+		*this = *this * other;
+		return *this;
+	}
+	//Exponentiation
+	//(a ^ x) % mod = (a ^ r) % mod 
+	//Fermat's little theorem : r = x % (mod - 1), mod prime
+	//Euler's theorem : r = x % phi(mod), (a, mod coprimes)
+	ModInt pow(Long b) const { //O(log b)
+		ModInt ans = 1;
+		ModInt a = val;
+		while (b > 0) {
+			if (b & 1) ans *= a;
+			a *= a;
+			b >>= 1;
+		}
+		return ans;
+	}
+	ModInt invert() const { //O(log mod) 
+		//mod prime
+		return pow(MOD - 2);
+	}
+	ModInt operator /(const ModInt &other) const {
+		return *this * other.invert();
+	}
+	ModInt operator /=(const ModInt &other) {
+		*this = *this / other;
+		return *this;
+	}
+	bool operator ==(const ModInt &other) const {
+		return val == other.val;
+	}
+	bool operator !=(const ModInt &other) const {
+		return val != other.val;
+	}
+	bool operator <(const ModInt &other) const {
+		return val < other.val;
+	}
+	bool operator >(const ModInt &other) const {
+		return val > other.val;
+	}
+};
+
+istream & operator >> (istream &in, ModInt &A){
+	Long val;
+	in >> val;
+	A = ModInt(val);
+	return in;
 }
 
-Matrix operator +(const Matrix &a , const Matrix &b){ //O(n * m)
-	Long n = a.size();
-	Long m = a[0].size();
+ostream & operator << (ostream &out, const ModInt &A){
+	out << A.val;
+	return out;
+}
+
+typedef vector<vector<ModInt>> Matrix;
+
+Matrix operator +(const Matrix &a , const Matrix &b) { //O(n * m)
+	int n = a.size();
+	int m = a[0].size();
 	assert(a.size() == b.size() );
 	assert(a[0].size() == b[0].size());
-	
 	Matrix c = getMatrix(n , m);
-	
-	for(Long i = 0; i < n; i++){
-		for(Long j = 0; j <m; j++){
-			c[i][j] = add(a[i][j] , b[i][j] );
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < m; j++) {
+			c[i][j] = a[i][j] + b[i][j];
 		}
 	}
 	return c;
 }
 
-Matrix operator *(const Matrix &a, const Matrix &b){ //O( n^3)
-	Long n1 = a.size();
-	Long m1 = a[0].size();
-	Long n2 = b.size();
-	Long m2 = b[0].size();
+Matrix operator *(const Matrix &a, const Matrix &b) { //O(n^3)
+	int n1 = a.size();
+	int m1 = a[0].size();
+	int n2 = b.size();
+	int m2 = b[0].size();
 	assert(m1 == n2);
-	
-	Long n = n1;
-	Long m = m2;
+	int n = n1;
+	int m = m2;
 	Matrix c = getMatrix(n, m);
-	for(Long i = 0; i < n; i++){
-		for(Long j = 0; j < m; j++){
-			for(Long k = 0; k < m1; k++){
-				c[i][j] = add(c[i][j] , mult(a[i][k] , b[k][j]));
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < m; j++) {
+			for (int k = 0; k < m1; k++) {
+				c[i][j] += a[i][k] * b[k][j];
 			}
 		}
 	}
 	return c;
 }
 
-void print(Matrix a , string name){
-	cout << name << " = " << endl;
-	Long n = a.size();
-	Long m = a[0].size();
-	for(Long i = 0; i < n; i++){
-		for(Long j = 0; j < m; j++){
-			cout << a[i][j] << " ";
-		}
-		cout << endl;
-	}
-}
-
-Long fastPow(Long a, Long b ){ //O(logb)
-	Long ans = 1;
-	while(b > 0){
-		if(b & 1 == 1){ //b % 2 == 1
-			ans = mult(ans ,a );
-		}
-		a = mult(a , a  );
-		b >>= 1; //b /= 2;
-	}
-	return ans;
-}
-
-Long invert(Long a){ //O(logm) , m prime , a , m coprimes
-	return fastPow(a, MOD - 2);
-}
-
-Long determinant(Matrix M){
+ModInt determinant(Matrix M){ //O(n^3)
 	assert(M.size() == M[0].size());
 	Long n = M.size();
-	Long det = 1;
-	for(Long i = 0; i < n; i++){
-		if(M[i][i] == 0){
-			for(Long j = i + 1; j < n; j++){
-				if(M[j][i] != 0 ){
+	ModInt det = 1;
+	for (int i = 0; i < n; i++) {
+		if (M[i][i] == 0) {
+			for (int j = i + 1; j < n; j++) {
+				if (M[j][i] != 0 ) {
 					swap(M[i], M[j]);
-					det = mult(det, -1 );
+					det *= ModInt(-1);
 					break;
 				} 
 			}
 		}
-		if(M[i][i] == 0) {
-			return 0;
-		}
-		det = mult(det , M[i][i] );
-		Long x = invert(M[i][i]);
-		for(Long j = i + 1; j < n; j++){
-			M[i][j] = mult(M[i][j] , x);
+		if (M[i][i] == 0) return 0;
+		det *= M[i][i];
+		ModInt x = M[i][i].invert();
+		for (int j = i + 1; j < n; j++){
+			M[i][j] *= x;
 		}
 		
-		for(Long j = i + 1; j < n; j++){
-			if(M[j][i] != 0){
-				for(Long k = i + 1; k < n; k++){
-					M[j][k] = sub(M[j][k] , mult(M[i][k] , M[j][i] ) );
+		for (int j = i + 1; j < n; j++) {
+			if (M[j][i] != 0) {
+				for (int k = i + 1; k < n; k++) {
+					M[j][k] -= M[i][k] * M[j][i];
 				}
 			}
 		}
@@ -125,15 +156,15 @@ Long determinant(Matrix M){
 	return det;
 }
 
-Long linearSystem(Matrix M, vector<Long> &ans) {
+int linearSystem(Matrix M, vector<Long> &ans) { //O(m * n * min(n, m))
 	//AX = b
 	//M = [A|b]
 	Long n = M.size();
 	Long m = (Long)M[0].size() - 1;
 	
 	Long row = 0;
-	vector<Long> position(m, -1);
-	for (Long col = 0; col < m; col++) {
+	vector<int> position(m, -1);
+	for (int col = 0; col < m; col++) {
 		if (row == n) break;
 		if (M[row][col] == 0) {
 			for(Long i = row + 1; i < n; i++){
@@ -147,16 +178,16 @@ Long linearSystem(Matrix M, vector<Long> &ans) {
 			continue;
 		}
 		position[col] = row;
-		Long x = invert(M[row][col]);
-		for(Long j = col ; j <= m; j++){
-			M[row][j] = mult(M[row][j] , x);
+		ModInt x = M[row][col].invert();
+		for (int j = col ; j <= m; j++) {
+			M[row][j] *= x;
 		}
 		
-		for(Long i = 0; i < n; i++){
+		for (int i = 0; i < n; i++) {
 			if (i == row) continue;
-			if(M[i][col] != 0){
-				for(Long j = col + 1; j <= m; j++){
-					M[i][j] = sub(M[i][j] , mult(M[row][j] , M[i][col]));
+			if (M[i][col] != 0){
+				for (int j = col + 1; j <= m; j++) {
+					M[i][j] -= M[row][j] * M[i][col];
 				}
 				M[i][col] = 0;
 			}
@@ -165,9 +196,9 @@ Long linearSystem(Matrix M, vector<Long> &ans) {
 	}
 	ans = vector<Long>(m, 0);
 	bool infinite = false;
-	for (Long i = 0; i < m; i++) {
+	for (int i = 0; i < m; i++) {
 		if (position[i] != -1) {
-			ans[i] = M[position[i]][m];
+			ans[i] = M[position[i]][m].val;
 		} else {
 			infinite = true;
 		}
@@ -188,21 +219,21 @@ Long linearSystem(Matrix M, vector<Long> &ans) {
 	return 1;
 }
 
-Matrix identity(Long n){
+Matrix identity(int n) { //O(n)
 	Matrix ans = getMatrix(n , n);
-	for(Long i = 0; i < n; i++) ans[i][i] = 1;
+	for (int i = 0; i < n; i++) ans[i][i] = 1;
 	return ans;
 }
 
-Matrix inverse(Matrix M){
+Matrix inverse(Matrix M) { //O(n^3)
 	assert(M.size() == M[0].size());
-	Long n = M.size();
+	int n = M.size();
 	Matrix ans = identity(n);
 	
-	for(Long i = 0; i < n; i++){
-		if(M[i][i] == 0){
-			for(Long j = i + 1; j < n; j++){
-				if(M[j][i] != 0 ){
+	for (int i = 0; i < n; i++) {
+		if (M[i][i] == 0) {
+			for (int j = i + 1; j < n; j++) {
+				if (M[j][i] != 0) {
 					swap(M[i], M[j]);
 					swap(ans[i], ans[j]);
 					break;
@@ -210,26 +241,22 @@ Matrix inverse(Matrix M){
 			}
 		}
 		assert(M[i][i] != 0);
-		Long x = invert(M[i][i]);
-		for(Long j = 0; j < n; j++){
-			M[i][j] = mult(M[i][j] , x);
-			ans[i][j] = mult(ans[i][j] , x);
+		ModInt x = M[i][i].invert();
+		for (int j = 0; j < n; j++) {
+			M[i][j] *= x;
+			ans[i][j] *= x;
 		}
 		
-		for(Long j = 0; j < n; j++){
+		for (int j = 0; j < n; j++) {
 			if (j == i) continue;
-			if(M[j][i] != 0){
-				Long c = M[j][i];
-				for(Long k = 0; k < n; k++){
-					M[j][k] = sub(M[j][k] , mult(M[i][k] , c));
-					ans[j][k] = sub(ans[j][k] , mult(ans[i][k] , c));
+			if (M[j][i] != 0) {
+				ModInt c = M[j][i];
+				for (int k = 0; k < n; k++){
+					M[j][k] -= M[i][k] * c;
+					ans[j][k] -= ans[i][k] * c;
 				}
 			}
 		}
 	}
 	return ans;
-}
-
-int main(){
-	return 0;
 }
