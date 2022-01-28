@@ -47,6 +47,13 @@ Matrix operator *(const Matrix &a, const Matrix &b){ //O(n^3)
 	return c;
 }
 
+Matrix identity(int n) { //O(n)
+	Matrix ans = getMatrix(n , n);
+	for (int i = 0; i < n; i++) ans[i][i] = 1;
+	return ans;
+}
+
+
 Matrix matPow(Matrix A, Long b) { //O(n^3 log b)
 	int n = A.size();
 	Matrix ans = identity(n);
@@ -57,6 +64,7 @@ Matrix matPow(Matrix A, Long b) { //O(n^3 log b)
 	}
 	return ans;
 }
+
 
 int findPivot(Matrix &M, int row, int col) {
 	//heuristic to find pivot
@@ -90,6 +98,37 @@ Double determinant(Matrix M) { //O(n^3)
 		}
 	}
 	return det;
+}
+
+Matrix inverse(Matrix M) { //O(n^3)
+	assert(M.size() == M[0].size());
+	int n = M.size();
+	Matrix ans = identity(n);
+
+	for (int i = 0; i < n; i++) {
+		int pivot = findPivot(M, i, i);
+		if (i != pivot) {
+			swap(M[i], M[pivot]);
+			swap(ans[i], ans[pivot]);
+		}
+		if (near(M[i][i], 0)) return {};
+		double c = M[i][i];
+		for (int j = 0; j < n; j++) {
+			M[i][j] /= c;
+			ans[i][j] /= c;
+		}
+		for (int j = 0; j < n; j++){
+			if (j == i) continue;
+			if (!near(M[j][i], 0)){
+				double c = M[j][i];
+				for (int k = 0; k < n; k++) {
+					M[j][k] -= M[i][k] * c;
+					ans[j][k] -= ans[i][k] * c; 
+				}
+			}
+		}
+	}
+	return ans;
 }
 
 int linearSystem(Matrix M, vector<Double> &ans) { //O(m * n * min(n, m))
@@ -144,41 +183,4 @@ int linearSystem(Matrix M, vector<Double> &ans) { //O(m * n * min(n, m))
 	}
 	if (infinite) return 2;
 	return 1;
-}
-
-Matrix identity(int n) { //O(n)
-	Matrix ans = getMatrix(n , n);
-	for (int i = 0; i < n; i++) ans[i][i] = 1;
-	return ans;
-}
-
-Matrix inverse(Matrix M) { //O(n^3)
-	assert(M.size() == M[0].size());
-	int n = M.size();
-	Matrix ans = identity(n);
-
-	for (int i = 0; i < n; i++) {
-		int pivot = findPivot(M, i, i);
-		if (i != pivot) {
-			swap(M[i], M[pivot]);
-			swap(ans[i], ans[pivot]);
-		}
-		if (near(M[i][i], 0)) return {};
-		double c = M[i][i];
-		for (int j = 0; j < n; j++) {
-			M[i][j] /= c;
-			ans[i][j] /= c;
-		}
-		for (int j = 0; j < n; j++){
-			if (j == i) continue;
-			if (!near(M[j][i], 0)){
-				double c = M[j][i];
-				for (int k = 0; k < n; k++) {
-					M[j][k] -= M[i][k] * c;
-					ans[j][k] -= ans[i][k] * c; 
-				}
-			}
-		}
-	}
-	return ans;
 }

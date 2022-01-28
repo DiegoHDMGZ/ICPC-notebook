@@ -124,6 +124,12 @@ Matrix operator *(const Matrix &a, const Matrix &b) { //O(n^3)
 	return c;
 }
 
+Matrix identity(int n) { //O(n)
+	Matrix ans = getMatrix(n , n);
+	for (int i = 0; i < n; i++) ans[i][i] = 1;
+	return ans;
+}
+
 Matrix matPow(Matrix A, Long b) { //O(n^3 log b)
 	int n = A.size();
 	Matrix ans = identity(n);
@@ -169,6 +175,41 @@ ModInt determinant(Matrix M){ //O(n^3)
 		}
 	}
 	return det;
+}
+
+Matrix invert(Matrix M) { //O(n^3)
+	assert(M.size() == M[0].size());
+	int n = M.size();
+	Matrix ans = identity(n);
+	
+	for (int i = 0; i < n; i++) {
+		if (M[i][i] == 0) {
+			for (int j = i + 1; j < n; j++) {
+				if (M[j][i] != 0) {
+					swap(M[i], M[j]);
+					swap(ans[i], ans[j]);
+					break;
+				} 
+			}
+		}
+		if (M[i][i] == 0) return {};
+		ModInt inv = M[i][i].invert();
+		for (int j = 0; j < n; j++) {
+			M[i][j] *= inv;
+			ans[i][j] *= inv;
+		}
+		for (int j = 0; j < n; j++) {
+			if (j == i) continue;
+			if (M[j][i] != 0) {
+				ModInt c = M[j][i];
+				for (int k = 0; k < n; k++){
+					M[j][k] -= M[i][k] * c;
+					ans[j][k] -= ans[i][k] * c;
+				}
+			}
+		}
+	}
+	return ans;
 }
 
 int linearSystem(Matrix M, vector<Long> &ans) { //O(m * n * min(n, m))
@@ -224,45 +265,4 @@ int linearSystem(Matrix M, vector<Long> &ans) { //O(m * n * min(n, m))
 	}
 	if (infinite) return 2;
 	return 1;
-}
-
-Matrix identity(int n) { //O(n)
-	Matrix ans = getMatrix(n , n);
-	for (int i = 0; i < n; i++) ans[i][i] = 1;
-	return ans;
-}
-
-Matrix inverse(Matrix M) { //O(n^3)
-	assert(M.size() == M[0].size());
-	int n = M.size();
-	Matrix ans = identity(n);
-	
-	for (int i = 0; i < n; i++) {
-		if (M[i][i] == 0) {
-			for (int j = i + 1; j < n; j++) {
-				if (M[j][i] != 0) {
-					swap(M[i], M[j]);
-					swap(ans[i], ans[j]);
-					break;
-				} 
-			}
-		}
-		if (M[i][i] == 0) return {};
-		ModInt inv = M[i][i].invert();
-		for (int j = 0; j < n; j++) {
-			M[i][j] *= inv;
-			ans[i][j] *= inv;
-		}
-		for (int j = 0; j < n; j++) {
-			if (j == i) continue;
-			if (M[j][i] != 0) {
-				ModInt c = M[j][i];
-				for (int k = 0; k < n; k++){
-					M[j][k] -= M[i][k] * c;
-					ans[j][k] -= ans[i][k] * c;
-				}
-			}
-		}
-	}
-	return ans;
 }
