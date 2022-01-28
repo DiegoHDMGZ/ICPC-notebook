@@ -47,6 +47,17 @@ Matrix operator *(const Matrix &a, const Matrix &b){ //O(n^3)
 	return c;
 }
 
+Matrix matPow(Matrix A, Long b) { //O(n^3 log b)
+	int n = A.size();
+	Matrix ans = identity(n);
+	while (b > 0) {
+		if (b & 1) ans = ans * A;
+		A = A * A;
+		b >>= 1;
+	}
+	return ans;
+}
+
 int findPivot(Matrix &M, int row, int col) {
 	//heuristic to find pivot
 	int pivot = row;
