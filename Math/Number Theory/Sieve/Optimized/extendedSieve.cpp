@@ -1,7 +1,4 @@
 #include <bits/stdc++.h>
-#define debug(x) cout << #x << " = " << x << endl
-#define REP(i,n) for(Long i = 0; i < (Long)n; i++)
-#define pb push_back
 using namespace std;
 
 typedef long long Long;
@@ -23,9 +20,7 @@ void sieve() { //O(MX)
 		for (Long j = 0 ; j < primes.size() && i * primes[j] < MX; j++) {
 			isPrime[i * primes[j]] = false;
 			fact[i * primes[j]] = primes[j];
-			if (i % primes[j] == 0) {
-				break;
-			}
+			if (i % primes[j] == 0) break;
 		}
 	}
 }
@@ -61,9 +56,4 @@ vector<Long> getDivisors(Long x) {
 	}
 	//sort(ans.begin(), ans.end());
 	return ans;
-}
-
-int main() {
-	sieve();
-	return 0;
 }
