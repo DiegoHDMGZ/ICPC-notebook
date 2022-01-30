@@ -5,7 +5,7 @@ typedef long long Long;
 
 const Long MX = 2e7;
 bool isPrime[MX];
-Long fact[MX];
+Long fact[MX]; //smallest prime factor
 vector<Long> primes;
 
 void sieve() { //O(MX)
