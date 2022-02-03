@@ -4,11 +4,15 @@ using namespace std;
 //code : http://e-maxx.ru/algo/matching_edmonds
 //theory : https://math.mit.edu/~goemans/18438F09/lec2.pdf
 
+//General matching for unweighted graphs
 const int MX = 1e5;
 struct Graph{
 	vector<int> adj[MX];
 	int p[MX];
-	int match[MX];
+	int match[MX]; 
+	//match[u] is the node match with u 
+	//or -1 if it does not belong to the matching
+	
 	int base[MX]; //base of the flower
 	bool used[MX];
 	bool blossom[MX];
