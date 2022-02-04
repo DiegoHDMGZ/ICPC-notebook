@@ -39,32 +39,32 @@ struct Graph {
 	int tOut[MX];
 	int timer;
 	
-	void clear(int n){
-		for(int i = 0; i < n; i++){
+	void clear(int n) {
+		for (int i = 0; i < n; i++) {
 			adj[i].clear();
 		}
 	}
 	
-	void addEdge(int u, int v){
+	void addEdge(int u, int v) {
 		adj[u].push_back(v);
 		adj[v].push_back(u);
 	}
 	
-	void dfs(int u = 0, int p = -1){ //O(n)
+	void dfs(int u = 0, int p = -1) { //O(n)
 		tIn[u] = timer++;
 		first[u] = euler.size();
-		euler.push_back({depth[u], u });
+		euler.push_back({depth[u], u});
 		for (int v : adj[u]) {
-			if(p != v){
+			if (v != p) {
 				depth[v] = depth[u] + 1;
-				dfs(v , u);
+				dfs(v, u);
 				euler.push_back({depth[u], u});
 			}
 		}
 		tOut[u] = timer++;
 	}
 
-	void precalculate(){ //O(nlogn)
+	void precalculate() { //O(n logn)
 		int root = 0;
 		euler.clear();
 		depth[root] = 0;
@@ -74,7 +74,9 @@ struct Graph {
 	}
 	
 	int lca(int u, int v){ //O(1)
-		return st.query(min(first[u] , first[v]) , max(first[u] , first[v]));
+		int l = min(first[u], first[v]);
+		int r = max(first[u], first[v]);
+		return st.query(l, r);
 	}
 	
 	bool isAncestor(int u, int v){ //is u ancestor of v ?
@@ -83,16 +85,7 @@ struct Graph {
 	
 	bool onPath(int A, int B, int C) { //is C on AB path ?
 		int x = lca(A , B); 
-		if(isAncestor(x , C) && isAncestor(C, A)) {
-			return true;
-		}
-		if(isAncestor(x , C)  && isAncestor(C, B)) {
-			return true;
-		}
-		return false;
+		if (C == x) return true;
+		return isAncestor(C, A) xor isAncestor(C, B);
 	}
 } G;
-
-int main(){
-	return 0;
-}

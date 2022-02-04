@@ -6,13 +6,26 @@ using namespace std;
 
 typedef long long Long;
 
-const Long MX = 1e5;
+const int MX = 1e5;
 const Long INF = 1e18;
-const Long LG = 32 - __builtin_clz(MX);
+const int LG = 32 - __builtin_clz(MX);
+
+struct Data {
+	Long min, max;
+	Data() {
+		min = INF;
+		max = -INF;
+	}
+	Data(Long min, Long max): min(min), max(max){}
+};
+
+Data combine(Data a, Data b) {
+	return Data(min(a.min, b.min), max(a.max, b.max)); 
+}
 
 struct Graph{
 	vector<pair<int, Long>> adj [MX];
-	pair<Long, Long> st[MX][LG]; //st[i][j] : min/max edge starting at i and ending at anc[i][j]
+	Data st[MX][LG]; //st[i][j] : min/max edge starting at i and ending at anc[i][j]
 	int anc[MX][LG]; //anc[i][j] : ancestor of i at distance 2^j
 	int depth[MX]; 
 	int tIn[MX];
@@ -20,22 +33,22 @@ struct Graph{
 	int timer;
 	
 	void clear(int n) {
-		for(int i = 0; i < n; i++) {
+		for( int i = 0; i < n; i++) {
 			adj[i].clear();
 		}
 	}
 	
-	void addEdge(int u , int v, Long w) {
+	void addEdge(int u, int v, Long w) {
 		adj[u].push_back({v , w});
 		adj[v].push_back({u , w});
 	}
 	
-	void dfs(int u = 0){ //O(n)
+	void dfs(int u = 0) { //O(n)
 		tIn[u] = timer++;
-		for(auto e : adj[u]){
+		for (auto e : adj[u]) {
 			int v = e.first;
 			Long w = e.second;
-			if(anc[u][0] != v){
+			if (anc[u][0] != v) {
 				anc[v][0] = u;
 				st[v][0] = {w, w};
 				depth[v] = depth[u] + 1;
@@ -45,22 +58,16 @@ struct Graph{
 		tOut[u] = timer++;
 	}
 	
-	pair<Long,Long> f(pair<Long,Long> a, pair<Long,Long> b){
-		return {min(a.first,b.first) , max(a.second, b.second)}; 
-	}
-	
-	
-	void precalculate(Long n, Long root = 0){ //O(nlogn)
+	void precalculate(int n, int root = 0) { //O(n logn)
 		anc[root][0] = -1;
 		depth[root] = 0;
 		timer = 0;
 		dfs(root);
-		
-		for(int j = 1; (1 << j) < n; j++){
-			for(int i = 0; i < n; i++){
-				if(anc[i][j - 1] != -1){
+		for (int j = 1; (1 << j) < n; j++) {
+			for (int i = 0; i < n; i++) {
+				if (anc[i][j - 1] != -1) {
 					anc[i][j] = anc[anc[i][j - 1]][j - 1];
-					st[i][j] = f(st[i][j - 1],st[anc[i][j - 1]][j - 1]);
+					st[i][j] = combine(st[i][j - 1], st[anc[i][j - 1]][j - 1]);
 				} else {
 					anc[i][j] = -1;
 				}
@@ -72,30 +79,24 @@ struct Graph{
 		return tIn[u] <= tIn[v] && tOut[u] >= tOut[v];
 	}	
 	
-	pair<Long,Long> lift(int u, int v) { //O(log n)
+	Data lift(int u, int v) { //O(log n)
 		//lift vertex u to the lca(u , v)
-		pair<Long, Long> ans = {INF, -INF};
+		Data ans;
 		int bits = 31 - __builtin_clz(depth[u]);
 		if (!isAncestor(u , v)) {
 			for (int i = bits; i >= 0; i--) {
 				if (anc[u][i] != -1 && !isAncestor(anc[u][i] , v)) {
-					ans = f(ans , st[u][i]); 
+					ans = combine(ans , st[u][i]); 
 					u = anc[u][i];
 				}
 			} 
-			ans = f(ans , st[u][0]);
+			ans = combine(ans , st[u][0]);
 			u = anc[u][0];
 		}
 		return ans;
 	}
 	
-	pair<Long,Long> query(Long u, Long v){ //O(logn) <min, max>
-		return f(lift(u ,v), lift(v, u));
+	Data query(Long u, Long v){ //O(log n)
+		return combine(lift(u ,v), lift(v, u));
 	}
 } G;
-
-int main() {
-	return 0;
-}
-
-

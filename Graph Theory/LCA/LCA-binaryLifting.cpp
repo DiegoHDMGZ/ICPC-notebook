@@ -1,7 +1,4 @@
 #include <bits/stdc++.h>
-#define debug(x) cout << #x << " = " << x << endl
-#define REP(i,n) for(Long i = 0; i < (Long)n; i++)
-#define pb push_back
 using namespace std;
 
 typedef long long Long;
@@ -61,12 +58,7 @@ struct Graph {
 	}	
 	
 	int lca(int u, int v) { //O(log n)
-		/*if (depth[u] > depth[v]) {
-			swap(u , v);
-		}*/
-		if (isAncestor(u , v)) {
-			return u;
-		}
+		if (isAncestor(u , v)) return u;
 		int bits = 31 - __builtin_clz(depth[u]);
 		for (int i = bits; i >= 0; i--) {
 			if (anc[u][i] != -1 && !isAncestor(anc[u][i] , v)) {
@@ -78,31 +70,17 @@ struct Graph {
 	
 	bool onPath(int A, int B, int C) { //is C on AB path ?
 		int x = lca(A , B); 
-		if(C == x) {
-			return true;
-		}
-		if(isAncestor(x , C) && isAncestor(C, A)) {
-			return true;
-		}
-		if(isAncestor(x , C)  && isAncestor(C, B)) {
-			return true;
-		}
-		return false;
+		if (C == x) return true;
+		return isAncestor(C, A) xor isAncestor(C, B);
 	}
 	
 	int kthAncestor(int u, int k) { //O(log n)
 		int jump = 0;
 		while (k > 0) {
-			if (k % 2 == 1) {
-				u = anc[u][jump];
-			}
+			if (k % 2 == 1) u = anc[u][jump];
 			jump++;
 			k /= 2;
 		}
 		return u;
 	}
 } G;
-
-int main(){
-	return 0;
-}
