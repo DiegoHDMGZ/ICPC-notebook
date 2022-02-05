@@ -1,126 +1,152 @@
 #include <bits/stdc++.h>
 #define debug(x) cout << #x << " = " << x << endl
-#define REP(i,n) for(Long i = 0; i < (Long)n; i++)
 using namespace std;
 
 typedef long long Long;
 
-typedef vector<Long> poly;
-
 const Long MOD = 1e9 + 7;
-
-Long add(Long a, Long b){
-	return (a + b) % MOD;
-}
-
-Long subs(Long a, Long b){
-	return (a - b + MOD) % MOD;
-}
-
-Long mult(Long a , Long b){
-	return (a * b) % MOD;
-}
-
-Long fastPow(Long a, Long b){ //O(logb)
-	Long ans = 1;
-	while(b > 0){
-		if(b & 1 == 1){ 
-			ans = mult(ans ,a );
-		}
-		a = mult(a , a  );
-		b >>= 1; 
+struct ModInt {
+	Long val;
+	ModInt(Long val = 0) {
+		val %= MOD;
+		if (val < 0) val += MOD;
+		this->val = val;
 	}
-	return ans;
+	ModInt operator +(const ModInt &other) const {
+		if (val + other.val < MOD) return val + other.val;
+		return val + other.val - MOD;
+	}
+	ModInt operator -(const ModInt &other) const {
+		if (val - other.val >= 0) return val - other.val;
+		return val - other.val + MOD;
+	}
+	ModInt operator -() const { return MOD - val;}
+	ModInt operator *(const ModInt &other) const {
+		return (val * other.val) % MOD;
+	}
+	ModInt operator +=(const ModInt &other) {
+		*this = *this + other;
+		return *this;
+	}
+	ModInt operator -=(const ModInt &other) {
+		*this = *this - other;
+		return *this;
+	}
+	ModInt operator *=(const ModInt &other) {
+		*this = *this * other;
+		return *this;
+	}
+	//Exponentiation
+	//(a ^ x) % mod = (a ^ r) % mod 
+	//Fermat's little theorem : r = x % (mod - 1), mod prime
+	//Euler's theorem : r = x % phi(mod), (a, mod coprimes)
+	ModInt pow(Long b) const { //O(log b)
+		ModInt ans = 1;
+		ModInt a = val;
+		while (b > 0) {
+			if (b & 1) ans *= a;
+			a *= a;
+			b >>= 1;
+		}
+		return ans;
+	}
+	ModInt invert() const { //O(log mod) 
+		//mod prime
+		return pow(MOD - 2);
+	}
+	ModInt operator /(const ModInt &other) const {
+		return *this * other.invert();
+	}
+	ModInt operator /=(const ModInt &other) {
+		*this = *this / other;
+		return *this;
+	}
+};
+
+istream & operator >> (istream &in, ModInt &A){
+	Long val;
+	in >> val;
+	A = ModInt(val);
+	return in;
 }
 
-Long invert(Long a){
-	return fastPow(a , MOD - 2);
+ostream & operator << (ostream &out, const ModInt &A){
+	out << A.val;
+	return out;
 }
 
-Long divide(Long a, Long b){
-	return mult(a, invert(b));
-}
+typedef vector<ModInt> poly;
 
 poly operator *(const poly &a, const poly &b) {
-	Long n = a.size();
-	Long m = b.size();
+	int n = a.size();
+	int m = b.size();
 	poly ans(n + m - 1 , 0);
-	REP(i , n){
-		REP(j , m){
-			ans[i + j] = add(ans[i + j] , mult(a[i] , b[j]));
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < m; j++) {
+			ans[i + j] += a[i] * b[j];
 		}
 	}
 	return ans;
 } 
 
-poly operator +(const poly &a, const poly &b){
-	Long n = a.size();
-	Long m = b.size();
-	poly ans(max(n , m) , 0);
-	for(int i = 0; i < max(n , m); i++){
-		Long x = 0 , y = 0;
-		if(i < a.size()) x = a[i];
-		if(i < b.size()) y = b[i];
-		ans[i] = add(x , y);
+poly operator +(const poly &a, const poly &b) {
+	poly ans(max(a.size(), b.size()), 0);
+	for(int i = 0; i < ans.size(); i++){
+		ans[i] = (i < a.size() ? a[i] : 0) + (i < b.size() ? b[i] : 0);
 	}
 	return ans;
 }
 
-Long derivative(poly &p, Long x){
-	if(p.size() == 1){
-		return {0};
-	}
-	Long ans = 0;
-	Long cur = 1;
+ModInt derivative(poly &p, ModInt &x) {
+	if (p.size() == 1) return 0;
+	ModInt ans = 0;
+	ModInt cur = 1;
 	for(int i = 1; i < p.size(); i++){
-		ans = add(ans , mult(mult(i , p[i]) , cur));
-		cur = mult(cur , x);
+		ans += ModInt(i) * p[i] * cur;
+		cur *= x;
 	}
 	return ans;
 }
 
-poly ruffini(poly &p , Long c){
-	Long n = p.size();
+poly ruffini(poly &p, ModInt &c) {
+	int n = p.size();
 	poly ans(n - 1);
-	Long r = 0;
-	for(Long i = n - 2; i >= 0; i--){
-		ans[i] = add(p[i + 1] , r);
-		r = mult(ans[i] , c);
+	ModInt r = 0;
+	for (int i = n - 2; i >= 0; i--) {
+		ans[i] = p[i + 1] + r;
+		r = ans[i] * c;
 	}
 	return ans;
 }
 
-poly lagrange(vector<Long> &X, vector<Long> &Y){ //O(n^2)
-	//hidden constant
+poly interpolate(vector<ModInt> &X, vector<ModInt> &Y){ //O(n^2)
+	//get the polynomial interpolation
 	poly ans(X.size(), 0);
 	poly f = {1};
 	for(int i = 0; i < X.size(); i++){
-		f = f * poly({MOD - X[i] , 1});
+		f = f * poly({-X[i] , 1});
 	}
 	for(int i = 0; i < X.size(); i++){
-		poly cur = poly({mult(Y[i] , invert(derivative(f , X[i])))}) * f;
-		cur = ruffini(cur , X[i]);
+		poly cur = poly({Y[i] / derivative(f, X[i])}) * f;
+		cur = ruffini(cur, X[i]);
 		ans = ans + cur;
 	}
 	return ans;
 }
 
-Long interpolate(Long x, vector<Long> &xSample, vector<Long> &ySample){//O(n^2)
-	Long y = 0;
-	for(int i = 0; i < xSample.size(); i++){
-		Long cur = ySample[i];
-		Long den = 1;
-		for(int j = 0; j < xSample.size(); j++){
-			if(i == j) continue;
-			den = mult(den ,  subs(xSample[i] , xSample[j]));
-			cur = mult(cur , subs(x , xSample[j]));
+ModInt interpolate(ModInt x, vector<ModInt> &xSample, vector<ModInt> &ySample){ //O(n^2)
+	//interpolate for just one value
+	ModInt y = 0;
+	for(int i = 0; i < xSample.size(); i++) {
+		ModInt cur = ySample[i];
+		ModInt den = 1;
+		for (int j = 0; j < xSample.size(); j++) {
+			if (i == j) continue;
+			den *= xSample[i] - xSample[j];
+			cur *= x - xSample[j];
 		}
-		cur = divide(cur , den);
-		y = add(y , cur);
+		cur /= den;
+		y += cur;
 	}
 	return y;
-}
-
-int main() {
-	return 0;
 }
