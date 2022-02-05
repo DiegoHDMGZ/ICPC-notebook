@@ -36,10 +36,6 @@ struct ModInt {
 		*this = *this * other;
 		return *this;
 	}
-	//Exponentiation
-	//(a ^ x) % mod = (a ^ r) % mod 
-	//Fermat's little theorem : r = x % (mod - 1), mod prime
-	//Euler's theorem : r = x % phi(mod), (a, mod coprimes)
 	ModInt pow(Long b) const { //O(log b)
 		ModInt ans = 1;
 		ModInt a = val;
