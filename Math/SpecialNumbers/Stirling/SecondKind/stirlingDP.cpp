@@ -5,31 +5,36 @@ using namespace std;
 
 typedef long long Long;
 
-const Long MX = 1000;
-
-Long stirling[MX][MX];
+//count the number of ways of partitioning n distinct objects into k non-empty sets.
 
 const Long MOD = 1e9 + 7;
-Long add(Long a, Long b) {
-	return (a + b) % MOD;
-}
+struct ModInt {
+	Long val;
+	ModInt(Long val = 0) {
+		val %= MOD;
+		if (val < 0) val += MOD;
+		this->val = val;
+	}
+	ModInt operator +(const ModInt &other) const {
+		if (val + other.val < MOD) return val + other.val;
+		return val + other.val - MOD;
+	}
+	ModInt operator *(const ModInt &other) const {
+		return (val * other.val) % MOD;
+	}
+};
 
-Long mult(Long a, Long b) {
-	return (a * b) % MOD;
-}
+const Long MX = 1000;
+ModInt stirling[MX][MX];
 
 void calculate() { //O(n * k)
 	stirling[0][0] = 1;
-	for (Long n = 1; n < MX; n++) {
+	for (int n = 1; n < MX; n++) {
 		stirling[n][0] = 0;
 	}
-	for (Long n = 1; n < MX; n++) {
-		for (Long k = 1; k <= n; k++) {
-			stirling[n][k] = add(stirling[n - 1][k - 1], mult(k , stirling[n - 1][k]));
+	for (int n = 1; n < MX; n++) {
+		for (int k = 1; k <= n; k++) {
+			stirling[n][k] = stirling[n - 1][k - 1] + stirling[n - 1][k] * k;
 		}
 	}
-}
-
-int main() {
-	return 0;
 }
