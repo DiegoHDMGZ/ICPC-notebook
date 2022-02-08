@@ -14,13 +14,14 @@ struct Edge{
 
 struct Graph{
 	vector<Edge> edges;
-	vector<int> adj[MX];
+	vector<int> adjInd[MX]; 
+	//'adjInd' stores the position of the edge in the vector 'edges'
 	bool vis[MX];
 	
 	void clear(int n) {
 		edges.clear();
 		for (int i = 0 ; i < n; i++) {
-			adj[i].clear();
+			adjInd[i].clear();
 			vis[i] = false;
 		}
 	}
@@ -28,9 +29,9 @@ struct Graph{
 	void addEdge(int u, int v, Long w, bool dir) {
 		Edge forward(v, w);
 		Edge backward(u, 0);
-		adj[u].push_back(edges.size());
+		adjInd[u].push_back(edges.size());
 		edges.push_back(forward);
-		adj[v].push_back(edges.size());
+		adjInd[v].push_back(edges.size());
 		edges.push_back(backward);
 		if (!dir) addEdge(v, u, w, true);
 	}
@@ -39,7 +40,7 @@ struct Graph{
 		if (u == t) return f;
 		if (vis[u]) return 0;
 		vis[u] = true;
-		for (int ind : adj[u]) {
+		for (int ind : adjInd[u]) {
 			Edge &e = edges[ind];
 			Edge &rev = edges[ind ^ 1];
 			int v = e.to;
