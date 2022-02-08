@@ -62,7 +62,9 @@ struct Graph{
 		level[s] = 0;
 		while (!q.empty()) {
 			int u = q.front();
+			nextEdge[u] = 0;
 			q.pop_front();
+			if (u == t) return true;
 			for (Edge e : adj[u]) {
 				int v = e.to;
 				Long cf = e.cap - e.flow;
@@ -72,7 +74,7 @@ struct Graph{
 				}
 			}
 		}
-		return level[t] != -1;
+		return false;
 	}
 	
 	Long maxFlow(int s, int t, int n) {
@@ -87,7 +89,6 @@ struct Graph{
 			fill(level, level + n, -1);
 			if (!bfs(s, t)) break;
 			//after bfs, the graph is a DAG
-			fill(nextEdge, nextEdge + n, 0);
 			Long inc;
 			do{
 				inc = dfs(s, t, INF);
