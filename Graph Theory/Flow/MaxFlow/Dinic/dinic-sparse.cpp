@@ -83,7 +83,7 @@ struct Graph{
 		//and for any vertex except s and t either the 
 		//incoming or outgoing edge is unique.
 		Long ans = 0;
-		while(true){ //O(V) iterations
+		while (true) { //O(V) iterations
 			fill(level, level + n, -1);
 			if (!bfs(s, t)) break;
 			//after bfs, the graph is a DAG
