@@ -14,7 +14,7 @@ struct Graph{
 	bool added[MX][MX];
 	
 	void clear(int n) {
-		for (int i = 0 ; i < n; i++) {
+		for (int i = 0; i < n; i++) {
 			adj[i].clear();
 			vis[i] = false;
 			for (int j = 0; j < n; j++) {
