@@ -9,50 +9,47 @@ const Long INF = 1e18;
 struct Edge{
 	int from, to;
 	Long flow, cap;
-	Edge(int from, int to, Long cap):
-		from(from), to(to), cap(cap), flow(0) {}
+	int rev; //index of the backward edge in the adj list of to
+	Edge(int from, int to, Long cap, int rev): 
+		from(from), to(to), cap(cap), flow(0), rev(rev) {}
 };
 
+
 struct Graph{
-	vector<Edge> edges;
-	vector<int> adjInd[MX]; 
-	//'adjInd' stores the position of the edge in the vector 'edges'
-	int parent[MX];
+	vector<Edge> adj[MX]; 
+	int parentEdge[MX];
 	
 	void clear(int n) {
-		edges.clear();
 		for (int i = 0 ; i < n; i++) {
-			adjInd[i].clear();
-			parent[i] = -1;
+			adj[i].clear();
+			parentEdge[i] = -1;
 		}
 	}
 	
 	void addEdge(int u, int v, Long w, bool dir) {
-		Edge forward(u, v, w);
-		Edge backward(v, u, 0);
+		Edge forward(u, v, w, adj[v].size());
+		Edge backward(v, u, 0, adj[u].size());
 		if (!dir) backward.cap = w;
-		adjInd[u].push_back(edges.size());
-		edges.push_back(forward);
-		adjInd[v].push_back(edges.size());
-		edges.push_back(backward);
+		adj[u].push_back(forward);
+		adj[v].push_back(backward);
 	}
 	
 	void pushFlow(int s, int t, Long inc) {
 		int v = t;
 		while (v != s) {
-			int ind = parent[v];
-			Edge &e = edges[ind];
-			Edge &rev = edges[ind ^ 1];
-			e.flow += inc;
-			rev.flow -= inc;
-			v = e.from;
+			Edge &backward = adj[v][parentEdge[v]];
+			int u = backward.to;
+			Edge &forward = adj[u][backward.rev];
+			forward.flow += inc;
+			backward.flow -= inc;
+			v = u;
 		}
 	}
 	
 	Long bfs(int s, int t) { //O(E)
 		deque<pair<int, Long>> q; //<node, flow>
 		q.push_back({s, INF});
-		parent[s] = -2;
+		parentEdge[s] = -2;
 		while (!q.empty()) {
 			int u = q.front().first;
 			Long curFlow = q.front().second;
@@ -61,12 +58,11 @@ struct Graph{
 				pushFlow(s, t, curFlow);
 				return curFlow;
 			}
-			for (int ind : adjInd[u]){
-				auto e = edges[ind];
+			for (auto e : adj[u]){
 				int v = e.to;
 				Long cf = e.cap - e.flow;
-				if (parent[v] == -1 && cf > 0) {
-					parent[v] = ind;
+				if (parentEdge[v] == -1 && cf > 0) {
+					parentEdge[v] = e.rev;
 					Long newFlow = min(curFlow, cf);
 					q.push_back({v, newFlow});
 				}
@@ -78,7 +74,7 @@ struct Graph{
 	Long maxFlow(int s, int t, int n) { //O(E * min(E * V , |F|))
 		Long ans = 0;
 		while (true){ //O(min(E * V, |F|)) iterations
-			fill(parent, parent + n, -1);
+			fill(parentEdge, parentEdge + n, -1);
 			Long inc = bfs(s, t);
 			if (inc == 0) break;
 			ans += inc;

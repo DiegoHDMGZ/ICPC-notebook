@@ -9,41 +9,37 @@ const Long INF = 1e18;
 struct Edge{
 	int to;
 	Long flow, cap;
-	Edge(int to, Long cap) : to(to), cap(cap), flow(0) {}
+	int rev; //index of the backward edge in the adj list
+	Edge(int to, Long cap, int rev): 
+		to(to), cap(cap), flow(0), rev(rev) {}
 };
 
 struct Graph{
-	vector<Edge> edges;
-	vector<int> adjInd[MX]; 
-	//'adjInd' stores the position of the edge in the vector 'edges'
+	vector<Edge> adj[MX]; 
 	bool vis[MX];
 	
 	void clear(int n) {
-		edges.clear();
 		for (int i = 0 ; i < n; i++) {
-			adjInd[i].clear();
+			adj[i].clear();
 			vis[i] = false;
 		}
 	}
 	
 	void addEdge(int u, int v, Long w, bool dir) {
-		Edge forward(v, w);
-		Edge backward(u, 0);
+		Edge forward(v, w, adj[v].size());
+		Edge backward(u, 0, adj[u].size());
 		if (!dir) backward.cap = w;
-		adjInd[u].push_back(edges.size());
-		edges.push_back(forward);
-		adjInd[v].push_back(edges.size());
-		edges.push_back(backward);
+		adj[u].push_back(forward);
+		adj[v].push_back(backward);
 	}
 	
 	Long dfs(int u, int t, Long f) { //O(E)
 		if (u == t) return f;
 		if (vis[u]) return 0;
 		vis[u] = true;
-		for (int ind : adjInd[u]) {
-			Edge &e = edges[ind];
-			Edge &rev = edges[ind ^ 1];
+		for (Edge &e : adj[u]) {
 			int v = e.to;
+			Edge &rev = adj[v][e.rev];
 			Long cf = e.cap - e.flow;
 			if (cf == 0) continue;
 			Long ret = dfs(v, t, min(f, cf));
