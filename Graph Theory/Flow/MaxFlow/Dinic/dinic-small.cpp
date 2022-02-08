@@ -42,7 +42,7 @@ struct Graph{
 		for (int &i = nextEdge[u]; i < adj[u].size(); i++) {
 			int v = adj[u][i];
 			Long cf = cap[u][v] - flow[u][v];
-			if(cf == 0 || level[v] != level[u] + 1) continue;
+			if (cf == 0 || level[v] != level[u] + 1) continue;
 			Long ret = dfs(v, t, min(f, cf));
 			if (ret > 0) {
 				flow[u][v] += ret;
