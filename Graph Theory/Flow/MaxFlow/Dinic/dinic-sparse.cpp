@@ -87,7 +87,7 @@ struct Graph{
 			fill(level, level + n, -1);
 			if (!bfs(s, t)) break;
 			//after bfs, the graph is a DAG
-			fill(nextEdge, nextEdge + n , 0);
+			fill(nextEdge, nextEdge + n, 0);
 			Long inc;
 			do{
 				inc = dfs(s, t, INF);
