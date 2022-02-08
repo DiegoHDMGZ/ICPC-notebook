@@ -57,7 +57,7 @@ struct Graph{
 		deque<int> q; 
 		q.push_back(s);
 		level[s] = 0;
-		while(!q.empty()){
+		while (!q.empty()) {
 			int u = q.front();
 			q.pop_front();
 			for (int v : adj[u]) {
