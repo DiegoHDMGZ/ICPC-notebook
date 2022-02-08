@@ -48,7 +48,7 @@ struct Graph{
 	Long bfs(int s, int t) { //O(E)
 		deque<pair<int, Long>> q; //<node, flow>
 		q.push_back({s, INF});
-		parent[s] = s;
+		parent[s] = -2;
 		while (!q.empty()) {
 			int u = q.front().first;
 			Long curFlow = q.front().second;
