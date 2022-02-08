@@ -29,11 +29,11 @@ struct Graph{
 	void addEdge(int u, int v, Long w, bool dir) {
 		Edge forward(v, w);
 		Edge backward(u, 0);
+		if (!dir) backward.cap = w;
 		adjInd[u].push_back(edges.size());
 		edges.push_back(forward);
 		adjInd[v].push_back(edges.size());
 		edges.push_back(backward);
-		if (!dir) addEdge(v, u, w, true);
 	}
 	
 	Long dfs(int u, int t, Long f) { //O(E)
