@@ -30,11 +30,11 @@ struct Graph{
 	void addEdge(int u, int v, Long w, bool dir) {
 		Edge forward(u, v, w);
 		Edge backward(v, u, 0);
+		if (!dir) backward.cap = w;
 		adjInd[u].push_back(edges.size());
 		edges.push_back(forward);
 		adjInd[v].push_back(edges.size());
 		edges.push_back(backward);
-		if (!dir) addEdge(v, u, w, true);
 	}
 	
 	void pushFlow(int s, int t, Long inc) {
