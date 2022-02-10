@@ -117,7 +117,7 @@ struct Graph{
 	Pair minCostFlow(int s, int t, int n) {
 		//O(E log V * maxFlow)
 		//maxFlow <= V * U, where U is the maximum capacity
-		//Initially no negative cycles
+		//Assumption: Initially no negative cycles
 		//<maxFlow, minCost>
 		spfa(s, n); //not necessary if there is no negative edges
 		Pair inc; 
