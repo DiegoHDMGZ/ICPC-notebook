@@ -1,24 +1,25 @@
 #include <bits/stdc++.h>
-#define debug(x) cout << #x << " = " << x << endl
-#define REP(i, n) for (Long i = 0; i < (Long)n; i++)
 using namespace std;
 
 typedef long long Long;
 
-const Long MX = 5000;
+const int MX = 5000;
 const Long INF = 1e18;
  
 struct Edge{
-	Long from, to, cap, flow, cost;
+	int from, to;
+	Long cap, flow, cost;
+	int rev; //index of the backward edge in the adj list of to
 	Edge() {}
-	Edge(Long from, Long to, Long cap, Long cost) : 
-		from(from), to(to), cap(cap), flow(0), cost(cost){}
+	Edge(int from, int to, Long cap, Long cost, int rev) : 
+		from(from), to(to), cap(cap), flow(0), cost(cost), rev(rev){}
 };
  
 struct Path{
-	Long node, weight;
+	int node;
+	Long weight;
 	Path(){}
-	Path(Long node, Long weight) : node(node), weight(weight) {}
+	Path(int node, Long weight) : node(node), weight(weight) {}
 	bool operator >(const Path &P) const{
 		return weight > P.weight;
 	}
@@ -26,38 +27,27 @@ struct Path{
  
 struct Graph{
 	vector<Edge> adj[MX];
-	vector<int> indRev[MX];
-	int parent[MX];
-	int parentInd[MX];
+	int parentEdge[MX];
 	Long pot[MX];
-	bool inQueue[MX];
 	
-	void clear(int n){
+	void clear(int n) {
 		for (int i = 0 ; i < n; i++) {
 			adj[i].clear();
-			indRev[i].clear();
-			parent[i] = parentInd[i] = -1;
+			parentEdge[i] = -1;
 			pot[i] = 0;
 		}
 	}
 	
-	void addEdge(Long u, Long v, Long w, Long cost, bool dir) {
-		Edge forward(u, v, w, cost);
-		Edge backward(v, u, 0, -cost);
-		indRev[u].push_back(adj[v].size());
-		indRev[v].push_back(adj[u].size());
+	void addEdge(int u, int v, Long w, Long cost, bool dir) {
+		Edge forward(u, v, w, cost, adj[v].size());
+		Edge backward(v, u, 0, -cost, adj[u].size());
 		adj[u].push_back(forward);
 		adj[v].push_back(backward);
-	
-		if (!dir) {
-			indRev[u].push_back(adj[v].size());
-			indRev[v].push_back(adj[u].size());
-			adj[v].push_back(forward);
-			adj[u].push_back(backward);
-		}
+		if (!dir) addEdge(v, u, w, cost, true);
 	}
 	
 	void spfa(int s, int n) { //O(E V)
+		vector<bool> inQueue(n, false);
 		for (int i = 0; i < n; i++) pot[i] = INF;
 		queue<int> q;
 		pot[s] = 0;
@@ -71,12 +61,22 @@ struct Graph{
 				int v = e.to;
 				if (e.cap - e.flow > 0 && pot[u] + e.cost < pot[v]) {
 					pot[v] = pot[u] + e.cost;
-					if (!inQueue[v]) {
-						q.push(v);
-					}
+					if (!inQueue[v]) q.push(v);
 					inQueue[v] = true;
 				}
 			}
+		}
+	}
+	
+	void pushFlow(int s, int t, Long inc) {
+		int v = t;
+		while (v != s) {
+			Edge &backward = adj[v][parentEdge[v]];
+			int u = backward.to;
+			Edge &forward = adj[u][backward.rev];
+			forward.flow += inc;
+			backward.flow -= inc;
+			v = u;
 		}
 	}
 	
@@ -88,14 +88,12 @@ struct Graph{
 		d[s] = 0;
 		residualCap[s] = INF;
 		q.push(Path(s, d[s]));
-		
 		while (!q.empty()) {
 			Path p = q.top();
 			q.pop();
 			int u = p.node;
 			if (p.weight != d[u]) continue;
-			for (int i = 0; i < adj[u].size(); i++) {
-				Edge e = adj[u][i];
+			for (Edge e : adj[u]) {
 				int v = e.to;
 				Long cf = e.cap - e.flow;
 				Long cost = e.cost + pot[u] - pot[v];
@@ -103,25 +101,14 @@ struct Graph{
 					d[v] = d[u] + cost;
 					q.push(Path(v, d[v]));
 					residualCap[v] = min(residualCap[u],cf);
-					parent[v] = u;
-					parentInd[v] = i;
+					parentEdge[v] = e.rev;
 				}
 			}
 		}
 		if (d[t] == INF) return {0, 0};
 		for (int i = 0; i < n; i++) pot[i] += d[i];
 		Long cf = residualCap[t];
-		int cur = t;
-		while (true) {
-			int p = parent[cur];
-			int indP = parentInd[cur];
-			adj[p][indP].flow += cf;
-			int to = adj[p][indP].to;
-			int indTo = indRev[p][indP];
-			adj[to][indTo].flow -= cf;
-			cur = adj[p][indP].from;
-			if (cur == s) break;
-		}
+		pushFlow(s, t, cf);
 		return {cf, pot[t] * cf};
 	}
 	
@@ -141,7 +128,3 @@ struct Graph{
 		return ans;
 	}
 } G;
-
-int main() {
-	return 0;
-}
