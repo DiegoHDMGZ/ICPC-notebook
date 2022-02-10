@@ -1,6 +1,4 @@
 #include <bits/stdc++.h>
-#define debug(x) cout << #x << " = " << x << endl
-#define REP(i, n) for (Long i = 0; i < (Long)n; i++)
 using namespace std;
 
 typedef long long Long;
@@ -33,13 +31,9 @@ struct Graph {
 			for (int i = 0; i < current; i++) {
 				if (getBit(mask, i) == 1) {
 					int u = i;
-					if (!left) {
-						u += other;
-					}
+					if (!left) u += other;
 					for (int v : adj[u]) {
-						if (left) {
-							v -= current;
-						}
+						if (left) v -= current;
 						nodes[v] = true;
 					}
 					dp[mask] = dp[mask] & dp[turnOff(mask, i)];
@@ -47,25 +41,13 @@ struct Graph {
 			}
 			int szNeigh = 0;
 			for (int i = 0; i < other; i++) szNeigh += nodes[i];
-			if (szNeigh < __builtin_popcount(mask)) {
-				dp[mask] = false;
-			}
-			if (dp[mask]) {
-				ans++;
-			}
+			if (szNeigh < __builtin_popcount(mask)) dp[mask] = false;
+			if (dp[mask]) ans++;
 		}
 		return ans;
 	}
 	
 	int countPerfectMatching(int n, int m) { 
-		return countOneSide(n, m , true) + countOneSide(m, n, false);
+		return countOneSide(n, m, true) + countOneSide(m, n, false);
 	}
-}G;
-
-int main() {
-	ios_base::sync_with_stdio(false);
-	cin.tie(NULL);
-	cout.tie(NULL);
-
-	return 0;
-}
+} G;

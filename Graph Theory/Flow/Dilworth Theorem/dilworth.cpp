@@ -1,164 +1,63 @@
 #include <bits/stdc++.h>
-#define debug(x) cout << #x << " = " << x << endl
-#define REP(i,n) for(Long i = 0; i < (Long)n; i++)
-#define pb push_back
 using namespace std;
 
 typedef long long Long;
 
-const Long MX = 3000;
+const int MX = 3000;
 const Long INF = 1e18;
 
-struct GraphFlow{
-	vector<Long> adj[MX];
-	Long cap[MX][MX]; 
-	Long flow[MX][MX];
-	bool added[MX][MX];
-	Long level[MX];
-	Long nextEdge[MX];
-	
-	void clear(Long N = MX){
-		for(Long i = 0 ; i < N; i++){
-			adj[i].clear();
-			level[i] = -1;
-			nextEdge[i] = 0;
-			for(Long j = 0; j < N; j++) {
-				cap[i][j] = 0;
-				flow[i][j] = 0;
-				added[i][j] = false;
-			}
-		}
-	}
-	
-	void addEdge(Long u, Long v, Long w, bool dir){
-		if(!added[min(u, v)][max(u , v)]) {
-			adj[u].push_back(v);
-			adj[v].push_back(u);
-		}
-		added[min(u , v)][max(u , v)] = true;
-		cap[u][v] += w;
-		if(!dir){
-			cap[v][u] += w;
-		}
-	}
-	
-	Long dfs(Long u, Long t ,Long f){ 
-		if(u == t) return f;
-		
-		for(Long &i = nextEdge[u]; i < adj[u].size(); i++){
-			Long v = adj[u][i];
-			Long cf = cap[u][v] - flow[u][v];
-			if(cf == 0 || level[v] != level[u] + 1) continue;
-			
-			Long ret = dfs(v, t, min(f, cf) );
-			
-			if(ret > 0){
-				flow[u][v] += ret;
-				flow[v][u] -= ret;
-				return ret;
-			}
-		}
-		return 0;
-	}
-	
-	bool bfs(Long s, Long t ){ //O(E)
-		deque<Long> q; 
-		q.push_back(s);
-		level[s] = 0;
-		while(!q.empty()){
-			Long u = q.front();
-			q.pop_front();
-			for(Long v : adj[u]){
-				Long cf = cap[u][v] - flow[u][v];
-				if(level[v] == -1 && cf > 0){
-					level[v] = level[u] + 1;
-					q.push_back(v);
-				}
-			}
-		}
-		return level[t] != -1;
-	}
-	
-	Long maxFlow(Long s, Long t, Long n){//General: O(E * V^2), Unit Cap: O(E * min(E^(1/2) , V^(2/3))), Unit Network: O(E * V^(1/2))
-		//unit network is a network in which all the edges have unit capacity,
-		//and for any vertex except s and t either incoming or outgoing edge is unique.
-		Long ans = 0;
-		while(true){ //O(V) iterations
-			fill(level, level + n, -1);
-			if(!bfs(s, t) ){
-				break;
-			}
-			//after bfs, the graph is a DAG
-			fill(nextEdge, nextEdge + n , 0);
-			Long inc;
-			do{
-				inc = dfs(s , t , INF);
-				ans += inc;
-			} while (inc > 0);
-		}
-		return ans;
-	}
+struct GraphFlow {
+	//max flow template
+	void clear(int n);
+	void addEdge(int u, int v, Long w, bool dir);
+	Long maxFlow(int s, int t, int n);
 } GFlow;
 
 struct Graph{
-	vector<Long> adj[MX];
-	Long indegree[MX];
-	set<Long> parents[MX];
+	vector<int> adj[MX];
+	int indegree[MX];
+	set<int> parents[MX];
 	
-	void clear(Long n){
-		for(Long i = 0; i < n ; i++){
+	void clear(int n) {
+		for (int i = 0; i < n ; i++) {
 			adj[i].clear();
 			indegree[i] = 0;
 			parents[i].clear();
 		}
-		GFlow.clear(2 * n + 1);
+		GFlow.clear(2 * n + 2);
 	}
 	
-	void addEdge(Long u , Long v){
+	void addEdge(int u , int v){
 		adj[u].push_back(v);
 		indegree[v]++;
 	}
 	
-	Long maxAntiChain(Long n){ 
+	int maxAntiChain(int n) { 
 		//O(V ^ 5/2 ) - could be less depending on E in Flow Graph
-		Long s = 0;
-		Long t = 2 * n + 1;
-		deque<Long> q;
-		REP(i , n){
-			if(indegree[i] == 0){
-				q.push_back(i);
-			}
+		int s = 0;
+		int t = 2 * n + 1;
+		deque<int> q;
+		for (int u = 0; u < n; u++) {
+			if (indegree[u] == 0) q.push_back(u);
 		}
-		Long cnt = 0;
-		while(!q.empty()){
-			Long u = q.front();
+		int cnt = 0;
+		while (!q.empty()){
+			int u = q.front();
 			cnt++;
-			GFlow.addEdge(s , u + 1 , 1 , true);
-			GFlow.addEdge(u + 1 + n , t , 1 , true);
+			GFlow.addEdge(s, u + 1, 1, true);
+			GFlow.addEdge(u + 1 + n, t, 1, true);
 			q.pop_front();
-			for(Long p : parents[u]){
-				GFlow.addEdge(p + 1 , u + 1 + n , 1 , true);
+			for (int p : parents[u]) {
+				GFlow.addEdge(p + 1, u + 1 + n, 1, true);
 			}
-			for(Long v : adj[u]){
+			for (int v : adj[u]) {
 				indegree[v]--;
-				if(indegree[v] == 0){
-					q.push_back(v);
-				}
-				for(Long x : parents[u]){
-					parents[v].insert(x);
-				}
+				if (indegree[v] == 0) q.push_back(v);
+				for (int p : parents[u]) parents[v].insert(p);
 				parents[v].insert(u);
 			}
 		}
 		assert(n == cnt); //should be a DAG
-		return cnt - GFlow.maxFlow(s , t , t + 1);
+		return cnt - GFlow.maxFlow(s, t, t + 1);
 	}
 }G; 
-
-int main() {
-	ios_base::sync_with_stdio(false);
-	cin.tie(NULL);
-	cout.tie(NULL);
-
-	return 0;
-}
