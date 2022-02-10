@@ -6,6 +6,8 @@ typedef long long Long;
 const int MX = 5000;
 const Long INF = 1e18;
  
+typedef pair<Long, Long> Pair;
+
 struct Edge{
 	int from, to;
 	Long cap, flow, cost;
@@ -80,7 +82,7 @@ struct Graph{
 		}
 	}
 	
-	pair<Long, Long> dijkstra(int s, int t, int n) { //O(E log V)
+	Pair dijkstra(int s, int t, int n) { //O(E log V)
 		//<flow, cost>
 		priority_queue<Path, vector<Path>, greater<Path>> q;
 		vector<Long> d(n, INF);
@@ -112,14 +114,14 @@ struct Graph{
 		return {cf, pot[t] * cf};
 	}
 	
-	pair<Long, Long> minCostFlow(int s, int t, int n) {
+	Pair minCostFlow(int s, int t, int n) {
 		//O(E log V * maxFlow)
 		//maxFlow <= V * U, where U is the maximum capacity
 		//Initially no negative cycles
 		//<maxFlow, minCost>
 		spfa(s, n); //not necessary if there is no negative edges
-		pair<Long, Long> inc; 
-		pair<Long, Long> ans = {0, 0};
+		Pair inc; 
+		Pair ans = {0, 0};
 		do {
 			inc = dijkstra(s, t, n);
 			ans.first += inc.first;
