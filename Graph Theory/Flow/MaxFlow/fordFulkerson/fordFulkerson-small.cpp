@@ -3,8 +3,8 @@ using namespace std;
 
 typedef long long Long;
 
-//This implementation is for small graphs (n <= 3000 aprox)
-//where O(n^2) memory will fit the memory limit.
+//This implementation is for small graphs G(V, E) (|V| <= 3000 aprox)
+//where O(|V|^2) memory will fit the memory limit.
 
 const int MX = 3000;
 const Long INF = 1e18;
