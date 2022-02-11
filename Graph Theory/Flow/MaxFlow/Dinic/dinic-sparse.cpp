@@ -38,7 +38,7 @@ struct Graph{
 		adj[v].push_back(backward);
 	}
 	
-	Long dfs(int u, int t ,Long f) { 
+	Long dfs(int u, int t, Long f) { 
 		if(u == t) return f;
 		for (int &i = nextEdge[u]; i < adj[u].size(); i++) {
 			Edge &e = adj[u][i];
