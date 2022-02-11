@@ -50,7 +50,7 @@ struct Graph{
 		if (!dir && u != v) addEdge(v, u, w, cost, true);
 	}
 	
-	Pair dfs(int u, int t ,Long f) { 
+	Pair dfs(int u, int t, Long f) { 
 		//<flow, sumCost>
 		if (u == t) return {f , 0};
 		for (int &i = nextEdge[u]; i < adj[u].size(); i++) {
