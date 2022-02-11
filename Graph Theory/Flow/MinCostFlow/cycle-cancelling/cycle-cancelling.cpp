@@ -5,64 +5,68 @@ using namespace std;
 
 typedef long long Long;
 
+/*
+The algorithm first use Dinic to find any max flow. Then, it finds 
+the minimum circulation finding negative cycles in the residual graph.
+
+This algorithm DOES work even when the initial graph has negative 
+cycles.
+*/
+
 const Long MX = 5000;
 const Long INF = 1e18;
 
-struct Edge{
-	Long from, to, cap, flow, cost;
-	Edge *rev;
-	Edge(): rev(NULL) {}
-	Edge(Long from , Long to, Long cap, Long cost) : from(from) , to(to), cap(cap), flow(0), cost(cost), rev(NULL) {}
-};
+typedef pair<Long, Long> Pair;
 
+struct Edge{
+	int from, to;
+	Long cap, flow, cost;
+	int rev; //index of the backward edge in the adj list of to
+	Edge() {}
+	Edge(int from, int to, Long cap, Long cost, int rev) : 
+		from(from), to(to), cap(cap), flow(0), cost(cost), rev(rev){}
+};
+ 
 struct Graph{
-	vector<Edge*> adj[MX];
+	vector<Edge> adj[MX];
 	int level[MX];
 	int nextEdge[MX];
-	Edge* parent[MX];
+	int parentEdge[MX];
 	
 	void clear(int n) {
 		for (int i = 0 ; i < n; i++) {
 			adj[i].clear();
 			level[i] = -1;
 			nextEdge[i] = 0;
-			parent[i] = nullptr;
 		}
 	}
 	
 	void addEdge(int u, int v, Long w, Long cost, bool dir) {
-		Edge *forward = new Edge(u , v , w, cost);
-		Edge *backward = new Edge(v , u , 0, -cost);
-		forward->rev = backward;
-		backward->rev = forward;
-
+		Edge forward(u, v, w, cost, adj[v].size());
+		Edge backward(v, u, 0, -cost, adj[u].size());
+		if (u == v) forward.rev++;
 		adj[u].push_back(forward);
 		adj[v].push_back(backward);
-		
-		if (!dir) {
-			forward = new Edge(v , u , w, cost);
-			backward = new Edge(u , v , 0, -cost);
-			forward->rev = backward;
-			backward->rev = forward;
-			adj[v].push_back(forward);
-			adj[u].push_back(backward);
-		}
+		if (!dir && u != v) addEdge(v, u, w, cost, true);
 	}
 	
-	pair<Long,Long> dfs(int u, int t ,Long f) { 
+	Pair dfs(int u, int t ,Long f) { 
 		//<flow, sumCost>
 		if (u == t) return {f , 0};
 		for (int &i = nextEdge[u]; i < adj[u].size(); i++) {
-			Edge *e = adj[u][i];
-			int v = e->to;
-			Long cf = e->cap - e->flow;
-			if(cf == 0 || level[v] != level[u] + 1) continue;
-			pair<Long, Long> ret = dfs(v, t, min(f, cf));
-			if (ret.first > 0) {
-				e->flow += ret.first;
-				e->rev->flow -= ret.first;
-				Long cost = e->cost * ret.first;
-				return {ret.first , cost + ret.second};
+			Edge &e = adj[u][i];
+			int v = e.to;
+			Edge &rev = adj[v][e.rev];
+			Long cf = e.cap - e.flow;
+			if (cf == 0 || level[v] != level[u] + 1) continue;
+			Pair ans = dfs(v, t, min(f, cf));
+			Long flow = ans.first;
+			Long sumCost = ans.second;
+			if (flow > 0) {
+				e.flow += flow;
+				rev.flow -= flow;
+				Long cost = e.cost * flow;
+				return {flow , cost + sumCost};
 			}
 		}
 		return {0, 0};
@@ -74,30 +78,36 @@ struct Graph{
 		level[s] = 0;
 		while (!q.empty()) {
 			int u = q.front();
+			nextEdge[u] = 0;
 			q.pop_front();
-			for (Edge *e: adj[u]) {
-				int v = e->to;
-				Long cf = e->cap - e->flow;
+			if (u == t) return true;
+			for (Edge e : adj[u]) {
+				int v = e.to;
+				Long cf = e.cap - e.flow;
 				if (level[v] == -1 && cf > 0) {
 					level[v] = level[u] + 1;
 					q.push_back(v);
 				}
 			}
 		}
-		return level[t] != -1;
+		return false;
 	}
 	
-	pair<Long, Long> maxFlow(int s, int t, int n){//General: O(E * V^2), Unit Cap: O(E * min(E^(1/2) , V^(2/3))), Unit Network: O(E * V^(1/2))
-		//unit network is a network in which all the edges have unit capacity,
-		//and for any vertex except s and t either incoming or outgoing edge is unique.
+	Pair maxFlow(int s, int t, int n){
+		//Dinic's algorithm
+		//General: O(E * V^2)
+		//Unit Cap: O(E * min(E^(1/2) , V^(2/3)))
+		//Unit Network: O(E * V^(1/2))
+		//In unit network, all the edges have unit capacity
+		//and for any vertex except s and t either the 
+		//incoming or outgoing edge is unique.
 		Long flow = 0;
 		Long cost = 0;
 		while (true) { //O(V) iterations
 			fill(level, level + n, -1);
 			if (!bfs(s, t)) break;
 			//after bfs, the graph is a DAG
-			fill(nextEdge, nextEdge + n , 0);
-			pair<Long,Long> inc;
+			Pair inc;
 			do {
 				inc = dfs(s , t , INF);
 				flow += inc.first;
@@ -107,38 +117,36 @@ struct Graph{
 		return {flow, cost};
 	}
 	
-	Long costCycle(int u, int n) {
-		REP(i, n) {
-			u = parent[u]->from; //go back n times just in case
-			//There is no loss as this is a cycle
-		}
+	Long costCycle(int v, int n) {
+		//go back n times to find a cycle
+		for (int i = 0; i < n; i++) v = adj[v][parentEdge[v]].to;
 		Long cf = INF;
-		Long cur = u;
-		while (true) {
-			cf = min(cf , parent[cur]->cap - parent[cur]->flow);
-			cur = parent[cur]->from;
-			if (cur == u) {
-				break;
-			}
-		}
-		cur = u;
+		int start = v;
+		do {
+			Edge backward = adj[v][parentEdge[v]];
+			int u = backward.to;
+			Edge forward = adj[u][backward.rev];
+			cf = min(cf, forward.cap - forward.flow);
+			v = u;
+		} while (v != start);
+		start = v;
 		Long cost = 0;
-		while (true) {
-			cost += cf * parent[cur]->cost;
-			parent[cur]->flow += cf;
-			parent[cur]->rev->flow -= cf;
-			cur = parent[cur]->from;
-			if (cur == u) {
-				break;
-			}
-		}
+		do {
+			Edge &backward = adj[v][parentEdge[v]];
+			int u = backward.to;
+			Edge &forward = adj[u][backward.rev];
+			cost += cf * forward.cost;
+			forward.flow += cf;
+			backward.flow -= cf;
+			v = u;
+		} while (v != start);
 		return cost;
 	}
 	
 	Long spfa(int n) { //O(E V)
 		vector<Long> d(n, 0);
 		queue<int> q;
-		vector<bool> inQueue(n , true);
+		vector<bool> inQueue(n, true);
 		for (int u = 0; u < n; u++) q.push(u);
 		int phase = 0;
 		while (!q.empty() && phase < n) {
@@ -147,13 +155,13 @@ struct Graph{
 				int u = q.front();
 				q.pop();
 				inQueue[u] = false;
-				for (Edge* e : adj[u]) {
-					int v = e->to;
-					Long cf = e->cap - e->flow;
-					Long w = e->cost;
+				for (Edge e : adj[u]) {
+					int v = e.to;
+					Long cf = e.cap - e.flow;
+					Long w = e.cost;
 					if (cf > 0 && d[u] + w < d[v]) {
 						d[v] = d[u] + w;
-						parent[v] = e;
+						parentEdge[v] = e.rev;
 						if (!inQueue[v]) {
 							q.push(v);
 							inQueue[v] = true;
@@ -168,20 +176,18 @@ struct Graph{
 		return 0;
 	}
 	
-	pair<Long,Long> minCostFlow(int s, int t, int n){ 
+	Pair minCostFlow(int s, int t, int n) { 
 		//O(dinic + EV * |totalCost|) = O(dinic + EV * (mUC))
 		// |totalCost| <= E * U * C, where U is max cap and C max cost
 		//<maxFlow, minCost>
-		pair<Long, Long> ans = maxFlow(s, t , n);
+		Pair ans = maxFlow(s, t , n);
+		Long flow = ans.first;
+		Long cost = ans.second;
 		Long inc;
 		do {
 			inc = spfa(n);
-			ans.second += inc;
+			cost += inc;
 		} while(inc < 0);
-		return ans;
+		return {flow, cost};
 	}
 } G;
-
-int main() {
-	return 0;
-}
