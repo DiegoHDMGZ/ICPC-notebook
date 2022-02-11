@@ -102,7 +102,7 @@ struct Graph{
 				if (cf > 0 && d[u] + cost < d[v]) {
 					d[v] = d[u] + cost;
 					q.push(Path(v, d[v]));
-					residualCap[v] = min(residualCap[u],cf);
+					residualCap[v] = min(residualCap[u], cf);
 					parentEdge[v] = e.rev;
 				}
 			}
