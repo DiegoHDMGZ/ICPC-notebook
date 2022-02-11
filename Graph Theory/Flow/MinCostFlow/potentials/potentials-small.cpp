@@ -3,6 +3,9 @@ using namespace std;
 
 typedef long long Long;
 
+//Find the maximum flow that has minimum cost.
+//Costs can be negative but there must be no negative cycle initially.
+
 //This implementation is for small graphs G(V, E) (|V| <= 3000 aprox)
 //where O(|V|^2) memory will fit the memory limit.
 //So a 2D array can be used to speed up the algorithm a little bit.
@@ -11,6 +14,8 @@ typedef long long Long;
 
 const int MX = 2005;
 const Long INF = 1e18;
+
+typedef pair<Long, Long> Pair;
 
 struct Path{
 	int node;
@@ -72,7 +77,7 @@ struct Graph{
 		}
 	}
 	
-	pair<Long, Long> dijkstra(int s, int t, int n){ //O(E log V)
+	Pair dijkstra(int s, int t, int n){ //O(E log V)
 		//<flow, cost>
 		priority_queue<Path, vector<Path>, greater<Path>> q;
 		vector<Long> d(n, INF);
@@ -98,7 +103,6 @@ struct Graph{
 			}
 		}
 		if(d[t] == INF) return {0, 0};
-
 		for (int i = 0; i < n; i++) pot[i] += d[i];
 		Long cf = residualCap[t];
 		int cur = t;
@@ -113,7 +117,7 @@ struct Graph{
 	
 	/*
 	//For dense graph, the quadratic version can be used
-	pair<Long, Long> dijkstra(int s, int t, int n) { //O(V^2)
+	Pair dijkstra(int s, int t, int n) { //O(V^2)
 		//<flow, cost>
 		vector<Long> d(n , INF);
 		vector<bool> vis(n , false);
@@ -137,23 +141,24 @@ struct Graph{
 				}
 			}
 		}
-		//... (the same as the normal dijsktra here)
+		//... (the same as the normal dijkstra here)
 	}
 	*/
 	
-	pair<Long, Long> minCostFlow(int s, int t, int n) { 
+	Pair minCostFlow(int s, int t, int n) { 
 		//O(E log V *  maxFlow)
 		//maxFlow <= V * U, where U is the maximum capacity
 		//Initially no negative cycles
 		//<maxFlow, minCost>
 		spfa(s, n); //not necessary if there is no negative edges
-		pair<Long, Long> inc;
-		pair<Long, Long> ans = {0, 0};
+		Pair inc;
+		Long f = 0;
+		Long c = 0;
 		do {
 			inc = dijkstra(s, t, n);
-			ans.first += inc.first;
-			ans.second += inc.second;
+			f += inc.first;
+			c += inc.second;
 		} while (inc.first > 0);
-		return ans;
+		return {f, c};
 	}
 } G;

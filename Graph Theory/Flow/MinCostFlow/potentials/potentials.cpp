@@ -123,12 +123,13 @@ struct Graph{
 		//<maxFlow, minCost>
 		spfa(s, n); //not necessary if there is no negative edges
 		Pair inc; 
-		Pair ans = {0, 0};
+		Long flow = 0;
+		Long cost = 0;
 		do {
 			inc = dijkstra(s, t, n);
-			ans.first += inc.first;
-			ans.second += inc.second;
+			flow += inc.first;
+			cost += inc.second;
 		} while(inc.first > 0);
-		return ans;
+		return {flow, cost};
 	}
 } G;
