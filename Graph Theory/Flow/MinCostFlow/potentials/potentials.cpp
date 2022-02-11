@@ -35,7 +35,6 @@ struct Graph{
 	void clear(int n) {
 		for (int i = 0 ; i < n; i++) {
 			adj[i].clear();
-			parentEdge[i] = -1;
 			pot[i] = 0;
 		}
 	}
