@@ -5,6 +5,9 @@ using namespace std;
 
 typedef long long Long;
 
+//Find the maximum flow that has minimum cost.
+//Costs can be negative but there must be no negative cycle initially.
+
 const Long MX = 5000;
 const Long INF = 1e18;
 
