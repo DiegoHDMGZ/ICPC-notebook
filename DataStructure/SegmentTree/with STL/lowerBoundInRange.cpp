@@ -5,7 +5,7 @@
 using namespace std;
 
 typedef long long Long;
-const Long MX = 1e5;
+const int MX = 1e5;
 const Long INF = 1e18;
 
 Long combine(Long x, Long y){
