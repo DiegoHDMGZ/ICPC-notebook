@@ -1,16 +1,22 @@
 #include <bits/stdc++.h>
-#define debug(x) cout << #x << " = " << x << endl
-#define REP(i,n) for(Long i = 0; i < (Long)n; i++)
-#define pb push_back
 using namespace std;
 
 typedef long long Long;
+
+enum Comparison{LESS, EQUAL, GREATER};
+
+Comparison getComparison(int a, int b) {
+	if (a < b) return Comparison::LESS;
+	if (a > b) return Comparison::GREATER;
+	return Comparison::EQUAL;
+}
 
 const int ALPH = 256;
 struct SuffixArray {
 	vector<int> suffixArray;
 	vector<int> lcp; 
 	//lcp[i] = largest common preffix of sa[i] and sa[i + 1] (in sorted list) 
+	vector<int> pos;
 	
 	vector<int> sortCyclic(string &s) { //O(n log n)
 		int n = s.size();
@@ -67,8 +73,8 @@ struct SuffixArray {
 
 	void buildLCP(string &s) { //O(n)
 		int n = s.size();
-		vector<int> pos(n);
 		lcp = vector<int>(n - 1, 0);
+		pos = vector<int>(n);
 		for (int i = 0; i < n; i++) {
 			pos[suffixArray[i]] = i;
 		}
@@ -101,29 +107,17 @@ struct SuffixArray {
 		int maxPos = max(pos[l], pos[r]);
 		return min(lcp[minPos], ... , lcp[maxPos - 1])
 	}*/
-};
-
-/*bool cmp(const pair<int, int> &a, const pair<int, int> &b) { //O(1)
-	//compare two substrings. Return true if s[a] < s[b]
-	if (a == b) return false;
-	int lcp = sa.getLCP(a.first, b.first);
-	if (a.second < a.first + lcp) {
-		if (b.second < b.first + lcp) {
-			int szA = a.second - a.first + 1;
-			int szB = b.second - b.first + 1;
-			if (szA != szB) {
-				return szA < szB;
-			}
-			return a < b;
-		} else {
-			return true;
-		}
-	} else if (b.second < b.first + lcp) {
-		return false;
-	}
-	return sa.pos[a.first] < sa.pos[b.first];
-}*/
 	
-int main() {
-	return 0;
-}
+	/*Comparison compare(int l1, int r1, int l2, int r2) {
+		//compare two substrings [l1, r1], [l2, r2].
+		int curLCP = (l1 == l2) ? suffixArray.size() : getLCP(l1, l2);
+		if (r1 < l1 + curLCP) {
+			if (r2 < l2 + curLCP) {
+				int sz1 = r1 - l1 + 1;
+				int sz2 = r2 - l2 + 1;
+				return getComparison(sz1, sz2);
+			} else return Comparison::LESS;
+		} else if (r2 < l2 + curLCP) return Comparison::GREATER;
+		return getComparison(pos[l1], pos[l2]);
+	}*/
+};
