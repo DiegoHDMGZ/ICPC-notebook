@@ -112,7 +112,7 @@ Long random(Long a, Long b) {
 vector<Long> getBases(vector<Long> mods) {
 	vector<Long> ans;
 	for (Long m : mods) {
-		Long base = 2 * random(33, m / 2) + 1; //odd base
+		Long base = 2 * random(33, m / 2 - 1) + 1; //odd base
 		ans.push_back(base);
 	}
 	return ans;
