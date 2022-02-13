@@ -95,7 +95,7 @@ struct SuffixArray {
 	}
 	
 	//return the lcp of the suffixes s[l...n - 1] and s[r...n - 1]
-	/*int getLcp(int l, int r) {
+	/*int getLCP(int l, int r) {
 		assert(l != r);
 		int minPos = min(pos[l], pos[r]);
 		int maxPos = max(pos[l], pos[r]);
@@ -104,7 +104,7 @@ struct SuffixArray {
 };
 
 /*bool cmp(const pair<int, int> &a, const pair<int, int> &b) { //O(1)
-	//compare two substrings. Return true if a < b
+	//compare two substrings. Return true if s[a] < s[b]
 	if (a == b) return false;
 	int lcp = sa.getLCP(a.first, b.first);
 	if (a.second < a.first + lcp) {
