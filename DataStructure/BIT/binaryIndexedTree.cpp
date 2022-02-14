@@ -7,18 +7,18 @@ typedef long long Long;
 
 using namespace std;
 
-const Long MX = 1e5;
-const Long EXTRA = 6;
+const int MX = 1e5;
+const int EXTRA = 6;
 struct BIT{
 	Long tree[MX + EXTRA];
 	
-	void clear(Long n) { //O(n)
-		for (Long i = 0; i < n + EXTRA; i++) {
+	void clear(int n) { //O(n)
+		for (int i = 0; i < n + EXTRA; i++) {
 			tree[i] = 0;
 		}
 	}
 	
-	Long query(Long x) { //O(log n)
+	Long query(int x) { //O(log n)
 		x += EXTRA;
 		Long ans = 0;
 		while (x > 0) {
@@ -28,7 +28,7 @@ struct BIT{
 		return ans;
 	}
 	
-	void update(Long x, Long val) { //O(log n)
+	void update(int x, Long val) { //O(log n)
 		x += EXTRA;
 		while (x < MX + EXTRA) {
 			tree[x] += val;
@@ -36,12 +36,8 @@ struct BIT{
 		}
 	}
 	
-	void update(Long l, Long r, Long add) {
+	void update(int l, int r, Long add) {
 		update(l, add);
 		update(r + 1, -add);
 	}		
 } ft;
-
-int main() {
-	return 0;
-}
