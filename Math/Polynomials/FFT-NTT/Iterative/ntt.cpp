@@ -13,57 +13,47 @@ const Long MOD = 998244353; //MOD = 2^23 * 119 + 1
 const Long root = 3;//primitive root of MOD
 const Long rootInv = 332748118;//modular inverse of root
 
-Long mult(Long a, Long b) {
-	return (a * b) % MOD;
-}
-
-Long fastPow(Long a, Long b) { //O(log b)
-	Long ans = 1;
-	while (b > 0) {
-		if (b & 1) ans = mult(ans, a);
-		a = mult(a, a);
-		b >>= 1;
-	}
-	return ans;
-}
-
-Long invert(Long a) {
-	return fastPow(a, MOD - 2);
-}
-
-Long divide(Long a, Long b) {
-	return mult(a, invert(b));
-}
-
-struct Field{
+struct ModInt {
 	Long val;
-	Field(Long val = 0) {
-		this->val = val % MOD;
+	ModInt(Long val = 0) {
+		/*val %= MOD;
+		if (val < 0) val += MOD;*/
+		this->val = val;
 	}
-	
-	Field operator +(const Field &F) const {
-		return (val + F.val) % MOD;
+	ModInt operator +(const ModInt &other) const {
+		if (val + other.val < MOD) return val + other.val;
+		return val + other.val - MOD;
 	}
-	
-	Field operator -(const Field &F) const {
-		return (val - F.val + MOD) % MOD;
+	ModInt operator -(const ModInt &other) const {
+		if (val - other.val >= 0) return val - other.val;
+		return val - other.val + MOD;
 	}
-	
-	Field operator *(const Field &F) const {
-		return mult(val, F.val);
+	ModInt operator *(const ModInt &other) const {
+		return (val * other.val) % MOD;
 	}
-	
-	Field operator *=(const Field &F)  {
-		val = mult(val, F.val);
+	ModInt operator *=(const ModInt &other) {
+		*this = *this * other;
 		return *this;
 	}
-	
-	Field operator /(const Field &F) const {
-		return divide(val, F.val);
+	ModInt pow(Long b) const { //O(log b)
+		ModInt ans = 1;
+		ModInt a = val;
+		while (b > 0) {
+			if (b & 1) ans *= a;
+			a *= a;
+			b >>= 1;
+		}
+		return ans;
 	}
-	
-	Field operator /=(const Field &F)  {
-		val = divide(val, F.val);
+	ModInt invert() const { //O(log mod) 
+		//mod prime
+		return pow(MOD - 2);
+	}
+	ModInt operator /(const ModInt &other) const {
+		return *this * other.invert();
+	}
+	ModInt operator /=(const ModInt &other) {
+		*this = *this / other;
 		return *this;
 	}
 };
@@ -77,7 +67,7 @@ int bitReverse(int x, int lg) { //O(lg)
 	return ans;
 }
 
-void ntt(vector<Field> &a, const vector<Field> &wn) { //O(n log n)
+void ntt(vector<ModInt> &a, const vector<ModInt> &wn) { //O(n log n)
 	//n must be a power of 2
 	int n = a.size();
 	int lg = 31 - __builtin_clz(n);
@@ -88,10 +78,10 @@ void ntt(vector<Field> &a, const vector<Field> &wn) { //O(n log n)
 	int e = 0;
 	for (int len = 2; len <= n; len *= 2) {
 		for (int l = 0; l < n; l += len) {
-			Field w(1);
+			ModInt w(1);
 			for (int d = 0; d < len / 2; d++) {
-				Field even = a[l + d];
-				Field odd = a[l + d + len / 2] * w;
+				ModInt even = a[l + d];
+				ModInt odd = a[l + d + len / 2] * w;
 				a[l + d] = even + odd;
 				a[l + d + len / 2] = even - odd;
 				w *= wn[e]; 
@@ -105,14 +95,14 @@ typedef vector<Long> poly;
 
 poly operator *(const poly &a, const poly &b) { //O(n log n)
 	int n = 1;
-	vector<Field> fa(a.begin(), a.end());
-	vector<Field> fb(b.begin(), b.end());
+	vector<ModInt> fa(a.begin(), a.end());
+	vector<ModInt> fb(b.begin(), b.end());
 	while(n < a.size() + b.size()) n <<= 1;
 	fa.resize(n);
 	fb.resize(n);
 	int lg = 31 - __builtin_clz(n);
-	vector<Field> wn(lg);
-	wn[lg - 1] = Field(fastPow(root , (MOD - 1) / n));
+	vector<ModInt> wn(lg);
+	wn[lg - 1] = ModInt(root).pow((MOD - 1) / n);
 	for (int i = lg - 2; i >= 0; i--) wn[i] = wn[i + 1] * wn[i + 1];
 	ntt(fa, wn);
 	ntt(fb, wn);
@@ -121,7 +111,7 @@ poly operator *(const poly &a, const poly &b) { //O(n log n)
 		fa[i] *= fb[i];
 		fa[i] /= n;
 	}
-	wn[lg - 1] = Field(fastPow(rootInv , (MOD - 1) / n));
+	wn[lg - 1] = ModInt(rootInv).pow((MOD - 1) / n);
 	for (int i = lg - 2; i >= 0; i--) wn[i] = wn[i + 1] * wn[i + 1];
 	ntt(fa, wn);
 	
@@ -129,7 +119,3 @@ poly operator *(const poly &a, const poly &b) { //O(n log n)
 	for (int i = 0; i < ans.size(); i++) ans[i] = fa[i].val;
 	return ans;
 } 
-
-int main() {
-	return 0;
-}
