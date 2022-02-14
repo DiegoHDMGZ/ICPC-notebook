@@ -290,7 +290,7 @@ poly interpolate(int id, int l, int r, const vector<ModInt> &d, const vector<pol
 	}
 }
 
-poly interpolate(vector<ModInt> &X, vector<ModInt> &Y) {
+poly interpolate(vector<ModInt> &X, vector<ModInt> &Y) { //O(n log^2 n)
 	int n = X.size();
 	vector<poly> tree(2 * n);
 	buildEvaluate(tree, 1, 0, n - 1, X);
