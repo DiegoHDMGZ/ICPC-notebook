@@ -57,7 +57,7 @@ struct SuffixArray {
 			for(int i = 1; i < n; i++) {
 				int x = p[i] + (1 << k);
 				if (x >= n) x -= n;
-				int y = (p[i - 1] + (1 << k));
+				int y = p[i - 1] + (1 << k);
 				if (y >= n) y -= n;
 				pair<int, int> cur = {c[p[i]], c[x]};
 				pair<int, int> prev = {c[p[i - 1]], c[y]};
