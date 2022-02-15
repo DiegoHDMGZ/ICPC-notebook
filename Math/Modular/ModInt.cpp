@@ -3,6 +3,8 @@
 using namespace std;
 typedef long long Long;
 
+//Cancelation: c * a = c * b (mod n) => a = b (mod n / gcd(c, n))
+
 const int MOD = 1e9 + 7;
 
 struct ModInt {
