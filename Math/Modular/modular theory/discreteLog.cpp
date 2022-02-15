@@ -6,7 +6,7 @@ using namespace std;
 typedef long long Long;
 
 // Baby step - Giant Step Algorithm
-Long discreteLog(Long base, Long rem, Long mod) { //O(sqrt (mod) log mod)
+Long discreteLog(Long base, Long rem, Long mod) { //O(sqrt(mod) log mod)
 	//returns the smallest x such that (base ^ x) % mod = rem
 	//because of Euler's theorem, x < phi(mod)
 	/*base %= mod;
