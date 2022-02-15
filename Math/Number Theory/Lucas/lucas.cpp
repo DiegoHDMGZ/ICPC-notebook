@@ -36,13 +36,6 @@ struct ModInt {
 		//mod prime
 		return pow(MOD - 2);
 	}
-	ModInt operator /(const ModInt &other) const {
-		return *this * other.invert();
-	}
-	ModInt operator /=(const ModInt &other) {
-		*this = *this / other;
-		return *this;
-	}
 };
 
 const int MX = 1e6;
