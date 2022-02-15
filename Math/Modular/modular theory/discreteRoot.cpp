@@ -13,6 +13,11 @@ Long primitiveRoot(Long mod);
 Long discreteLog(Long base, Long rem, Long mod);
 
 Long discreteRoot(Long e, Long rem, Long mod) {
+	if (rem == 0) {
+		//Assumption: 0^0 = 1
+		if (e != 0 || mod == 1) return 0;
+		else return -1;
+	}
 	Long g = primitiveRoot(mod);
 	Long y = discreteLog(fastPow(g, e, mod), rem, mod);
 	if (y == -1) return -1;
