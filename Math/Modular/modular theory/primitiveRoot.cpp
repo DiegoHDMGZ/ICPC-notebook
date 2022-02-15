@@ -20,7 +20,10 @@ Long fastPow(Long a, Long b, Long mod) { //O(log b)
 	return ans;
 }
 
-Long primitiveRoot(Long mod) { //O(mod log mod log phi(mod) + sqrt(mod))  
+Long primitiveRoot(Long mod) {
+	//O(ans log mod log phi(mod) + |factorization|)
+	//ans = O(mod) but if mod is prime and we assume the
+	//generelized Riemann hypothesis, then ans = O(log^6 p)
 	Long phi = mod - 1; // phi = euler(mod) for not prime mods
 	//if (mod < 1e7) we can use extended Sieve to factorize
 	Long n = phi;
