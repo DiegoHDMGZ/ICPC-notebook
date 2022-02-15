@@ -5,63 +5,44 @@ using namespace std;
 
 typedef long long Long;
 
-// (a ^ x ) % m  = r , gcd(a , m) = 1. Where x is the smallest solution
-// because of Euler's theorem, x < phi(m)
-// x = kp - q
-// a ^ (kp) % m = (r * a ^ q ) % m  (using inverse modular)
-// f1(p) = f2(q)
-// k = sqrt(m) lead to the best complexity time
 // Baby step - Giant Step Algorithm
-
-Long mult(Long a, Long b, Long mod) {
-	a %= mod;
-	b %= mod;
-	return (a * b) % mod;
-}
-
-Long fastPow(Long a, Long b, Long mod) { //O(log b)
-	Long ans = 1;
-	while (b > 0) {
-		if (b & 1) ans = mult(ans, a, mod);
-		a = mult(a, a, mod);
-		b >>= 1;
+Long discreteLog(Long base, Long rem, Long mod) { //O(sqrt (mod) log mod)
+	//returns the smallest x such that (base ^ x) % mod = rem
+	//because of Euler's theorem, x < phi(mod)
+	/*base %= mod;
+	rem %= mod;*/
+	//Assumption: 0^0 = 1, otherwise use the following line
+	//if (base == 0 && rem == 0) return 1;
+	Long g = gcd(base, mod);
+	Long add = 0;
+	Long k = 1;
+	while (g > 1) {
+		if (rem == k) return add;
+		if (rem % g != 0) return -1;
+		rem /= g;
+		mod /= g;
+		add++;
+		k = (k * base / g) % mod;
+		g = gcd(base, mod);
 	}
-	return ans;
-}
-
-Long search(vector<pair<Long, Long>> &v , Long x){ //O(log n)
-	// F F F... T T T
-	Long low = 0, high = (Long)v.size() - 1;
-	if (x < v[low].second) return -1; //all F
-	if(x > v[high].second) return -1; //all T
-	while (high - low > 1){ 
-		Long mid = low + (high - low) / 2;
-		if (x <= v[mid].second) high = mid;
-		else low = mid;
+	//k * base ^ (x - add) % mod = rem
+	Long n = (Long)sqrt(mod) + 1;
+	vector<pair<Long, Long>> f1s;
+	Long f1 = rem;
+	for (Long q = 0; q <= n; q++) {
+		f1s.push_back({f1, -q});
+		f1 = (f1 * base) % mod;
 	}
-	//2 values low -> F and high-> T
-	if(v[low].second == x) return v[low].first;
-	if(v[high].second == x) return v[high].first;
-	return -1;
-}
-
-bool cmp(pair<Long,Long> &p1, pair<Long,Long> &p2) {
-	return p1.second < p2.second;
-}
-
-Long discreteLog(Long a, Long r, Long mod) {  //O(sqrt (mod) log mod)
-	Long k = (Long)sqrt(mod) + 1;
-	vector<pair<Long, Long>> f1;
-	for (Long p = k; p >= 1; p--) {
-		f1.push_back({p, fastPow(a, p * k, mod)});
-	}
-	sort(f1.begin(),f1.end(), cmp); 
-	for (Long q = 0; q <= k; q++) {
-		Long cur = (r * fastPow(a, q, mod)) % mod;
-		Long p = search(f1 , cur);
-		if (p != -1) {
-			return p * k - q; //solution may not be the smallest
-			//if the smallest is needed, use modulo phi(mod)
+	sort(f1s.begin(), f1s.end()); 
+	Long giant = 1;
+	for (int i = 0; i < n; i++) giant = (giant * base) % mod;
+	Long f2 = k;
+	for (Long p = 1; p <= n; p++) {
+		f2 = (f2 * giant) % mod;
+		auto it = lower_bound(f1s.begin(), f1s.end(), make_pair(f2, -n));
+		if (it != f1s.end() && it->first == f2) {
+			Long q = it->second;
+			return n * p + q + add;
 		}
 	}
 	return -1;
