@@ -33,7 +33,7 @@ Long primitiveRoot(Long mod) { //O(mod log mod log phi(mod) + sqrt(mod))
 		}
 		i++;
 	}
-	if(n > 1) v.push_back(phi / n);
+	if (n > 1) v.push_back(phi / n);
 	for (Long ans = 2; ans <= mod; ans++) {
 		bool ok = true;
 		REP(i, v.size()) {
