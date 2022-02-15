@@ -5,12 +5,16 @@ using namespace std;
 
 typedef long long Long;
 
-// (x ^ a ) % m  = r , mod prime 
+// (x ^ e) % mod  = rem, mod prime 
 // Use discreteLog and primiteRoot files
 
-Long discreteRoot(Long a, Long r, Long mod) {
+Long fastPow(Long a, Long b, Long mod);
+Long primitiveRoot(Long mod);
+Long discreteLog(Long base, Long rem, Long mod);
+
+Long discreteRoot(Long e, Long rem, Long mod) {
 	Long g = primitiveRoot(mod);
-	Long y = discreteLog(fastPow(g, a, mod), r, mod);
+	Long y = discreteLog(fastPow(g, e, mod), rem, mod);
 	if (y == -1) return -1;
 	return fastPow(g , y ,mod);
 }

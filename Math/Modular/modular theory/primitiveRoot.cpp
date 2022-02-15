@@ -6,8 +6,8 @@ using namespace std;
 typedef long long Long;
 
 //g is a primitive root modulo n if and only if for any integer "a" 
-//such that gcd(a,n)=1, there exists an integer k such that:
-//(g ^ k) ≡ a (mod n).
+//such that gcd(a, n) = 1, there exists an integer k such that:
+//(g ^ k) = a (mod n).
 
 Long mult(Long a, Long b, Long mod) {
 	a %= mod;
