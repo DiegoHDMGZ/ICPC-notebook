@@ -16,5 +16,5 @@ Long discreteRoot(Long e, Long rem, Long mod) {
 	Long g = primitiveRoot(mod);
 	Long y = discreteLog(fastPow(g, e, mod), rem, mod);
 	if (y == -1) return -1;
-	return fastPow(g , y ,mod);
+	return fastPow(g, y, mod);
 }
