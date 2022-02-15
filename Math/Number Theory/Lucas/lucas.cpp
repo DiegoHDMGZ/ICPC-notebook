@@ -15,14 +15,6 @@ struct ModInt {
 	ModInt(Long val = 0) {
 		this->val = val;
 	}
-	ModInt operator +(const ModInt &other) const {
-		if (val + other.val < MOD) return val + other.val;
-		return val + other.val - MOD;
-	}
-	ModInt operator -(const ModInt &other) const {
-		if (val - other.val >= 0) return val - other.val;
-		return val - other.val + MOD;
-	}
 	ModInt operator *(const ModInt &other) const {
 		return (val * other.val) % MOD;
 	}
