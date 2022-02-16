@@ -6,7 +6,7 @@ using namespace std;
 typedef long long Long;
 
 /*
-Min cost array partition - Second optimization (similar to knuth's)
+Min array partition cost - Second optimization (similar to knuth's)
 Quadrangle Inequality in cost also guarantees the following property:
 opt[i][k - 1] <= opt[i][k] <= opt[i + 1][k]
 */
