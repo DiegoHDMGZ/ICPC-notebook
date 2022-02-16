@@ -7,7 +7,7 @@ const int MX = 1e5; //sum of length of all words + 1
 const int ALPH = 26; // alphabet size
 
 struct Trie{
-	int memo[MX][ALPH];
+	int to[MX][ALPH];
 	bool terminal[MX];
 	int nodes = 1;
 	
@@ -15,7 +15,7 @@ struct Trie{
 		for (int i = 0; i < nodes; i++) {
 			terminal[i] = 0;
 			for (int j = 0; j < ALPH; j++) {
-				memo[i][j] = 0;
+				to[i][j] = 0;
 			}
 		}
 		nodes = 1;
@@ -26,8 +26,8 @@ struct Trie{
 		int u = 0;
 		for (int i = 0; i < n; i++) {
 			int c = s[i] - 'a';
-			if (memo[u][c] == 0) memo[u][c] = nodes++;
-			u = memo[u][c];
+			if (to[u][c] == 0) to[u][c] = nodes++;
+			u = to[u][c];
 		}
 		terminal[u] = true;
 	}
@@ -37,8 +37,8 @@ struct Trie{
 		int u = 0;
 		for (int i = 0; i < n; i++) {
 			int c = s[i] - 'a';
-			if (memo[u][c] == 0) return -1;
-			u = memo[u][c];
+			if (to[u][c] == 0) return -1;
+			u = to[u][c];
 		}
 		return u;
 	}
