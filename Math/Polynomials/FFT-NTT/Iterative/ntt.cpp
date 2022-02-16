@@ -16,7 +16,7 @@ const Long rootInv = 332748118;//modular inverse of root
 struct ModInt {
 	Long val;
 	ModInt(Long val = 0) {
-		/*val %= MOD;
+		/*if (abs(val) > MOD) val %= MOD;
 		if (val < 0) val += MOD;*/
 		this->val = val;
 	}

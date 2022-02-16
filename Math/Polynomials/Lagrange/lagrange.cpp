@@ -8,8 +8,8 @@ const Long MOD = 1e9 + 7;
 struct ModInt {
 	Long val;
 	ModInt(Long val = 0) {
-		val %= MOD;
-		if (val < 0) val += MOD;
+		/*if (abs(val) > MOD) val %= MOD;
+		if (val < 0) val += MOD;*/
 		this->val = val;
 	}
 	ModInt operator +(const ModInt &other) const {
