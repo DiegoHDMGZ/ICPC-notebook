@@ -12,12 +12,12 @@ dp[i][k] = min{dp[p][k - 1] + cost(p + 1, i) , p < i}
 dp[i][1] = cost(0 , i)
 opt[i][k] <= opt[i + 1][k] -> Appyl D&C
 A sufficient condition in cost is Quadrangle Inequality:
-For all a < b < c < d
+For all a <= b <= c <= d
 cost(a, d) - cost(b, d) >= cost(a, c) - cost(b, c)  
 (For maximization is the opposite sign)
 --------------------------------------------------
 Ways of proving that that cost satisfy Quadrangle Inequality:
-You can use induction in the following form
+It's enough to prove the following, for all l + 1 <= r - 1
 cost(l, r) - cost(l + 1, r) >= cost(l, r - 1) - cost(l + 1, r - 1)
 Also, if cost(l, r) = f(S_l + ... + S_r) and all S_i are positive
 Then we can define cost(l, r) = f(A + x), cost(l + 1 , r) = f(A)
