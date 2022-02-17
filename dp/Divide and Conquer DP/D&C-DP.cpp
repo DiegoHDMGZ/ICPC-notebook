@@ -8,7 +8,7 @@ typedef long long Long;
 /*
 Min array partition cost
 dp[i][k]: Min cost to divide the array [0 ... i] into k subarrays
-dp[i][k] = min{dp[p][k - 1] + cost(p + 1, r) , p < i}
+dp[i][k] = min{dp[p][k - 1] + cost(p + 1, i) , p < i}
 dp[i][1] = cost(0 , i)
 opt[i][k] <= opt[i + 1][k] -> Appyl D&C
 A sufficient condition in cost is Quadrangle Inequality:
