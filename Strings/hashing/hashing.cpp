@@ -117,5 +117,6 @@ vector<Long> getBases(vector<Long> mods) {
 	}
 	return ans;
 }
-vector<Long> MultiHash::mods = {(Long)1e9 + 7 , (Long)1e9 + 1269};
+//good option for modulo: 10^9 + 7, 10^9 + 403, 10^9 + 787
+vector<Long> MultiHash::mods = {(Long)1e9 + 7 , (Long)1e9 + 787};
 vector<Long> MultiHash::bases = getBases(mods);
