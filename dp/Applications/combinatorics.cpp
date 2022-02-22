@@ -5,22 +5,23 @@ typedef long long Long;
 
 const Long MX = 1000;
 const Long MOD = 1e9 + 7;
-Long add(Long a, Long b) {
-	if (a + b < MOD) return a + b;
-	return a + b - MOD;
-}
+struct ModInt {
+	Long val;
+	ModInt(Long val = 0): val(val) {}
+	ModInt operator +(const ModInt &other) const {
+		if (val + other.val < MOD) return val + other.val;
+		return val + other.val - MOD;
+	}
+};
 
-Long dp[MX][MX];
-bool used[MX][MX];
-Long comb(Long n , Long m) {
-	if (n < m) return 0;
-	if(n == m) return 1;
-	if(m == 0) return 1;
-	if(used[n][m]) return dp[n][m];
-	used[n][m] = true;
-	return dp[n][m] = add(comb(n - 1, m - 1), comb(n - 1, m));
-}
+ModInt comb[MX][MX];
 
-int main() {
-	return 0;
+void init() {
+	for (int n = 0; n < MX; n++) {
+		comb[n][0] = 1;
+		comb[n][n] = 1;
+		for (int m = 1; m < n; m++) {
+			comb[n][m] = comb[n - 1][m - 1] + comb[n - 1][m];
+		}
+	}
 }
