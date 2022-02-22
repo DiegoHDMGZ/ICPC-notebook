@@ -1,8 +1,4 @@
 #include <bits/stdc++.h>
-#define debug(x) cout << #x << " = " << x << endl
-#define REP(i , n) for(Long i = 0; i < (Long)n ; i++)
-#define pb push_back
-
 using namespace std;
 
 typedef long long Long;
@@ -29,8 +25,4 @@ Long search(Long low, Long high) { //O(logn)
 	}
 	//2 values low -> F and high -> V
 	return f(high);
-}
-
-int main(){
-	return 0;
 }

@@ -1,13 +1,8 @@
 #include <bits/stdc++.h>
-#define debug(x) cout << #x << " = " << x << endl;
-
 using namespace std;
-
 typedef long long Long;
 
-bool check(Long mid) {
-	return true;
-}
+bool check(Long mid);
 
 Long search(Long low, Long high) { //O(logn)
 	// F F F... T T T
@@ -34,7 +29,3 @@ Long search(Long low, Long high) { //O(logn)
 	//2 values low -> T and high-> F
 	return low;
 }*/
-
-int main(){
-	return 0;
-}
