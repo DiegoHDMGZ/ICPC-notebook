@@ -34,7 +34,7 @@ struct CHT{
 	}
 	
 	Long intersect(Line l1, Line l2) {
-		return div(l1.b - l2.b , l2.m - l1.m );
+		return div(l1.b - l2.b, l2.m - l1.m);
 	}
 	
 	bool bad(Line l1, Line l2, Line l3) {
