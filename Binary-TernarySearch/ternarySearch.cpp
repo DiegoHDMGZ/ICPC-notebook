@@ -14,7 +14,7 @@ Long ternarySearch(Long low, Long high) { //O(log n)
 		else high = m2;
 	}
 	Long maxi = f(low); 
-	for (Long i = low; i <= high; i++) {
+	for (Long i = low + 1; i <= high; i++) {
 		maxi = max(maxi, f(i)); //if minimum is needed, change to min
 	}
 	return maxi;
