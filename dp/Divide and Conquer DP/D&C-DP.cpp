@@ -29,9 +29,7 @@ Even more, if f''(x) >= 0, then the last inequality is satisfied
 
 const int MX = 3000;
 Long dp[MX][MX + 1];
-Long cost(Long l, Long r) {
-	return 0;
-}
+Long cost(Long l, Long r);
 
 const Long INF = 1e18;
 

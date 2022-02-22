@@ -32,9 +32,7 @@ const int MX = 3000;
 Long dp[MX][MX];
 int opt[MX][MX];
 
-Long cost(Long l, Long r) {
-	return 0;
-}
+Long cost(Long l, Long r);
 
 const Long INF = 1e18;
 
