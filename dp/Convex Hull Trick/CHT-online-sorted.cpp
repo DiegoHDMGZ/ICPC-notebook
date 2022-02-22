@@ -1,6 +1,4 @@
 #include <bits/stdc++.h>
-#define debug(x) cout << #x << " = " << x << endl
-#define REP(i,n) for(Long i = 0; i < (Long)n; i++)
 using namespace std;
 
 typedef long long Long;
@@ -17,13 +15,10 @@ Or change the comparator sign in cmp, and in check and in same slope case
 */
 
 struct Line{
-	Long m , b;
+	Long m, b;
 	Line() {}
-	Line(Long m , Long b) : m(m), b(b){}
-	
-	Long getVal(Long x) {
-		return m * x + b;
-	}
+	Line(Long m, Long b): m(m), b(b) {}
+	Long getVal(Long x) {return m * x + b;}
 };
 
 struct CHT{
@@ -48,25 +43,24 @@ struct CHT{
 	}
 
 	void addLine(Line l3) { 
-		if(envelope.empty()) {
+		if (envelope.empty()) {
 			envelope.push_back(l3);
 			return;
 		}
-		if(l3.m == envelope.back().m) {
-			if (l3.b > envelope.back().b) {
-				envelope.pop_back();
-			} else return;
+		if (l3.m == envelope.back().m) {
+			if (l3.b > envelope.back().b) envelope.pop_back();
+			else return;
 		}
-		if(envelope.size() <= 1) {
+		if (envelope.size() <= 1) {
 			envelope.push_back(l3);
 			return;
 		}
 		Long sz = envelope.size();
 		Line l1 = envelope[sz - 2];
 		Line l2 = envelope[sz - 1];
-		while(bad(l1 , l2 , l3)) {
+		while (bad(l1, l2, l3)) {
 			envelope.pop_back();
-			if(envelope.size() == 1) break;
+			if (envelope.size() == 1) break;
 			sz = envelope.size();
 			l1 = envelope[sz - 2];
 			l2 = envelope[sz - 1];
@@ -74,7 +68,7 @@ struct CHT{
 		envelope.push_back(l3);
 	}
 	
-	Long maxY(Long x){ //O(1) amortized
+	Long maxY(Long x) { //O(1) amortized
 		assert(!envelope.empty());
 		//x increasing
 		while (envelope.size() >= 2 && envelope[0].getVal(x) < envelope[1].getVal(x)) {
@@ -91,7 +85,3 @@ struct CHT{
 		return envelope.back().getVal(x);*/
 	}
 };
-
-int main() {
-	return 0;
-}

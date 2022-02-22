@@ -1,8 +1,5 @@
 #include <bits/stdc++.h>
-#define debug(x) cout << #x << " = " << x << endl
-#define REP(i,n) for(Long i = 0; i < (Long)n; i++)
 using namespace std;
-
 typedef long long Long;
 
 /*
@@ -17,26 +14,17 @@ Or change the comparator sign in cmp, in check function and in same slope case
 const Long INF = 1e18;
 
 struct Line {
-	mutable Long m , b , r;
+	mutable Long m, b, r;
 	//mx + b, intersect with next line at r (rounded down)
 	Line() {}
-	Line(Long m , Long b) : m(m), b(b) , r(0) {}
-	
-	bool operator < (const Line &other) const {
-		return m < other.m;
-	}
-	
-	bool operator < (const Long &x) const {
-		return r < x;
-	}
-	
-	Long getVal(Long x) {
-		return m * x + b;
-	}
+	Line(Long m, Long b): m(m), b(b) , r(0) {}
+	bool operator <(const Line &other) const {return m < other.m;}
+	bool operator <(const Long &x) const {return r < x;}
+	Long getVal(Long x) {return m * x + b;}
 };
 
 struct CHT{
-	set<Line , less<>> envelope;
+	set<Line, less<>> envelope;
 	
 	Long div(Long a, Long b) { //floored division
 		//CAREFUL ! this won't produced the right convex envelope
@@ -91,9 +79,4 @@ struct CHT{
 		Line L = *envelope.lower_bound(x);
 		return L.getVal(x);
 	}
-	
 };
-
-int main() {
-	return 0;
-}

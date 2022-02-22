@@ -1,6 +1,4 @@
 #include <bits/stdc++.h>
-#define debug(x) cout << #x << " = " << x << endl
-#define REP(i,n) for(Long i = 0; i < (Long)n; i++)
 using namespace std;
 
 typedef long long Long;
@@ -15,25 +13,20 @@ Or change the comparator sign in cmp, in check function and in same slope case
 */
 
 struct Line {
-	mutable Long m , b , r;
-	Line(){}
-	Line(Long m , Long b, Long r) : 
-		m(m), b(b) , r(r){}
-	Line(Long m , Long b) : 
-		m(m), b(b) , r(0){}
-	
-	Long getVal(Long x) {
-		return m * x + b;
-	}
+	mutable Long m, b, r;
+	Line() {}
+	Line(Long m, Long b, Long r): m(m), b(b), r(r) {}
+	Line(Long m , Long b): m(m), b(b), r(0) {}
+	Long getVal(Long x) {return m * x + b;}
 };
 
-struct cmpLine {
+struct CmpLine {
 	bool operator() (const Line &L1, const Line &L2) const {
 		return L1.m < L2.m;
 	}
 };
 
-struct cmpInter {
+struct CmpInter {
 	bool operator() (const Line &L1, const Line &L2) const {
 		return L1.r < L2.r;
 	}
@@ -42,8 +35,8 @@ struct cmpInter {
 const Long INF = 1e18;
 
 struct CHT{
-	set<Line , cmpLine> envelope;
-	set<Line, cmpInter> envelopeQuery;
+	set<Line, CmpLine> envelope;
+	set<Line, CmpInter> envelopeQuery;
 	
 	Long div(Long a, Long b) { //floored division
 		//CAREFUL ! this won't produced the right convex envelope
@@ -66,14 +59,14 @@ struct CHT{
 		L.r = INF;
 		auto it = envelope.lower_bound(L);
 		if (it != envelope.end() && it->m == L.m) { //same slope
-			if(it->b >= L.b) return;
+			if (it->b >= L.b) return;
 			else {
 				envelopeQuery.erase(*it);
 				it = envelope.erase(it);
 			}
 		}
 		if (it != envelope.begin()) {
-			if (it != envelope.end() && bad(*prev(it), L , *it)) {
+			if (it != envelope.end() && bad(*prev(it), L, *it)) {
 				//L is not necessary
 				return;
 			}
@@ -102,13 +95,9 @@ struct CHT{
 		envelopeQuery.insert(L);
 	}
 	
-	Long maxY(Long x){ //O(log n)
+	Long maxY(Long x) { //O(log n)
 		assert(!envelopeQuery.empty());
 		Line L = *envelopeQuery.lower_bound(Line(0,0, x));
 		return L.getVal(x);
 	}
 };
-
-int main() {
-	return 0;
-}
