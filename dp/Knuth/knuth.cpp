@@ -18,14 +18,7 @@ QI: cost(a, d) - cost(b, d) >= cost(a, c) - cost(b, c)
 Monotonicity: cost(b, c) <= cost(a, d)
 --------------------------------------------------
 Ways of proving that that cost satisfy Quadrangle Inequality:
-You can use induction in the following form
-cost(l, r) - cost(l + 1, r) >= cost(l, r - 1) - cost(l + 1, r - 1)
-Also, if cost(l, r) = f(S_l + ... + S_r) and all S_i are positive
-Then we can define cost(l, r) = f(A + x), cost(l + 1 , r) = f(A)
-cost(l, r - 1) = f(B + x) , cost(l + 1, r - 1) = f(B), A = B + y
-Notice that x = S_l and y = S_r
-So we want to prove f(A + x) - f(A) >= f(B + x) - f(B)
-Even more, if f''(x) >= 0, then the last inequality is satisfied
+(see D&C dp)
 */
 
 const int MX = 3000;
