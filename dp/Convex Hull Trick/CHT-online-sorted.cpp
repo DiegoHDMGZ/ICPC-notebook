@@ -5,13 +5,13 @@ typedef long long Long;
 
 /*
 We have linear functions yi = mi x + bi that will be added
-in increasing order of m.
+in increasing order of m. 
+(If m is decreasing, multiply each m and x by -1)
 
 There are queries for the maximum y for a given x among all the functions. 
 The queries are sorted in increasing/decreasing order of x
 
 For minimum just put the negative of mi and bi.
-Or change the comparator sign in cmp, and in check and in same slope case
 */
 
 struct Line{
