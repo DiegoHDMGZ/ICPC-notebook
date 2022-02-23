@@ -9,9 +9,7 @@ const int MX = 1e6;
 Long phi[MX];
 
 void calculate() { //O(n log log n)
-	phi[0] = 0;
-	phi[1] = 1;
-	for (int i = 2; i < MX; i++) {
+	for (int i = 0; i < MX; i++) {
 		phi[i] = i;
 	}
 	for (int i = 2; i < MX; i++) {
@@ -21,8 +19,4 @@ void calculate() { //O(n log log n)
 			}
 		}
 	}
-}
-
-int main() {
-	return 0;
 }
