@@ -1,7 +1,4 @@
 #include <bits/stdc++.h>
-#define debug(x) cout << #x << " = " << x << endl
-#define REP(i,n) for(Long i = 0; i < (Long)n; i++)
-#define pb push_back
 using namespace std;
 
 typedef long long Long;
@@ -46,11 +43,8 @@ Long divDown(Long a, Long b){
 	if((a > 0 && b > 0) || (a < 0 && b < 0)){
 		return d;
 	} else {
-		if(a % b == 0){
-			return -d;
-		} else {
-			return -d - 1;
-		}
+		if (a % b == 0) return -d;
+		else return -d - 1;
 	}
 }
 
@@ -59,9 +53,7 @@ Long divUp(Long a, Long b){
 	if((a > 0 && b > 0) || (a < 0 && b < 0)){
 		if(a % b == 0) return d;
 		else return d + 1;
-	} else {
-		return -d;
-	}
+	} else return -d;
 }
 
 vector<pair<Long,Long> > getAllSolutions(Long a, Long b, Long c, Long lx, Long rx, Long ly, Long ry) { //O(min(loga,logb)+ #solutions)
@@ -119,8 +111,4 @@ vector<pair<Long,Long> > getAllSolutions(Long a, Long b, Long c, Long lx, Long r
 		ans.push_back({x0 + k * (b / g) , y0 - k * (a / g)});
 	}
 	return ans;
-}
-
-int main() {
-	return 0;
 }
