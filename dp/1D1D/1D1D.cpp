@@ -25,7 +25,7 @@ struct Range {
 	Range(int l, int r, int opt): l(l), r(r), opt(opt){}
 };
 
-Long minCost(int n) {
+Long minCost(int n) { //O(n log n)
 	vector<Long> dp(n);
 	dp[0] = cost(0, 0);
 	deque<Range> ranges = {Range(1, n - 1, -1)};
