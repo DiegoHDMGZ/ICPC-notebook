@@ -17,7 +17,7 @@ QI: cost(a, d) - cost(b, d) >= cost(a, c) - cost(b, c)
 (For maximization is the opposite sign)
 Monotonicity: cost(b, c) <= cost(a, d)
 --------------------------------------------------
-Ways of proving that that cost satisfy Quadrangle Inequality:
+Ways of proving that that cost satisfies Quadrangle Inequality:
 (see D&C dp)
 */
 

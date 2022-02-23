@@ -16,7 +16,7 @@ For all a <= b <= c <= d
 cost(a, d) - cost(b, d) >= cost(a, c) - cost(b, c)  
 (For maximization is the opposite sign)
 --------------------------------------------------
-Ways of proving that that cost satisfy Quadrangle Inequality:
+Ways of proving that that cost satisfies Quadrangle Inequality:
 It's enough to prove the following, for all l + 1 <= r - 1
 cost(l, r) - cost(l + 1, r) >= cost(l, r - 1) - cost(l + 1, r - 1)
 Also, if cost(l, r) = f(S_l + ... + S_r) and all S_i are positive
