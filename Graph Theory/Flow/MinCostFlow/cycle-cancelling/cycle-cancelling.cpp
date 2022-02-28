@@ -177,8 +177,8 @@ struct Graph{
 	}
 	
 	Pair minCostFlow(int s, int t, int n) { 
-		//O(dinic + EV * |totalCost|) = O(dinic + EV * (mUC))
-		// |totalCost| <= E * U * C, where U is max cap and C max cost
+		//O(dinic + EV * |totalCost|)
+		//|totalCost| <= E * U * C, where U is max cap and C max cost
 		//<maxFlow, minCost>
 		Pair ans = maxFlow(s, t , n);
 		Long flow = ans.first;
