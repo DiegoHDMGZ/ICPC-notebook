@@ -3,8 +3,21 @@ using namespace std;
 
 typedef long long Long;
 
+/*
+Let f(x, y) be any associative function, and let also define f(x) = x
+Operations:
+- Push: Add a new element to the end of the queue
+- Pop: Delete the first element (oldest) from the queue
+- Get: Let Q be the elements of the queue in the order they enter, 
+it returns the result of f(Q_1, Q_2, ..., Q_n)
+
+It's also possible to change the behaviour of the get function and
+returns f(Q_n, Q_{n-1}, ..., Q_2, Q_1)
+To do that just swap the operands in f
+*/
+
 struct MaxQueue{
-	stack<pair<Long, Long>> s1, s2; // (value , answer)
+	stack<pair<Long, Long>> s1, s2; //<value, answer>
 	
 	Long f(Long a, Long b) {
 		return max(a, b);
@@ -15,12 +28,12 @@ struct MaxQueue{
 		if (s1.empty() || s2.empty()) {
 			return s1.empty() ? s2.top().second : s1.top().second;
 		} else {
-			return f(s1.top().second, s2.top().second);
+			return f(s2.top().second, s1.top().second);
 		}
 	}
 	
-	void add(Long val){ //O(1) amortized
-		Long ans = s1.empty() ? val : f(val, s1.top().second);
+	void push(Long val){ //O(1) amortized
+		Long ans = s1.empty() ? val : f(s1.top().second, val);
 		s1.push(make_pair(val, ans));
 	}
 	
@@ -42,7 +55,3 @@ struct MaxQueue{
 		while (!s2.empty()) s2.pop();
 	}
 }mq;
-
-int main() {
-	return 0;
-}
