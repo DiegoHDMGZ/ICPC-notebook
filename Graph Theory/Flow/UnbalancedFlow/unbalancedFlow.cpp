@@ -112,7 +112,7 @@ struct Graph{
 	}
 	
 	bool findFeasibleFlow(int n, bool addExtraFlow) {
-		//Assumption: All nodes are between [0...n]
+		//Assumption: All nodes are between [0... n - 1]
 		//Same complexity as Dinic's algorithm
 		int s = n;
 		int t = n + 1;
@@ -140,6 +140,7 @@ struct Graph{
 	
 	Long maxUnbalancedFlow(int s, int t, int n) {
 		//Same complexity as Dinic's algorithm
+		//If not solution exists, it returns -1
 		Long sumBalance = 0;
 		for (int u = 0; u < n; u++) {
 			if (u == s || u == t) continue;
