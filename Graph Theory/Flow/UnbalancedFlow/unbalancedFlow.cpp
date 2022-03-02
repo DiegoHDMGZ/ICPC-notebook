@@ -4,11 +4,13 @@ using namespace std;
 typedef long long Long;
 
 /*
-Find feasible / maximum flow in a graph G(V, E)
+Find maximum feasible (s-t) flow in a graph G(V, E)
 such that l(e) <= f(e) <= c(e) for each e in E
 and sum(flow out u) - sum(flow in u) = balance[u] for each u in V 
 
 Balances are 0 by default, set its value before adding edges
+
+It can also be easily modified to find the minimum feasible flow
 */
 
 const int MX = 1e5;
@@ -155,6 +157,7 @@ struct Graph{
 		adj[t].pop_back();
 		adj[s].pop_back();
 		maxNormalFlow(s, t, n);
+		//maxNormalFlow(t, s, n); to find min flow instead
 		Long flow = 0;
 		for (int u = 0; u < n; u++) {
 			for (Edge &e: adj[u]) {
