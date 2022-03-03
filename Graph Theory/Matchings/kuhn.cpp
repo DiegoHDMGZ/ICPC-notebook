@@ -42,4 +42,3 @@ struct Graph {
 		return ans;
 	}
 } G;
-
