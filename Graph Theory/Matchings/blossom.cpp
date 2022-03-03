@@ -1,10 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-//code : http://e-maxx.ru/algo/matching_edmonds
-//theory : https://math.mit.edu/~goemans/18438F09/lec2.pdf
-
-//General matching for unweighted graphs
+//General maximum matching for unweighted graphs
 const int MX = 1e5;
 struct Graph{
 	vector<int> adj[MX];
