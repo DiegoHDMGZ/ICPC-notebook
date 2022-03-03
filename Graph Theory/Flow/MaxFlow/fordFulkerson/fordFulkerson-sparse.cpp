@@ -11,7 +11,7 @@ struct Edge{
 	Long flow, cap;
 	int rev; //index of the backward edge in the adj list
 	Edge(int to, Long cap, int rev): 
-		to(to), cap(cap), flow(0), rev(rev) {}
+		to(to), flow(0), cap(cap), rev(rev) {}
 };
 
 struct Graph{
@@ -19,10 +19,7 @@ struct Graph{
 	bool vis[MX];
 	
 	void clear(int n) {
-		for (int i = 0 ; i < n; i++) {
-			adj[i].clear();
-			vis[i] = false;
-		}
+		for (int i = 0 ; i < n; i++) adj[i].clear();
 	}
 	
 	void addEdge(int u, int v, Long w, bool dir) {
@@ -52,7 +49,7 @@ struct Graph{
 		return 0;
 	}
 	
-	Long maxFlow(int s, int t, int n) { //O(E |F|) = O(E * nU)
+	Long maxFlow(int s, int t, int n) { //O(E * |F|) = O(E * n * U)
 		Long ans = 0;
 		while (true) { //O(|F|) iterations
 			fill(vis, vis + n, false);

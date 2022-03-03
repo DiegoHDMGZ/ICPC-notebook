@@ -19,7 +19,6 @@ struct Graph{
 	void clear(int n) {
 		for (int i = 0; i < n; i++) {
 			adj[i].clear();
-			vis[i] = false;
 			for (int j = 0; j < n; j++) {
 				cap[i][j] = 0;
 				flow[i][j] = 0;
@@ -55,7 +54,7 @@ struct Graph{
 		return 0;
 	}
 	
-	Long maxFlow(int s, int t, int n) { //O(E |F|) = O(E * nU)
+	Long maxFlow(int s, int t, int n) { //O(E * |F|) = O(E * n * U)
 		Long ans = 0;
 		while (true) { //O(|F|) iterations
 			fill(vis, vis + n, false);
