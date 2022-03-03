@@ -19,12 +19,12 @@ const Long INF = 1e18;
 typedef pair<Long, Long> Pair;
 
 struct Edge{
-	int from, to;
-	Long cap, flow, cost;
+	int to;
+	Long flow, cap, cost;
 	int rev; //index of the backward edge in the adj list of to
 	Edge() {}
-	Edge(int from, int to, Long cap, Long cost, int rev) : 
-		from(from), to(to), cap(cap), flow(0), cost(cost), rev(rev){}
+	Edge(int to, Long cap, Long cost, int rev) : 
+		to(to), flow(0), cap(cap), cost(cost), rev(rev){}
 };
  
 struct Graph{
@@ -34,19 +34,13 @@ struct Graph{
 	int parentEdge[MX];
 	
 	void clear(int n) {
-		for (int i = 0 ; i < n; i++) {
-			adj[i].clear();
-			level[i] = -1;
-			nextEdge[i] = 0;
-		}
+		for (int i = 0 ; i < n; i++) adj[i].clear();
 	}
 	
 	void addEdge(int u, int v, Long w, Long cost, bool dir) {
-		Edge forward(u, v, w, cost, adj[v].size());
-		Edge backward(v, u, 0, -cost, adj[u].size());
-		if (u == v) forward.rev++;
-		adj[u].push_back(forward);
-		adj[v].push_back(backward);
+		adj[u].push_back(Edge(v, w, cost, adj[v].size()));
+		adj[v].push_back(Edge(u, 0, -cost, adj[u].size() - 1));
+		if (u == v) adj[u].end()[-2].rev++;
 		if (!dir && u != v) addEdge(v, u, w, cost, true);
 	}
 	
@@ -73,20 +67,19 @@ struct Graph{
 	}
 	
 	bool bfs(int s, int t){ //O(E)
-		deque<int> q; 
-		q.push_back(s);
+		queue<int> q({s}); 
 		level[s] = 0;
 		while (!q.empty()) {
 			int u = q.front();
 			nextEdge[u] = 0;
-			q.pop_front();
+			q.pop();
 			if (u == t) return true;
 			for (Edge e : adj[u]) {
 				int v = e.to;
 				Long cf = e.cap - e.flow;
 				if (level[v] == -1 && cf > 0) {
 					level[v] = level[u] + 1;
-					q.push_back(v);
+					q.push(v);
 				}
 			}
 		}
@@ -180,7 +173,7 @@ struct Graph{
 		//O(dinic + EV * |totalCost|)
 		//|totalCost| <= E * U * C, where U is max cap and C max cost
 		//<maxFlow, minCost>
-		Pair ans = maxFlow(s, t , n);
+		Pair ans = maxFlow(s, t, n);
 		Long flow = ans.first;
 		Long cost = ans.second;
 		Long inc;

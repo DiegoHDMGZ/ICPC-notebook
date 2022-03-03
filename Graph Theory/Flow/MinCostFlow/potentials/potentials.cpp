@@ -12,22 +12,11 @@ const Long INF = 1e18;
 typedef pair<Long, Long> Pair;
 
 struct Edge{
-	int from, to;
-	Long cap, flow, cost;
+	int to;
+	Long flow, cap, cost;
 	int rev; //index of the backward edge in the adj list of to
-	Edge() {}
-	Edge(int from, int to, Long cap, Long cost, int rev) : 
-		from(from), to(to), cap(cap), flow(0), cost(cost), rev(rev){}
-};
- 
-struct Path{
-	int node;
-	Long weight;
-	Path(){}
-	Path(int node, Long weight) : node(node), weight(weight) {}
-	bool operator >(const Path &P) const{
-		return weight > P.weight;
-	}
+	Edge(int to, Long cap, Long cost, int rev) : 
+		to(to), flow(0), cap(cap), cost(cost), rev(rev){}
 };
  
 struct Graph{
@@ -43,10 +32,8 @@ struct Graph{
 	}
 	
 	void addEdge(int u, int v, Long w, Long cost, bool dir) {
-		Edge forward(u, v, w, cost, adj[v].size());
-		Edge backward(v, u, 0, -cost, adj[u].size());
-		adj[u].push_back(forward);
-		adj[v].push_back(backward);
+		adj[u].push_back(Edge(v, w, cost, adj[v].size()));
+		adj[v].push_back(Edge(u, 0, -cost, adj[u].size() - 1));
 		if (!dir) addEdge(v, u, w, cost, true);
 	}
 	
@@ -86,24 +73,25 @@ struct Graph{
 	
 	Pair dijkstra(int s, int t, int n) { //O(E log V)
 		//<flow, cost>
+		typedef pair<Long, int> Path; //<weight, node>
 		priority_queue<Path, vector<Path>, greater<Path>> q;
 		vector<Long> d(n, INF);
 		vector<Long> residualCap(n, 0);
 		d[s] = 0;
 		residualCap[s] = INF;
-		q.push(Path(s, d[s]));
+		q.push(Path(d[s], s));
 		while (!q.empty()) {
 			Path p = q.top();
 			q.pop();
-			int u = p.node;
-			if (p.weight != d[u]) continue;
+			int u = p.second;
+			if (p.first != d[u]) continue;
 			for (Edge e : adj[u]) {
 				int v = e.to;
 				Long cf = e.cap - e.flow;
 				Long cost = e.cost + pot[u] - pot[v];
 				if (cf > 0 && d[u] + cost < d[v]) {
 					d[v] = d[u] + cost;
-					q.push(Path(v, d[v]));
+					q.push(Path(d[v], v));
 					residualCap[v] = min(residualCap[u], cf);
 					parentEdge[v] = e.rev;
 				}

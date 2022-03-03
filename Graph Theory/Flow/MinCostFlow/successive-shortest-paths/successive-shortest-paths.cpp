@@ -14,33 +14,24 @@ const Long INF = 1e18;
 typedef pair<Long, Long> Pair;
 
 struct Edge{
-	int from, to;
-	Long cap, flow, cost;
+	int to;
+	Long flow, cap, cost;
 	int rev; //index of the backward edge in the adj list of to
-	Edge() {}
-	Edge(int from, int to, Long cap, Long cost, int rev) : 
-		from(from), to(to), cap(cap), flow(0), cost(cost), rev(rev){}
+	Edge(int to, Long cap, Long cost, int rev) : 
+		to(to), flow(0), cap(cap), cost(cost), rev(rev){}
 };
 
 struct Graph{
 	vector<Edge> adj[MX];
-	vector<Edge> edges;
 	int parentEdge[MX];
 	
 	void clear(int n) {
-		for (int i = 0; i < n; i++) {
-			adj[i].clear();
-		}
-		edges.clear();
+		for (int i = 0; i < n; i++) adj[i].clear();
 	}
 	
 	void addEdge(int u, int v, Long w, Long cost, bool dir) {
-		Edge forward(u, v, w, cost, adj[v].size());
-		Edge backward(v, u, 0, -cost, adj[u].size());
-		adj[u].push_back(forward);
-		adj[v].push_back(backward);
-		edges.push_back(forward);
-		edges.push_back(backward);
+		adj[u].push_back(Edge(v, w, cost, adj[v].size()));
+		adj[v].push_back(Edge(u, 0, -cost, adj[u].size() - 1));
 		if (!dir) addEdge(v, u, w, cost, true);
 	}
 	
