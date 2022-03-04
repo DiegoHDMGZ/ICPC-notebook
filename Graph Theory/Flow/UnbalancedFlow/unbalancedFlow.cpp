@@ -17,12 +17,12 @@ const int MX = 1e5;
 const Long INF = 1e18;
 
 struct Edge{
-	int from, to;
+	int to;
 	Long flow, cap;
-	Long extraFlow;
 	int rev; //index of the backward edge in the adj list of to
-	Edge(int from, int to, Long cap, Long extraFlow, int rev): 
-		from(from), to(to), cap(cap), flow(0), extraFlow(extraFlow), rev(rev) {}
+	Long extraFlow;
+	Edge(int to, Long cap, Long extraFlow, int rev): 
+		to(to), flow(0), cap(cap), extraFlow(extraFlow), rev(rev) {}
 };
 
 struct Graph{
@@ -35,8 +35,6 @@ struct Graph{
 		n += 3;
 		for (int i = 0; i < n; i++) {
 			adj[i].clear();
-			level[i] = -1;
-			nextEdge[i] = 0;
 			balance[i] = 0;
 		}	
 	}
@@ -50,68 +48,22 @@ struct Graph{
 			addEdge(v, u, 0, -L, dir);
 			return;
 		} 
-		Edge forward(u, v, R - L, L, adj[v].size());
-		Edge backward(v, u, 0, -L, adj[u].size());
+		adj[u].push_back(Edge(v, R - L, L, adj[v].size()));
+		adj[v].push_back(Edge(u, 0, -L, adj[u].size() - 1));
+		if (u == v) adj[u].end()[-2].rev++;
 		balance[u] -= L;
 		balance[v] += L;
-		adj[u].push_back(forward);
-		adj[v].push_back(backward);
 		if (!dir) addEdge(u, v, L, R, true);
 	}
 	
-	Long dfs(int u, int t, Long f) { 
-		if(u == t) return f;
-		for (int &i = nextEdge[u]; i < adj[u].size(); i++) {
-			Edge &e = adj[u][i];
-			int v = e.to;
-			Edge &rev = adj[v][e.rev];
-			Long cf = e.cap - e.flow;
-			if (cf == 0 || level[v] != level[u] + 1) continue;
-			Long ret = dfs(v, t, min(f, cf));
-			if (ret > 0) {
-				e.flow += ret;
-				rev.flow -= ret;
-				return ret;
-			}
-		}
-		return 0;
-	}
+	//******** Dinic's Algorithm ******** 
+	Long dfs(int u, int t, Long f);
 	
-	bool bfs(int s, int t) { //O(E)
-		deque<int> q; 
-		q.push_back(s);
-		level[s] = 0;
-		while (!q.empty()) {
-			int u = q.front();
-			nextEdge[u] = 0;
-			q.pop_front();
-			if (u == t) return true;
-			for (Edge e : adj[u]) {
-				int v = e.to;
-				Long cf = e.cap - e.flow;
-				if (level[v] == -1 && cf > 0) {
-					level[v] = level[u] + 1;
-					q.push_back(v);
-				}
-			}
-		}
-		return false;
-	}
+	bool bfs(int s, int t);
 	
-	Long maxNormalFlow(int s, int t, int n) {
-		//Dinic's algorithm
-		Long ans = 0;
-		while (true) { 
-			fill(level, level + n, -1);
-			if (!bfs(s, t)) break;
-			Long inc;
-			do{
-				inc = dfs(s, t, INF);
-				ans += inc;
-			} while (inc > 0);
-		}
-		return ans;
-	}
+	Long maxNormalFlow(int s, int t, int n);
+	
+	//******** End Dinic's Algorithm ******** 
 	
 	bool findFeasibleFlow(int n, bool addExtraFlow) {
 		//Assumption: All nodes are between [0... n - 1]
@@ -162,7 +114,7 @@ struct Graph{
 		for (int u = 0; u < n; u++) {
 			for (Edge &e: adj[u]) {
 				e.flow += e.extraFlow;
-				if (e.from == s) flow += e.flow;
+				if (u == s) flow += e.flow;
 			}
 		}
 		return flow;
