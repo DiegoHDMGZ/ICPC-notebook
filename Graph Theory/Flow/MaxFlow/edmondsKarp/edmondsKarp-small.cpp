@@ -19,7 +19,6 @@ struct Graph{
 	void clear(int n){
 		for (int i = 0; i < n; i++){
 			adj[i].clear();
-			parent[i] = -1;
 			for(int j = 0; j < n; j++) {
 				cap[i][j] = 0;
 				flow[i][j] = 0;
@@ -48,24 +47,25 @@ struct Graph{
 		}
 	}
 	
-	Long bfs(int s, int t) { //O(E)
-		deque<pair<int, Long>> q; //<node, flow>
-		q.push_back({s, INF});
+	Long bfs(int s, int t, int n) { //O(E)
+		fill(parent, parent + n, -1);
+		vector<Long> residualCap(n, 0);
+		queue<int> q({s});
 		parent[s] = -2;
+		residualCap[s] = INF;
 		while (!q.empty()) {
-			int u = q.front().first;
-			Long curFlow = q.front().second;
-			q.pop_front();
+			int u = q.front();
+			q.pop();
 			if (u == t) {
-				pushFlow(s, t, curFlow);
-				return curFlow;
+				pushFlow(s, t, residualCap[t]);
+				return residualCap[t];
 			}
 			for (int v : adj[u]){
 				Long cf = cap[u][v] - flow[u][v];
 				if (parent[v] == -1 && cf > 0) {
 					parent[v] = u;
-					Long newFlow = min(curFlow, cf);
-					q.push_back({v, newFlow});
+					residualCap[v] = min(residualCap[u], cf);
+					q.push(v);
 				}
 			}
 		}
@@ -74,12 +74,7 @@ struct Graph{
 	
 	Long maxFlow(int s, int t, int n) { //O(E * min(E * V , |F|))
 		Long ans = 0;
-		while (true){ //O(min(E * V, |F|)) iterations
-			fill(parent, parent + n, -1);
-			Long inc = bfs(s, t);
-			if (inc == 0) break;
-			ans += inc;
-		}
+		while (Long inc = bfs(s, t, n)) ans += inc;
 		return ans;
 	}
 } G;

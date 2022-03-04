@@ -57,17 +57,17 @@ struct Graph{
 	}
 	
 	bool bfs(int s, int t) { //O(E)
-		deque<int> q; 
-		q.push_back(s);
+		queue<int> q({s}); 
 		level[s] = 0;
 		while (!q.empty()) {
 			int u = q.front();
-			q.pop_front();
+			nextEdge[u] = 0;
+			q.pop();
 			for (int v : adj[u]) {
 				Long cf = cap[u][v] - flow[u][v];
 				if (level[v] == -1 && cf > 0) {
 					level[v] = level[u] + 1;
-					q.push_back(v);
+					q.push(v);
 				}
 			}
 		}
@@ -86,12 +86,7 @@ struct Graph{
 			fill(level, level + n, -1);
 			if (!bfs(s, t)) break;
 			//after bfs, the graph is a DAG
-			fill(nextEdge, nextEdge + n, 0);
-			Long inc;
-			do{
-				inc = dfs(s, t, INF);
-				ans += inc;
-			} while (inc > 0);
+			while (Long inc = dfs(s, t, INF)) ans += inc;
 		}
 		return ans;
 	}

@@ -1,7 +1,4 @@
 #include <bits/stdc++.h>
-#define debug(x) cout << #x << " = " << x << endl
-#define REP(i , n) for(Long i = 0; i < (Long)n ; i++)
-
 using namespace std;
 
 typedef long long Long;
@@ -10,11 +7,11 @@ const int MX = 5000;
 const Long INF = 1e18;
 
 struct Edge{
-	int from, to;
+	int to;
 	Long flow, cap;
 	int rev; //index of the backward edge in the adj list of to
-	Edge(int from, int to, Long cap, int rev): 
-		from(from), to(to), cap(cap), flow(0), rev(rev) {}
+	Edge(int to, Long cap, int rev): 
+		to(to), flow(0), cap(cap), rev(rev) {}
 };
 
 struct Graph{
@@ -23,23 +20,16 @@ struct Graph{
 	int nextEdge[MX];
 	
 	void clear(int n) {
-		for (int i = 0; i < n; i++) {
-			adj[i].clear();
-			level[i] = -1;
-			nextEdge[i] = 0;
-		}
+		for (int i = 0; i < n; i++) adj[i].clear();
 	}
 	
 	void addEdge(int u, int v, Long w, bool dir) {
-		Edge forward(u, v, w, adj[v].size());
-		Edge backward(v, u, 0, adj[u].size());
-		if (!dir) backward.cap = w;
-		adj[u].push_back(forward);
-		adj[v].push_back(backward);
+		adj[u].push_back(Edge(v, w, adj[v].size()));
+		adj[v].push_back(Edge(u, dir ? 0 : w, adj[u].size() - 1));
 	}
 	
 	Long dfs(int u, int t, Long f) { 
-		if(u == t) return f;
+		if (u == t) return f;
 		for (int &i = nextEdge[u]; i < adj[u].size(); i++) {
 			Edge &e = adj[u][i];
 			int v = e.to;
@@ -57,20 +47,19 @@ struct Graph{
 	}
 	
 	bool bfs(int s, int t) { //O(E)
-		deque<int> q; 
-		q.push_back(s);
+		queue<int> q({s}); 
 		level[s] = 0;
 		while (!q.empty()) {
 			int u = q.front();
 			nextEdge[u] = 0;
-			q.pop_front();
+			q.pop();
 			if (u == t) return true;
 			for (Edge e : adj[u]) {
 				int v = e.to;
 				Long cf = e.cap - e.flow;
 				if (level[v] == -1 && cf > 0) {
 					level[v] = level[u] + 1;
-					q.push_back(v);
+					q.push(v);
 				}
 			}
 		}
@@ -90,10 +79,7 @@ struct Graph{
 			if (!bfs(s, t)) break;
 			//after bfs, the graph is a DAG
 			Long inc;
-			do{
-				inc = dfs(s, t, INF);
-				ans += inc;
-			} while (inc > 0);
+			while (Long inc = dfs(s, t, INF)) ans += inc;
 		}
 		return ans;
 	}
