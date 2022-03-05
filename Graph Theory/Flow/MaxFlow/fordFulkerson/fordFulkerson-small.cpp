@@ -55,7 +55,7 @@ struct Graph{
 	}
 	
 	Long maxFlow(int s, int t, int n) { //O(E * |F|)
-		//As the graph is simples O(|F|) = O(n * u)
+		//As the graph is simples O(|F|) = O(V * u)
 		Long ans = 0;
 		while (true) { //O(|F|) iterations
 			fill(vis, vis + n, false);
