@@ -46,7 +46,8 @@ struct Graph{
 		return 0;
 	}
 	
-	bool bfs(int s, int t) { //O(E)
+	bool bfs(int s, int t, int n) { //O(E)
+		fill(level, level + n, -1);
 		queue<int> q({s}); 
 		level[s] = 0;
 		while (!q.empty()) {
@@ -74,11 +75,8 @@ struct Graph{
 		//and for any vertex except s and t either the 
 		//incoming or outgoing edge is unique.
 		Long ans = 0;
-		while (true) { //O(V) iterations
-			fill(level, level + n, -1);
-			if (!bfs(s, t)) break;
+		while (bfs(s, t, n)) { //O(V) iterations
 			//after bfs, the graph is a DAG
-			Long inc;
 			while (Long inc = dfs(s, t, INF)) ans += inc;
 		}
 		return ans;

@@ -44,6 +44,7 @@ struct Graph{
 		if (!dir && u != v) addEdge(v, u, w, cost, true);
 	}
 	
+	//******** Dinic's Algorithm ********
 	Pair dfs(int u, int t, Long f) { 
 		//<flow, sumCost>
 		if (u == t) return {f , 0};
@@ -66,7 +67,8 @@ struct Graph{
 		return {0, 0};
 	}
 	
-	bool bfs(int s, int t){ //O(E)
+	bool bfs(int s, int t, int n){ //O(E)
+		fill(level, level + n, -1);
 		queue<int> q({s}); 
 		level[s] = 0;
 		while (!q.empty()) {
@@ -87,28 +89,20 @@ struct Graph{
 	}
 	
 	Pair maxFlow(int s, int t, int n){
-		//Dinic's algorithm
-		//General: O(E * V^2)
-		//Unit Cap: O(E * min(E^(1/2) , V^(2/3)))
-		//Unit Network: O(E * V^(1/2))
-		//In unit network, all the edges have unit capacity
-		//and for any vertex except s and t either the 
-		//incoming or outgoing edge is unique.
 		Long flow = 0;
 		Long cost = 0;
-		while (true) { //O(V) iterations
-			fill(level, level + n, -1);
-			if (!bfs(s, t)) break;
+		while (bfs(s, t, n)) { //O(V) iterations
 			//after bfs, the graph is a DAG
 			Pair inc;
 			do {
-				inc = dfs(s , t , INF);
+				inc = dfs(s, t, INF);
 				flow += inc.first;
 				cost += inc.second;
 			} while (inc.first > 0);
 		}
 		return {flow, cost};
 	}
+	//******** End Dinic's Algorithm ******** 
 	
 	Long costCycle(int v, int n) {
 		//go back n times to find a cycle

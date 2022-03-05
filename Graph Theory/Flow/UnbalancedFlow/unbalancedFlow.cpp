@@ -56,11 +56,7 @@ struct Graph{
 		if (!dir) addEdge(u, v, L, R, true);
 	}
 	
-	//******** Dinic's Algorithm ******** 
-	Long dfs(int u, int t, Long f);
-	
-	bool bfs(int s, int t);
-	
+	//******** Dinic's Algorithm ******** 	
 	Long maxNormalFlow(int s, int t, int n);
 	
 	//******** End Dinic's Algorithm ******** 
