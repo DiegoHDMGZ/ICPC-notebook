@@ -48,7 +48,7 @@ struct Graph{
 	
 	Long maxFlow(int s, int t, int n) { //O(E * |F|)
 		//O(|F|) = O(m * U)
-		//If there is no multi edge, O(|F|) = O(n * U)
+		//If there is no multi edges, O(|F|) = O(n * U)
 		Long ans = 0;
 		while (true) { //O(|F|) iterations
 			fill(vis, vis + n, false);
