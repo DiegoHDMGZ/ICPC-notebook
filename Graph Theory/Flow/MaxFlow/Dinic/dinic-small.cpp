@@ -75,7 +75,7 @@ struct Graph{
 	}
 	
 	Long maxFlow(int s, int t, int n) {
-		//General: O(E * V^2), O(E * V + V * F)
+		//General: O(E * V^2), O(E * V + V * |F|)
 		//Unit Cap: O(E * min(E^(1/2) , V^(2/3)))
 		//Unit Network: O(E * V^(1/2))
 		//In unit network, all the edges have unit capacity
