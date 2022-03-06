@@ -88,6 +88,17 @@ struct ModInt {
 	}
 };
 
+vector<ModInt> allInverse() { //O(MOD)
+	//find the modular inverse for all numbers [1, MOD - 1]
+	//MOD have to be prime
+	vector<ModInt> inv(MOD);
+	inv[1] = 1;
+	for (int i = 2; i < MOD; i++) {
+		inv[i] = inv[MOD % i] * -(MOD / i);
+	}
+	return inv;
+}
+
 istream & operator >> (istream &in, ModInt &A){
 	Long val;
 	in >> val;
