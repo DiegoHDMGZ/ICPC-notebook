@@ -6,7 +6,7 @@ using namespace std;
 typedef long long Long;
 
 //Problem: You are given an array A of n integers and Q queries
-//In each query you will be given an integer X. Find the minimum value
+//In each query you will be given an integer X.
 //Find the minimum value of the xor of X and the xor 
 //of any subsequence of A
 
