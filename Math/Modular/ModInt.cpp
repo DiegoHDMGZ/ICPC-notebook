@@ -70,7 +70,7 @@ struct ModInt {
 		return pow(MOD - 2);
 	}
 	/*
-	ModInt invertGcd() { //O(log(min(val, mod)))
+	ModInt invertGcd() const { //O(log(min(val, mod)))
 		//(val , mod) coprimes
 		Long x, y;
 		//use euclid extended algorithm
