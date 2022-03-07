@@ -50,6 +50,7 @@ struct Graph {
 	}
 	
 	Cap maxFlow(int s, int t, int n) { //O(E^2 * log U)
+		//All capacities must be integers in order to apply scaling
 		if (maxCap == 0) return 0;
 		int lg = 64 - __builtin_clzll(maxCap);
 		Cap ans = 0;
