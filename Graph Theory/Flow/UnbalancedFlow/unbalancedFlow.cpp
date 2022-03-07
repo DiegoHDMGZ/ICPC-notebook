@@ -1,8 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-typedef long long Cap;
-
 /*
 Find maximum feasible (s-t) flow in a graph G(V, E)
 such that l(e) <= f(e) <= c(e) for each e in E
@@ -12,6 +10,8 @@ Balances are 0 by default, set its value before adding edges
 
 It can also be easily modified to find the minimum feasible flow
 */
+
+typedef long long Cap;
 
 const int MX = 1e5;
 const Cap INF = 1e18;
