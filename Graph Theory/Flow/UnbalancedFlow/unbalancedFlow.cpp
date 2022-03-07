@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-typedef long long Long;
+typedef long long Cap;
 
 /*
 Find maximum feasible (s-t) flow in a graph G(V, E)
@@ -14,18 +14,18 @@ It can also be easily modified to find the minimum feasible flow
 */
 
 const int MX = 1e5;
-const Long INF = 1e18;
+const Cap INF = 1e18;
 
-struct Edge{
+struct Edge {
 	int to;
-	Long flow, cap;
+	Cap flow, cap;
 	int rev; //index of the backward edge in the adj list of to
-	Long extraFlow;
-	Edge(int to, Long cap, Long extraFlow, int rev): 
+	Cap extraFlow;
+	Edge(int to, Cap cap, Cap extraFlow, int rev): 
 		to(to), flow(0), cap(cap), extraFlow(extraFlow), rev(rev) {}
 };
 
-struct Graph{
+struct Graph {
 	vector<Edge> adj[MX];  
 	int level[MX];
 	int nextEdge[MX];
@@ -39,7 +39,7 @@ struct Graph{
 		}	
 	}
 	
-	void addEdge(int u, int v, Long L, Long R, bool dir) {
+	void addEdge(int u, int v, Cap L, Cap R, bool dir) {
 		if (R < 0) {
 			addEdge(v, u, -L, -R, dir);
 			return;
@@ -57,7 +57,7 @@ struct Graph{
 	}
 	
 	//******** Dinic's Algorithm ******** 	
-	Long maxNormalFlow(int s, int t, int n);
+	Cap maxNormalFlow(int s, int t, int n);
 	
 	//******** End Dinic's Algorithm ******** 
 	
@@ -66,8 +66,8 @@ struct Graph{
 		//Same complexity as Dinic's algorithm
 		int s = n;
 		int t = n + 1;
-		Long target = 0;
-		Long sumBalance = 0;
+		Cap target = 0;
+		Cap sumBalance = 0;
 		for (int u = 0; u < n; u++) {
 			sumBalance += balance[u];
 			if (balance[u] > 0) {
@@ -88,10 +88,10 @@ struct Graph{
 		return ok;
 	}
 	
-	Long maxUnbalancedFlow(int s, int t, int n) {
+	Cap maxUnbalancedFlow(int s, int t, int n) {
 		//Same complexity as Dinic's algorithm
 		//If not solution exists, it returns -1
-		Long sumBalance = 0;
+		Cap sumBalance = 0;
 		for (int u = 0; u < n; u++) {
 			if (u == s || u == t) continue;
 			sumBalance += balance[u];
@@ -106,7 +106,7 @@ struct Graph{
 		adj[s].pop_back();
 		maxNormalFlow(s, t, n);
 		//maxNormalFlow(t, s, n); to find min flow instead
-		Long flow = 0;
+		Cap flow = 0;
 		for (int u = 0; u < n; u++) {
 			for (Edge &e: adj[u]) {
 				e.flow += e.extraFlow;

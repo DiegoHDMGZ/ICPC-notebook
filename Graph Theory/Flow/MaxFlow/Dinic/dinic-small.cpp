@@ -1,18 +1,18 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-typedef long long Long;
+typedef long long Cap;
 
 //This implementation is for small graphs G(V, E) (|V| <= 3000 aprox)
 //where O(|V|^2) memory will fit the memory limit.
 
-const Long MX = 3000;
-const Long INF = 1e18;
+const int MX = 3000;
+const Cap INF = 1e18;
 
-struct Graph{
+struct Graph {
 	vector<int> adj[MX];
-	Long cap[MX][MX]; 
-	Long flow[MX][MX];
+	Cap cap[MX][MX]; 
+	Cap flow[MX][MX];
 	bool added[MX][MX];
 	int level[MX];
 	int nextEdge[MX];
@@ -28,7 +28,7 @@ struct Graph{
 		}
 	}
 	
-	void addEdge(int u, int v, Long w, bool dir) {
+	void addEdge(int u, int v, Cap w, bool dir) {
 		if(!added[u][v]) {
 			adj[u].push_back(v);
 			adj[v].push_back(u);
@@ -38,13 +38,13 @@ struct Graph{
 		if (!dir) cap[v][u] += w;
 	}
 	
-	Long dfs(int u, int t ,Long f) { //O(E)
+	Cap dfs(int u, int t, Cap f) { //O(E)
 		if(u == t) return f;
 		for (int &i = nextEdge[u]; i < adj[u].size(); i++) {
 			int v = adj[u][i];
-			Long cf = cap[u][v] - flow[u][v];
+			Cap cf = cap[u][v] - flow[u][v];
 			if (cf == 0 || level[v] != level[u] + 1) continue;
-			Long ret = dfs(v, t, min(f, cf));
+			Cap ret = dfs(v, t, min(f, cf));
 			if (ret > 0) {
 				flow[u][v] += ret;
 				flow[v][u] -= ret;
@@ -63,7 +63,7 @@ struct Graph{
 			nextEdge[u] = 0;
 			q.pop();
 			for (int v : adj[u]) {
-				Long cf = cap[u][v] - flow[u][v];
+				Cap cf = cap[u][v] - flow[u][v];
 				if (level[v] == -1 && cf > 0) {
 					level[v] = level[u] + 1;
 					q.push(v);
@@ -73,17 +73,17 @@ struct Graph{
 		return level[t] != -1;
 	}
 	
-	Long maxFlow(int s, int t, int n) {
+	Cap maxFlow(int s, int t, int n) {
 		//General: O(E * V^2), O(E * V + V * |F|)
 		//Unit Cap: O(E * min(E^(1/2) , V^(2/3)))
 		//Unit Network: O(E * V^(1/2))
 		//In unit network, all the edges have unit capacity
 		//and for any vertex except s and t either the 
 		//incoming or outgoing edge is unique.
-		Long ans = 0;
+		Cap ans = 0;
 		while (bfs(s, t, n)) { //O(V) iterations
 			//after bfs, the graph is a DAG
-			while (Long inc = dfs(s, t, INF)) ans += inc;
+			while (Cap inc = dfs(s, t, INF)) ans += inc;
 		}
 		return ans;
 	}

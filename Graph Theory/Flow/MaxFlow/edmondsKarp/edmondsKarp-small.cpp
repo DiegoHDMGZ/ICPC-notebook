@@ -1,23 +1,22 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-typedef long long Long;
-
+typedef long long Cap;
 //This implementation is for small graphs G(V, E) (|V| <= 3000 aprox)
 //where O(|V|^2) memory will fit the memory limit.
 
 const int MX = 3000;
-const Long INF = 1e18;
+const Cap INF = 1e18;
 
-struct Graph{
+struct Graph {
 	vector<int> adj[MX];
-	Long cap[MX][MX]; 
-	Long flow[MX][MX];
+	Cap cap[MX][MX]; 
+	Cap flow[MX][MX];
 	bool added[MX][MX];
 	int parent[MX];
 	
-	void clear(int n){
-		for (int i = 0; i < n; i++){
+	void clear(int n) {
+		for (int i = 0; i < n; i++) {
 			adj[i].clear();
 			for(int j = 0; j < n; j++) {
 				cap[i][j] = 0;
@@ -27,7 +26,7 @@ struct Graph{
 		}
 	}
 	
-	void addEdge(int u, int v, Long w, bool dir) {
+	void addEdge(int u, int v, Cap w, bool dir) {
 		if(!added[u][v]) {
 			adj[u].push_back(v);
 			adj[v].push_back(u);
@@ -37,7 +36,7 @@ struct Graph{
 		if (!dir) cap[v][u] += w;
 	}
 	
-	void pushFlow(int s, int t, Long inc) {
+	void pushFlow(int s, int t, Cap inc) {
 		int v = t;
 		while (v != s){
 			int u = parent[v];
@@ -47,9 +46,9 @@ struct Graph{
 		}
 	}
 	
-	Long bfs(int s, int t, int n) { //O(E)
+	Cap bfs(int s, int t, int n) { //O(E)
 		fill(parent, parent + n, -1);
-		vector<Long> residualCap(n, 0);
+		vector<Cap> residualCap(n, 0);
 		queue<int> q({s});
 		parent[s] = -2;
 		residualCap[s] = INF;
@@ -60,8 +59,8 @@ struct Graph{
 				pushFlow(s, t, residualCap[t]);
 				return residualCap[t];
 			}
-			for (int v : adj[u]){
-				Long cf = cap[u][v] - flow[u][v];
+			for (int v : adj[u]) {
+				Cap cf = cap[u][v] - flow[u][v];
 				if (parent[v] == -1 && cf > 0) {
 					parent[v] = u;
 					residualCap[v] = min(residualCap[u], cf);
@@ -72,9 +71,9 @@ struct Graph{
 		return 0;
 	}
 	
-	Long maxFlow(int s, int t, int n) { //O(E * min(E * V , |F|))
-		Long ans = 0;
-		while (Long inc = bfs(s, t, n)) ans += inc;
+	Cap maxFlow(int s, int t, int n) { //O(E * min(E * V , |F|))
+		Cap ans = 0;
+		while (Cap inc = bfs(s, t, n)) ans += inc;
 		return ans;
 	}
 } G;
