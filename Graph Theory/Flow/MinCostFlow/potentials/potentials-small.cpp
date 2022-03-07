@@ -1,8 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-typedef long long Long;
-
 //Find the maximum flow that has minimum cost.
 //Costs can be negative but there must be no negative cycle initially.
 
@@ -12,18 +10,20 @@ typedef long long Long;
 //WARNING: No multi-edges allowed. 
 //No antiparallel edges allowed i.e. No (u, v) (v, u) at the same time
 
-const int MX = 2005;
-const Long INF = 1e18;
+typedef long long Cap;
+typedef long long Cost;
 
-typedef pair<Long, Long> Pair;
+const int MX = 2005;
+const Cap INF_CAP = 1e18;
+const Cost INF_COST = 1e18;
 
 struct Graph{
 	vector<int> adj[MX];
-	Long cap[MX][MX];
-	Long cost[MX][MX];
-	Long flow[MX][MX];
+	Cap cap[MX][MX];
+	Cap flow[MX][MX];
+	Cost cost[MX][MX];
 	int parent[MX];
-	Long pot[MX];
+	Cost pot[MX];
 	bool inQueue[MX];
 	
 	void clear(int n) {
@@ -38,7 +38,7 @@ struct Graph{
 		}
 	}
 	
-	void addEdge(int u, int v, Long w, Long c) {
+	void addEdge(int u, int v, Cap w, Cost c) {
 		adj[u].push_back(v);
 		adj[v].push_back(u);
 		cap[u][v] = w;
@@ -46,8 +46,8 @@ struct Graph{
 		cost[v][u] = -c;
 	}
 	
-	void spfa(int s, int n){ //O(E V)
-		for (int i = 0; i < n; i++) pot[i] = INF;
+	void spfa(int s, int n) { //O(E V)
+		for (int i = 0; i < n; i++) pot[i] = INF_COST;
 		queue<int> q({s});
 		pot[s] = 0;
 		inQueue[s] = true;
@@ -65,7 +65,7 @@ struct Graph{
 		}
 	}
 	
-	void pushFlow(int s, int t, Long inc) {
+	void pushFlow(int s, int t, Cap inc) {
 		int v = t;
 		while (v != s) {
 			int u = parent[v];
@@ -75,23 +75,22 @@ struct Graph{
 		}
 	}
 	
-	Pair dijkstra(int s, int t, int n){ //O(E log V)
+	pair<Cap, Cost> dijkstra(int s, int t, int n) { //O(E log V)
 		//<flow, cost>
-		typedef pair<Long, int> Path; //<weight, node>
+		typedef pair<Cost, int> Path; //<weight, node>
 		priority_queue<Path, vector<Path>, greater<Path>> q;
-		vector<Long> d(n, INF);
-		vector<Long> residualCap(n, 0);
+		vector<Cost> d(n, INF_COST);
+		vector<Cap> residualCap(n, 0);
 		d[s] = 0;
-		residualCap[s] = INF;
+		residualCap[s] = INF_CAP;
 		q.push(Path(d[s], s));
 		while (!q.empty()) {
-			Path p = q.top();
+			auto [dist, u] = q.top();
 			q.pop();
-			int u = p.second;
-			if (p.first != d[u]) continue;
+			if (dist != d[u]) continue;
 			for (int v : adj[u]) {
-				Long cf = cap[u][v] - flow[u][v];
-				Long c = cost[u][v] + pot[u] - pot[v];
+				Cap cf = cap[u][v] - flow[u][v];
+				Cost c = cost[u][v] + pot[u] - pot[v];
 				if (cf > 0 && d[u] + c < d[v]) {
 					assert(c >= 0);
 					d[v] = d[u] + c;
@@ -101,32 +100,31 @@ struct Graph{
 				}
 			}
 		}
-		if(d[t] == INF) return {0, 0};
+		if (d[t] == INF_COST) return {0, 0};
 		for (int i = 0; i < n; i++) pot[i] += d[i];
-		Long cf = residualCap[t];
+		Cap cf = residualCap[t];
 		pushFlow(s, t, cf);
 		return {cf, pot[t] * cf};
 	}
 	
-	/*
 	//For dense graph, the quadratic version can be used
-	Pair dijkstra(int s, int t, int n) { //O(V^2)
+	/*pair<Cap, Cost> dijkstra(int s, int t, int n) { //O(V^2)
 		//<flow, cost>
-		vector<Long> d(n , INF);
+		vector<Cost> d(n, INF_COST);
 		vector<bool> vis(n , false);
-		vector<Long> residualCap(n, 0);
+		vector<Cap> residualCap(n, 0);
 		d[s] = 0;
-		residualCap[s] = INF;
+		residualCap[s] = INF_CAP;
 		for (int i = 0; i < n; i++) {
 			int u = -1;
 			for (int j = 0; j < n; j++) {
 				if (!vis[j] && (u == -1 || d[j] < d[u])) u = j;
 			}
-			if (u == -1 || d[u] == INF) break;
+			if (u == -1 || d[u] == INF_COST) break;
 			vis[u] = true;
 			for (int v : adj[u]) {
-				Long cf = cap[u][v] - flow[u][v];
-				Long c = cost[u][v] + pot[u] - pot[v];
+				Cap cf = cap[u][v] - flow[u][v];
+				Cost c = cost[u][v] + pot[u] - pot[v];
 				if (cf > 0 && d[u] + c < d[v]) {
 					d[v] = d[u] + c;
 					residualCap[v] = min(residualCap[u], cf);
@@ -134,23 +132,22 @@ struct Graph{
 				}
 			}
 		}
-		if(d[t] == INF) return {0, 0};
+		if (d[t] == INF_COST) return {0, 0};
 		for (int i = 0; i < n; i++) pot[i] += d[i];
-		Long cf = residualCap[t];
+		Cap cf = residualCap[t];
 		pushFlow(s, t, cf);
 		return {cf, pot[t] * cf};
-	}
-	*/
+	}*/
 	
-	Pair minCostFlow(int s, int t, int n) { 
+	pair<Cap, Cost> minCostFlow(int s, int t, int n) { 
 		//O(E log V *  maxFlow)
 		//maxFlow <= V * U, where U is the maximum capacity
 		//Initially no negative cycles
 		//<maxFlow, minCost>
 		spfa(s, n); //not necessary if there is no negative edges
-		Pair inc;
-		Long f = 0;
-		Long c = 0;
+		pair<Cap, Cost> inc;
+		Cap f = 0;
+		Cost c = 0;
 		do {
 			inc = dijkstra(s, t, n);
 			f += inc.first;
