@@ -53,8 +53,6 @@ vector<Point> convexHull(vector<Point> &v) { //O(n log n)
 	vector<Point> hull = {v[0], v[1]};
 	for (int i = 2 ; i < n; i++) {
 		int sz = hull.size();
-		Point prev1 = hull[sz - 1];
-		Point prev2 = hull[sz - 2];
 		while(hull.size() >= 2 && 
 		hull.back().cross(v[i], hull.end()[-2]) <= 0) {
 			hull.pop_back();
