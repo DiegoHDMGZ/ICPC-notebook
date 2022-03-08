@@ -32,18 +32,17 @@ Long squareDist(Point P1, Point P2) {
 
 vector<Point> convexHull(vector<Point> &v) { //O(n log n)
 	//gives the convex hull in counter clockwise order
-	Point center = v[0];
 	int n = v.size();
-	for (int i = 0; i < n; i++) {
-		if (make_pair(v[i].y, v[i].x) < make_pair(center.y, center.x)) {
-			center = v[i];
+	Point center = *min_element(v.begin(), v.end(), 
+	[](const Point &A, const Point &B) {
+		if (A.y == B.y) return A.x < B.x;
+		return A.y < B.y;
+	});
+	auto cmp = [&](const Point &A, const Point &B) {
+		if (center.cross(A, B) == 0) {
+			return squareDist(center, A) < squareDist(center, B);
 		}
-	}
-	auto cmp = [&](const Point &P1, const Point &P2) {
-		if (center.cross(P1, P2) == 0) {
-			return squareDist(center, P1) < squareDist(center, P2);
-		}
-		return center.cross(P1, P2) > 0;
+		return center.cross(A, B) > 0;
 	};
 	sort(v.begin(), v.end(), cmp);
 	auto it = unique(v.begin(), v.end());
@@ -51,9 +50,7 @@ vector<Point> convexHull(vector<Point> &v) { //O(n log n)
 	n = v.size();
 
 	if (n < 3) return v;
-	vector<Point> hull;
-	hull.push_back(v[0]);
-	hull.push_back(v[1]);
+	vector<Point> hull = {v[0], v[1]};
 	for (int i = 2 ; i < n; i++) {
 		int sz = hull.size();
 		Point prev1 = hull[sz - 1];
