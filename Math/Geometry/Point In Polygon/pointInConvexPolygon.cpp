@@ -63,7 +63,7 @@ struct Point{
 			else return Location::OUTSIDE;
 		}
 		if (n == 2) {
-			if (P.inSegment(poly[0] , poly[1])) return Location::BOUNDARY;
+			if (P.inSegment(poly[0], poly[1])) return Location::BOUNDARY;
 			else return Location::OUTSIDE;
 		}
 		//verify if the angle of the point lies between the angle of p0p1 and p0pn-1
@@ -83,11 +83,11 @@ struct Point{
 		} else {
 			while (high - low > 1) { 
 				int mid = (low + high) / 2;
-				if (poly[0].cross(poly[mid] , P) <= 0) high = mid;
+				if (poly[0].cross(poly[mid], P) <= 0) high = mid;
 				else low = mid;
 			}
 		}
-		if (!P.inTriangle(poly[0], poly[high - 1] , poly[high])) {
+		if (!P.inTriangle(poly[0], poly[high - 1], poly[high])) {
 			return Location::OUTSIDE;
 		}
 		if (P.inSegment(poly[high - 1], poly[high])) {
