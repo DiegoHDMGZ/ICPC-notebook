@@ -55,6 +55,7 @@ struct Point{
 	
 	Location inPolygon(vector<Point> &poly) { //O(log n)
 		//works with convex polygons in counter-clockwise order
+		//There must be no 3 collinear points in the polygon
 		//use prepare (poly) before using it
 		int n = poly.size();
 		Point P = Point(*this);
@@ -75,7 +76,6 @@ struct Point{
 			&& sgn(poly[0].cross(P, poly[n - 1])) != sgn(poly[0].cross(poly[1], poly[n - 1]))) {
 			return Location::OUTSIDE;
 		}
-	
 		int low = 2;
 		int high = n - 1;
 		if (poly[0].cross(poly[low], P) <= 0) {
@@ -109,12 +109,26 @@ void prepare(vector<Point> &poly) {
 		reverse(poly.begin(), poly.end());
 	}
 	//make sure the first point have minimum x (minimum y in case of ties)
-	int sz = poly.size();
+	int n = poly.size();
 	int pos = 0;
-	for (int i = 1; i < sz; i++) {
+	for (int i = 1; i < n; i++) {
 		if (make_pair(poly[i].x, poly[i].y) < make_pair(poly[pos].x, poly[pos].y)) {
 			pos = i;
 		}
 	}
 	rotate(poly.begin(), poly.begin() + pos, poly.end());
+	/*//make sure that polygon has no 3 collinear points
+	int n = poly.size();
+	vector<Point> cleaned = {};
+	for (int i = 0; i < n; i++) {
+		while (cleaned.size() >= 2 
+		&& cleaned.back().cross(poly[i], cleaned.end()[-2]) == 0) {
+			cleaned.pop_back();
+		}
+		cleaned.push_back(poly[i]);
+	}
+	if (cleaned.size() > 2 && cleaned.back().cross(poly[0], cleaned.end()[-2]) == 0) {
+		cleaned.pop_back();
+	}
+	poly = cleaned;*/
 }
