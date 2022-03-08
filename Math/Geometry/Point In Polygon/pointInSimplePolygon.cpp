@@ -6,65 +6,45 @@ enum Location{OUTSIDE, BOUNDARY, INSIDE};
 
 const Long INF = 2e9;
 
-Long sgn(Long val) {
-	if(val > 0) {
-		return 1;
-	}
-	if(val < 0) {
-		return -1;
-	}
+int sgn(Long val) {
+	if (val > 0) return 1;
+	if (val < 0) return -1;
 	return 0;
 }
 
 struct Point{
 	Long x, y;
-	
-	Point() : x(0), y(0) {}
-	Point(Long x, Long y) : x(x), y(y) {}
-
-	Point operator -= (const Point &t) {
-		x -= t.x;
-		y -= t.y;
-		return *this;
+	Point(): x(0), y(0) {}
+	Point(Long x, Long y): x(x), y(y) {}
+	Point operator -(const Point &other) const {
+		return Point(x - other.x, y - other.y);
 	}
-
-	Point operator - (const Point &t) const {
-		return Point(*this) -= t;
+	Long cross(const Point &other) const {
+		return x * other.y - y * other.x;
 	}
-	
+	Long cross(const Point &A, const Point &B) const {
+		return (A - *this).cross(B - *this);
+	}
 	bool operator == (const Point &P) const {
-		return P.x == x && P.y == y;
+		return x == P.x && y == P.y;
 	}
-
-	Long cross(const Point &P) const {
-		return x * P.y - y * P.x;
-	}
-	
-	Long cross(const Point &a, const Point &b) const {
-		return (a - *this).cross(b - *this);
-	}
-	
 	bool inSegment(Point A, Point B) {
 		Point target = Point(*this);
-		if(A.cross(B , target) == 0) {
-			if(target.x >= min(A.x , B.x) && target.x <= max(A.x , B.x) && target.y >= min(A.y , B.y) && target.y <= max(A.y , B.y )) {
+		if (A.cross(B , target) == 0) {
+			if (target.x >= min(A.x, B.x) && target.x <= max(A.x, B.x) 
+			&& target.y >= min(A.y, B.y) && target.y <= max(A.y, B.y)) {
 				return true;
 			} 
 		}
 		return false;
 	}
-	
 	Location inPolygon(vector<Point> &poly);
 };
 
 bool intersectAxis(Long a, Long b , Long c, Long d) {
-	if(a > b) {
-		swap(a , b);
-	}
-	if(c > d) {
-		swap(c , d);
-	}
-	return max(a , c) <= min(b , d);
+	if (a > b) swap(a , b);
+	if (c > d) swap(c , d);
+	return max(a, c) <= min(b, d);
 }
 
 bool intersectSegment(Point A, Point B, Point C, Point D) {
@@ -102,13 +82,6 @@ Location Point::inPolygon(vector<Point> &poly) { //O(n)
 		if (P.inSegment(poly[i], nextPoint)) return Location::BOUNDARY;
 		if (intersectSegment(poly[i], nextPoint, P, Q)) cnt++;
 	}
-	if (cnt % 2 == 0) {
-		return Location::OUTSIDE;
-	} else {
-		return Location::INSIDE;
-	}
-}
-
-int main() {
-	return 0;
+	if (cnt % 2 == 0) return Location::OUTSIDE;
+	else return Location::INSIDE;
 }
