@@ -48,15 +48,13 @@ vector<Point> convexHull(vector<Point> &v) { //O(n log n)
 	auto it = unique(v.begin(), v.end());
 	v.resize(distance(v.begin(), it));
 	n = v.size();
-
 	if (n < 3) return v;
 	vector<Point> hull = {v[0], v[1]};
-	for (int i = 2 ; i < n; i++) {
-		int sz = hull.size();
-		while(hull.size() >= 2 && 
-		hull.back().cross(v[i], hull.end()[-2]) <= 0) {
-			hull.pop_back();
-		}
+	auto canDelete = [&](const Point &P) {
+		return hull.back().cross(hull.end()[-2], P) >= 0;
+	};
+	for (int i = 2; i < n; i++) {
+		while (hull.size() >= 2 && canDelete(v[i])) hull.pop_back();
 		hull.push_back(v[i]);
 	}
 	return hull;

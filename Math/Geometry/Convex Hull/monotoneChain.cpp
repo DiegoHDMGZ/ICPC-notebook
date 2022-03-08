@@ -28,40 +28,35 @@ vector<Point> convexHull(vector<Point> &v) { //O(n log n)
 	//gives the convex hull in counter clockwise order
 	int n = v.size();
 	auto cmp = [&](const Point &P1, const Point &P2) {
-		if (P1.x == P2.x) return P1.y < P2.y;
-		return P1.x < P2.x;
+		//compare by x and then by y also works
+		if (P1.y == P2.y) return P1.x < P2.x;
+		return P1.y < P2.y;
 	};
 	sort(v.begin(), v.end(), cmp);
 	auto it = unique(v.begin(), v.end());
 	v.resize(distance(v.begin(),it));
 	n = v.size();
-	
 	if (n < 3) return v;
 	Point A = v[0];
 	Point B = v.back();
 	vector<Point> hull = {A}; //lower hull at the beginning
-	vector<Point> upperHull = {A};
+	auto canDelete = [&](const Point &P) {
+		return hull.back().cross(hull.end()[-2], P) >= 0; 
+	};
 	for (int i = 1; i < n; i++) {
-		if (i == n - 1 || v[i].cross(A, B) > 0){
-			//upper
-			while (upperHull.size() >= 2 
-			&& upperHull.back().cross(upperHull.end()[-2] , v[i]) <= 0) {
-				upperHull.pop_back();
-			}
-			upperHull.push_back(v[i]);
-		} 
-		if (i == n - 1 || v[i].cross(A , B) < 0){
-			//lower
-			while(hull.size() >= 2 
-			&& hull.back().cross(hull.end()[-2] , v[i]) >= 0) {
-				hull.pop_back();
-			}
+		if (i == n - 1 || v[i].cross(A, B) < 0) {
+			while (hull.size() >= 2 && canDelete(v[i])) hull.pop_back();
 			hull.push_back(v[i]);
 		}
 	}
-
-	for (int i = (int)upperHull.size() - 2; i >= 1; i--) {
-		hull.push_back(upperHull[i]);
+	//`hull` is now the lower hull
+	//in the second loop we're going to add the upper hull
+	int szLow = hull.size();
+	for (int i = n - 2; i >= 0; i--) {
+		if (i == 0 || v[i].cross(A, B) > 0) {
+			while (hull.size() > szLow && canDelete(v[i])) hull.pop_back();
+			if (i > 0) hull.push_back(v[i]);
+		}
 	}
 	return hull;
 }
