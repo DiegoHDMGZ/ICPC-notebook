@@ -118,7 +118,6 @@ void prepare(vector<Point> &poly) {
 	}
 	rotate(poly.begin(), poly.begin() + pos, poly.end());
 	/*//make sure that polygon has no 3 collinear points
-	int n = poly.size();
 	vector<Point> cleaned = {};
 	for (int i = 0; i < n; i++) {
 		while (cleaned.size() >= 2 
