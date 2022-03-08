@@ -3,7 +3,7 @@ using namespace std;
 
 typedef long long Long;
 
-struct Point{
+struct Point {
 	Long x, y;
 	Point(Long x = 0, Long y = 0): x(x) , y(y){}
 	Point operator -(const Point &other) const {
