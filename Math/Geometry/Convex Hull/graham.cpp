@@ -9,10 +9,6 @@ struct Point {
 	Point operator -(const Point &other) const {
 		return Point(x - other.x, y - other.y);
 	}
-	Point operator -=(const Point &other) {
-		*this = *this - other;
-		return *this;
-	}
 	Long cross(const Point &other) const {
 		return x * other.y - y * other.x;
 	}
