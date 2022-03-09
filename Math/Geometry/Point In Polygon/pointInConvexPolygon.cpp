@@ -108,15 +108,6 @@ void prepare(vector<Point> &poly) {
 	if (poly.size() >= 3 && poly[1].cross(poly[2], poly[0]) < 0) {
 		reverse(poly.begin(), poly.end());
 	}
-	//make sure the first point have minimum x (minimum y in case of ties)
-	int n = poly.size();
-	int pos = 0;
-	for (int i = 1; i < n; i++) {
-		if (make_pair(poly[i].x, poly[i].y) < make_pair(poly[pos].x, poly[pos].y)) {
-			pos = i;
-		}
-	}
-	rotate(poly.begin(), poly.begin() + pos, poly.end());
 	/*//make sure that polygon has no 3 collinear points
 	vector<Point> cleaned = {};
 	for (int i = 0; i < n; i++) {
