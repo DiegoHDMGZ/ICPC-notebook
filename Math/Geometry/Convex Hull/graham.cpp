@@ -49,9 +49,16 @@ vector<Point> convexHull(vector<Point> &v) { //O(n log n)
 	v.resize(distance(v.begin(), it));
 	n = v.size();
 	if (n < 3) return v;
+	/*
+	//To include collinear points use the following lines
+	int i = n - 1;
+	while (i > 0 && v[i].cross(v[i - 1], v[0]) == 0) i--;
+	if (i > 0) reverse(v.begin() + i, v.end());
+	*/
 	vector<Point> hull = {v[0], v[1]};
 	auto canDelete = [&](const Point &P) {
 		return hull.back().cross(hull.end()[-2], P) >= 0;
+		//> 0 to include collinear points
 	};
 	for (int i = 2; i < n; i++) {
 		while (hull.size() >= 2 && canDelete(v[i])) hull.pop_back();
