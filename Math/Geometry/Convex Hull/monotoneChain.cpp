@@ -34,26 +34,34 @@ vector<Point> convexHull(vector<Point> &v) { //O(n log n)
 	};
 	sort(v.begin(), v.end(), cmp);
 	auto it = unique(v.begin(), v.end());
-	v.resize(distance(v.begin(),it));
+	v.resize(distance(v.begin(), it));
 	n = v.size();
 	if (n < 3) return v;
 	Point A = v[0];
 	Point B = v.back();
 	vector<Point> hull = {A}; //lower hull at the beginning
 	auto canDelete = [&](const Point &P) {
-		return hull.back().cross(hull.end()[-2], P) >= 0; 
+		return hull.back().cross(hull.end()[-2], P) >= 0;
+		//> 0 to include collinear points
 	};
 	for (int i = 1; i < n; i++) {
-		if (i == n - 1 || v[i].cross(A, B) < 0) {
+		if (i == n - 1 || v[i].cross(A, B) < 0) { 
+			//v[i].cross(A, B) <= 0 to include collinear points
 			while (hull.size() >= 2 && canDelete(v[i])) hull.pop_back();
 			hull.push_back(v[i]);
 		}
 	}
 	//`hull` is now the lower hull
 	//in the second loop we're going to add the upper hull
+	
+	//For collinear points use the following line to avoid
+	//having repeated points in the degenerate case of a line
+	//if (hull.size() == v.size()) return hull;
+	
 	int szLow = hull.size();
 	for (int i = n - 2; i >= 0; i--) {
 		if (i == 0 || v[i].cross(A, B) > 0) {
+			//v[i].cross(A, B) >= 0 to include collinear points
 			while (hull.size() > szLow && canDelete(v[i])) hull.pop_back();
 			if (i > 0) hull.push_back(v[i]);
 		}
