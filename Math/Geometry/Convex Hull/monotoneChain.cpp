@@ -54,7 +54,7 @@ vector<Point> convexHull(vector<Point> &v) { //O(n log n)
 	//`hull` is now the lower hull
 	//in the second loop we're going to add the upper hull
 	
-	//For collinear points use the following line to avoid
+	//To include collinear points use the following line to avoid
 	//having repeated points in the degenerate case of a line
 	//if (hull.size() == v.size()) return hull;
 	
