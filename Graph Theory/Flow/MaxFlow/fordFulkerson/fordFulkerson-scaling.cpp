@@ -18,6 +18,7 @@ struct Graph {
 	vector<Edge> adj[MX]; 
 	bool vis[MX];
 	Cap maxCap = 0;
+	Cap lowFlow;
 	
 	void clear(int n) {
 		for (int i = 0 ; i < n; i++) adj[i].clear();
@@ -25,12 +26,12 @@ struct Graph {
 	}
 	
 	void addEdge(int u, int v, Cap w, bool dir) {
-		maxCap = max(maxCap, w);
 		adj[u].push_back(Edge(v, w, adj[v].size()));
 		adj[v].push_back(Edge(u, dir ? 0 : w, adj[u].size() - 1));
+		maxCap = max(maxCap, w);
 	}
 	
-	Cap dfs(int u, int t, Cap f, Cap lim) { //O(E)
+	Cap dfs(int u, int t, Cap f) { //O(E)
 		if (u == t) return f;
 		if (vis[u]) return 0;
 		vis[u] = true;
@@ -38,8 +39,8 @@ struct Graph {
 			int v = e.to;
 			Edge &rev = adj[v][e.rev];
 			Cap cf = e.cap - e.flow;
-			if (cf < lim) continue;
-			Cap ret = dfs(v, t, min(f, cf), lim);
+			if (cf < lowFlow) continue;
+			Cap ret = dfs(v, t, min(f, cf));
 			if (ret > 0) {
 				e.flow += ret;
 				rev.flow -= ret;
@@ -54,10 +55,10 @@ struct Graph {
 		if (maxCap == 0) return 0;
 		int lg = 64 - __builtin_clzll(maxCap);
 		Cap ans = 0;
-		for (Cap lim = (1LL << lg); lim >= 1; lim >>= 1) {
+		for (lowFlow = (1LL << lg); lowFlow >= 1; lowFlow >>= 1) {
 			while (true) { //O(E) iterations
 				fill(vis, vis + n, false);
-				Cap inc = dfs(s, t, INF, lim);
+				Cap inc = dfs(s, t, INF);
 				if (inc == 0) break;
 				ans += inc;
 			}
