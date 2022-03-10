@@ -1,6 +1,4 @@
 #include <bits/stdc++.h>
-#define debug(x) cout << #x << " = " << x << endl
-#define REP(i,n) for(Long i = 0; i < (Long)n; i++)
 using namespace std;
 
 typedef long long Long;
@@ -76,6 +74,12 @@ struct Point{
 			&& sgn(poly[0].cross(P, poly[n - 1])) != sgn(poly[0].cross(poly[1], poly[n - 1]))) {
 			return Location::OUTSIDE;
 		}
+		if (P.inSegment(poly[0], poly[1])) {
+			return Location::BOUNDARY;
+		}
+		if (P.inSegment(poly[0], poly[n - 1])) {
+			return Location::BOUNDARY;
+		}
 		int low = 2;
 		int high = n - 1;
 		if (poly[0].cross(poly[low], P) <= 0) {
@@ -91,12 +95,6 @@ struct Point{
 			return Location::OUTSIDE;
 		}
 		if (P.inSegment(poly[high - 1], poly[high])) {
-			return Location::BOUNDARY;
-		}
-		if (P.inSegment(poly[0], poly[1])) {
-			return Location::BOUNDARY;
-		}
-		if (P.inSegment(poly[0], poly[n - 1])) {
 			return Location::BOUNDARY;
 		}
 		return Location::INSIDE;
