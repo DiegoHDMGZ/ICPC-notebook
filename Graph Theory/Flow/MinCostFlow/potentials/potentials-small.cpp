@@ -23,9 +23,10 @@ struct Graph{
 	Cap flow[MX][MX];
 	Cost cost[MX][MX];
 	int parent[MX];
-	Cost pot[MX];
 	bool inQueue[MX];
-	
+	Cost pot[MX];
+	//potentials range between [-sum(|cost(u, v)|), sum(|cost(u, v)|)]
+	//which is also bounded by [-E * C, E * C]
 	void clear(int n) {
 		for (int i = 0; i < n; i++) {
 			adj[i].clear();
@@ -101,7 +102,9 @@ struct Graph{
 			}
 		}
 		if (d[t] == INF_COST) return {0, 0};
-		for (int i = 0; i < n; i++) pot[i] += d[i];
+		for (int i = 0; i < n; i++) {
+			if (pot[i] != INF_COST) pot[i] += d[i];
+		}
 		Cap cf = residualCap[t];
 		pushFlow(s, t, cf);
 		return {cf, pot[t] * cf};
@@ -133,7 +136,9 @@ struct Graph{
 			}
 		}
 		if (d[t] == INF_COST) return {0, 0};
-		for (int i = 0; i < n; i++) pot[i] += d[i];
+		for (int i = 0; i < n; i++) {
+			if (pot[i] != INF_COST) pot[i] += d[i];
+		}
 		Cap cf = residualCap[t];
 		pushFlow(s, t, cf);
 		return {cf, pot[t] * cf};
