@@ -4,10 +4,10 @@ using namespace std;
 typedef long long Long;
 
 const int MX = 3000;
-const Long INF = 1e18;
 
 struct GraphFlow {
 	//max flow template
+	//Use 2 * MX + 2 for the array sizes
 	void clear(int n);
 	void addEdge(int u, int v, Long w, bool dir);
 	Long maxFlow(int s, int t, int n);
@@ -15,50 +15,44 @@ struct GraphFlow {
 
 struct Graph{
 	vector<int> adj[MX];
-	int indegree[MX];
-	set<int> parents[MX];
-	
+	bool vis[MX];
 	void clear(int n) {
-		for (int i = 0; i < n ; i++) {
-			adj[i].clear();
-			indegree[i] = 0;
-			parents[i].clear();
-		}
+		for (int i = 0; i < n ; i++) adj[i].clear();
 		GFlow.clear(2 * n + 2);
 	}
 	
 	void addEdge(int u, int v){
 		adj[u].push_back(v);
-		indegree[v]++;
+	}
+	
+	int left(int u) {return 2 * u;}
+	int right(int u) {return 2 * u + 1;}
+	
+	vector<int> nodes;
+	void dfs(int u) {
+		vis[u] = true;
+		nodes.push_back(u);
+		for (int v : adj[u]) {
+			if (!vis[v]) dfs(v);
+		}
 	}
 	
 	int maxAntiChain(int n) {
 		//O(V ^ 5/2) - could be less depending on E in Flow Graph
-		//We build all the transitive edges using toposort
-		int s = 0;
+		//We build all the transitive edges
+		int s = 2 * n;
 		int t = 2 * n + 1;
-		queue<int> q;
 		for (int u = 0; u < n; u++) {
-			if (indegree[u] == 0) q.push(u);
+			GFlow.addEdge(s, left(u), 1, true);
+			GFlow.addEdge(right(u), t, 1, true);
+			nodes.clear();
+			dfs(u);
+			for (int v : nodes) {
+				vis[v] = false;
+				if (u == v) continue;
+				GFlow.addEdge(left(u), right(v), 1, true);
+			} 
 		}
-		int cnt = 0;
-		while (!q.empty()){
-			int u = q.front();
-			q.pop();
-			cnt++;
-			GFlow.addEdge(s, u + 1, 1, true);
-			GFlow.addEdge(u + 1 + n, t, 1, true);
-			for (int p : parents[u]) {
-				GFlow.addEdge(p + 1, u + 1 + n, 1, true);
-			}
-			for (int v : adj[u]) {
-				indegree[v]--;
-				if (indegree[v] == 0) q.push(v);
-				for (int p : parents[u]) parents[v].insert(p);
-				parents[v].insert(u);
-			}
-		}
-		assert(n == cnt); //should be a DAG
-		return cnt - GFlow.maxFlow(s, t, t + 1);
+		return n - GFlow.maxFlow(s, t, t + 1);
 	}
 }G; 
