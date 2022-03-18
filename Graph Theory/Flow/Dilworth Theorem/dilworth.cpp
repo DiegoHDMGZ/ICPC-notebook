@@ -5,6 +5,8 @@ typedef long long Long;
 typedef int Cap;
 const int MX = 3000;
 
+//This template build the entire transitive edges
+
 struct GraphFlow {
 	//max flow template
 	//Use 2 * MX + 2 for the array sizes
@@ -39,7 +41,6 @@ struct Graph{
 	
 	int maxAntiChain(int n) {
 		//O(V ^ 5/2) - could be less depending on E in Flow Graph
-		//We build all the transitive edges
 		int s = 2 * n;
 		int t = 2 * n + 1;
 		for (int u = 0; u < n; u++) {

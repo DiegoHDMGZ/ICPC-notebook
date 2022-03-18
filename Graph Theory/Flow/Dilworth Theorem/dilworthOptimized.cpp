@@ -5,6 +5,8 @@ typedef long long Long;
 typedef int Cap;
 const int MX = 3000;
 
+//This template does not build the entire transitive edges
+
 struct GraphFlow {
 	//max flow template
 	//Use 2 * MX + 2 for the array sizes
