@@ -27,13 +27,14 @@ struct Graph{
 		GFlow.clear(2 * n + 2);
 	}
 	
-	void addEdge(int u , int v){
+	void addEdge(int u, int v){
 		adj[u].push_back(v);
 		indegree[v]++;
 	}
 	
-	int maxAntiChain(int n) { 
-		//O(V ^ 5/2 ) - could be less depending on E in Flow Graph
+	int maxAntiChain(int n) {
+		//O(V ^ 5/2) - could be less depending on E in Flow Graph
+		//We build all the transitive edges using toposort
 		int s = 0;
 		int t = 2 * n + 1;
 		deque<int> q;
