@@ -49,7 +49,7 @@ struct Graph{
 		return n - GFlow.maxFlow(s, t, 2 * n + 2);
 	}
 	
-		vector<vector<int>> getMinChainPartition(int n) {
+	vector<vector<int>> getMinChainPartition(int n) {
 		//Only usable when maxAntiChainSize has been called before
 		vector<int> match(n, -1);
 		vector<int> indegree(n);
