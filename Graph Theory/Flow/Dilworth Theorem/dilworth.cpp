@@ -2,15 +2,15 @@
 using namespace std;
 
 typedef long long Long;
-
+typedef int Cap;
 const int MX = 3000;
 
 struct GraphFlow {
 	//max flow template
 	//Use 2 * MX + 2 for the array sizes
 	void clear(int n);
-	void addEdge(int u, int v, Long w, bool dir);
-	Long maxFlow(int s, int t, int n);
+	void addEdge(int u, int v, Cap w, bool dir);
+	Cap maxFlow(int s, int t, int n);
 } GFlow;
 
 struct Graph{
