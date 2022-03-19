@@ -19,13 +19,23 @@ struct Edge {
 	int rev; //index of the backward edge in the adj list of to
 	Edge(int to, Cap cap, Cost cost, int rev) : 
 		to(to), flow(0), cap(cap), cost(cost), rev(rev){}
+	
+	Cap resCap() const {return cap - flow;}
 };
  
 struct Graph {
 	vector<Edge> adj[MX];
 	int parentEdge[MX];
 	Cost pot[MX];
+	//After every minCirculation call 
+	//minCost <= pot[u] <= 0, where minCost is the minimum
+	//sum of negative absolute values of cost 
+	//minCost is bounded by sum(|cost(e)|)
+	//It's also bounded by (V - 1) * C and 
+	//where C is the maximum value of |cost(e)| for all edges e
+	//However some intermediate results may have 3 * minCost - 1 <= pot[u]
 	Cap maxCap = 0;
+	Cost minCost = 0;
 	Cap lowFlow;
 	
 	void clear(int n) {
@@ -41,7 +51,15 @@ struct Graph {
 		adj[v].push_back(Edge(u, 0, -cost, adj[u].size() - 1));
 		if (u == v) adj[u].end()[-2].rev++;
 		maxCap = max(maxCap, w);
+		minCost -= abs(cost);
 		if (!dir) addEdge(v, u, w, cost, true);
+	}
+	
+	Cost resCost(const Edge &e) const {
+		int v = e.to;
+		if (e.rev == -1) return e.cost - pot[v];
+		int u = adj[e.to][e.rev].to;
+		return e.cost + pot[u] - pot[v];
 	}
 	
 	void pushFlow(int s, int t, Cap inc) {
@@ -56,65 +74,57 @@ struct Graph {
 		}
 	}
 	
-	void updatePotentials(int s, int t, Cost tsCost, vector<Cost> &d) {
-		int n = d.size();
-		Cost infPot = 0;
-		for (int u = 0; u < n; u++) {
-			if (d[u] == INF_COST) {
-				for (auto e : adj[u]) {
-					int v = e.to;
-					Cap cf = e.cap - e.flow;
-					Cost cost = e.cost + pot[u] - pot[v];
-					if (d[v] != INF_COST && cf >= lowFlow && cost >= 0) {
-						infPot = max(infPot, d[v] - cost);
-					}
-				}
-			}
-		}
-		if (d[t] == INF_COST) infPot = max(infPot, d[s] - tsCost);
-		for (int u = 0; u < n; u++) {
-			if (u == s) continue;
-			if (d[u] != INF_COST) pot[u] += d[u] - pot[s];
-			else pot[u] += infPot - pot[s];
-		}
-		pot[s] = d[s];
-	}
-	
-	pair<Cap, Cost> dijkstra(int s, int t, int n, Cap tsCap = 0, Cost tsCost = 0) {
-		//O(E log V)
-		//tsCap > 0 and tsCost < 0 means we are looking for negative 
-		//cycle from s to t to form a negative circulation
+	void dijkstra(vector<Cost> &d, vector<Cap> &bottleneck) {
 		typedef pair<Cost, int> Path; //<weight, node>
 		priority_queue<Path, vector<Path>, greater<Path>> q;
-		vector<Cost> d(n, INF_COST);
-		vector<Cap> residualCap(n, 0);
-		d[s] = tsCost;
-		residualCap[s] = INF_CAP;
-		q.push(Path(d[s], s));
+		int n = d.size();
+		for (int u = 0; u < n; u++) q.push(Path(d[u], u));
 		while (!q.empty()) {
 			auto [dist, u] = q.top();
 			q.pop();
 			if (dist != d[u]) continue;
 			for (Edge e : adj[u]) {
 				int v = e.to;
-				Cap cf = e.cap - e.flow;
-				Cost cost = e.cost + pot[u] - pot[v];
-				if (cf >= lowFlow && cost >= 0 && d[u] + cost < d[v]) {
-					d[v] = d[u] + cost;
+				if (e.resCap() < lowFlow) continue;
+				if (resCost(e) < 0) continue;
+				if (d[u] + resCost(e) < d[v]) {
+					d[v] = d[u] + resCost(e);
 					q.push(Path(d[v], v));
-					residualCap[v] = min(residualCap[u], cf);
+					bottleneck[v] = min(bottleneck[u], e.resCap());
 					parentEdge[v] = e.rev;
 				}
 			}
 		}
-		updatePotentials(s, t, tsCost, d);
-		if (d[t] == INF_COST) return {0, 0};
-		if (tsCap > 0 && d[t] >= 0) return {0, 0};
-		Cap cf = residualCap[t];
-		if (tsCap > 0) cf = min(cf, tsCap);
-		pushFlow(s, t, cf);
-		if (tsCap == 0) return {cf, pot[t] * cf};
-		else return {cf, d[t] * cf};
+	}
+		
+	pair<Cap, Cost> minCirculation(int s, int t, int n, Edge &ts) {
+		//O(E log V)
+		//tsCap = 0 means we are looking for an st-path
+		//tsCap > 0 means we are looking for negative cycle from s to t
+		vector<Cost> d(n, 0);
+		vector<Cap> bottleneck(n, 0);
+		d[s] = resCost(ts);
+		bottleneck[s] = INF_CAP;
+		dijkstra(d, bottleneck);
+		for (int u = 0; u < n; u++) pot[u] += d[u];
+		pair<Cap, Cost> ans;
+		if (d[t] >= 0) ans = {0, 0};
+		else {
+			Cap cf = bottleneck[t];
+			if (ts.resCap() > 0) {
+				cf = min(cf, ts.resCap());
+				ans = {cf, d[t] * cf};
+				ts.flow += cf;
+				adj[ts.to][ts.rev].flow -= cf;
+			} else ans = {cf, (pot[t] - ts.cost) * cf};
+			pushFlow(s, t, cf);
+		}
+		//Potentials adjustment
+		//Some potentials may have repeated edge cost
+		for (int u = 0; u < n; u++) d[u] = -pot[u];
+		dijkstra(d, bottleneck);
+		for (int u = 0; u < n; u++) pot[u] += d[u];
+		return ans;
 	}
 	
 	pair<Cap, Cost> minCostFlow(int s, int t, int n) {
@@ -129,23 +139,17 @@ struct Graph {
 			//push flow through negative cycles
 			for (int u = 0; u < n; u++) {
 				for (auto &e : adj[u]) {
-					Cap cf = e.cap - e.flow;
 					int v = e.to;
-					if (cf >= lowFlow && cf < 2 * lowFlow) {
-						Cost cost = e.cost + pot[u] - pot[v];
-						if (cost < 0) {
-							inc = dijkstra(v, u, n, cf, cost);
-							Edge &rev = adj[v][e.rev];
-							e.flow += inc.first;
-							rev.flow -= inc.first;
-							totalCost += inc.second;
-						}
+					if (e.resCap() >= lowFlow && resCost(e) < 0) {
+						inc = minCirculation(v, u, n, e);
+						totalCost += inc.second;
 					}
 				}
 			}
 			//normal shortest augmenting path
 			do {
-				inc = dijkstra(s, t, n);
+				Edge circleEdge = Edge(s, 0, 2 * minCost - 1, -1);
+				inc = minCirculation(s, t, n, circleEdge);
 				totalFlow += inc.first;
 				totalCost += inc.second;
 			} while (inc.first > 0);
