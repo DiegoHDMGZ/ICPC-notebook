@@ -24,8 +24,9 @@ struct Graph {
 	vector<Edge> adj[MX];
 	int parentEdge[MX];
 	Cost pot[MX]; 
-	//potentials range between [-sum(|cost(u, v)|), sum(|cost(u, v)|)]
-	//which is also bounded by [-E * C, E * C]
+	//|pot[u]| <= the maximum sum of absolute cost in a path
+	//which is also bounded by [(V - 1) * C]
+	//where C is the maximum value of |cost(e)| for all edges e
 	void clear(int n) {
 		for (int i = 0 ; i < n; i++) {
 			adj[i].clear();
