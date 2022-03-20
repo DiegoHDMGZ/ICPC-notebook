@@ -51,7 +51,7 @@ struct Graph {
 		adj[v].push_back(Edge(u, 0, -cost, adj[u].size() - 1));
 		if (u == v) adj[u].end()[-2].rev++;
 		maxCap = max(maxCap, w);
-		minCost -= abs(cost);
+		minCost = min(minCost, -abs(cost));
 		if (!dir) addEdge(v, u, w, cost, true);
 	}
 	
@@ -131,6 +131,7 @@ struct Graph {
 		//O(E^2 * log V * log U) where U is the maximum capacity
 		//<maxFlow, minCost>
 		if (maxCap == 0) return {0, 0};
+		minCost *= (n - 1);
 		int lg = 63 - __builtin_clzll(maxCap);
 		pair<Cap, Cost> inc; 
 		Cap totalFlow = 0;
