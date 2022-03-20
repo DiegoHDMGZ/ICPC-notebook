@@ -10,7 +10,6 @@ typedef long long Cost;
 
 const int MX = 5000;
 const Cap INF_CAP = 1e18;
-const Cost INF_COST = 1e18;
 
 struct Edge {
 	int to;
@@ -30,8 +29,8 @@ struct Graph {
 	//After every minCirculation call 
 	//minCost <= pot[u] <= 0, where minCost is the minimum
 	//sum of negative absolute values of cost 
-	//minCost is bounded by sum(|cost(e)|)
-	//It's also bounded by (V - 1) * C and 
+	//minCost is bounded by -sum(|cost(e)|)
+	//It's also bounded by -(V - 1) * C and 
 	//where C is the maximum value of |cost(e)| for all edges e
 	//However some intermediate results may have 3 * minCost - 1 <= pot[u]
 	Cap maxCap = 0;
