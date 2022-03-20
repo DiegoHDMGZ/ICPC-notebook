@@ -52,7 +52,10 @@ struct Graph{
 	}
 	
 	int maxAntiChainSize(int n) {
-		//O(V ^ 5/2) - could be less depending on E in Flow Graph
+		//Transitive edges construction: O(VE)
+		//Flow O(V ^ 5/2)
+		//Some special structures may have better ways to construct
+		//the transitive edges and can have less total edges
 		int s = getSource(n);
 		int t = getTarget(n);
 		for (int u = 0; u < n; u++) {
