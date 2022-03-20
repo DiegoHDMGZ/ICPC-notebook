@@ -39,6 +39,7 @@ struct Graph {
 	
 	void clear(int n) {
 		maxCap = 0;
+		minCost = 0;
 		for (int i = 0 ; i < n; i++) {
 			adj[i].clear();
 			pot[i] = 0;
