@@ -49,7 +49,7 @@ struct SparseTable {
 	Long query(int l, int r) { //O(|f|)
 		//special cases : idempotent(min, max, gcd)
 		int sz = r - l + 1;
-		int lg = 31 - (__builtin_clz(sz));
+		int lg = 31 - __builtin_clz(sz);
 		return f(st[l][lg], st[r - (1 << lg) + 1][lg]);
 	}
 }st;
