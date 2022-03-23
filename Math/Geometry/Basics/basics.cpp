@@ -218,7 +218,6 @@ Line translate(Line L, Double d) {
 	return Line(L.A, L.B, L.C + d * sqrt(square(L.A) + square(L.B)));
 }
 
-
 Double det(Double a, Double b, Double c, Double d) {
 	return a * d - b * c;
 }
