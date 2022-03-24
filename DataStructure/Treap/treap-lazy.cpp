@@ -1,11 +1,21 @@
 #include <bits/stdc++.h>
-#define debug(x) cout << #x << " = " << x << endl
-#define REP(i,n) for(Long i = 0; i < (Long)n; i++)
-#define pb push_back
 using namespace std;
 
 typedef long long Long;
 
+/*
+Given an array initially empty, and an associative function f
+Operations:
+Insert(pos, val): Insert the value `val` in position `pos`
+Erase(pos): Erase the element in position `pos`
+Query(l, r): Return f(a_l, a_{l+1}, ..., a_r)
+Update(l, r): Do some changes in this range
+Reverse(l, r): Reverse the range
+After every insertion or deletion, the positions are recalculated
+
+The updates can't be too complex, as you need to easily recalculate
+the answers after each update like in Segment Tree
+*/
 const int MAXINT = 1e9;
 const Long INF = 1e18;
 
