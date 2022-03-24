@@ -3,6 +3,11 @@ using namespace std;
 typedef long long Long;
 
 /*
+Basic Operations (similar to sets/multisets):
+Insert(key): Insert a key
+Erase(key): Erase one element with this key, if there is any
+Search(key): Check if the given key has been inserted
+
 Every node T has two main values (key, priority) and two 
 nullable children. Assume that all keys are different. 
 Priorities also must be different with high probability using a
@@ -11,11 +16,13 @@ If a node T has values (X, Y) then all the nodes
 in the subtree of T have Y' <= Y, all nodes in the left subtree
 have X' < X and finally all nodes in the right subtree have X' > X
 
-The height of the tree will be O(log n) with high probability if 
-the elements are distinct. If there are equal elements we can enforce
-this rule by transforming each element into a pair <value, frequency>.
+The height of the tree will be O(log n) with high probability.
+The probability that the height of the tree is greater than 10 * ln(n)
+is less 1 / n.
+If there can be equal keys, we can enforce uniqueness by transforming 
+each key into a pair <value, frequency>.
 The implementation of our insert function already does this implicitly
-because ties will be broken by the time of insertion
+because ties will be broken by the time of insertion.
 */
 
 typedef long long Key;
