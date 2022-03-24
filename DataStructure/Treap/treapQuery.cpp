@@ -85,7 +85,7 @@ struct Treap{
 		merge(tree, T1, T3);
 	}
 	
-	Long query(Long l, Long r) {  //O(log n)
+	Long query(Long l, Long r) { //O(log n)
 		Node *T1, *T2, *T3;
 		split(tree, T1, T2, l - 1);
 		split(T2, T2, T3, r);
