@@ -31,7 +31,6 @@ struct Node {
 	Prior prior;
 	Key key;
 	Long value, answer; 
-	//`sum` is the total sum of values in the subtree
 	Node* left;
 	Node* right;
 	Node(){}
