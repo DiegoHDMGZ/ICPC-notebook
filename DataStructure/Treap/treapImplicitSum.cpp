@@ -1,140 +1,112 @@
 #include <bits/stdc++.h>
-#define debug(x) cout << #x << " = " << x << endl
-#define REP(i , n) for(Long i = 0; i < (Long)n ; i++)
-#define pb push_back
-
 using namespace std;
 
 typedef long long Long;
 
-const int MAXINT = 1e9;
-const Long INF = 1e18;
+/*
+Given an array A initially empty, and an associative function f
+Operations:
+Insert(pos, val): Insert the value `val` in position `pos` (0-indexed)
+Erase(pos): Erase the element in position `pos` (0-indexed)
+Query(l, r): Return f(A_l, A_{l+1}, ..., A_r)
 
-mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
+After every insertion or deletion, the positions are recalculated
+(all position greater than `pos` are shifted to the right)
+We are going to construct a treap with implicit keys to recalculate
+the positions
+*/
 
-Long random(Long a, Long b){
-	return uniform_int_distribution<int> (a , b) (rng);
+typedef int Prior;
+const Prior POOL = 1e9; //preferable in the order of n^2
+
+mt19937_64 rng(chrono::steady_clock::now().time_since_epoch().count());
+
+Prior random(Prior a, Prior b) {
+	return uniform_int_distribution<Prior>(a, b)(rng);
 }
 
-struct Item{
-	Long value,prior , cnt , add;
-	Item *l, *r;
-	Item(){}
-	Item(Long value, Long prior) : value(value) , prior(prior),add(0), l (NULL), r(NULL) , cnt(0){}
+const Long NEUTRAL = 0;
+
+Long f(Long a, Long b) {
+	return a + b;
+}
+
+struct Node {
+	Prior prior;
+	int size; //size of subtree 
+	Long value, answer; 
+	Node* left;
+	Node* right;
+	Node(Prior prior, Long value): 
+		prior(prior), value(value), answer(NEUTRAL), size(0),
+		left(nullptr), right(nullptr) {}
 };
 
-typedef Item * pitem;
-
-Long getCnt(pitem it) {
-	return it ? it -> cnt : 0;
+Long getAnswer(Node* node) {
+	return node ? node->answer : NEUTRAL;
 }
 
-Long getVal(pitem it){
-	return it ? it->value + it->add : 0;
+Long getSize(Node* node) {
+	return node ? node->size : 0;
 }
 
-void updateNode(pitem it) {
-	if(it) {
-		it -> cnt = getCnt(it -> l) + getCnt(it -> r) + 1;
-		it->add =  getVal(it->l) + getVal(it->r);
+void recalc(Node* node) {
+	if (node) {
+		node->answer = f(getAnswer(node->left), node->value);
+		node->answer = f(node->answer, getAnswer(node->right));
+		node->size = getSize(node->left) + getSize(node->right) + 1;
 	}
 }
 
-
-void merge (pitem &t, pitem l , pitem r){ //O(log N)
-	if(!l || !r){
-		if(l){
-			t=l;
-		}
-		else{
-			t = r;
-		}
+void split(Node* t, Node* &l, Node* &r, int pos, int smaller = 0) { 
+	//O(log n)
+	//Splits tree `t` into two subtrees `l`, `r` such that 
+	//all pos of `l` are <= `pos` and all pos of `r` are > `pos`
+	//and `smaller` is the number of smaller elements 
+	//in the ancestors' trees
+	if (!t) l = r = nullptr; 
+	else {
+		int curPos = smaller + getSize(t->left);
+		if (curPos <= pos) split(t->right, t->right, r, pos, curPos + 1), l = t;
+		else split(t->left, l, t->left, pos, smaller), r = t;
+		recalc(t);
 	}
-	else if(l -> prior > r->prior){
-		merge(l -> r, l -> r, r);
-		t = l;
-	}
-	else{
-		merge(r -> l, l , r->l);
-		t = r;
-	}
-	updateNode(t);
 }
 
-void split(pitem t,  pitem &l, pitem &r, Long key, Long add = 0){ //O(log N)
-	if(!t){
-		l = r = NULL;
-		return;
-	}
-	
-	Long curKey = add + getCnt(t -> l); // implicit key
-	
-	if(key <= curKey){
-		split(t -> l, l , t -> l , key , add);
-		r = t;
-	}
-	else{
-		split(t -> r, t -> r , r ,key , add + 1 + getCnt(t -> l));
-		l = t;
-	}
-	
-	updateNode(t);
+void merge(Node* &t, Node* l, Node* r) { //O(log n)
+	//Merge trees `l` and `r` into tree `t`, assuming that
+	//all the pos on `l` are smaller than the pos on `r`
+	if (!l || !r) t = l ? l : r;
+	else if (l->prior > r->prior) merge(l->right, l->right, r), t = l;
+	else merge(r->left, l, r->left), t = r;
+	recalc(t);
 }
 
 struct Treap{
-	pitem tree;
+	Node* tree;
+	Treap(): tree(nullptr){}
 	
-	void insert(Long pos, Long X){ //O(log N) 
-		Long r = random(0 , MAXINT);
-		pitem it = new Item(X,r);
-		pitem T1, T2;
-		split(tree , T1, T2, pos);
-		merge(T1, T1 , it);
+	void insert(int pos, Long value) { //O(log n) 
+		Node *T1, *T2;
+		split(tree, T1, T2, pos - 1);
+		merge(T1, T1, new Node(random(0, POOL), value));
 		merge(tree, T1, T2);
 	}
 	
-	void erase(pitem &t, Long key, Long add = 0){ //O(log N)
-		if(!t){
-			return;
-		}
-		
-		Long curKey = add + getCnt(t -> l);
-		if(curKey == key){
-			merge(t, t -> l , t -> r);
-		}
-		else{
-			if(key < curKey ){
-				erase(t -> l, key, add);
-			}
-			else{
-				erase(t -> r, key , add + 1 + getCnt(t -> l) );
-			}
-		}
-		updateNode(t);
+	void erase(int pos) { //O(log n)
+		Node *T1, *T2, *T3;
+		split(tree, T1, T2, pos - 1);
+		split(T2, T2, T3, 0);
+		merge(tree, T1, T3);
 	}
 	
-	void erase(Long key){ //O(log N)
-		erase(tree,key);
+	Long query(int l, int r) { //O(log n)
+		Node *T1, *T2, *T3;
+		split(tree, T1, T2, l - 1);
+		split(T2, T2, T3, r - l);
+		Long ans = getAnswer(T2);
+		merge(tree, T1, T2);
+		merge(tree, tree, T3);
+		return ans;
 	}
-	
-	Long query(Long A, Long B){
-		pitem T1,T2,T3;
-		split(tree,T1,T2,A);
-		split(T2,T2,T3,B - A +1);
-		
-		Long resp = getVal(T2);
-	
-		merge(tree,T1,T2);
-		merge(tree,tree,T3);
-		
-		return resp;
-	}
-}tp;
-
-int main(){
-	ios_base::sync_with_stdio(false);
-	cin.tie(NULL);
-	cout.tie(NULL);
-	
-	return 0;
-}
+} treap;
