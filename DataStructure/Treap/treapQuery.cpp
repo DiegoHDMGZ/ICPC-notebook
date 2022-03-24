@@ -23,6 +23,7 @@ Prior random(Prior a, Prior b) {
 	return uniform_int_distribution<Prior>(a, b)(rng);
 }
 
+const int NEUTRAL = 0;
 Long f(Long a, Long b) {
 	return a + b;
 }
@@ -35,11 +36,12 @@ struct Node {
 	Node* right;
 	Node(){}
 	Node(Key key, Prior prior, Long value): 
-		key(key), prior(prior), value(value), answer(0), left(nullptr), right(nullptr) {}
+		key(key), prior(prior), value(value), answer(NEUTRAL), 
+		left(nullptr), right(nullptr) {}
 };
 
 Long get(Node* node) {
-	return node ? node->answer : 0;
+	return node ? node->answer : NEUTRAL;
 }
 
 void recalc(Node* node) {
