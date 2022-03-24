@@ -38,8 +38,7 @@ Prior random(Prior a, Prior b) {
 struct Node {
 	Prior prior;
 	Key key;
-	Node* left;
-	Node* right;
+	Node *left, *right;
 	Node(Key key, Prior prior): 
 		key(key), prior(prior), left(nullptr), right(nullptr) {}
 };
@@ -112,8 +111,7 @@ struct Treap {
 	Node* unite(Node* l, Node* r) { //O(m log (n / m))
 		if (!l || !r) return l ? l : r;
 		if (l->prior < r->prior) swap(l , r);
-		Node* lt;
-		Node* rt;
+		Node *lt, *rt;
 		split(r, lt, rt, l->key);
 		l->left = unite(l->left, lt);
 		l->right = unite(l->right, rt);

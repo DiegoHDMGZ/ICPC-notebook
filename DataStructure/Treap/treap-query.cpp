@@ -30,8 +30,7 @@ struct Node {
 	Prior prior;
 	Key key;
 	Long value, answer; 
-	Node* left;
-	Node* right;
+	Node *left, *right;
 	Node(Key key, Prior prior, Long value): 
 		key(key), prior(prior), value(value), answer(NEUTRAL), 
 		left(nullptr), right(nullptr) {}

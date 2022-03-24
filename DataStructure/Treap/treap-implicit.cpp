@@ -34,8 +34,7 @@ struct Node {
 	Prior prior;
 	int size; //size of subtree 
 	Long value, answer; 
-	Node* left;
-	Node* right;
+	Node *left, *right;
 	Node(Prior prior, Long value): 
 		prior(prior), value(value), answer(NEUTRAL), size(0),
 		left(nullptr), right(nullptr) {}
