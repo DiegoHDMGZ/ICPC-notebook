@@ -4,9 +4,9 @@ typedef long long Long;
 
 /*
 Basic Operations (similar to sets/multisets):
-Insert(key): Insert a key
-Erase(key): Erase one element with this key, if there is any
-Search(key): Check if the given key has been inserted
+- Insert(key): Insert a key
+- Erase(key): Erase one element with this key, if there is any
+- Search(key): Check if the given key has been inserted
 
 Every node T has two main values (key, priority) and two 
 nullable children. Assume that all keys are different. 

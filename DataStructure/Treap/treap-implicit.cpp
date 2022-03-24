@@ -6,10 +6,9 @@ typedef long long Long;
 /*
 Given an array A initially empty, and an associative function f
 Operations:
-Insert(pos, val): Insert the value `val` in position `pos` (0-indexed)
-Erase(pos): Erase the element in position `pos` (0-indexed)
-Query(l, r): Return f(A_l, A_{l+1}, ..., A_r)
-
+- Insert(pos, val): Insert the value `val` in position `pos` (0-indexed)
+- Erase(pos): Erase the element in position `pos` (0-indexed)
+- Query(l, r): Return f(A_l, A_{l+1}, ..., A_r)
 After every insertion or deletion, the positions are recalculated
 (all position greater than `pos` are shifted to the right)
 We are going to construct a treap with implicit keys to recalculate

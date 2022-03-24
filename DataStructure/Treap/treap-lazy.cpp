@@ -4,13 +4,14 @@ using namespace std;
 typedef long long Long;
 
 /*
-Given an array initially empty, and an associative function f
+Given an array A initially empty, and an associative function f
 Operations:
-Insert(pos, val): Insert the value `val` in position `pos`
-Erase(pos): Erase the element in position `pos`
-Query(l, r): Return f(a_l, a_{l+1}, ..., a_r)
-Update(l, r): Do some changes in this range
-Reverse(l, r): Reverse the range
+- Insert(pos, val): Insert the value `val` in position `pos` (0-indexed)
+- Erase(pos): Erase the element in position `pos` (0-indexed)
+- Query(l, r): Return f(A_l, A_{l+1}, ..., A_r)
+- Update(l, r): Do some changes in this range
+- Reverse(l, r): Reverse the range
+
 After every insertion or deletion, the positions are recalculated
 
 The updates can't be too complex, as you need to easily recalculate
