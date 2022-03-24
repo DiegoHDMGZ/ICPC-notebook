@@ -4,10 +4,12 @@ using namespace std;
 typedef long long Long;
 
 /*
+Given an associative function f
 Operations:
 Insert(key, val): Insert a key with its value
 Erase(key): Erase all values with this key
-Query(l, r): Return the sum of values of all elements with key in [l, r]
+Query(l, r): Return the cumulative result of applying f to the values
+of all keys in range [l, r] in the same order
 
 It's possible to replace "sum" with any associative operator
 */
