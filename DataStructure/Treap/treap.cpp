@@ -40,7 +40,6 @@ struct Node {
 	Key key;
 	Node* left;
 	Node* right;
-	Node(){}
 	Node(Key key, Prior prior): 
 		key(key), prior(prior), left(nullptr), right(nullptr) {}
 };
