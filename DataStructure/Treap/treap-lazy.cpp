@@ -9,205 +9,142 @@ Operations:
 - Insert(pos, val): Insert the value `val` in position `pos` (0-indexed)
 - Erase(pos): Erase the element in position `pos` (0-indexed)
 - Query(l, r): Return f(A_l, A_{l+1}, ..., A_r)
-- Update(l, r): Do some changes in this range
+- Update(l, r): Do some changes to each element of this range
 - Reverse(l, r): Reverse the range
 
 After every insertion or deletion, the positions are recalculated
-
 The updates can't be too complex, as you need to easily recalculate
 the answers after each update like in Segment Tree
+Notice that with the split and merge methods is also easy to cut
+an specific range and put it in other place.
+
+For this template we're going to use range sum query, range addition
+update and range reversals.
 */
-const int MAXINT = 1e9;
-const Long INF = 1e18;
+typedef int Prior;
+const Prior POOL = 1e9; //preferable in the order of n^2
 
-mt19937_64  rng(chrono::steady_clock::now().time_since_epoch().count());
+mt19937_64 rng(chrono::steady_clock::now().time_since_epoch().count());
 
-Long random(Long a, Long b) {
-	return uniform_int_distribution<Long>(a , b)(rng);
+Prior random(Prior a, Prior b) {
+	return uniform_int_distribution<Prior>(a, b)(rng);
 }
 
-struct Item{
-	Long value,prior , cnt;
+Long f(Long a, Long b) {
+	return a + b;
+}
+
+struct Node {
+	Prior prior;
+	int size; //size of subtree 
+	Long value, answer; 
+	Long lazy;
 	bool rev;
-	Item *l, *r;
-	Item(){
+	Node *left, *right;
+	Node(Prior prior, Long value): 
+		prior(prior), value(value), size(0), lazy(0), rev(false),
+		left(nullptr), right(nullptr) {}
+	
+	void recalc() {
+		if (!left) answer = value;
+		else answer = f(left->answer, value);
+		if (right) answer = f(answer, right->answer);
+		size = 1 + (left ? left->size : 0) + (right ? right->size : 0);
 	}
 	
-	Item(Long value, Long prior) : value(value) , prior(prior), l (NULL), r(NULL) , cnt(0), rev(false){}
+	void push() {
+		//Apply the lazy value
+		value += lazy;
+		if (rev) swap(left, right);
+		if (left) left->answer += lazy * left->size;
+		if (right) right->answer += lazy * right->size;
+		//Aggregate the lazy value
+		if (left) left->lazy += lazy, left->rev ^= rev;
+		if (right) right->lazy += lazy, right->rev ^= rev;
+		//Restart the lazy value
+		lazy = 0;
+		rev = false;
+	}
 };
 
-typedef Item * pitem;
-
-Long getCnt(pitem it) {
-	return it ? it -> cnt : 0;
+int getSize(Node* node) {
+	return node ? node->size : 0;
 }
 
-void updateNode(pitem it) {
-	if(it) {
-		it -> cnt = getCnt(it -> l) + getCnt(it -> r) + 1;
-	}
-}
-
-void push(pitem it){
-	if(it && it->rev){
-		swap(it->l , it->r);
-		if(it->l){
-			it->l->rev ^= true;
-		}
-		if(it->r){
-			it->r->rev ^= true;
-		}
-		it->rev = false;
+void split(Node* t, Node* &l, Node* &r, int pos, int smaller = 0) { 
+	//O(log n)
+	//Splits tree `t` into two subtrees `l`, `r` such that 
+	//all pos of `l` are <= `pos` and all pos of `r` are > `pos`
+	//and `smaller` is the number of smaller elements 
+	//in the ancestors' trees
+	if (!t) l = r = nullptr; 
+	else {
+		t->push();
+		int curPos = smaller + getSize(t->left);
+		if (curPos <= pos) split(t->right, t->right, r, pos, curPos + 1), l = t;
+		else split(t->left, l, t->left, pos, smaller), r = t;
+		t->recalc();
 	}
 }
 
-
-void merge (pitem &t, pitem l , pitem r){ //O(log N)
-	push(l);
-	push(r);
-	if(!l || !r){
-		if(l){
-			t=l;
-		}
-		else{
-			t = r;
-		}
-	}
-	else if(l -> prior > r->prior){
-		merge(l -> r, l -> r, r);
-		t = l;
-	}
-	else{
-		merge(r -> l, l , r->l);
-		t = r;
-	}
-	updateNode(t);
-}
-
-void split(pitem t,  pitem &l, pitem &r, Long key, Long add = 0){ //O(log N)
-	if(!t){
-		l = r = NULL;
-		return;
-	}
-	push(t);
-	Long curKey = add + getCnt(t -> l); //implicit key
-	
-	if(key <= curKey){
-		split(t -> l, l , t -> l , key , add);
-		r = t;
-	}
-	else{
-		split(t -> r, t -> r , r ,key , add + 1 + getCnt(t -> l));
-		l = t;
-	}
-	
-	updateNode(t);
+void merge(Node* &t, Node* l, Node* r) { //O(log n)
+	//Merge trees `l` and `r` into tree `t`, assuming that
+	//all the pos on `l` are smaller than the pos on `r`
+	if (l) l->push();
+	if (r) r->push();
+	if (!l || !r) t = l ? l : r;
+	else if (l->prior > r->prior) merge(l->right, l->right, r), t = l;
+	else merge(r->left, l, r->left), t = r;
+	if (t) t->recalc();
 }
 
 struct Treap{
-	pitem tree;
+	Node* tree;
+	Treap(): tree(nullptr){}
 	
-	void insert(Long pos, Long X){ //O(log N) 
-		Long r = random(0 , MAXINT);
-		pitem it = new Item(X,r);
-		pitem T1, T2;
-		split(tree , T1, T2, pos);
-		merge(T1, T1 , it);
+	void insert(int pos, Long value) { //O(log n) 
+		Node *T1, *T2;
+		split(tree, T1, T2, pos - 1);
+		merge(T1, T1, new Node(random(0, POOL), value));
 		merge(tree, T1, T2);
 	}
 	
-	void erase(pitem &t, Long key, Long add = 0){ //O(log N)
-		if(!t){
-			return;
-		}
-		
-		push(t);
-		Long curKey = add + getCnt(t -> l);
-		if(curKey == key){
-			merge(t, t -> l , t -> r);
-		}
-		else{
-			if(key < curKey ){
-				erase(t -> l, key, add);
-			}
-			else{
-				erase(t -> r, key , add + 1 + getCnt(t -> l) );
-			}
-		}
-		updateNode(t);
+	void erase(int pos) { //O(log n)
+		Node *T1, *T2, *T3;
+		split(tree, T1, T2, pos - 1);
+		split(T2, T2, T3, 0);
+		merge(tree, T1, T3);
 	}
 	
-	void erase(Long key){ //O(log N)
-		erase(tree,key);
+	Long query(int l, int r) { //O(log n)
+		if (r >= tree->size) return 0; //null range, return neutral
+		Node *T1, *T2, *T3;
+		split(tree, T1, T2, l - 1);
+		split(T2, T2, T3, r - l);
+		Long ans = T2->answer; 
+		merge(tree, T1, T2);
+		merge(tree, tree, T3);
+		return ans;
 	}
 	
-	Long search(pitem t, Long key, Long add = 0){ //O(log N)
-		if(!t){
-			return -INF;
-		}
-		
-		push(t);
-		Long curKey = add + getCnt(t -> l);
-		if(curKey == key){
-			return t->value;
-		}
-		else{
-			if(key < curKey){
-				return search(t->l, key , add);
-			}
-			else{
-				return search(t->r ,key, add + 1 + getCnt(t -> l) );
-			}
-		}
+	void update(int l, int r, Long add) { //O(log n)
+		if (r >= tree->size) return; //null range
+		Node *T1, *T2, *T3;
+		split(tree, T1, T2, l - 1);
+		split(T2, T2, T3, r - l);
+		T2->answer += T2->size * add;
+		T2->lazy += add;
+		merge(tree, T1, T2);
+		merge(tree, tree, T3);
 	}
 	
-	Long search(Long key){ //O(log N)
-		return search(tree,key);
+	void reverse(int l, int r) { //O(log n)
+		if (r >= tree->size) return; //null range
+		Node *T1, *T2, *T3;
+		split(tree, T1, T2, l - 1);
+		split(T2, T2, T3, r - l);
+		T2->rev ^= 1;
+		merge(tree, T1, T2);
+		merge(tree, tree, T3);
 	}
-	
-	void replace(pitem t, Long key, Long val , Long add = 0){ //O(log N)
-		if(!t){
-			return;
-		}
-		
-		push(t);
-		Long curKey = add + getCnt(t -> l);
-		if(curKey == key){
-			t -> value = val;
-		}
-		else{
-			if(key < curKey){
-				replace(t->l, key , val , add);
-			}
-			else{
-				replace(t->r ,key, val , add + 1 + getCnt(t -> l) );
-			}
-		}
-	}
-	
-	void replace(Long key, Long val){ //O(log N)
-		return replace(tree,key, val);
-	}
-	
-	void reverse(Long l, Long r){
-		if(l > r) return;
-		pitem t1, t2 , t3;
-		split(tree , t1 , t2, l);
-		split(t2, t2 , t3, r - l  + 1);
-		
-		t2->rev ^= true;
-		merge(tree, t1 , t2);
-		merge(tree, tree, t3);
-	}
-	
-	
-}tp;
-
-
-int main() {
-	ios_base::sync_with_stdio(false);
-	cin.tie(NULL);
-	
-	return 0;
-}
-
+} treap;
