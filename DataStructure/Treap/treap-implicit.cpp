@@ -93,10 +93,11 @@ struct Treap{
 	}
 	
 	Long query(int l, int r) { //O(log n)
+		if (r >= tree->size) return 0; //null range, return neutral
 		Node *T1, *T2, *T3;
 		split(tree, T1, T2, l - 1);
 		split(T2, T2, T3, r - l);
-		Long ans = T2->answer; //assuming [l, r] is a valid range
+		Long ans = T2->answer; 
 		merge(tree, T1, T2);
 		merge(tree, tree, T3);
 		return ans;
