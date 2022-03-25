@@ -9,6 +9,7 @@ Operations:
 - Insert(pos, val): Insert the value `val` in position `pos` (0-indexed)
 - Erase(pos): Erase the element in position `pos` (0-indexed)
 - Query(l, r): Return f(A_l, A_{l+1}, ..., A_r)
+
 After every insertion or deletion, the positions are recalculated
 (all position greater than `pos` are shifted to the right)
 We are going to construct a treap with implicit keys to recalculate
@@ -24,8 +25,6 @@ Prior random(Prior a, Prior b) {
 	return uniform_int_distribution<Prior>(a, b)(rng);
 }
 
-const Long NEUTRAL = 0;
-
 Long f(Long a, Long b) {
 	return a + b;
 }
@@ -36,24 +35,19 @@ struct Node {
 	Long value, answer; 
 	Node *left, *right;
 	Node(Prior prior, Long value): 
-		prior(prior), value(value), answer(NEUTRAL), size(0),
+		prior(prior), value(value), size(0),
 		left(nullptr), right(nullptr) {}
+	
+	void recalc() {
+		if (!left) answer = value;
+		else answer = f(left->answer, value);
+		if (right) answer = f(answer, right->answer);
+		size = 1 + (left ? left->size : 0) + (right ? right->size : 0);
+	}
 };
 
-Long getAnswer(Node* node) {
-	return node ? node->answer : NEUTRAL;
-}
-
-Long getSize(Node* node) {
+int getSize(Node* node) {
 	return node ? node->size : 0;
-}
-
-void recalc(Node* node) {
-	if (node) {
-		node->answer = f(getAnswer(node->left), node->value);
-		node->answer = f(node->answer, getAnswer(node->right));
-		node->size = getSize(node->left) + getSize(node->right) + 1;
-	}
 }
 
 void split(Node* t, Node* &l, Node* &r, int pos, int smaller = 0) { 
@@ -67,7 +61,7 @@ void split(Node* t, Node* &l, Node* &r, int pos, int smaller = 0) {
 		int curPos = smaller + getSize(t->left);
 		if (curPos <= pos) split(t->right, t->right, r, pos, curPos + 1), l = t;
 		else split(t->left, l, t->left, pos, smaller), r = t;
-		recalc(t);
+		t->recalc();
 	}
 }
 
@@ -77,7 +71,7 @@ void merge(Node* &t, Node* l, Node* r) { //O(log n)
 	if (!l || !r) t = l ? l : r;
 	else if (l->prior > r->prior) merge(l->right, l->right, r), t = l;
 	else merge(r->left, l, r->left), t = r;
-	recalc(t);
+	if (t) t->recalc();
 }
 
 struct Treap{
@@ -102,7 +96,7 @@ struct Treap{
 		Node *T1, *T2, *T3;
 		split(tree, T1, T2, l - 1);
 		split(T2, T2, T3, r - l);
-		Long ans = getAnswer(T2);
+		Long ans = T2->answer; //assuming [l, r] is a valid range
 		merge(tree, T1, T2);
 		merge(tree, tree, T3);
 		return ans;

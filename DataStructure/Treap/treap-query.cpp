@@ -21,7 +21,6 @@ Prior random(Prior a, Prior b) {
 	return uniform_int_distribution<Prior>(a, b)(rng);
 }
 
-const int NEUTRAL = 0;
 Long f(Long a, Long b) {
 	return a + b;
 }
@@ -32,20 +31,15 @@ struct Node {
 	Long value, answer; 
 	Node *left, *right;
 	Node(Key key, Prior prior, Long value): 
-		key(key), prior(prior), value(value), answer(NEUTRAL), 
+		key(key), prior(prior), value(value), 
 		left(nullptr), right(nullptr) {}
-};
-
-Long get(Node* node) {
-	return node ? node->answer : NEUTRAL;
-}
-
-void recalc(Node* node) {
-	if (node) {
-		node->answer = f(get(node->left), node->value);
-		node->answer = f(node->answer, get(node->right));
+	
+	void recalc() {
+		if (!left) answer = value;
+		else answer = f(left->answer, value);
+		if (right) answer = f(answer, right->answer);
 	}
-}
+};
 
 void split(Node* t, Node* &l, Node* &r, Key key) { //O(log n)
 	//Splits tree `t` into two subtrees `l`, `r` such that 
@@ -53,7 +47,7 @@ void split(Node* t, Node* &l, Node* &r, Key key) { //O(log n)
 	if (!t) l = r = nullptr;
 	else if (t->key <= key) split(t->right, t->right, r, key), l = t;
 	else split(t->left, l, t->left, key), r = t;
-	recalc(t);
+	if (t) t->recalc();
 }
 
 void merge(Node* &t, Node* l, Node* r) { //O(log n)
@@ -62,9 +56,10 @@ void merge(Node* &t, Node* l, Node* r) { //O(log n)
 	if (!l || !r) t = l ? l : r;
 	else if (l->prior > r->prior) merge(l->right, l->right, r), t = l;
 	else merge(r->left, l, r->left), t = r;
-	recalc(t);
+	if (t) t->recalc();
 }
 
+const int NEUTRAL = 0;
 struct Treap{
 	Node* tree;
 	Treap(): tree(nullptr){}
@@ -87,7 +82,7 @@ struct Treap{
 		Node *T1, *T2, *T3;
 		split(tree, T1, T2, l - 1);
 		split(T2, T2, T3, r);
-		Long ans = get(T2);
+		Long ans = T2 ? T2->answer : NEUTRAL;
 		merge(tree, T1, T2);
 		merge(tree, tree, T3);
 		return ans;
