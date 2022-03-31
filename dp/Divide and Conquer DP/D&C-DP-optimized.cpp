@@ -13,7 +13,7 @@ opt[i][k - 1] <= opt[i][k] <= opt[i + 1][k]
 
 const int MX = 3000;
 Long dp[MX][MX + 1];
-int opt[MX][MX + 1];
+int opt[MX + 1][MX + 1];
 Long cost(Long l, Long r);
 
 const Long INF = 1e18;
