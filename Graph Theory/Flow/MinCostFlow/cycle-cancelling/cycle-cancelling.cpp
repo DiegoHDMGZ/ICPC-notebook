@@ -24,7 +24,7 @@ struct Edge {
 	Edge(int to, Cap cap, Cost cost, int rev) : 
 		to(to), flow(0), cap(cap), cost(cost), rev(rev){}
 };
- 
+
 struct Graph {
 	vector<Edge> adj[MX];
 	int level[MX];

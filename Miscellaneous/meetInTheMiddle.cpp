@@ -2,16 +2,15 @@
 #define debug(x) cout << #x << " = " << x << endl
 #define REP(i, n) for (Long i = 0; i < (Long)n; i++)
 using namespace std;
- 
 typedef long long Long;
 
 //You are given an array of n numbers. 
 //In how many ways can you choose a subset of the numbers with sum x?
- 
+
 int getBit(int mask, int pos) {
 	return (mask >> pos) & 1;
 }
- 
+
 vector<Long> merge(vector<Long> &L, vector<Long> &R) {
 	vector<Long> ans;
 	int l = 0;
@@ -35,7 +34,7 @@ vector<Long> merge(vector<Long> &L, vector<Long> &R) {
 	}
 	return ans;
 }
- 
+
 vector<Long> generate(vector<Long> &v) {
 	Long n = v.size();
 	vector<Long> allSums = {0};
@@ -48,7 +47,7 @@ vector<Long> generate(vector<Long> &v) {
 	}
 	return allSums;
 }
- 
+
 int main() {
 	ios_base::sync_with_stdio(false);
 	cin.tie(NULL);
@@ -71,7 +70,7 @@ int main() {
 	
 	vector<Long> L = generate(left);
 	vector<Long> R = generate(right);
- 
+	
 	Long ans = 0;
 	int r = R.size();
 	r--;

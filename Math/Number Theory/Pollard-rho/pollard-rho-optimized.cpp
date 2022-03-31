@@ -89,10 +89,10 @@ Long getFactor(Long n) {
 		if (t == BUCKET) {
 			t = 0;
 			Long ans = __gcd(product, n);
-        	if (ans != 1) {
-        		return getFactor(ans);
+			if (ans != 1) {
+				return getFactor(ans);
 			}
-        }
+		}
 	}
 }
 

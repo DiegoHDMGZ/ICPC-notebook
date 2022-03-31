@@ -12,7 +12,7 @@ Long combine(Long x, Long y){
 const int MX = 1e9;
 const int MX_U = 1e5;
 const int MX2 = 4 * (63 - __builtin_clzll(MX)) * MX_U + 1;
-  
+
 struct SegmentTree {
 	Long sum[MX2];
 	Long lazy[MX2];

@@ -11,7 +11,7 @@ typedef long long Long;
 const Long MX = 2e6; //MX = MX_VAL^(1/3)
 bool isPrimeSieve[MX];
 vector<Long> primes;
- 
+
 void sieve(){ //O(MX)
 	//x = i * p. p is the smallest prime factor
 	fill(isPrimeSieve, isPrimeSieve + MX , true);
@@ -28,7 +28,7 @@ void sieve(){ //O(MX)
 		}
 	}
 }
- 
+
 vector<pair<Long, Long>> factorize(Long n) { 
 	//O(n^(1/3) + |miller| + |rho|)
 	if (n == 1) return {};

@@ -21,7 +21,7 @@ struct Edge {
 	
 	Cap resCap() const {return cap - flow;}
 };
- 
+
 struct Graph {
 	vector<Edge> adj[MX];
 	int parentEdge[MX];
