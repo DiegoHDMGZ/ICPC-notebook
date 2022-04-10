@@ -9,13 +9,11 @@ struct Tree{
 	int depth[MX];
 	int parent[MX];
 	vector<int> layers[MX];
-	int label[MX];
 	int maxDepth;
 	
 	void clear(int n) {
 		for (int i = 0; i < n; i++) {
 			adj[i].clear();
-			layers[i].clear();
 		}
 	}
 	
@@ -36,6 +34,7 @@ struct Tree{
 	}
 	
 	vector<int> encode(int root, int n) {
+		vector<int> label(n);
 		maxDepth = 0;
 		dfs(root);
 		depth[root] = 0;
