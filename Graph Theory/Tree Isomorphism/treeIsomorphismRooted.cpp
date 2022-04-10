@@ -1,6 +1,4 @@
 #include <bits/stdc++.h>
-#define debug(x) cout << #x << " = " << x << endl
-#define REP(i, n) for (Long i = 0; i < (Long)n; i++)
 using namespace std;
 
 typedef long long Long;
@@ -21,17 +19,17 @@ struct Tree{
 		}
 	}
 	
-	void addEdge(int u , int v){
+	void addEdge(int u, int v) {
 		adj[u].push_back(v);
 		adj[v].push_back(u);
 	}
 	
-	void dfs(int u, int p = -1){
+	void dfs(int u, int p = -1) {
 		maxDepth = max(maxDepth, depth[u]);
 		parent[u] = p;
 		layers[depth[u]].push_back(u);
-		for(int v : adj[u]){
-			if(v == p) continue;
+		for (int v : adj[u]){
+			if (v == p) continue;
 			depth[v] = depth[u] + 1;
 			dfs(v, u);
 		}
@@ -78,7 +76,3 @@ struct Tree{
 		return code;
 	}
 } tree;
-
-int main() {
-	return 0;
-}
