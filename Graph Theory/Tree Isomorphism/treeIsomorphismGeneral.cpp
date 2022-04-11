@@ -64,7 +64,6 @@ struct Tree{
 			}
 			for (auto p : sortedNodes) {
 				int u = p.second;
-				vector<int> children;
 				code.push_back(-1); //group separator
 				for (int v : adj[u]) {
 					if (depth[v] < depth[u]) continue;
