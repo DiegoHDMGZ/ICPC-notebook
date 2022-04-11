@@ -39,12 +39,12 @@ struct Tree{
 		depth[root] = 0;
 		dfs(root);
 		vector<int> code;
+		auto labelComp = [&](int &a, int &b) {
+			return label[a] < label[b];
+		};
 		for (int d = maxDepth; d >= 0; d--) {
 			vector<pair<vector<int>, int>> sortedNodes;
 			for (int u : layers[d]) {
-				auto labelComp = [&](int &a, int &b) {
-					return label[a] < label[b];
-				};
 				sort(adj[u].begin(), adj[u].end(), labelComp);
 				vector<int> children;
 				for (int v : adj[u]) {
