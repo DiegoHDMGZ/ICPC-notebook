@@ -26,14 +26,14 @@ struct Tree{
 		maxDepth = max(maxDepth, depth[u]);
 		parent[u] = p;
 		layers[depth[u]].push_back(u);
-		for (int v : adj[u]){
+		for (int v : adj[u]) {
 			if (v == p) continue;
 			depth[v] = depth[u] + 1;
 			dfs(v, u);
 		}
 	}
 	
-	vector<int> encode(int root, int n) {
+	vector<int> encode(int root, int n) { //O(n log n)
 		vector<int> label(n);
 		maxDepth = 0;
 		dfs(root);
