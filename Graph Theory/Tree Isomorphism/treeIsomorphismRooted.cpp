@@ -1,4 +1,5 @@
 #include <bits/stdc++.h>
+#define all(v) begin(v), end(v)
 using namespace std;
 
 typedef long long Long;
@@ -36,40 +37,30 @@ struct Tree{
 	vector<int> encode(int root, int n) { //O(n log n)
 		vector<int> label(n);
 		maxDepth = 0;
-		dfs(root);
 		depth[root] = 0;
+		dfs(root);
 		vector<int> code;
-		auto labelComp = [&](int &a, int &b) {
-			return label[a] < label[b];
+		vector<vector<int>> children(n);
+		auto cmpNode = [&](int &u, int &v) {
+			return children[u] < children[v];
 		};
 		for (int d = maxDepth; d >= 0; d--) {
-			vector<pair<vector<int>, int>> sortedNodes;
-			for (int u : layers[d]) {
-				sort(adj[u].begin(), adj[u].end(), labelComp);
-				vector<int> children;
-				for (int v : adj[u]) {
-					if (depth[v] < depth[u]) continue;
-					children.push_back(label[v]);
+			sort(layers[d].begin(), layers[d].end(), cmpNode);
+			for (int i = 0; i < layers[d].size(); i++) {
+				int u = layers[d][i];
+				if (i == 0) label[u] = 0;
+				else {
+					int prev = layers[d][i - 1];
+					label[u] = label[prev];
+					if (children[u] != children[prev]) {
+						label[u]++;
+					}
 				}
-				sortedNodes.push_back({children, u});
+				if (d != 0) children[parent[u]].push_back(label[u]);
+				code.push_back(-1); //group separator
+				copy(all(children[u]), back_inserter(code));
 			}
 			layers[d].clear();
-			sort(sortedNodes.begin(), sortedNodes.end());
-			label[sortedNodes[0].second] = 0;
-			for (int i = 1; i < sortedNodes.size(); i++) {
-				label[sortedNodes[i].second] = label[sortedNodes[i - 1].second];
-				if (sortedNodes[i].first != sortedNodes[i - 1].first) {
-					label[sortedNodes[i].second]++;
-				}
-			}
-			for (auto p : sortedNodes) {
-				int u = p.second;
-				code.push_back(-1); //group separator
-				for (int v : adj[u]) {
-					if (depth[v] < depth[u]) continue;
-					code.push_back(label[v]);
-				}
-			}
 		}
 		return code;
 	}
