@@ -35,6 +35,7 @@ struct Tree{
 	}
 	
 	vector<int> encode(int root, int n) { //O(n log n)
+		//The code has size exactly 2n - 1
 		vector<int> label(n);
 		maxDepth = 0;
 		depth[root] = 0;
