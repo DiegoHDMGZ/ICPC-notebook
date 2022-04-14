@@ -35,6 +35,7 @@ struct Tree {
 	}
 	
 	vector<int> encode(int root, int n) { //O(n log n)
+		//The code has size exactly 2 * n - 1
 		vector<int> label(n);
 		maxDepth = 0;
 		depth[root] = 0;
@@ -81,14 +82,14 @@ struct Tree {
 	}
 	
 	vector<int> encode(int n) { //O(n log n)
+		//The code has size exactly 2n - 1 or 4n - 2
 		vector<int> centroids;
 		findCentroids(0, n, centroids);
-		vector<int> ans = encode(centroids[0], n);
-		if (centroids.size() == 1) return ans;
+		vector<int> code1 = encode(centroids[0], n);
+		if (centroids.size() == 1) return code1;
 		vector<int> code2 = encode(centroids[1], n);
-		if (ans < code2) swap(ans, code2);
-		ans.push_back(-2); //tree separator
-		copy(all(code2), back_inserter(ans));
-		return ans;
+		if (code1 < code2) swap(code1, code2);
+		copy(all(code2), back_inserter(code1));
+		return code1;
 	}
 } tree;
