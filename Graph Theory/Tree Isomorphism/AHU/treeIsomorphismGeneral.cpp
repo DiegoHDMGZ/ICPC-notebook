@@ -71,11 +71,10 @@ struct Tree {
 		size[u] = 1;
 		bool isCentroid = true;
 		for (int v : adj[u]) {
-			if (v != p) {
-				findCentroids(v, n, ans, u);
-				size[u] += size[v];
-				if (size[v] > n / 2) isCentroid = false;
-			}
+			if (v == p) continue;
+			findCentroids(v, n, ans, u);
+			size[u] += size[v];
+			if (size[v] > n / 2) isCentroid = false;
 		}
 		if (n - size[u] > n / 2) isCentroid = false;
 		if (isCentroid) ans.push_back(u);
