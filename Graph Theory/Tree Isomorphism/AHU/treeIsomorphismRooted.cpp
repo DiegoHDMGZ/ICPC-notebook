@@ -49,7 +49,7 @@ struct Tree{
 			sort(layers[d].begin(), layers[d].end(), cmpNode);
 			for (int i = 0; i < layers[d].size(); i++) {
 				int u = layers[d][i];
-				if (i == 0) label[u] = 0;
+				if (i == 0) label[u] = 1;
 				else {
 					int prev = layers[d][i - 1];
 					label[u] = label[prev];
@@ -58,7 +58,7 @@ struct Tree{
 					}
 				}
 				if (d != 0) children[parent[u]].push_back(label[u]);
-				code.push_back(-1); //group separator
+				code.push_back(0); //group separator
 				copy(all(children[u]), back_inserter(code));
 			}
 			layers[d].clear();
