@@ -1,29 +1,27 @@
 #include <bits/stdc++.h>
-#define debug(x) cout << #x << " = " << x << endl
-#define REP(i, n) for (Long i = 0; i < (Long)n; i++)
 using namespace std;
 
 typedef long long Long;
-const Long MX = 1e5;
 
+const int MX = 1e5;
 struct SegmentTree {
 	Long t[2 * MX];
-	Long n;
+	int n;
 	
-	void clear(Long n) {
-		for(Long i = 0; i <  2 * n; i++) {
+	void clear(int n) {
+		for (int i = 0; i < 2 * n; i++) {
 			t[i] = 0;
 		}
 		this->n = n;
 	}
 	
-	void build(vector<Long> &a, Long id, Long tl, Long tr) { //O(n)
+	void build(vector<Long> &a, int id, int tl, int tr) { //O(n)
 		if (tl == tr) {
 			t[id] = a[tl];
 		} else {
-			Long tm = (tl + tr) / 2;
-			Long left = id + 1;
-			Long right = id + 2 * (tm - tl + 1) ;
+			int tm = (tl + tr) / 2;
+			int left = id + 1;
+			int right = id + 2 * (tm - tl + 1) ;
 			build(a, left, tl, tm);
 			build(a, right, tm + 1, tr);
 			t[id] = 0;
@@ -32,38 +30,38 @@ struct SegmentTree {
 	
 	void build(vector<Long> &a) {
 		n = a.size();
-		build(a , 1 , 0 , n - 1);
+		build(a, 1, 0, n - 1);
 	}
 
-	Long query(Long pos, Long id, Long tl, Long tr) { //O(logn)
+	Long query(int pos, int id, int tl, int tr) { //O(logn)
 		if (tl == tr) return t[id];
-		Long tm = (tl + tr) / 2;
-		Long left = id + 1;
-		Long right = id + 2 * (tm - tl + 1) ;
+		int tm = (tl + tr) / 2;
+		int left = id + 1;
+		int right = id + 2 * (tm - tl + 1) ;
 		if (pos <= tm) return t[id] + query(pos, left, tl, tm);
 		else return t[id] + query(pos, right, tm + 1, tr);
 	}
 	
-	Long query(Long pos) {
+	Long query(int pos) {
 		assert(n > 0);
-		return query(pos , 1 , 0 , n - 1);
+		return query(pos, 1, 0, n - 1);
 	}
 
-	void update(Long l, Long r, Long val, Long id, Long tl, Long tr) { //O(logn)
+	void update(int l, int r, Long val, int id, int tl, int tr) { //O(logn)
 		if (tr < l || tl > r) return;
 		if (l <= tl && tr <= r) {
 			t[id] += val;
 		} else {
-			Long tm = (tl + tr) / 2;
-			Long left = id + 1;
-			Long right = id + 2 * (tm - tl + 1) ;
-			update(l, r, val , left, tl, tm);
-			update(l, r, val , right, tm + 1, tr);
+			int tm = (tl + tr) / 2;
+			int left = id + 1;
+			int right = id + 2 * (tm - tl + 1) ;
+			update(l, r, val, left, tl, tm);
+			update(l, r, val, right, tm + 1, tr);
 		}
 	}
 	
-	void update(Long l , Long r, Long val) {
+	void update(int l , int r, int val) {
 		assert(n > 0);
-		update(l , r, val, 1 , 0 , n - 1);
+		update(l, r, val, 1, 0, n - 1);
 	}
 } st;
