@@ -60,7 +60,7 @@ struct SegmentTree {
 		}
 	}
 	
-	void update(int l , int r, Long val) {
+	void update(int l, int r, Long val) {
 		assert(n > 0);
 		update(l, r, val, 1, 0, n - 1);
 	}
