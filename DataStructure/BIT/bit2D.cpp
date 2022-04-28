@@ -3,62 +3,51 @@ using namespace std;
 
 typedef long long Long;
 
-const Long MX_X = 1000;
-const Long MX_Y = 1000;
-const Long EXTRA = 6;
+struct BIT2D {
+	vector<vector<Long>> tree;
+	
+	BIT2D(int n, int m) {
+		tree = vector<vector<Long>>(n + 1, vector<Long>(m + 1));
+	}
 
-struct BIT2D{
-	Long tree[MX_X + EXTRA][MX_Y + EXTRA];
-	
-	void clear(Long n, Long m) { //O(n * m)
-		for (Long i = 0; i < n + EXTRA; i++) {
-			for (Long j = 0; j < m + EXTRA; j++) {
-				tree[i][j] = 0;	
+	Long query(int rx, int ry) { // O(log n log m)
+		rx++;
+		ry++;
+		if (rx <= 0 || ry <= 0) return 0;
+		Long ans = 0;
+		while (rx > 0) {
+			Long r = ry;
+			while (r > 0) {
+				ans += tree[rx][r];
+				r -= (r & -r);
 			}
+			rx -= (rx & -rx);
 		}
+		return ans;
 	}
 	
-	Long query(Long x, Long y) { // O(log n log m)
-		x += EXTRA;
-		y += EXTRA;
-		Long sum = 0;
-		while (x > 0) {
-			Long j = y;
-			while (j > 0) {
-				sum += tree[x][j];
-				j -= (j & -j);
+	void update(Long lx, Long ly, Long val) { // O(log n log m)
+		lx++;
+		ly++;
+		while (lx < tree.size()) {
+			Long l = ly;
+			while (l < tree[lx].size()) {
+				tree[lx][l] += val;
+				l += (l & -l);
 			}
-			x -= (x & -x);
-		}
-		return sum;
-	}
-	
-	void update(Long x, Long y, Long add) { // O(log n log m)
-		x += EXTRA;
-		y += EXTRA;
-		while (x < MX_X + EXTRA) {
-			Long j = y;
-			while (j < MX_Y + EXTRA) {
-				tree[x][j] += add;
-				j += (j & -j);
-			}
-			x += (x & -x);
+			lx += (lx & -lx);
 		}
 	}
 	
 	//you can only use one of this range implementations
-	Long query(Long x1, Long y1,Long x2, Long y2) {
+	Long query(int x1, int y1, int x2, int y2) { // O(log n log m)
 		return query(x2 , y2) - query(x2 , y1 - 1) - query(x1 - 1 , y2) + query(x1 - 1 , y1 - 1);
 	}
 	
-	void update(Long x1, Long y1, Long x2, Long y2, Long add) {
-		update(x1 , y1 , add);
-		update(x2 + 1 , y1, -add);
-		update(x1, y2 + 1 , -add);
-		update(x2 + 1 , y2 + 1 , add);
+	void update(int x1, int y1, int x2, int y2, Long add) { // O(log n log m)
+		update(x1, y1, add);
+		update(x2 + 1, y1, -add);
+		update(x1, y2 + 1, -add);
+		update(x2 + 1, y2 + 1, add);
 	}	
-}ft;
-
-int main() {
-	return 0;
-}
+};

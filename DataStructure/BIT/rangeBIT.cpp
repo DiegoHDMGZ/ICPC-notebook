@@ -1,70 +1,69 @@
 #include <bits/stdc++.h>
 using namespace std;
-
 typedef long long Long;
 
-const Long MX = 1e5;
-const Long EXTRA = 5;
-
-struct BIT{
-	Long tree[MX + EXTRA];
+struct BIT {
+	vector<Long> tree;
 	
-	void clear(Long n) { //O(n)
-		for (Long i = 0; i < n + EXTRA; i++) {
-			tree[i] = 0;
-		}
+	BIT(){}
+	BIT(int n) {
+		tree = vector<Long>(n + 1, 0);
 	}
 	
-	Long query(Long x) { //O(log n)
-		x += EXTRA;
-		Long sum = 0;
-		while (x > 0) {
-			sum += tree[x];
-			x -= (x & -x);
+	Long query(int r) { //O(log n)
+		//a[0] + a[1] + ... + a[r]
+		r++;
+		if (r <= 0) return 0;
+		Long ans = 0;
+		while (r > 0) {
+			ans += tree[r];
+			r -= (r & -r);
 		}
-		return sum;
+		return ans;
 	}
-
-	void update(Long x, Long add) { //O(log n)
-		x += EXTRA;
-		while (x < MX + EXTRA) {
-			tree[x] += add;
-			x += (x & -x);
+	
+	Long query(int l, int r) { //O(log n)
+		return query(r) - query(l - 1);
+	}
+	
+	void update(int l, Long val) { //O(log n)
+		//a[i] += val, i >= l
+		l++;
+		while (l < tree.size()) {
+			tree[l] += val;
+			l += (l & -l);
 		}
 	}
+	
+	void update(int l, int r, Long add) {
+		update(l, add);
+		update(r + 1, -add);
+	}		
 };
 
 struct RangeBIT{
 	BIT ft1, ft2;
 	
-	void clear(Long n) {
-		ft1.clear(n);
-		ft2.clear(n);
+	RangeBIT(int n) {
+		ft1 = BIT(n);
+		ft2 = BIT(n);
 	}
 	
-	Long query(Long x) {
+	Long query(int x) {
 		Long m = ft1.query(x);
 		Long b = ft2.query(x);
 		return m * x + b;
 	}
 	
-	Long query(Long l, Long r) {
+	Long query(int l, int r) {
 		return query(r) - query(l - 1);
 	}
 	
-	void update(Long l, Long r, Long v) {
+	void update(int l, int r, Long v) {
 		ft1.update(l , v);
 		ft1.update(r + 1 , -v);
 		
 		ft2.update(l , -v * (l - 1));
 		ft2.update(r + 1 , v * r);
 	}
-}ft;
-
-int main() {
-	ios_base::sync_with_stdio(false);
-	cin.tie(NULL);
-	cout.tie(NULL);
-
-	return 0;
-}
+};
