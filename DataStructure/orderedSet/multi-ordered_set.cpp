@@ -12,4 +12,5 @@ ordered_set s;
 //order_of_key(num) -> # of items strictly smaller than num - O(log n)
 
 //using less_equal cause that lower_bound works as upper_bound and viceversa
-//also you can only erase by iterator now
+//also .find() does not work and you can only erase by iterator now
+//using for example erase(upper_bound(x))
