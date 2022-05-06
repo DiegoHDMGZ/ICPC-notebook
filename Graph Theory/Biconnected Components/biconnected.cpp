@@ -121,7 +121,7 @@ struct Graph {
 				if (tIn[v] < tIn[u]) edges.push(Edge(u, v));
 			} else {
 				edges.push(Edge(u, v));
-				dfs(v, u );
+				dfs(v, u);
 				low[u] = min(low[u], low[v]);
 				if (low[v] > tIn[u]) {
 					isBridge[min(u, v)][max(u, v)] = true;
