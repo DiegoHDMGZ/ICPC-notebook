@@ -33,7 +33,7 @@ struct SegmentTree{
 		}
 	}
 	
-	void build(vector<Long> &a ) {
+	void build(vector<Long> &a) {
 		n = a.size();
 		build(a, 1, 0, n - 1);
 	}
