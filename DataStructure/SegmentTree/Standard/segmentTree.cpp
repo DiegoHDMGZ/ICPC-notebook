@@ -62,7 +62,7 @@ struct SegmentTree{
 			int right = id + 2 * (tm - tl + 1);
 			if (pos <= tm) update(pos, val, left, tl, tm);
 			else update(pos, val, right, tm + 1, tr);
-			t[id] = combine(t[left], t[right] );
+			t[id] = combine(t[left], t[right]);
 		}
 	}
 	
