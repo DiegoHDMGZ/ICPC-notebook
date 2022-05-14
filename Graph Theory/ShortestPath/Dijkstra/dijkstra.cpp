@@ -1,50 +1,37 @@
 #include <bits/stdc++.h>
-#define debug(x) cout << #x << " = " << x << endl
-#define REP(i,n) for(Long i = 0; i < (Long)n; i++)
-#define pb push_back
 using namespace std;
 
 typedef long long Long;
 
-typedef pair<Long, Long> Path;
-const Long MX = 1e5;
+typedef pair<Long, int> Path;
 const Long INF = 1e18;
 
 struct Graph{
-	vector<pair<Long,Long>> adj[MX];
-	Long parent[MX];
-	Long d[MX];
+	vector<vector<pair<int, Long>>> adj;
+	vector<int> parent;
+	vector<Long> d;
 	
-	void clear(Long n) {
-		for (int i = 0; i < n; i++) {
-			adj[i].clear();
-		}
+	Graph(int n) {
+		adj.resize(n);
 	}
 	
-	void addEdge(Long u, Long v, Long w) {
-		adj[u].push_back({v , w});
-		adj[v].push_back({u , w}); 
+	void addEdge(int u, int v, Long w) {
+		adj[u].push_back({v, w});
+		adj[v].push_back({u, w}); 
 	}
 	
-	void dijkstra(Long s, Long n) { //O(E log V)
-		for (Long i = 0; i < n; i++) {
-			parent[i] = -1;
-			d[i] = INF;
-		}
+	void dijkstra(int s) { //O(E log V)
+		int n = adj.size();
+		parent = vector<int>(n, -1);
+		d = vector<Long>(n, INF);
 		priority_queue<Path, vector<Path> , greater<Path>> q;
 		d[s] = 0;
 		q.push({d[s], s});
 		while (!q.empty()) {
-			Path p = q.top();
+			auto [weight, u] = q.top();
 			q.pop();
-			Long u = p.second;
-			Long weight = p.first;
-			if (weight != d[u]) {
-				continue;
-			}
-			for (auto e : adj[u]) {
-				Long v = e.first;
-				Long w = e.second;
+			if (weight != d[u]) continue;
+			for (auto [v, w] : adj[u]) {
 				if (d[u] + w < d[v]) {
 					d[v] = d[u] + w;
 					parent[v] = u;
@@ -54,20 +41,14 @@ struct Graph{
 		}
 	}
 	
-	vector<Long> getPath(Long u){
-		if (d[u] == INF) {
-			return {};
-		}
-		vector<Long> path;
-		while(u != -1){
+	vector<int> getPath(int u) {
+		if (d[u] == INF) return {};
+		vector<int> path;
+		while (u != -1) {
 			path.push_back(u);
 			u = parent[u];
 		}
 		reverse(path.begin(), path.end());
 		return path;
 	}
-} G;
-
-int main() {
-	return 0;
-}
+};
