@@ -5,47 +5,37 @@ using namespace std;
 
 typedef long long Long;
 
-const Long MX = 1e5;
 const Long INF = 1e18;
 
-Long d[MX];
-struct Compare{
-	bool operator() (Long u, Long v) const {
-		if (d[u] == d[v]) return u < v; 
-		return d[u] < d[v];
-	}
-};
-
 struct Graph{
-	vector<pair<Long,Long>> adj[MX];
-	Long parent[MX];
-	
-	void clear(Long n) {
-		for (int i = 0; i < n; i++) {
-			adj[i].clear();
-		}
+	vector<vector<pair<int, Long>>> adj;
+	vector<int> parent;
+	vector<Long> d;
+	Graph(int n) {
+		adj.resize(n);
 	}
 	
-	void addEdge(Long u, Long v, Long w) {
-		adj[u].push_back({v , w});
-		adj[v].push_back({u , w});
+	void addEdge(int u, int v, Long w) {
+		adj[u].push_back({v, w});
+		adj[v].push_back({u, w}); 
 	}
 	
-	void dijkstra(Long s, Long n){ //O(E log V)
-		for(Long i = 0; i < n; i++){
-			parent[i] = -1;
-			d[i] = INF;
-		}
-		set<Long, Compare> q;
+	void dijkstra(int s){ //O(E log V)
+		int n = adj.size();
+		parent = vector<int>(n, -1);
+		d = vector<Long>(n, INF);
+		auto cmp = [&](int u, int v) {
+			if (d[u] == d[v]) return u < v; 
+			return d[u] < d[v];
+		};
+		set<Long, decltype(cmp)> q(cmp);
 		d[s] = 0;
 		q.insert(s);
-		while(!q.empty()){
-			Long u = *q.begin();
+		while (!q.empty()) {
+			int u = *q.begin();
 			q.erase(q.begin());
-			for(auto e : adj[u]){
-				Long v = e.first;
-				Long w = e.second;
-				if(d[u] + w < d[v]){
+			for (auto [v, w]: adj[u]) {
+				if (d[u] + w < d[v]) {
 					q.erase(v);
 					d[v] = d[u] + w;
 					parent[v] = u;
@@ -55,20 +45,14 @@ struct Graph{
 		}
 	}
 	
-	vector<Long> getPath(Long u){
-		if (d[u] == INF) {
-			return {};
-		}
-		vector<Long> path;
-		while(u != -1){
+	vector<int> getPath(int u) {
+		if (d[u] == INF) return {};
+		vector<int> path;
+		while (u != -1) {
 			path.push_back(u);
 			u = parent[u];
 		}
 		reverse(path.begin(), path.end());
 		return path;
 	}
-} G;
-
-int main() {
-	return 0;
-}
+};
