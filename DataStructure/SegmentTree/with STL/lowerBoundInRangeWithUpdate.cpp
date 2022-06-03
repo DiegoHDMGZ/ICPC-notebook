@@ -46,10 +46,8 @@ struct SegmentTree {
         if (tr < l || tl > r) return INF;
         if (l <= tl && tr <= r) {
             auto it = t[id].lower_bound(x);
-            if (it != t[id].end())
-                return *it;
-            else
-                return INF;
+            if (it != t[id].end()) return *it;
+            else return INF;
         }
         Long tm = (tl + tr) / 2;
         Long left = id + 1;
@@ -71,10 +69,8 @@ struct SegmentTree {
             Long tm = (tl + tr) / 2;
             Long left = id + 1;
             Long right = id + 2 * (tm - tl + 1);
-            if (pos <= tm)
-                update(pos, val, left, tl, tm);
-            else
-                update(pos, val, right, tm + 1, tr);
+            if (pos <= tm) update(pos, val, left, tl, tm);
+            else update(pos, val, right, tm + 1, tr);
         }
     }
 

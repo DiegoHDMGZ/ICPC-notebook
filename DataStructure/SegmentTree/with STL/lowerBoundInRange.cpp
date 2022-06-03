@@ -42,10 +42,8 @@ struct SegmentTree {
         if (tr < l || tl > r) return INF;
         if (l <= tl && tr <= r) {
             auto it = lower_bound(t[id].begin(), t[id].end(), x);
-            if (it != t[id].end())
-                return *it;
-            else
-                return INF;
+            if (it != t[id].end()) return *it;
+            else return INF;
         }
         int tm = (tl + tr) / 2;
         int left = id + 1;

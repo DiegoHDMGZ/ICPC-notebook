@@ -30,10 +30,8 @@ struct Node {
         : key(key), prior(prior), value(value), left(nullptr), right(nullptr) {}
 
     void recalc() {
-        if (!left)
-            answer = value;
-        else
-            answer = f(left->answer, value);
+        if (!left) answer = value;
+        else answer = f(left->answer, value);
         if (right) answer = f(answer, right->answer);
     }
 };
@@ -41,24 +39,18 @@ struct Node {
 void split(Node *t, Node *&l, Node *&r, Key key) { // O(log n)
     // Splits tree `t` into two subtrees `l`, `r` such that
     // all keys of `l` are <= `key` and all keys of `r` are > `key`
-    if (!t)
-        l = r = nullptr;
-    else if (t->key <= key)
-        split(t->right, t->right, r, key), l = t;
-    else
-        split(t->left, l, t->left, key), r = t;
+    if (!t) l = r = nullptr;
+    else if (t->key <= key) split(t->right, t->right, r, key), l = t;
+    else split(t->left, l, t->left, key), r = t;
     if (t) t->recalc();
 }
 
 void merge(Node *&t, Node *l, Node *r) { // O(log n)
     // Merge trees `l` and `r` into tree `t`, assuming that
     // all the keys on `l` are smaller than the keys on `r`
-    if (!l || !r)
-        t = l ? l : r;
-    else if (l->prior > r->prior)
-        merge(l->right, l->right, r), t = l;
-    else
-        merge(r->left, l, r->left), t = r;
+    if (!l || !r) t = l ? l : r;
+    else if (l->prior > r->prior) merge(l->right, l->right, r), t = l;
+    else merge(r->left, l, r->left), t = r;
     if (t) t->recalc();
 }
 

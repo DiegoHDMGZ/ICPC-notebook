@@ -6,8 +6,8 @@ typedef long long Long;
 struct Node {
     Long sum;
     Long lazy;
-    Node* left;
-    Node* right;
+    Node *left;
+    Node *right;
 
     Node() {
         sum = lazy = 0;
@@ -39,7 +39,7 @@ struct Node {
 Long combine(Long x, Long y) { return x + y; }
 
 struct SegmentTree {
-    Node* root;
+    Node *root;
     Long n;
 
     SegmentTree() {}
@@ -49,18 +49,17 @@ struct SegmentTree {
         this->n = n;
     }
 
-    Long query(Long l, Long r, Node* node, Long tl, Long tr) { // O(logn)
+    Long query(Long l, Long r, Node *node, Long tl, Long tr) { // O(logn)
         if (!node) return 0;
         if (l <= tl && tr <= r) return node->sum;
         Long tm = (tl + tr) / 2;
         node->push(tl, tr);
-        if (r < tm + 1)
-            return query(l, r, node->left, tl, tm);
-        else if (tm < l)
-            return query(l, r, node->right, tm + 1, tr);
-        else
+        if (r < tm + 1) return query(l, r, node->left, tl, tm);
+        else if (tm < l) return query(l, r, node->right, tm + 1, tr);
+        else {
             return combine(query(l, r, node->left, tl, tm),
                            query(l, r, node->right, tm + 1, tr));
+        }
     }
 
     Long query(Long l, Long r) {
@@ -68,7 +67,7 @@ struct SegmentTree {
         return query(l, r, root, 0, n - 1);
     }
 
-    void update(Long l, Long r, Long val, Node* node, Long tl, Long tr) { // O(logn)
+    void update(Long l, Long r, Long val, Node *node, Long tl, Long tr) { // O(logn)
         if (tr < l || tl > r) return;
         if (l <= tl && tr <= r) {
             Long sz = tr - tl + 1;

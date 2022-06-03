@@ -54,10 +54,8 @@ struct SegmentTree {
         if (l <= tl && tr <= r) return sum[id];
         Long tm = (tl + tr) / 2;
         push(id, tl, tr);
-        if (r < tm + 1)
-            return query(l, r, left[id], tl, tm);
-        else if (tm < l)
-            return query(l, r, right[id], tm + 1, tr);
+        if (r < tm + 1) return query(l, r, left[id], tl, tm);
+        else if (tm < l) return query(l, r, right[id], tm + 1, tr);
         else {
             return combine(query(l, r, left[id], tl, tm), query(l, r, right[id], tm + 1, tr));
         }

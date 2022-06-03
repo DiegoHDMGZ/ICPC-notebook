@@ -57,10 +57,8 @@ struct SegmentTree {
         if (l <= tl && tr <= r) return node->sum;
         Long tm = (tl + tr) / 2;
         auto children = node->push(tl, tr);
-        if (r < tm + 1)
-            return query(l, r, children.first, tl, tm);
-        else if (tm < l)
-            return query(l, r, children.second, tm + 1, tr);
+        if (r < tm + 1) return query(l, r, children.first, tl, tm);
+        else if (tm < l) return query(l, r, children.second, tm + 1, tr);
         else
             return combine(query(l, r, children.first, tl, tm),
                            query(l, r, children.second, tm + 1, tr));

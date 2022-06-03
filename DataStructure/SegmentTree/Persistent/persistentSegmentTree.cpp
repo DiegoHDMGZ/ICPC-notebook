@@ -40,10 +40,8 @@ struct SegmentTree {
     Long query(Long l, Long r, Node *node, Long tl, Long tr) { // O(log n)
         if (l <= tl && tr <= r) return node->sum;
         Long tm = (tl + tr) / 2;
-        if (r < tm + 1)
-            return query(l, r, node->left, tl, tm);
-        else if (tm < l)
-            return query(l, r, node->right, tm + 1, tr);
+        if (r < tm + 1) return query(l, r, node->left, tl, tm);
+        else if (tm < l) return query(l, r, node->right, tm + 1, tr);
         else
             return combine(query(l, r, node->left, tl, tm),
                            query(l, r, node->right, tm + 1, tr));

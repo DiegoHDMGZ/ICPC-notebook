@@ -43,38 +43,29 @@ struct Node {
 void split(Node *t, Node *&l, Node *&r, Key key) { // O(log n)
     // Splits tree `t` into two subtrees `l`, `r` such that
     // all keys of `l` are <= `key` and all keys of `r` are > `key`
-    if (!t)
-        l = r = nullptr;
-    else if (t->key <= key)
-        split(t->right, t->right, r, key), l = t;
-    else
-        split(t->left, l, t->left, key), r = t;
+    if (!t) l = r = nullptr;
+    else if (t->key <= key) split(t->right, t->right, r, key), l = t;
+    else split(t->left, l, t->left, key), r = t;
 }
 
 void merge(Node *&t, Node *l, Node *r) { // O(log n)
     // Merge trees `l` and `r` into tree `t`, assuming that
     // all the keys on `l` are smaller than the keys on `r`
-    if (!l || !r)
-        t = l ? l : r;
-    else if (l->prior > r->prior)
-        merge(l->right, l->right, r), t = l;
-    else
-        merge(r->left, l, r->left), t = r;
+    if (!l || !r) t = l ? l : r;
+    else if (l->prior > r->prior) merge(l->right, l->right, r), t = l;
+    else merge(r->left, l, r->left), t = r;
 }
 
 struct Treap {
     Node *tree;
     Treap() : tree(nullptr) {}
     void insert(Node *&t, Node *node) { // O(log n)
-        if (!t)
-            t = node;
+        if (!t) t = node;
         else if (node->prior > t->prior) {
             split(t, node->left, node->right, node->key);
             t = node;
-        } else if (node->key < t->key)
-            insert(t->left, node);
-        else
-            insert(t->right, node);
+        } else if (node->key < t->key) insert(t->left, node);
+        else insert(t->right, node);
     }
 
     void insert(Key key) { // O(log n)
@@ -88,12 +79,9 @@ struct Treap {
 
     void erase(Node *&t, Key key) { // O(log n)
         if (!t) return;
-        if (t->key == key)
-            merge(t, t->left, t->right);
-        else if (key < t->key)
-            erase(t->left, key);
-        else
-            erase(t->right, key);
+        if (t->key == key) merge(t, t->left, t->right);
+        else if (key < t->key) erase(t->left, key);
+        else erase(t->right, key);
     }
 
     void erase(Key key) { // O(log n)
@@ -108,12 +96,9 @@ struct Treap {
 
     bool search(Node *t, Key key) { // O(log n)
         if (!t) return false;
-        if (t->key == key)
-            return true;
-        else if (key < t->key)
-            return search(t->left, key);
-        else
-            return search(t->right, key);
+        if (t->key == key) return true;
+        else if (key < t->key) return search(t->left, key);
+        else return search(t->right, key);
     }
 
     bool search(Key key) { // O(log n)

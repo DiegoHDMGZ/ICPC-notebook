@@ -34,10 +34,8 @@ struct Node {
         : prior(prior), value(value), size(0), left(nullptr), right(nullptr) {}
 
     void recalc() {
-        if (!left)
-            answer = value;
-        else
-            answer = f(left->answer, value);
+        if (!left) answer = value;
+        else answer = f(left->answer, value);
         if (right) answer = f(answer, right->answer);
         size = 1 + (left ? left->size : 0) + (right ? right->size : 0);
     }
@@ -51,14 +49,11 @@ void split(Node *t, Node *&l, Node *&r, int pos, int smaller = 0) {
     // all pos of `l` are <= `pos` and all pos of `r` are > `pos`
     // and `smaller` is the number of smaller elements
     // in the ancestors' trees
-    if (!t)
-        l = r = nullptr;
+    if (!t) l = r = nullptr;
     else {
         int curPos = smaller + getSize(t->left);
-        if (curPos <= pos)
-            split(t->right, t->right, r, pos, curPos + 1), l = t;
-        else
-            split(t->left, l, t->left, pos, smaller), r = t;
+        if (curPos <= pos) split(t->right, t->right, r, pos, curPos + 1), l = t;
+        else split(t->left, l, t->left, pos, smaller), r = t;
         t->recalc();
     }
 }
@@ -66,12 +61,9 @@ void split(Node *t, Node *&l, Node *&r, int pos, int smaller = 0) {
 void merge(Node *&t, Node *l, Node *r) { // O(log n)
     // Merge trees `l` and `r` into tree `t`, assuming that
     // all the pos on `l` are smaller than the pos on `r`
-    if (!l || !r)
-        t = l ? l : r;
-    else if (l->prior > r->prior)
-        merge(l->right, l->right, r), t = l;
-    else
-        merge(r->left, l, r->left), t = r;
+    if (!l || !r) t = l ? l : r;
+    else if (l->prior > r->prior) merge(l->right, l->right, r), t = l;
+    else merge(r->left, l, r->left), t = r;
     if (t) t->recalc();
 }
 

@@ -38,10 +38,8 @@ struct SegmentTree {
         int tm = (tl + tr) / 2;
         int left = id + 1;
         int right = id + 2 * (tm - tl + 1);
-        if (pos <= tm)
-            return t[id] + query(pos, left, tl, tm);
-        else
-            return t[id] + query(pos, right, tm + 1, tr);
+        if (pos <= tm) return t[id] + query(pos, left, tl, tm);
+        else return t[id] + query(pos, right, tm + 1, tr);
     }
 
     Long query(int pos) {

@@ -143,10 +143,8 @@ namespace DynamicConnectivity {
         int mid = (l + r) / 2;
         for (Query query : queries) {
             if (query.type == QUERY) {
-                if (query.l <= mid)
-                    left.push_back(query);
-                else
-                    right.push_back(query);
+                if (query.l <= mid) left.push_back(query);
+                else right.push_back(query);
             } else {
                 if (query.l <= l && r <= query.r) {
                     dsu.join(query.u, query.v);
