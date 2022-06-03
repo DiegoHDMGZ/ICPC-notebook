@@ -16,10 +16,8 @@ Long search(Long low, Long high) { // O(logn)
     if (check(low)) return f(low);        // all V
     while (high - low > 1) {
         Long mid = low + (high - low) / 2;
-        if (check(mid))
-            high = mid;
-        else
-            low = mid;
+        if (check(mid)) high = mid;
+        else low = mid;
     }
     // 2 values low -> F and high -> V
     return f(high);
