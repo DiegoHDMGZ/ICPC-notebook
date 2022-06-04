@@ -1,7 +1,4 @@
 #include <bits/stdc++.h>
-#define debug(x) cout << #x << " = " << x << endl
-#define REP(i, n) for (Long i = 0; i < (Long)n; i++)
-#define pb push_back
 using namespace std;
 
 typedef long long Long;
@@ -24,13 +21,3 @@ Long editDistance(Long n = a.size(), Long m = b.size()) {
                                    editDistance(n - 1, m)});
     }
 }
-
-void clear() {
-    Long n = a.size();
-    Long m = b.size();
-    REP(i, n + 1) {
-        REP(j, m + 1) { used[i][j] = false; }
-    }
-}
-
-int main() { return 0; }
