@@ -85,7 +85,6 @@ struct Graph {
                 }
             }
             ans = combine(ans, st[u][0]);
-            u = anc[u][0];
         }
         return ans;
     }

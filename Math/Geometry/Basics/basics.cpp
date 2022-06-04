@@ -201,7 +201,7 @@ vector<Point> intersect(Line L1, Line L2) {
 struct Circle {
     Point center;
     Double r;
-    Circle() {}
+    Circle() { r = 0; }
     Circle(Point center, Double r) : center(center), r(r) {}
 };
 
@@ -241,7 +241,7 @@ vector<Point> intersect(Circle C1, Circle C2) {
         else return {};
     }
     Double d = dist(C1.center, C2.center);
-    if (d > C1.r + C2.r + EPS) return {}; // too far away
+    if (d > C1.r + C2.r + EPS) return {};       // too far away
     if (d < fabs(C1.r - C2.r) - EPS) return {}; // circle inside the other
     Point O(0, 0);
     C2.center -= C1.center; // translation

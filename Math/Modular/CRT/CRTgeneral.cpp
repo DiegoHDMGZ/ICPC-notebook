@@ -23,17 +23,14 @@ Long gcd(Long a, Long b, Long &x, Long &y) { // O(min(log a, log b))
 }
 
 bool CRT(pair<Long, Long> p1, pair<Long, Long> p2, pair<Long, Long> &ans) {
-    if (p1.second < p2.second) {
-        swap(p1, p2);
-    }
+    if (p1.second < p2.second) swap(p1, p2);
     Long r = p1.second - p2.second;
     Long x, y;
     Long g = gcd(p1.first, p2.first, x, y);
     x *= -1;
 
-    if (r % g != 0) {
-        return false;
-    }
+    if (r % g != 0) return false;
+
     Long lcm = (p1.first / g) * p2.first;
     // a1 + d1 * k1 = a2 + d2 * k2
     // num = (a1 + x * r * d1 / g) % lcm

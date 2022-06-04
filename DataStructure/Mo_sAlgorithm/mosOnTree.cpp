@@ -118,7 +118,7 @@ struct Query {
         // If queries are in the same blocks
         // if the block is odd, sort in increasing order of r
         // otherwise, in decreasing order of r
-        if (curBlock & 1 == 1) {
+        if (curBlock & 1) {
             return r < other.r;
         } else {
             return r > other.r;

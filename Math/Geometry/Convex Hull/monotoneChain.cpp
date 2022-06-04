@@ -13,7 +13,6 @@ struct Point {
 
 vector<Point> convexHull(vector<Point> &v) { // O(n log n)
     // gives the convex hull in counter clockwise order
-    int n = v.size();
     auto cmp = [&](const Point &P1, const Point &P2) {
         // compare by x and then by y also works
         if (P1.y == P2.y) return P1.x < P2.x;
@@ -22,7 +21,7 @@ vector<Point> convexHull(vector<Point> &v) { // O(n log n)
     sort(v.begin(), v.end(), cmp);
     auto it = unique(v.begin(), v.end());
     v.resize(distance(v.begin(), it));
-    n = v.size();
+    int n = v.size();
     if (n < 3) return v;
     Point A = v[0];
     Point B = v.back();

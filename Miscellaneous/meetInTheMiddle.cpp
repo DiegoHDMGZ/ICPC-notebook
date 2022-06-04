@@ -32,7 +32,6 @@ vector<Long> merge(vector<Long> &L, vector<Long> &R) {
 }
 
 vector<Long> generate(vector<Long> &v) {
-    Long n = v.size();
     vector<Long> allSums = {0};
     for (int i = 0; i < v.size(); i++) {
         vector<Long> R = allSums;

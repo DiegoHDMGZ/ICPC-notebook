@@ -23,11 +23,10 @@ vector<Long> prefixFunction(string &s) { // O(n)
 vector<Long> kmp(string &p, string &t) { // O(|p| + |t|)
     // return the position where start an ocurrence of pattern p in t
     Long n = p.size();
-    Long m = t.size();
     string s = p + "#" + t;
     vector<Long> b = prefixFunction(s);
     vector<Long> ans;
-    for (Long i = 1; i < (Long)s.size(); i++) {
+    for (Long i = 1; i < (int)s.size(); i++) {
         if (b[i] == n) {
             ans.push_back(i - (n + 1) - n + 1);
         }

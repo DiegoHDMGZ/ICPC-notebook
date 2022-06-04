@@ -38,14 +38,14 @@ struct Graph {
         }
         d[s] = 0;
         vector<bool> cycle(n, false);
-        bool tense;
+        bool tense = false;
         for (int i = 0; i < n; i++) {
             tense = false;
             for (int u = 0; u < n; u++) {
                 for (auto e : adj[u]) {
                     int v = e.first;
                     Long w = e.second;
-                    if (d[u] != INF && d[u] + w < d[v]) { // tense
+                    if (d[u] != INF && d[u] + w < d[v]) {
                         d[v] = d[u] + w; // relax
                         parent[v] = u;
                         tense = true;

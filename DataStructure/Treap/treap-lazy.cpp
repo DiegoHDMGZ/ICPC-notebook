@@ -120,6 +120,7 @@ struct Treap {
         Node *T1, *T2, *T3;
         split(tree, T1, T2, l - 1);
         split(T2, T2, T3, r - l);
+        assert(T2);
         Long ans = T2->answer;
         merge(tree, T1, T2);
         merge(tree, tree, T3);
@@ -131,6 +132,7 @@ struct Treap {
         Node *T1, *T2, *T3;
         split(tree, T1, T2, l - 1);
         split(T2, T2, T3, r - l);
+        assert(T2);
         T2->answer += T2->size * add;
         T2->lazy += add;
         merge(tree, T1, T2);
@@ -142,6 +144,7 @@ struct Treap {
         Node *T1, *T2, *T3;
         split(tree, T1, T2, l - 1);
         split(T2, T2, T3, r - l);
+        assert(T2);
         T2->rev ^= 1;
         merge(tree, T1, T2);
         merge(tree, tree, T3);

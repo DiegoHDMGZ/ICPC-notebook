@@ -17,7 +17,7 @@ Long mult(Big a, Big b, Long mod) {
 Long fastPow(Long a, Long b, Long mod) { // O(log b)
     Long ans = 1;
     while (b > 0) {
-        if (b & 1 == 1) ans = mult(ans, a, mod);
+        if (b & 1) ans = mult(ans, a, mod);
         a = mult(a, a, mod);
         b >>= 1;
     }

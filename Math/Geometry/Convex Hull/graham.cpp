@@ -17,7 +17,6 @@ Long squareDist(Point P1, Point P2) { return square(P1.x - P2.x) + square(P1.y -
 
 vector<Point> convexHull(vector<Point> &v) { // O(n log n)
     // gives the convex hull in counter clockwise order
-    int n = v.size();
     Point center = *min_element(v.begin(), v.end(), [](const Point &A, const Point &B) {
         if (A.y == B.y) return A.x < B.x;
         return A.y < B.y;
@@ -31,7 +30,7 @@ vector<Point> convexHull(vector<Point> &v) { // O(n log n)
     sort(v.begin(), v.end(), cmp);
     auto it = unique(v.begin(), v.end());
     v.resize(distance(v.begin(), it));
-    n = v.size();
+    int n = v.size();
     if (n < 3) return v;
     /*
     //To include collinear points use the following lines
