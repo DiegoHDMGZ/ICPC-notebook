@@ -1,6 +1,4 @@
 #include <bits/stdc++.h>
-#define pb push_back
-
 using namespace std;
 
 typedef long long Long;
