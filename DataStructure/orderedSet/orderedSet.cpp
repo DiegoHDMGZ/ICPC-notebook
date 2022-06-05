@@ -1,5 +1,4 @@
 #include <bits/stdc++.h>
-#define pb push_back
 
 #include <ext/pb_ds/assoc_container.hpp>
 
