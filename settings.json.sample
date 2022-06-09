@@ -15,7 +15,9 @@
     "code-runner.runInTerminal": true,
     "terminal.integrated.defaultProfile.windows": "Git Bash",
     "code-runner.executorMap": {
-        "cpp": "cd $dirWithoutTrailingSlash && g++ -Wl,--stack=268435456 -O2 -std=c++17 $fileName -o $fileNameWithoutExt && ./$fileNameWithoutExt",
+        "cpp": "g++ -Wl,--stack=268435456 -O2 -std=c++17 $fileName -o $fileNameWithoutExt && ./$fileNameWithoutExt",
     },
+    "code-runner.fileDirectoryAsCwd": true,
+    "code-runner.saveFileBeforeRun": true,
     "terminal.integrated.enableMultiLinePasteWarning": false,
 }
