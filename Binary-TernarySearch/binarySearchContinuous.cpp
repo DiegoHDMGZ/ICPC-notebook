@@ -1,6 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
-typedef long double Double;
+using Double = long double;
 
 const Double EPS = 1e-6;
 

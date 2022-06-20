@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-typedef long long Long;
+using Long = long long;
 
 // count the number of ways of partitioning n distinct objects into k non-empty sets.
 
@@ -17,7 +17,9 @@ struct ModInt {
         if (val + other.val < MOD) return val + other.val;
         return val + other.val - MOD;
     }
-    ModInt operator*(const ModInt &other) const { return (val * other.val) % MOD; }
+    ModInt operator*(const ModInt &other) const {
+        return (val * other.val) % MOD;
+    }
 };
 
 const Long MX = 1000;

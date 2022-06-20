@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-typedef long long Long;
+using Long = long long;
 
 /*
 For a given polynomial, it computes the sum of evaluating the polynomial
@@ -24,7 +24,9 @@ struct ModInt {
         if (val + other.val < MOD) return val + other.val;
         return val + other.val - MOD;
     }
-    ModInt operator*(const ModInt &other) const { return (val * other.val) % MOD; }
+    ModInt operator*(const ModInt &other) const {
+        return (val * other.val) % MOD;
+    }
     ModInt operator+=(const ModInt &other) {
         *this = *this + other;
         return *this;
@@ -47,14 +49,16 @@ struct ModInt {
         // mod prime
         return pow(MOD - 2);
     }
-    ModInt operator/(const ModInt &other) const { return *this * other.invert(); }
+    ModInt operator/(const ModInt &other) const {
+        return *this * other.invert();
+    }
     ModInt operator/=(const ModInt &other) {
         *this = *this / other;
         return *this;
     }
 };
 
-typedef vector<ModInt> poly;
+using poly = vector<ModInt>;
 
 poly operator+(const poly &a, const poly &b) {
     poly ans(max(a.size(), b.size()), 0);
@@ -82,7 +86,9 @@ struct Summation {
         }
     }
 
-    Summation() { precalc(); }
+    Summation() {
+        precalc();
+    }
 
     poly transformFalling(ModInt c, int n) { // O(|poly|)
         poly p(n + 1, 0);

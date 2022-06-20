@@ -1,8 +1,8 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-typedef long long Long;
-typedef __int128 Big;
+using Long = long long;
+using Big = __int128;
 
 Long add(Long a, Long b, Long mod) {
     if (a + b < mod) return a + b;
@@ -60,7 +60,9 @@ bool isPrime(Long n) {
 
 mt19937_64 rng(chrono::steady_clock::now().time_since_epoch().count());
 
-Long random(Long a, Long b) { return uniform_int_distribution<Long>(a, b)(rng); }
+Long random(Long a, Long b) {
+    return uniform_int_distribution<Long>(a, b)(rng);
+}
 
 Long getFactor(Long n) { // O(n^(1/4) log n) average
     if (isPrime(n)) return n;

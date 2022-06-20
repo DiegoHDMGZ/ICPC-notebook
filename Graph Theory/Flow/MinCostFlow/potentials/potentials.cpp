@@ -4,8 +4,8 @@ using namespace std;
 // Find the maximum flow that has minimum cost.
 // Costs can be negative but there must be no negative cycle initially.
 
-typedef long long Cap;
-typedef long long Cost;
+using Cap = long long;
+using Cost = long long;
 
 const int MX = 5000;
 const Cap INF_CAP = 1e18;
@@ -76,7 +76,8 @@ struct Graph {
 
     pair<Cap, Cost> dijkstra(int s, int t, int n) { // O(E log V)
         //<flow, cost>
-        typedef pair<Cost, int> Path; //<weight, node>
+        using Path = pair<Cost, int>;
+        ; //<weight, node>
         priority_queue<Path, vector<Path>, greater<Path>> q;
         vector<Cost> d(n, INF_COST);
         vector<Cap> residualCap(n, 0);

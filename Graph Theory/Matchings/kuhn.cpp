@@ -1,6 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
-typedef long long Long;
+using Long = long long;
 
 // Maximum matching for bipartite unweighted graphs
 

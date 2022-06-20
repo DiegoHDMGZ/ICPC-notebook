@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-typedef long long Long;
+using Long = long long;
 
 // count the number of ways of partitioning n distinct objects into k non-empty sets.
 const Long MX = 1e5;
@@ -25,7 +25,9 @@ struct ModInt {
         *this = *this - other;
         return *this;
     }
-    ModInt operator*(const ModInt &other) const { return (val * other.val) % MOD; }
+    ModInt operator*(const ModInt &other) const {
+        return (val * other.val) % MOD;
+    }
     ModInt operator+=(const ModInt &other) {
         *this = *this + other;
         return *this;
@@ -48,7 +50,9 @@ struct ModInt {
         // mod prime
         return pow(MOD - 2);
     }
-    ModInt operator/(const ModInt &other) const { return *this * other.invert(); }
+    ModInt operator/(const ModInt &other) const {
+        return *this * other.invert();
+    }
     ModInt operator/=(const ModInt &other) {
         *this = *this / other;
         return *this;
@@ -58,7 +62,9 @@ struct ModInt {
 ModInt fact[MX];
 ModInt inv[MX];
 
-ModInt comb(int n, int k) { return fact[n] * inv[k] * inv[n - k]; }
+ModInt comb(int n, int k) {
+    return fact[n] * inv[k] * inv[n - k];
+}
 
 ModInt stirling(Long n, Long k) { // O(k log n)
     ModInt ans = 0;

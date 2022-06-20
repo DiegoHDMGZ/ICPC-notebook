@@ -1,6 +1,6 @@
 #include <bits/stdc++.h>
 
-typedef long long Long;
+using Long = long long;
 // Binary Indexed Tree
 // tree[i] = a[i - 2^r + 1] + ... + a[i]
 // last significant bit = x & -x;
@@ -10,7 +10,9 @@ using namespace std;
 struct BIT {
     vector<Long> tree;
 
-    BIT(int n) { tree = vector<Long>(n + 1, 0); }
+    BIT(int n) {
+        tree = vector<Long>(n + 1, 0);
+    }
 
     Long query(int r) { // O(log n)
         // a[0] + a[1] + ... + a[r]

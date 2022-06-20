@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-typedef long long Long;
+using Long = long long;
 
 // In any impartial game , let define an state "v" in the game that can reach other states "vi"
 // this is equivalent to the game of Nim with one pile of size mex(set of vi)

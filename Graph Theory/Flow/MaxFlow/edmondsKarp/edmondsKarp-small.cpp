@@ -4,7 +4,7 @@ using namespace std;
 // This implementation is for small graphs G(V, E) (|V| <= 3000 aprox)
 // where O(|V|^2) memory will fit the memory limit.
 
-typedef long long Cap;
+using Cap = long long;
 const int MX = 3000;
 const Cap INF = 1e18;
 

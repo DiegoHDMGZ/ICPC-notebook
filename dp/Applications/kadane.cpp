@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-typedef long long Long;
+using Long = long long;
 
 const Long INF = 1e18;
 Long kadane(vector<Long> &v) {

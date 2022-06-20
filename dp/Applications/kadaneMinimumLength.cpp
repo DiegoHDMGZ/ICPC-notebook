@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-typedef long long Long;
+using Long = long long;
 
 Long kadane(vector<Long> &v, Long L) {
     Long n = v.size();

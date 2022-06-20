@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-typedef long long Long;
+using Long = long long;
 
 long double getTime() {
     auto time = chrono::steady_clock::now().time_since_epoch();

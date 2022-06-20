@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-typedef long long Long;
+using Long = long long;
 
 // Source: https://codeforces.com/blog/entry/62393
 struct CustomHash {

@@ -3,8 +3,8 @@ using namespace std;
 
 // source : https://www.youtube.com/watch?v=ZMnDVv67wug
 
-typedef long long Long;
-typedef vector<vector<Long>> Matrix;
+using Long = long long;
+using Matrix = vector<vector<Long>>;
 const Long INF = 1e18;
 const Long MX = 1e3;
 const Long dummy = 1e10;

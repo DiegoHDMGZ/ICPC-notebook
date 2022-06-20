@@ -2,7 +2,7 @@
 #define all(v) begin(v), end(v)
 using namespace std;
 
-typedef long long Long;
+using Long = long long;
 
 const int MX = 1e5;
 struct Tree {

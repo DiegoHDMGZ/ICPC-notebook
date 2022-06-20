@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-typedef long long Long;
+using Long = long long;
 
 vector<Long> prefixFunction(string &s) { // O(n)
     Long n = s.size();

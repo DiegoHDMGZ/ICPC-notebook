@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-typedef long long Long;
+using Long = long long;
 
 const Long MX = 1e5 + 5;
 const Long SQ = sqrt(MX) + 1;
@@ -18,11 +18,17 @@ struct SQRT {
         sq = sqrt(n) + 1;
     }
 
-    Long block(Long i) { return i / sq; }
+    Long block(Long i) {
+        return i / sq;
+    }
 
-    Long lowerLim(Long i) { return (i / sq) * sq; }
+    Long lowerLim(Long i) {
+        return (i / sq) * sq;
+    }
 
-    Long upperLim(Long i) { return min(lowerLim(i) + sq - 1, n - 1); }
+    Long upperLim(Long i) {
+        return min(lowerLim(i) + sq - 1, n - 1);
+    }
 
     void clear() {
         if (n == 0) {

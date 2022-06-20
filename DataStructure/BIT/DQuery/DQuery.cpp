@@ -1,12 +1,14 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-typedef long long Long;
+using Long = long long;
 
 struct BIT {
     vector<Long> tree;
 
-    BIT(int n) { tree = vector<Long>(n + 1, 0); }
+    BIT(int n) {
+        tree = vector<Long>(n + 1, 0);
+    }
 
     Long query(int r) { // O(log n)
         // a[0] + a[1] + ... + a[r]
@@ -45,7 +47,9 @@ struct Query {
     Query(int l, int r, int pos) : l(l), r(r), pos(pos) {}
 };
 
-bool cmp(Query &Q1, Query &Q2) { return Q1.r < Q2.r; }
+bool cmp(Query &Q1, Query &Q2) {
+    return Q1.r < Q2.r;
+}
 
 const int MAXVAL = 1e6 + 1;
 vector<Long> dquery(vector<Long> &v, vector<Query> &queries) {

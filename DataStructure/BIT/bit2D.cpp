@@ -1,12 +1,14 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-typedef long long Long;
+using Long = long long;
 
 struct BIT2D {
     vector<vector<Long>> tree;
 
-    BIT2D(int n, int m) { tree = vector<vector<Long>>(n + 1, vector<Long>(m + 1)); }
+    BIT2D(int n, int m) {
+        tree = vector<vector<Long>>(n + 1, vector<Long>(m + 1));
+    }
 
     Long query(int rx, int ry) { // O(log n log m)
         rx++;

@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-typedef long long Long;
+using Long = long long;
 
 // Hilber Curves: https://codeforces.com/blog/entry/61203
 
@@ -40,7 +40,9 @@ struct Query {
         this->order = hilbertOrder(l, r, k, 0);
     }
 
-    bool operator<(const Query &other) const { return order < other.order; }
+    bool operator<(const Query &other) const {
+        return order < other.order;
+    }
 };
 
 struct Mo {

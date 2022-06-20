@@ -1,6 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
-typedef long long Long;
+using Long = long long;
 
 const int MX = 500;
 const Long INF = 1e18;

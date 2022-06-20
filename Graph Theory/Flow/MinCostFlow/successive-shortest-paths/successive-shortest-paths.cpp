@@ -1,13 +1,13 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-typedef long long Long;
+using Long = long long;
 
 // Find the maximum flow that has minimum cost.
 // Costs can be negative but there must be no negative cycle initially.
 
-typedef long long Cap;
-typedef long long Cost;
+using Cap = long long;
+using Cost = long long;
 
 const int MX = 5000;
 const Cap INF_CAP = 1e18;

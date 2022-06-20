@@ -1,6 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
-typedef long long Long;
+using Long = long long;
 
 /*
 Basic Operations (similar to sets/multisets):
@@ -25,13 +25,15 @@ The implementation of our insert function already does this implicitly
 because ties will be broken by the time of insertion.
 */
 
-typedef long long Key;
-typedef int Prior;
+using Key = long long;
+using Prior = int;
 const Prior POOL = 1e9; // preferable in the order of n^2
 
 mt19937_64 rng(chrono::steady_clock::now().time_since_epoch().count());
 
-Prior random(Prior a, Prior b) { return uniform_int_distribution<Prior>(a, b)(rng); }
+Prior random(Prior a, Prior b) {
+    return uniform_int_distribution<Prior>(a, b)(rng);
+}
 
 struct Node {
     Prior prior;

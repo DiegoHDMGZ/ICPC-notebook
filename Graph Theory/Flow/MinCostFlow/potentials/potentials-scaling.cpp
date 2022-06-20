@@ -5,8 +5,8 @@ using namespace std;
 This algorithm DOES work even when the initial graph has negative
 cycles*/
 
-typedef long long Cap;
-typedef long long Cost;
+using Cap = long long;
+using Cost = long long;
 
 const int MX = 5000;
 const Cap INF_CAP = 1e18;
@@ -19,7 +19,9 @@ struct Edge {
     Edge(int to, Cap cap, Cost cost, int rev)
         : to(to), flow(0), cap(cap), cost(cost), rev(rev) {}
 
-    Cap resCap() const { return cap - flow; }
+    Cap resCap() const {
+        return cap - flow;
+    }
 };
 
 struct Graph {
@@ -75,7 +77,8 @@ struct Graph {
     }
 
     void dijkstra(vector<Cost> &d, vector<Cap> &bottleneck) {
-        typedef pair<Cost, int> Path; //<weight, node>
+        using Path = pair<Cost, int>;
+        ; //<weight, node>
         priority_queue<Path, vector<Path>, greater<Path>> q;
         int n = d.size();
         for (int u = 0; u < n; u++) q.push(Path(d[u], u));

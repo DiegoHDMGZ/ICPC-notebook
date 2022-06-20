@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-typedef long long Long;
+using Long = long long;
 
 void eraseTrailing(deque<Long> &v) {
     while (v.size() > 1 && v[0] == 0) {
@@ -56,7 +56,9 @@ struct Big {
         sgn = s;
     }
 
-    bool operator==(const Big &P) const { return P.digits == digits && sgn == P.sgn; }
+    bool operator==(const Big &P) const {
+        return P.digits == digits && sgn == P.sgn;
+    }
 
     bool operator<(const Big &P) const {
         if (P.sgn != sgn) {

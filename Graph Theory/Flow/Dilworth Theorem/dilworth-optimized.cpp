@@ -1,8 +1,8 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-typedef long long Long;
-typedef int Cap;
+using Long = long long;
+using Cap = int;
 const int MX = 3000;
 
 // This template does not build the entire transitive edges
@@ -24,14 +24,28 @@ struct GraphFlow {
 } GFlow;
 
 struct Graph {
-    void clear(int n) { GFlow.clear(2 * n + 2); }
-    int left(int u) { return 2 * u; }
-    int right(int u) { return 2 * u + 1; }
-    int getOriginal(int u) { return u / 2; }
-    int getSource(int n) { return 2 * n; }
-    int getTarget(int n) { return 2 * n + 1; }
+    void clear(int n) {
+        GFlow.clear(2 * n + 2);
+    }
+    int left(int u) {
+        return 2 * u;
+    }
+    int right(int u) {
+        return 2 * u + 1;
+    }
+    int getOriginal(int u) {
+        return u / 2;
+    }
+    int getSource(int n) {
+        return 2 * n;
+    }
+    int getTarget(int n) {
+        return 2 * n + 1;
+    }
 
-    void addEdge(int u, int v) { GFlow.addEdge(left(u), right(v), MX, true); }
+    void addEdge(int u, int v) {
+        GFlow.addEdge(left(u), right(v), MX, true);
+    }
 
     int maxAntiChainSize(int n) {
         // O(E * V) for FF/Dinic

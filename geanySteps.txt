@@ -24,5 +24,5 @@ while=while (%cursor%)%block%\n
 do=do%block% while (%cursor%)\n
 switch=switch (%cursor%)%brace_open%case %cursor%:\n\t\t%cursor%\n\t\tbreak;\n\tdefault:\n\t\t%cursor%\n%brace_close%
 try=try%block%\ncatch (%cursor%)%block_cursor%
-template=#include <bits/stdc++.h>\n#define debug(x) cout << #x << " = " << x << endl\n#define REP(i, n) for (Long i = 0; i < (Long)n; i++)\nusing namespace std;\n\ntypedef long long Long;\n\nint main() {\n\tios_base::sync_with_stdio(false);\n\tcin.tie(0);\n\n\treturn 0;\n}
+template=#include <bits/stdc++.h>\n#define debug(x) cout << #x << " = " << x << endl\n#define REP(i, n) for (Long i = 0; i < (Long)n; i++)\nusing namespace std;\n\nusing Long = long long;\n\nint main() {\n\tios_base::sync_with_stdio(false);\n\tcin.tie(0);\n\n\treturn 0;\n}
 

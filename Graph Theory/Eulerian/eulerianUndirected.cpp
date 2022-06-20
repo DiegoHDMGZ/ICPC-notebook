@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-typedef long long Long;
+using Long = long long;
 
 // Theory: http://www.math.caltech.edu/~2014-15/1term/ma006a/class8.pdf
 // Eulerian Path: A path (with possible repeated vertices) that visits

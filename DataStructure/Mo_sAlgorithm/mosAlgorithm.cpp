@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-typedef long long Long;
+using Long = long long;
 
 // Credits :
 // https://www.geeksforgeeks.org/mos-algorithm-query-square-root-decomposition-set-1-introduction/

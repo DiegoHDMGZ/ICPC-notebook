@@ -1,6 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
-typedef long long Long;
+using Long = long long;
 
 // Baby step - Giant Step Algorithm
 Long discreteLog(Long base, Long rem, Long mod) { // O(sqrt(mod) log mod)

@@ -1,6 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
-typedef long long Long;
+using Long = long long;
 
 const int MX = 1e5;
 const Long INF = 1e18;
@@ -15,7 +15,9 @@ struct Data {
     Data(Long min, Long max) : min(min), max(max) {}
 };
 
-Data combine(Data a, Data b) { return Data(min(a.min, b.min), max(a.max, b.max)); }
+Data combine(Data a, Data b) {
+    return Data(min(a.min, b.min), max(a.max, b.max));
+}
 
 struct Graph {
     vector<pair<int, Long>> adj[MX];

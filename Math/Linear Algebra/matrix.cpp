@@ -2,13 +2,13 @@
 #define getMatrix(n, m) Matrix(n, vector<ModInt>(m, 0))
 using namespace std;
 
-typedef long long Long;
+using Long = long long;
 
 // To work with Doubles, change ModInt to Double and use the
 // near function for comparisons.
 // Also use an heuristic pivot selection
 /*
-typedef long double Double;
+using Double= long double;
 const Double EPS = 1e-6;
 Double near(Double a, Double b) { return fabs(a - b) < EPS; }
 */
@@ -29,8 +29,12 @@ struct ModInt {
         if (val - other.val >= 0) return val - other.val;
         return val - other.val + MOD;
     }
-    ModInt operator-() const { return MOD - val; }
-    ModInt operator*(const ModInt &other) const { return (val * other.val) % MOD; }
+    ModInt operator-() const {
+        return MOD - val;
+    }
+    ModInt operator*(const ModInt &other) const {
+        return (val * other.val) % MOD;
+    }
     ModInt operator+=(const ModInt &other) {
         *this = *this + other;
         return *this;
@@ -57,15 +61,25 @@ struct ModInt {
         // mod prime
         return pow(MOD - 2);
     }
-    ModInt operator/(const ModInt &other) const { return *this * other.invert(); }
+    ModInt operator/(const ModInt &other) const {
+        return *this * other.invert();
+    }
     ModInt operator/=(const ModInt &other) {
         *this = *this / other;
         return *this;
     }
-    bool operator==(const ModInt &other) const { return val == other.val; }
-    bool operator!=(const ModInt &other) const { return val != other.val; }
-    bool operator<(const ModInt &other) const { return val < other.val; }
-    bool operator>(const ModInt &other) const { return val > other.val; }
+    bool operator==(const ModInt &other) const {
+        return val == other.val;
+    }
+    bool operator!=(const ModInt &other) const {
+        return val != other.val;
+    }
+    bool operator<(const ModInt &other) const {
+        return val < other.val;
+    }
+    bool operator>(const ModInt &other) const {
+        return val > other.val;
+    }
 };
 
 istream &operator>>(istream &in, ModInt &A) {
@@ -80,7 +94,7 @@ ostream &operator<<(ostream &out, const ModInt &A) {
     return out;
 }
 
-typedef vector<vector<ModInt>> Matrix;
+using Matrix = vector<vector<ModInt>>;
 
 Matrix operator+(const Matrix &a, const Matrix &b) { // O(n * m)
     int n = a.size();

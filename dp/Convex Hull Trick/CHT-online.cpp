@@ -1,6 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
-typedef long long Long;
+using Long = long long;
 
 /*
 We have "n" linear functions yi = mi x + bi
@@ -18,9 +18,15 @@ struct Line {
     // mx + b, intersect with next line at r (rounded down)
     Line() {}
     Line(Long m, Long b) : m(m), b(b), r(0) {}
-    bool operator<(const Line &other) const { return m < other.m; }
-    bool operator<(const Long &x) const { return r < x; }
-    Long getVal(Long x) { return m * x + b; }
+    bool operator<(const Line &other) const {
+        return m < other.m;
+    }
+    bool operator<(const Long &x) const {
+        return r < x;
+    }
+    Long getVal(Long x) {
+        return m * x + b;
+    }
 };
 
 struct CHT {
@@ -33,7 +39,9 @@ struct CHT {
         return a / b - ((a ^ b) < 0 && a % b);
     }
 
-    Long intersect(Line l1, Line l2) { return div(l1.b - l2.b, l2.m - l1.m); }
+    Long intersect(Line l1, Line l2) {
+        return div(l1.b - l2.b, l2.m - l1.m);
+    }
 
     bool bad(Line l1, Line l2, Line l3) {
         // tells if l2 is bad an can be eliminated by l3

@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-typedef long long Long;
+using Long = long long;
 
 const int MX = 1e6;
 const int LG = __lg(MX) + 1;
@@ -9,7 +9,9 @@ const int LG = __lg(MX) + 1;
 struct SparseTable {
     Long st[LG][MX];
 
-    Long f(Long a, Long b) { return min(a, b); }
+    Long f(Long a, Long b) {
+        return min(a, b);
+    }
 
     void build(vector<Long> &A) { // O(|f| n log n)
         int n = A.size();

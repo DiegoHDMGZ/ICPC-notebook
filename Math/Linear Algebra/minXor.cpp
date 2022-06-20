@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-typedef long long Long;
+using Long = long long;
 
 // Problem: You are given an array A of n integers and Q queries
 // In each query you will be given an integer X.
@@ -13,7 +13,9 @@ typedef long long Long;
 // Use gaussian elimination to obtain the basis of size O(d)
 // Each query can be answer in O(d)
 
-int getBit(Long mask, int pos) { return (mask >> pos) & 1; }
+int getBit(Long mask, int pos) {
+    return (mask >> pos) & 1;
+}
 
 struct Basis {
     vector<Long> basis;
@@ -57,7 +59,9 @@ struct Basis {
         return ans;
     }
 
-    Basis(vector<Long> A) { basis = getBasis(A); }
+    Basis(vector<Long> A) {
+        basis = getBasis(A);
+    }
 
     Long minXor(Long x) { // O(d) = O(log A_i)
         for (Long c : basis) {

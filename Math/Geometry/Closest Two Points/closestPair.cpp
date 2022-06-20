@@ -1,6 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
-typedef long long Long;
+using Long = long long;
 
 struct Point {
     Long x, y;
@@ -26,12 +26,20 @@ struct Point {
         y *= t;
         return *this;
     }
-    Point operator+(const Point &t) const { return Point(*this) += t; }
-    Point operator-(const Point &t) const { return Point(*this) -= t; }
+    Point operator+(const Point &t) const {
+        return Point(*this) += t;
+    }
+    Point operator-(const Point &t) const {
+        return Point(*this) -= t;
+    }
 
-    bool operator==(const Point &P) const { return P.x == x && P.y == y; }
+    bool operator==(const Point &P) const {
+        return P.x == x && P.y == y;
+    }
 
-    bool operator!=(const Point &P) const { return !(P == Point(*this)); }
+    bool operator!=(const Point &P) const {
+        return !(P == Point(*this));
+    }
 };
 
 bool cmpX(const Point &P1, const Point &P2) {

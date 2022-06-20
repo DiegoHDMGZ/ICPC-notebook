@@ -1,8 +1,8 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-typedef long long Long;
-typedef int Cap;
+using Long = long long;
+using Cap = int;
 const int MX = 3000;
 
 // This template build the entire transitive edges
@@ -31,13 +31,25 @@ struct Graph {
         GFlow.clear(2 * n + 2);
     }
 
-    void addEdge(int u, int v) { adj[u].push_back(v); }
+    void addEdge(int u, int v) {
+        adj[u].push_back(v);
+    }
 
-    int left(int u) { return 2 * u; }
-    int right(int u) { return 2 * u + 1; }
-    int getOriginal(int u) { return u / 2; }
-    int getSource(int n) { return 2 * n; }
-    int getTarget(int n) { return 2 * n + 1; }
+    int left(int u) {
+        return 2 * u;
+    }
+    int right(int u) {
+        return 2 * u + 1;
+    }
+    int getOriginal(int u) {
+        return u / 2;
+    }
+    int getSource(int n) {
+        return 2 * n;
+    }
+    int getTarget(int n) {
+        return 2 * n + 1;
+    }
 
     vector<int> nodes;
     void dfs(int u) {

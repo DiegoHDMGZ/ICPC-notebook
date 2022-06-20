@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-typedef long long Long;
+using Long = long long;
 
 struct Node {
     Long sum;
@@ -36,7 +36,9 @@ struct Node {
     }
 };
 
-Long combine(Long x, Long y) { return x + y; }
+Long combine(Long x, Long y) {
+    return x + y;
+}
 
 struct SegmentTree {
     Node *root;

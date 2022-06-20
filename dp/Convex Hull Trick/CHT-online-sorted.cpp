@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-typedef long long Long;
+using Long = long long;
 
 /*
 We have linear functions yi = mi x + bi that will be added
@@ -18,7 +18,9 @@ struct Line {
     Long m, b;
     Line() {}
     Line(Long m, Long b) : m(m), b(b) {}
-    Long getVal(Long x) { return m * x + b; }
+    Long getVal(Long x) {
+        return m * x + b;
+    }
 };
 
 struct CHT {
@@ -33,7 +35,9 @@ struct CHT {
         return a / b - ((a ^ b) < 0 && a % b);
     }
 
-    Long intersect(Line l1, Line l2) { return div(l1.b - l2.b, l2.m - l1.m); }
+    Long intersect(Line l1, Line l2) {
+        return div(l1.b - l2.b, l2.m - l1.m);
+    }
 
     bool bad(Line l1, Line l2, Line l3) {
         // tells if l2 is bad an can be eliminated by l3

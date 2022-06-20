@@ -1,6 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
-typedef long long Long;
+using Long = long long;
 
 const int MX = 1e5;  // sum of length of all words + 1
 const int ALPH = 26; // alphabet size

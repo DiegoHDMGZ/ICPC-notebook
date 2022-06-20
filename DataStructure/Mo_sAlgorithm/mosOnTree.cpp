@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-typedef long long Long;
+using Long = long long;
 
 // https://codeforces.com/blog/entry/43230
 // First run dfs and calculate tIn and tOut of each node
@@ -20,7 +20,9 @@ const Long loga = 32 - __builtin_clz(MX);
 struct SparseTable {
     pair<Long, Long> st[2 * MX][loga + 1]; //<min height , node>
 
-    pair<Long, Long> f(pair<Long, Long> a, pair<Long, Long> b) { return min(a, b); }
+    pair<Long, Long> f(pair<Long, Long> a, pair<Long, Long> b) {
+        return min(a, b);
+    }
 
     void build(vector<pair<Long, Long>> &A) { // O(n log n)
         Long n = A.size();
@@ -129,9 +131,13 @@ struct Query {
 struct Mo {
     bool activated[MX];
 
-    void add(Long val, Long &ans) { ans += val; }
+    void add(Long val, Long &ans) {
+        ans += val;
+    }
 
-    void remove(Long val, Long &ans) { ans -= val; }
+    void remove(Long val, Long &ans) {
+        ans -= val;
+    }
 
     void change(Long pos, Long &ans, vector<Long> &A) {
         Long u = G.node[pos];

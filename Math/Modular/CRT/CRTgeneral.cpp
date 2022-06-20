@@ -1,12 +1,14 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-typedef long long Long;
+using Long = long long;
 
 // https://codeforces.com/blog/entry/61290
 // Ec. : res[i] = x % mods[i] . We need to find x
 
-Long normalize(Long x, Long mod) { return (x + mod) % mod; }
+Long normalize(Long x, Long mod) {
+    return (x + mod) % mod;
+}
 
 Long gcd(Long a, Long b, Long &x, Long &y) { // O(min(log a, log b))
     if (b == 0) {

@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-typedef long long Long;
+using Long = long long;
 
 // (x ^ k) % mod  = rem, mod prime
 // Use discreteLog and primiteRoot files

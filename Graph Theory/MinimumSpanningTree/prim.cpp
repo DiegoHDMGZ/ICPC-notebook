@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
-typedef long long Long;
-typedef pair<Long, Long> Pair;
+using Long = long long;
+using Pair = pair<Long, Long>;
 
 const Long MX = 1e5;
 const Long INF = 1e18;

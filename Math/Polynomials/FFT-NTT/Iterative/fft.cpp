@@ -1,9 +1,9 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-typedef long long Long;
-typedef long double Double;
-typedef complex<Double> Complex;
+using Long = long long;
+using Double = long double;
+using Complex = complex<Double>;
 
 const Double PI = acos(-1);
 
@@ -41,7 +41,7 @@ void fft(vector<Complex> &a, bool invert) { // O(n log n)
     }
 }
 
-typedef vector<Long> poly;
+using poly = vector<Long>;
 
 poly operator*(const poly &a, const poly &b) { // O(n log n)
     vector<Complex> fa(a.begin(), a.end());

@@ -1,6 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
-typedef long long Long;
+using Long = long long;
 
 const int MX = 1e5;
 const int LG = 32 - __builtin_clz(MX);

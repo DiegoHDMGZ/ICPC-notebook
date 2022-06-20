@@ -1,11 +1,15 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-typedef long long Long;
+using Long = long long;
 
-int getBit(int mask, int pos) { return (mask >> pos) & 1; }
+int getBit(int mask, int pos) {
+    return (mask >> pos) & 1;
+}
 
-int changeBit(int mask, int pos) { return mask ^ (1 << pos); }
+int changeBit(int mask, int pos) {
+    return mask ^ (1 << pos);
+}
 
 // dp[mask][i] = sum over submasks that can only differ in the first i bits
 // dp[mask][0] = A[mask]

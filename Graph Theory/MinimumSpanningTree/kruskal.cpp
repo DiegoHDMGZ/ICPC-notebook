@@ -1,6 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
-typedef long long Long;
+using Long = long long;
 
 const Long MX = 1e5;
 
@@ -43,7 +43,9 @@ struct Edge {
     Long u, v, w;
     Edge() {}
     Edge(Long u, Long v, Long w) : u(u), v(v), w(w) {}
-    bool operator<(Edge const &other) const { return w < other.w; }
+    bool operator<(Edge const &other) const {
+        return w < other.w;
+    }
 };
 
 struct Graph {
@@ -57,7 +59,9 @@ struct Graph {
         edges.clear();
     }
 
-    void addEdge(Long u, Long v, Long w) { edges.push_back(Edge(u, v, w)); }
+    void addEdge(Long u, Long v, Long w) {
+        edges.push_back(Edge(u, v, w));
+    }
 
     Long getMST(Long n) { // O(E log V)
         Long totalWeight = 0;

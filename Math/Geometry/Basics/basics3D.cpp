@@ -1,12 +1,14 @@
 #include <bits/stdc++.h>
 using namespace std;
-typedef long double Double;
-typedef long long Long;
+using Double = long double;
+using Long = long long;
 
 const Double EPS = 1e-10;
 const Double PI = acos(-1);
 
-bool near(Double a, Double b) { return fabs(a - b) < EPS; }
+bool near(Double a, Double b) {
+    return fabs(a - b) < EPS;
+}
 
 struct Point {
     Double x, y, z;
@@ -26,7 +28,9 @@ struct Point {
         else t = z / other.z;
         return t;
     }
-    Point operator*(Double t) const { return Point(x * t, y * t, z * t); }
+    Point operator*(Double t) const {
+        return Point(x * t, y * t, z * t);
+    }
     Point operator/(Double t) const {
         assert(fabs(t) > EPS);
         return Point(x / t, y / t, z / t);
@@ -50,26 +54,40 @@ struct Point {
     bool operator==(const Point &P) const {
         return near(x, P.x) && near(y, P.y) && near(z, P.z);
     }
-    bool operator!=(const Point &P) const { return !(P == *this); }
-    Double abs2() { return x * x + y * y + z * z; }
-    Double abs() { return sqrt(abs2()); }
+    bool operator!=(const Point &P) const {
+        return !(P == *this);
+    }
+    Double abs2() {
+        return x * x + y * y + z * z;
+    }
+    Double abs() {
+        return sqrt(abs2());
+    }
 };
 
-typedef Point Vector;
+using Vector = Point;
 
 // dot and cross products
-Double dot(Point A, Point B) { return A.x * B.x + A.y * B.y + A.z * B.z; }
+Double dot(Point A, Point B) {
+    return A.x * B.x + A.y * B.y + A.z * B.z;
+}
 
 Point cross(Point A, Point B) {
     return Point(A.y * B.z - A.z * B.y, A.z * B.x - A.x * B.z, A.x * B.y - A.y * B.x);
 }
 
 // additional point operators with double
-Double square(Double x) { return x * x; }
+Double square(Double x) {
+    return x * x;
+}
 
-Point operator*(Double a, Point b) { return b * a; }
+Point operator*(Double a, Point b) {
+    return b * a;
+}
 
-Point operator/(Double a, Point b) { return b / a; }
+Point operator/(Double a, Point b) {
+    return b / a;
+}
 
 Vector getProj(Vector A, Vector B) {
     // projection of A on to B
@@ -78,7 +96,9 @@ Vector getProj(Vector A, Vector B) {
     return unitB * (dot(A, B)) / B.abs();
 }
 
-Point midPoint(Point A, Point B) { return Point((A + B) / 2.0); }
+Point midPoint(Point A, Point B) {
+    return Point((A + B) / 2.0);
+}
 
 Double angle(Point A, Point B) {
     // return angle in [0 , PI]
@@ -95,12 +115,14 @@ Double dist(Point A, Point B) {
     return sqrt(square(B.x - A.x) + square(B.y - A.y) + square(B.z - A.z));
 }
 
-Double triple(Point A, Point B, Point C) { return dot(A, cross(B, C)); }
+Double triple(Point A, Point B, Point C) {
+    return dot(A, cross(B, C));
+}
 
 // Line functions
 struct Line {
     // L: P = O + t d, t is a real number
-    Point O; // A point from the line
+    Point O;  // A point from the line
     Vector d; // directional vector of line
     Line() {}
     Line(Point A, Point B) {
@@ -111,10 +133,14 @@ struct Line {
         Point zero(0, 0, 0);
         return cross(L.O - O, d) == zero && cross(d, L.d) == zero;
     }
-    Point getPoint(Double t) { return O + t * d; }
+    Point getPoint(Double t) {
+        return O + t * d;
+    }
 };
 
-Double dist(Line L, Point P) { return fabs(cross(L.d, P - L.O).abs() / L.d.abs()); }
+Double dist(Line L, Point P) {
+    return fabs(cross(L.d, P - L.O).abs() / L.d.abs());
+}
 
 Double dist(Line L1, Line L2) {
     Vector n = cross(L1.d, L2.d);
@@ -129,7 +155,7 @@ vector<Point> intersect(Line L1, Line L2) {
     Vector d2 = L2.d;
     Vector n = cross(d1, d2);
     if (L1 == L2) return vector<Point>(2); // coincide
-    if (n == Point(0, 0, 0)) return {}; // parallel
+    if (n == Point(0, 0, 0)) return {};    // parallel
     Point P1 = L1.O;
     Point P2 = L2.O;
     Double t1 = cross(P2 - P1, d2) / n;
@@ -155,8 +181,12 @@ struct Plane {
         n = cross(B - A, C - A);
         d = dot(n, A);
     }
-    Double evaluate(Point P) { return dot(n, P) - d; }
-    bool contains(Point P) { return near(evaluate(P), 0); }
+    Double evaluate(Point P) {
+        return dot(n, P) - d;
+    }
+    bool contains(Point P) {
+        return near(evaluate(P), 0);
+    }
 };
 
 vector<Point> intersect(Plane P, Line L) {

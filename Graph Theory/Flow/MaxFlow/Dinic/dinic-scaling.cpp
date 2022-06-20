@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-typedef long long Cap;
+using Cap = long long;
 
 const int MX = 5000;
 const Cap INF = 1e18;

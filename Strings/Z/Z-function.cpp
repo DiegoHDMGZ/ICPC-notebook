@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-typedef long long Long;
+using Long = long long;
 
 // Z[i] = the maximum length of a string that is a prefix and,
 // at the same time, a suffix that start at i

@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-typedef long long Long;
+using Long = long long;
 
 const Long MOD = 1e9 + 7;
 struct ModInt {
@@ -19,8 +19,12 @@ struct ModInt {
         if (val - other.val >= 0) return val - other.val;
         return val - other.val + MOD;
     }
-    ModInt operator-() const { return MOD - val; }
-    ModInt operator*(const ModInt &other) const { return (val * other.val) % MOD; }
+    ModInt operator-() const {
+        return MOD - val;
+    }
+    ModInt operator*(const ModInt &other) const {
+        return (val * other.val) % MOD;
+    }
     ModInt operator+=(const ModInt &other) {
         *this = *this + other;
         return *this;
@@ -47,7 +51,9 @@ struct ModInt {
         // mod prime
         return pow(MOD - 2);
     }
-    ModInt operator/(const ModInt &other) const { return *this * other.invert(); }
+    ModInt operator/(const ModInt &other) const {
+        return *this * other.invert();
+    }
     ModInt operator/=(const ModInt &other) {
         *this = *this / other;
         return *this;
@@ -66,7 +72,7 @@ ostream &operator<<(ostream &out, const ModInt &A) {
     return out;
 }
 
-typedef vector<ModInt> poly;
+using poly = vector<ModInt>;
 
 poly operator*(const poly &a, const poly &b) {
     int n = a.size();

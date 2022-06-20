@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-typedef long long Long;
+using Long = long long;
 
 /*
 Properties:
@@ -100,7 +100,9 @@ struct SuffixAutomaton {
         return u != -1 && terminal[u];
     }
 
-    bool find(string &t) { return feed(t) != -1; }
+    bool find(string &t) {
+        return feed(t) != -1;
+    }
 
     Long countSubstrings() {
         Long ans = 0;

@@ -1,11 +1,13 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-typedef long long Long;
+using Long = long long;
 
 const Long MXX = 1000;
 const Long MXY = 1000;
-Long combine(Long x, Long y) { return x + y; }
+Long combine(Long x, Long y) {
+    return x + y;
+}
 
 struct SegmentTree {
     Long t[2 * MXX][2 * MXY];

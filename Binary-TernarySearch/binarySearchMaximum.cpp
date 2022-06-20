@@ -1,14 +1,18 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-typedef long long Long;
+using Long = long long;
 
 const Long MX = 1e5;
 Long A[MX];
 
-Long f(Long mid) { return A[mid]; }
+Long f(Long mid) {
+    return A[mid];
+}
 
-bool check(Long mid) { return f(mid + 1) - f(mid) <= 0; }
+bool check(Long mid) {
+    return f(mid + 1) - f(mid) <= 0;
+}
 
 Long search(Long low, Long high) { // O(logn)
     // F F F... V V V

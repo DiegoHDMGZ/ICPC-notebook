@@ -1,6 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
-typedef long long Long;
+using Long = long long;
 
 // Cancelation: c * a = c * b (mod n) => a = b (mod n / gcd(c, n))
 
@@ -21,7 +21,9 @@ struct ModInt {
         if (val - other.val >= 0) return val - other.val;
         return val - other.val + MOD;
     }
-    ModInt operator*(const ModInt &other) const { return (val * other.val) % MOD; }
+    ModInt operator*(const ModInt &other) const {
+        return (val * other.val) % MOD;
+    }
 
     /*ModInt operator*(const ModInt &other) const {
         ModInt ans = 0;
@@ -79,7 +81,9 @@ struct ModInt {
         else return x + MOD;
     }*/
 
-    ModInt operator/(const ModInt &other) const { return *this * other.invert(); }
+    ModInt operator/(const ModInt &other) const {
+        return *this * other.invert();
+    }
     ModInt operator/=(const ModInt &other) {
         *this = *this / other;
         return *this;

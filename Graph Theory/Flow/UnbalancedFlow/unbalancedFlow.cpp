@@ -11,7 +11,7 @@ Balances are 0 by default, set its value before adding edges
 It can also be easily modified to find the minimum feasible flow
 */
 
-typedef long long Cap;
+using Cap = long long;
 
 const int MX = 1e5;
 const Cap INF = 1e18;

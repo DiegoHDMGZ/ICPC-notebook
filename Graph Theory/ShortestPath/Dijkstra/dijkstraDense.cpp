@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-typedef long long Long;
+using Long = long long;
 const Long INF = 1e18;
 
 struct Graph {
@@ -9,7 +9,9 @@ struct Graph {
     vector<int> parent;
     vector<Long> d;
 
-    Graph(int n) { adj.resize(n); }
+    Graph(int n) {
+        adj.resize(n);
+    }
 
     void addEdge(int u, int v, Long w) {
         adj[u].push_back({v, w});

@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-typedef long long Long;
+using Long = long long;
 
 struct Node {
     Long sum;
@@ -15,7 +15,9 @@ struct SegmentTree {
     vector<Node *> roots; // O(n + Q log n)
     Long n;
 
-    Long combine(Long x, Long y) { return x + y; }
+    Long combine(Long x, Long y) {
+        return x + y;
+    }
 
     Node *combine(Node *left, Node *right) {
         return new Node(combine(left->sum, right->sum), left, right);

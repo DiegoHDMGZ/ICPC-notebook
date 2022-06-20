@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-typedef long long Long;
+using Long = long long;
 
 // g is a primitive root modulo n if and only if for any integer "a"
 // such that gcd(a, n) = 1, there exists an integer k such that:

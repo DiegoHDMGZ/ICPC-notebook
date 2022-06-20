@@ -10,8 +10,8 @@ using namespace std;
 // WARNING: No multi-edges allowed.
 // No antiparallel edges allowed i.e. No (u, v) (v, u) at the same time
 
-typedef long long Cap;
-typedef long long Cost;
+using Cap = long long;
+using Cost = long long;
 
 const int MX = 2005;
 const Cap INF_CAP = 1e18;
@@ -79,7 +79,8 @@ struct Graph {
 
     pair<Cap, Cost> dijkstra(int s, int t, int n) { // O(E log V)
         //<flow, cost>
-        typedef pair<Cost, int> Path; //<weight, node>
+        using Path = pair<Cost, int>;
+        ; //<weight, node>
         priority_queue<Path, vector<Path>, greater<Path>> q;
         vector<Cost> d(n, INF_COST);
         vector<Cap> residualCap(n, 0);

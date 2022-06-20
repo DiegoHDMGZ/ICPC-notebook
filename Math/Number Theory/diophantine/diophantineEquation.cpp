@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-typedef long long Long;
+using Long = long long;
 
 // Property: the solutions given holds the following:
 // |x| <= |b / gcd(a, b)| , |y| <= |a / gcd(a, b)|

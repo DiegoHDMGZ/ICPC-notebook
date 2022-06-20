@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-typedef long long Long;
+using Long = long long;
 
 struct Point {
     Long x, y;
@@ -27,13 +27,21 @@ struct Point {
         return *this;
     }
 
-    Point operator+(const Point &t) const { return Point(*this) += t; }
+    Point operator+(const Point &t) const {
+        return Point(*this) += t;
+    }
 
-    Point operator-(const Point &t) const { return Point(*this) -= t; }
+    Point operator-(const Point &t) const {
+        return Point(*this) -= t;
+    }
 
-    bool operator==(const Point &P) const { return P.x == x && P.y == y; }
+    bool operator==(const Point &P) const {
+        return P.x == x && P.y == y;
+    }
 
-    bool operator!=(const Point &P) const { return !(P == Point(*this)); }
+    bool operator!=(const Point &P) const {
+        return !(P == Point(*this));
+    }
 };
 
 bool cmpX(const Point &P1, const Point &P2) {
@@ -44,7 +52,9 @@ bool cmpY(const Point &P1, const Point &P2) {
     return (P1.y != P2.y ? P1.y < P2.y : P1.x < P2.x);
 }
 
-Long dist(Point P1, Point P2) { return abs(P1.x - P2.x) + abs(P1.y - P2.y); }
+Long dist(Point P1, Point P2) {
+    return abs(P1.x - P2.x) + abs(P1.y - P2.y);
+}
 
 pair<Point, Point> combine(pair<Point, Point> D1, pair<Point, Point> D2) { // O(1)
     if (dist(D1.first, D1.second) > dist(D2.first, D2.second)) {

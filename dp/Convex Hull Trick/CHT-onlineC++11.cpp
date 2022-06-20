@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-typedef long long Long;
+using Long = long long;
 
 /*
 We have "n" linear functions yi = mi x + bi
@@ -17,15 +17,21 @@ struct Line {
     Line() {}
     Line(Long m, Long b, Long r) : m(m), b(b), r(r) {}
     Line(Long m, Long b) : m(m), b(b), r(0) {}
-    Long getVal(Long x) { return m * x + b; }
+    Long getVal(Long x) {
+        return m * x + b;
+    }
 };
 
 struct CmpLine {
-    bool operator()(const Line &L1, const Line &L2) const { return L1.m < L2.m; }
+    bool operator()(const Line &L1, const Line &L2) const {
+        return L1.m < L2.m;
+    }
 };
 
 struct CmpInter {
-    bool operator()(const Line &L1, const Line &L2) const { return L1.r < L2.r; }
+    bool operator()(const Line &L1, const Line &L2) const {
+        return L1.r < L2.r;
+    }
 };
 
 const Long INF = 1e18;
@@ -42,7 +48,9 @@ struct CHT {
         return a / b - ((a ^ b) < 0 && a % b);
     }
 
-    Long intersect(Line l1, Line l2) { return div(l1.b - l2.b, l2.m - l1.m); }
+    Long intersect(Line l1, Line l2) {
+        return div(l1.b - l2.b, l2.m - l1.m);
+    }
 
     bool bad(Line l1, Line l2, Line l3) {
         // tells if l2 is bad an can be eliminated by l3

@@ -1,14 +1,18 @@
 #include <bits/stdc++.h>
 using namespace std;
-typedef long long Long;
-typedef long double Double;
+using Long = long long;
+using Double = long double;
 
 const Double EPS = 1e-10;
 const Double PI = acos(-1);
 
-bool near(Double a, Double b) { return fabs(a - b) < EPS; }
+bool near(Double a, Double b) {
+    return fabs(a - b) < EPS;
+}
 
-Double square(Double x) { return x * x; }
+Double square(Double x) {
+    return x * x;
+}
 
 int getSgn(Double x) {
     if (near(x, 0)) return 0;
@@ -19,9 +23,15 @@ int getSgn(Double x) {
 struct Point {
     Double x, y;
     Point(Double x = 0, Double y = 0) : x(x), y(y) {}
-    Point operator+(const Point &other) const { return Point(x + other.x, y + other.y); }
-    Point operator-(const Point &other) const { return Point(x - other.x, y - other.y); }
-    Point operator*(Double t) const { return Point(x * t, y * t); }
+    Point operator+(const Point &other) const {
+        return Point(x + other.x, y + other.y);
+    }
+    Point operator-(const Point &other) const {
+        return Point(x - other.x, y - other.y);
+    }
+    Point operator*(Double t) const {
+        return Point(x * t, y * t);
+    }
     Point operator/(Double t) const {
         assert(!near(t, 0));
         return Point(x / t, y / t);
@@ -42,32 +52,54 @@ struct Point {
         *this = *this / t;
         return *this;
     }
-    bool operator==(const Point &P) const { return near(x, P.x) && near(y, P.y); }
-    Double abs2() { return x * x + y * y; }
-    Double abs() { return sqrt(abs2()); }
-    Point ort() { return Point(-y, x); }
-    Double cross(const Point &other) const { return x * other.y - y * other.x; }
+    bool operator==(const Point &P) const {
+        return near(x, P.x) && near(y, P.y);
+    }
+    Double abs2() {
+        return x * x + y * y;
+    }
+    Double abs() {
+        return sqrt(abs2());
+    }
+    Point ort() {
+        return Point(-y, x);
+    }
+    Double cross(const Point &other) const {
+        return x * other.y - y * other.x;
+    }
     Double cross(const Point &A, const Point &B) const {
         // Given the current point P, this calculate PA x PB
         return (A - *this).cross(B - *this);
     }
 };
 
-typedef Point Vector;
+using Vector = Point;
 
 // dot and cross products
-Double dot(Point A, Point B) { return A.x * B.x + A.y * B.y; }
-Double cross(Point A, Point B) { return A.x * B.y - A.y * B.x; }
+Double dot(Point A, Point B) {
+    return A.x * B.x + A.y * B.y;
+}
+Double cross(Point A, Point B) {
+    return A.x * B.y - A.y * B.x;
+}
 
 // additional point operators with double
-Point operator*(Double a, Point b) { return b * a; }
+Point operator*(Double a, Point b) {
+    return b * a;
+}
 
-Point operator/(Double a, Point b) { return b / a; }
+Point operator/(Double a, Point b) {
+    return b / a;
+}
 
 // Auxiliary functions
-Double dist(Point A, Point B) { return sqrt(square(B.x - A.x) + square(B.y - A.y)); }
+Double dist(Point A, Point B) {
+    return sqrt(square(B.x - A.x) + square(B.y - A.y));
+}
 
-Point midPoint(Point A, Point B) { return Point((A + B) / 2.0); }
+Point midPoint(Point A, Point B) {
+    return Point((A + B) / 2.0);
+}
 
 int quad(const Point &P) {
     // quadrant of a point
@@ -92,7 +124,9 @@ Vector getProj(Vector A, Vector B) {
     return unitB * (dot(A, B)) / B.abs();
 }
 
-Vector bisect(Vector A, Vector B) { return A * B.abs() + B * A.abs(); }
+Vector bisect(Vector A, Vector B) {
+    return A * B.abs() + B * A.abs();
+}
 
 Double getSimpleAngle(Vector A, Vector B) {
     // return angle in [0 , PI] and does not have orientation
@@ -166,7 +200,9 @@ struct Line {
         B = P2.x - P1.x;
         C = -A * P1.x - B * P1.y;
     }
-    Double evaluate(Point P) { return A * P.x + B * P.y + C; }
+    Double evaluate(Point P) {
+        return A * P.x + B * P.y + C;
+    }
 };
 
 Double dist(Line L, Point P) {
@@ -179,7 +215,9 @@ Line translate(Line L, Double d) {
     return Line(L.A, L.B, L.C + d * sqrt(square(L.A) + square(L.B)));
 }
 
-Double det(Double a, Double b, Double c, Double d) { return a * d - b * c; }
+Double det(Double a, Double b, Double c, Double d) {
+    return a * d - b * c;
+}
 
 vector<Point> intersect(Line L1, Line L2) {
     // empty vector -> Parallel lines
@@ -201,7 +239,9 @@ vector<Point> intersect(Line L1, Line L2) {
 struct Circle {
     Point center;
     Double r;
-    Circle() { r = 0; }
+    Circle() {
+        r = 0;
+    }
     Circle(Point center, Double r) : center(center), r(r) {}
 };
 
@@ -231,7 +271,9 @@ vector<Point> intersect(Line L, Circle C) {
     return ans;
 }
 
-vector<Point> intersect(Circle C, Line L) { return intersect(L, C); }
+vector<Point> intersect(Circle C, Line L) {
+    return intersect(L, C);
+}
 
 vector<Point> intersect(Circle C1, Circle C2) {
     // empty vector: no intersection
@@ -317,7 +359,9 @@ vector<Circle> getTangentCircles(Circle C1, Circle C2, Double r) {
     return ans;
 }
 
-vector<Line> getTangentLines(Point P, Circle C) { return getTangentLines(C, P); }
+vector<Line> getTangentLines(Point P, Circle C) {
+    return getTangentLines(C, P);
+}
 
 // Triangle functions
 
@@ -325,7 +369,9 @@ struct Triangle {
     Point A, B, C;
     Triangle() {}
     Triangle(Point A, Point B, Point C) : A(A), B(B), C(C) {}
-    Double area() { return fabs(A.cross(B, C)) / 2.0; }
+    Double area() {
+        return fabs(A.cross(B, C)) / 2.0;
+    }
     bool contains(Point &P) {
         // compare areas
         Double a1 = fabs(A.cross(B, C));

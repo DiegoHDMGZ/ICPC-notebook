@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-typedef long long Long;
+using Long = long long;
 
 const int MX = 1e5;
 const int MX2 = 21 * MX;
@@ -14,7 +14,9 @@ struct SegmentTree {
     int lastVersion;
     int nodes;
 
-    Long combine(Long x, Long y) { return x + y; }
+    Long combine(Long x, Long y) {
+        return x + y;
+    }
 
     int build(vector<Long> &a, int tl, int tr) { // O(n)
         int node = nodes++;

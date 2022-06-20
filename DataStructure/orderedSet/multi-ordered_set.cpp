@@ -5,9 +5,9 @@
 using namespace std;
 using namespace __gnu_pbds;
 
-typedef long long Long;
-typedef tree<Long, null_type, less_equal<Long>, rb_tree_tag, tree_order_statistics_node_update>
-    ordered_set;
+using Long = long long;
+using ordered_set =
+    tree<Long, null_type, less_equal<Long>, rb_tree_tag, tree_order_statistics_node_update>;
 
 ordered_set s;
 // find_by_order(k) -> return iterator to the k-th element (0-indexed) - O(log n)

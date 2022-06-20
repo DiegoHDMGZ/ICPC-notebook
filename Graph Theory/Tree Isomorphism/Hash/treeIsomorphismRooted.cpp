@@ -2,14 +2,16 @@
 #define all(v) begin(v), end(v)
 using namespace std;
 
-typedef long long Long;
+using Long = long long;
 
 const int MOD = 1e9 + 7;
 const int MX = 1e5;
 
 mt19937_64 rng(chrono::steady_clock::now().time_since_epoch().count());
 
-int random(int a, int b) { return uniform_int_distribution<int>(a, b)(rng); }
+int random(int a, int b) {
+    return uniform_int_distribution<int>(a, b)(rng);
+}
 
 vector<int> randomVector(int n, int maxVal) {
     vector<int> ans(n);

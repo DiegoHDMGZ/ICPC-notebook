@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-typedef long long Long;
+using Long = long long;
 
 // https://blog.asarkar.org/assets/docs/algorithms-curated/Longest%20Increasing%20Subsequence%20-%20Jan.pdf
 // https://strncat.github.io/jekyll/update/2019/06/25/longest-increasing-subsequence.html

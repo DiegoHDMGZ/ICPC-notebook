@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-typedef long long Long;
+using Long = long long;
 
 /*
 Let f(x, y) be any function, and let also define f(x) = x
@@ -21,7 +21,9 @@ To do that just swap the operands in f
 struct MaxStack {
     stack<Long> s;
 
-    Long f(Long a, Long b) { return max(a, b); }
+    Long f(Long a, Long b) {
+        return max(a, b);
+    }
 
     Long get() { // O(1) amortized
         if (s.empty()) return 0;

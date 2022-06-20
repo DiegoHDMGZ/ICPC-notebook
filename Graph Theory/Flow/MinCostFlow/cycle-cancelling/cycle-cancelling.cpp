@@ -9,8 +9,8 @@ This algorithm DOES work even when the initial graph has negative
 cycles.
 */
 
-typedef long long Cap;
-typedef long long Cost;
+using Cap = long long;
+using Cost = long long;
 const int MX = 5000;
 const Cap INF_CAP = 1e18;
 const Cost INF_COST = 1e18;

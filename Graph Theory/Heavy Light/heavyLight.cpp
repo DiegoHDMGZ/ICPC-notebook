@@ -1,6 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
-typedef long long Long;
+using Long = long long;
 
 // https://cp-algorithms.com/graph/hld.html
 
@@ -10,10 +10,14 @@ typedef long long Long;
 
 const int MX = 2e5;
 
-Long combine(Long a, Long b) { return max(a, b); }
+Long combine(Long a, Long b) {
+    return max(a, b);
+}
 
 struct SegmentTree {
-    Long query(int l, int r) { return 0; }
+    Long query(int l, int r) {
+        return 0;
+    }
 
     void update(int pos, Long val) {
         // range updates are also possible
@@ -107,5 +111,7 @@ struct Graph {
         return ans;
     }
 
-    void update(int u, Long val) { st.update(pos[u], val); }
+    void update(int u, Long val) {
+        st.update(pos[u], val);
+    }
 } G;

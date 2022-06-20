@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-typedef long long Long;
+using Long = long long;
 
 /*
 Let f(x, y) be any associative function, and let also define f(x) = x
@@ -19,7 +19,9 @@ To do that just swap the operands in f
 struct MaxQueue {
     stack<pair<Long, Long>> s1, s2; //<value, answer>
 
-    Long f(Long a, Long b) { return max(a, b); }
+    Long f(Long a, Long b) {
+        return max(a, b);
+    }
 
     Long get() { // O(1) amortized
         if (s1.empty() && s2.empty()) return 0;

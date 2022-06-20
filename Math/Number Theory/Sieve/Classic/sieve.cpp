@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-typedef long long Long;
+using Long = long long;
 const int MX = 2e7;
 bool isPrime[MX];
 vector<int> primes;

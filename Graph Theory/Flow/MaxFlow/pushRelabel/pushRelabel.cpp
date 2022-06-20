@@ -1,6 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
-typedef long long Long;
+using Long = long long;
 
 const Long MX = 3000;
 const Long INF = 1e18;
@@ -52,7 +52,9 @@ struct Graph {
         }
     }
 
-    void relabel(Long u, Long minHeight) { h[u] = 1 + minHeight; }
+    void relabel(Long u, Long minHeight) {
+        h[u] = 1 + minHeight;
+    }
 
     void discharge(Long u) {
         while (e[u] > 0) {

@@ -1,11 +1,13 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-typedef long long Long;
+using Long = long long;
 const int MX = 1e5;
 const Long INF = 1e18;
 
-Long combine(Long x, Long y) { return min(x, y); }
+Long combine(Long x, Long y) {
+    return min(x, y);
+}
 
 struct SegmentTree {
     vector<Long> t[2 * MX]; // O(nlogn)

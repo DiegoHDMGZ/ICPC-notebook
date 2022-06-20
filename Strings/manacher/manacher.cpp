@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-typedef long long Long;
+using Long = long long;
 
 void findPalindromes(string &s, vector<int> &d1, vector<int> &d2) {
     // d1[i] odd number of palindromes centered at i

@@ -1,6 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
-typedef long long Long;
+using Long = long long;
 
 // Chinese Remainder Theorem (CLRS)
 // Ec. : res[i] = x % mods[i] . We need to find x

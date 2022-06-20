@@ -2,9 +2,9 @@
 using namespace std;
 
 // source : https://github.com/peon-pasado/kactl/blob/master/content/number-theory/Factor.h
-typedef long long Long;
-typedef unsigned long long ULong;
-typedef long double Double;
+using Long = long long;
+using ULong = unsigned long long;
+using Double = long double;
 
 // Works for numbers < 2^63 and a, b < M
 ULong mult(ULong a, ULong b, ULong M) {
@@ -65,7 +65,9 @@ bool isPrime(Long n) {
 
 mt19937_64 rng(chrono::steady_clock::now().time_since_epoch().count());
 
-Long random(Long a, Long b) { return uniform_int_distribution<Long>(a, b)(rng); }
+Long random(Long a, Long b) {
+    return uniform_int_distribution<Long>(a, b)(rng);
+}
 
 const int BUCKET = 40;
 

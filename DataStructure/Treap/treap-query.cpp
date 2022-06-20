@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-typedef long long Long;
+using Long = long long;
 
 /*
 Given an associative function f
@@ -11,15 +11,19 @@ Operations:
 - Query(l, r): Return the cumulative result of applying f to the values
   of all keys in range [l, r] in the same order
 */
-typedef long long Key;
-typedef int Prior;
+using Key = long long;
+using Prior = int;
 const Prior POOL = 1e9; // preferable in the order of n^2
 
 mt19937_64 rng(chrono::steady_clock::now().time_since_epoch().count());
 
-Prior random(Prior a, Prior b) { return uniform_int_distribution<Prior>(a, b)(rng); }
+Prior random(Prior a, Prior b) {
+    return uniform_int_distribution<Prior>(a, b)(rng);
+}
 
-Long f(Long a, Long b) { return a + b; }
+Long f(Long a, Long b) {
+    return a + b;
+}
 
 struct Node {
     Prior prior;

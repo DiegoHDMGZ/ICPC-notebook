@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-typedef long long Long;
+using Long = long long;
 
 Long MOD;
 
@@ -16,7 +16,9 @@ struct ModInt {
         if (val - other.val >= 0) return val - other.val;
         return val - other.val + MOD;
     }
-    ModInt operator*(const ModInt &other) const { return (val * other.val) % MOD; }
+    ModInt operator*(const ModInt &other) const {
+        return (val * other.val) % MOD;
+    }
     ModInt operator+=(const ModInt &other) {
         *this = *this + other;
         return *this;
@@ -29,7 +31,9 @@ struct ModInt {
 
 Long minChar = (Long)'0';
 
-int toInt(char c) { return c - minChar + 1; }
+int toInt(char c) {
+    return c - minChar + 1;
+}
 
 const int MX = 1000;
 struct Hash {
@@ -112,7 +116,9 @@ struct MultiHash {
 
 mt19937_64 rng(chrono::steady_clock::now().time_since_epoch().count());
 
-Long random(Long a, Long b) { return uniform_int_distribution<Long>(a, b)(rng); }
+Long random(Long a, Long b) {
+    return uniform_int_distribution<Long>(a, b)(rng);
+}
 
 vector<Long> getBases(vector<Long> mods) {
     vector<Long> ans;

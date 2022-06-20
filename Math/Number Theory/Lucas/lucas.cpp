@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-typedef long long Long;
+using Long = long long;
 
 // Lucas's Theorem :
 // For non-negative integers m and n, and a prime integer p
@@ -12,8 +12,12 @@ Long MOD;
 
 struct ModInt {
     Long val;
-    ModInt(Long val = 0) { this->val = val; }
-    ModInt operator*(const ModInt &other) const { return (val * other.val) % MOD; }
+    ModInt(Long val = 0) {
+        this->val = val;
+    }
+    ModInt operator*(const ModInt &other) const {
+        return (val * other.val) % MOD;
+    }
     ModInt operator*=(const ModInt &other) {
         *this = *this * other;
         return *this;

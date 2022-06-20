@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-typedef long long Long;
+using Long = long long;
 
 enum Location { OUTSIDE, BOUNDARY, INSIDE };
 
@@ -15,14 +15,22 @@ struct Point {
     Long x, y;
     Point() : x(0), y(0) {}
     Point(Long x, Long y) : x(x), y(y) {}
-    Point operator-(const Point &other) const { return Point(x - other.x, y - other.y); }
+    Point operator-(const Point &other) const {
+        return Point(x - other.x, y - other.y);
+    }
     Point operator-=(const Point &other) {
         *this = *this - other;
         return *this;
     }
-    Long cross(const Point &other) const { return x * other.y - y * other.x; }
-    Long cross(const Point &A, const Point &B) const { return (A - *this).cross(B - *this); }
-    bool operator==(const Point &P) const { return x == P.x && y == P.y; }
+    Long cross(const Point &other) const {
+        return x * other.y - y * other.x;
+    }
+    Long cross(const Point &A, const Point &B) const {
+        return (A - *this).cross(B - *this);
+    }
+    bool operator==(const Point &P) const {
+        return x == P.x && y == P.y;
+    }
 
     bool inTriangle(Point A, Point B, Point C) {
         // compare areas

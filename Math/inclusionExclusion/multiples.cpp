@@ -1,9 +1,11 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-typedef long long Long;
+using Long = long long;
 
-int getBit(int mask, int i) { return (mask >> i) & 1; }
+int getBit(int mask, int i) {
+    return (mask >> i) & 1;
+}
 
 Long countMultiples(Long N, vector<Long> &v) {
     // Count the numbers of integers in [1 , n]

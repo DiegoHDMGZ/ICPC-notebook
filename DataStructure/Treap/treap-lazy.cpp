@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-typedef long long Long;
+using Long = long long;
 
 /*
 Given an array A initially empty, and an associative function f
@@ -21,14 +21,18 @@ an specific range and put it in other place.
 For this template we're going to use range sum query, range addition
 update and range reversals.
 */
-typedef int Prior;
+using Prior = int;
 const Prior POOL = 1e9; // preferable in the order of n^2
 
 mt19937_64 rng(chrono::steady_clock::now().time_since_epoch().count());
 
-Prior random(Prior a, Prior b) { return uniform_int_distribution<Prior>(a, b)(rng); }
+Prior random(Prior a, Prior b) {
+    return uniform_int_distribution<Prior>(a, b)(rng);
+}
 
-Long f(Long a, Long b) { return a + b; }
+Long f(Long a, Long b) {
+    return a + b;
+}
 
 struct Node {
     Prior prior;
@@ -68,7 +72,9 @@ struct Node {
     }
 };
 
-int getSize(Node *node) { return node ? node->size : 0; }
+int getSize(Node *node) {
+    return node ? node->size : 0;
+}
 
 void split(Node *t, Node *&l, Node *&r, int pos, int smaller = 0) {
     // O(log n)

@@ -2,7 +2,7 @@
 #define debug(x) cout << #x << " = " << x << endl
 using namespace std;
 
-typedef long long Long;
+using Long = long long;
 
 int main() {
     ios_base::sync_with_stdio(false);

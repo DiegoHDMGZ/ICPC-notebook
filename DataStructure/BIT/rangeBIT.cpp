@@ -1,12 +1,14 @@
 #include <bits/stdc++.h>
 using namespace std;
-typedef long long Long;
+using Long = long long;
 
 struct BIT {
     vector<Long> tree;
 
     BIT() {}
-    BIT(int n) { tree = vector<Long>(n + 1, 0); }
+    BIT(int n) {
+        tree = vector<Long>(n + 1, 0);
+    }
 
     Long query(int r) { // O(log n)
         // a[0] + a[1] + ... + a[r]
@@ -53,7 +55,9 @@ struct RangeBIT {
         return m * x + b;
     }
 
-    Long query(int l, int r) { return query(r) - query(l - 1); }
+    Long query(int l, int r) {
+        return query(r) - query(l - 1);
+    }
 
     void update(int l, int r, Long v) {
         ft1.update(l, v);

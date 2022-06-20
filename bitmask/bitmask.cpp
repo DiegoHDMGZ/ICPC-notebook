@@ -1,15 +1,23 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-typedef long long Long;
+using Long = long long;
 
-int getBit(Long mask, int i) { return (mask >> i) & 1; }
+int getBit(Long mask, int i) {
+    return (mask >> i) & 1;
+}
 
-void turnOn(Long &mask, int i) { mask |= (1LL << i); }
+void turnOn(Long &mask, int i) {
+    mask |= (1LL << i);
+}
 
-void turnOff(Long &mask, int i) { mask &= (~(1LL << i)); }
+void turnOff(Long &mask, int i) {
+    mask &= (~(1LL << i));
+}
 
-void changeBit(Long &mask, int i) { mask ^= (1LL << i); }
+void changeBit(Long &mask, int i) {
+    mask ^= (1LL << i);
+}
 
 //__builtin_popcount() : number of bits on
 

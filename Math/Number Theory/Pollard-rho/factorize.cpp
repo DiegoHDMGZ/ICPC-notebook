@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-typedef long long Long;
+using Long = long long;
 
 // Fast factorization in O(n^(1/3))
 // Include pollard-rho and miller-rabin functions
@@ -25,7 +25,7 @@ void sieve() { // O(MX)
     }
 }
 
-bool isPrime(Long n); // from miller-rabin
+bool isPrime(Long n);   // from miller-rabin
 Long getFactor(Long n); // from pollard-rho
 
 vector<pair<Long, Long>> factorize(Long n) {

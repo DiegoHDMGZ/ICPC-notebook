@@ -1,13 +1,13 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-typedef long long Long;
+using Long = long long;
 
 // MOD = 2^k * c + 1
 // r = primitive root of MOD
 // wn = r^c
-const int MOD = 998244353; // MOD = 2^23 * 119 + 1
-const int root = 3; // primitive root of MOD
+const int MOD = 998244353;     // MOD = 2^23 * 119 + 1
+const int root = 3;            // primitive root of MOD
 const int rootInv = 332748118; // modular inverse of root
 
 struct ModInt {
@@ -21,12 +21,16 @@ struct ModInt {
         if (val + other.val < MOD) return val + other.val;
         return val + other.val - MOD;
     }
-    ModInt operator-() const { return MOD - val; }
+    ModInt operator-() const {
+        return MOD - val;
+    }
     ModInt operator-(const ModInt &other) const {
         if (val - other.val >= 0) return val - other.val;
         return val - other.val + MOD;
     }
-    ModInt operator*(const ModInt &other) const { return (val * other.val) % MOD; }
+    ModInt operator*(const ModInt &other) const {
+        return (val * other.val) % MOD;
+    }
     ModInt operator*=(const ModInt &other) {
         *this = *this * other;
         return *this;
@@ -45,7 +49,9 @@ struct ModInt {
         // mod prime
         return pow(MOD - 2);
     }
-    ModInt operator/(const ModInt &other) const { return *this * other.invert(); }
+    ModInt operator/(const ModInt &other) const {
+        return *this * other.invert();
+    }
     ModInt operator/=(const ModInt &other) {
         *this = *this / other;
         return *this;
@@ -95,7 +101,7 @@ void ntt(vector<ModInt> &a, vector<ModInt> wn) { // O(n log n)
     }
 }
 
-typedef vector<ModInt> poly;
+using poly = vector<ModInt>;
 
 poly operator+(const poly &a, const poly &b) { // O(n)
     int n = max(a.size(), b.size());

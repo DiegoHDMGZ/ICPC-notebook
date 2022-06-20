@@ -1,15 +1,19 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-typedef long long Long;
+using Long = long long;
 
 // Given a bipartite graph G = A U B
 // Found how many subsets of A are covered by a matching
 const int MX = 20;
 
-int getBit(int mask, int pos) { return (mask >> pos) & 1; }
+int getBit(int mask, int pos) {
+    return (mask >> pos) & 1;
+}
 
-int turnOff(int mask, int pos) { return mask & (~(1 << pos)); }
+int turnOff(int mask, int pos) {
+    return mask & (~(1 << pos));
+}
 
 struct Graph {
     vector<int> adj[MX];

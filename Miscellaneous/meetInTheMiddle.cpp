@@ -1,11 +1,13 @@
 #include <bits/stdc++.h>
 using namespace std;
-typedef long long Long;
+using Long = long long;
 
 // You are given an array of n numbers.
 // In how many ways can you choose a subset of the numbers with sum x?
 
-int getBit(int mask, int pos) { return (mask >> pos) & 1; }
+int getBit(int mask, int pos) {
+    return (mask >> pos) & 1;
+}
 
 vector<Long> merge(vector<Long> &L, vector<Long> &R) {
     vector<Long> ans;

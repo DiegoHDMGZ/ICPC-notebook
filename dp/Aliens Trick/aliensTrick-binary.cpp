@@ -1,11 +1,13 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-typedef long long Long;
+using Long = long long;
 
 pair<Long, Long> getBest(Long lambda); // returns <P(lambda), g(x)>
 
-bool check(Long lambda) { return getBest(lambda).second <= 0; }
+bool check(Long lambda) {
+    return getBest(lambda).second <= 0;
+}
 
 const Long INF = 1e18;
 Long minimize() { // binary search

@@ -1,9 +1,9 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-typedef long long Long;
+using Long = long long;
 
-typedef long double Double;
+using Double = long double;
 
 const Double PI = acos(-1);
 const Double EPS = 1e-8;
@@ -20,7 +20,9 @@ struct Point {
     }
 };
 
-Double chordAngle(Double R, Double len) { return 2 * asin(len / (2 * R)); }
+Double chordAngle(Double R, Double len) {
+    return 2 * asin(len / (2 * R));
+}
 
 bool checkRadius(Double R, vector<Double> &sides, bool aroundCenter) {
     Double sum = 0;

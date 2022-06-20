@@ -1,10 +1,12 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-typedef long long Long;
-typedef __int128 Big;
+using Long = long long;
+using Big = __int128;
 
-Long add(Long a, Long b, Long mod) { return (a + b) % mod; }
+Long add(Long a, Long b, Long mod) {
+    return (a + b) % mod;
+}
 
 Long mult(Big a, Big b, Long mod) {
     // Use fastMult or 128-bit integer

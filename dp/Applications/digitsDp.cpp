@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-typedef long long Long;
+using Long = long long;
 
 const int DIGIT = 10;
 const int MXSUM = 9 * DIGIT;

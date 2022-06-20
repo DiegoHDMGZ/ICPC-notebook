@@ -1,9 +1,11 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-typedef long long Long;
+using Long = long long;
 
-Long combine(Long x, Long y) { return x + y; }
+Long combine(Long x, Long y) {
+    return x + y;
+}
 
 const int MX = 1e9;
 const int MX_U = 1e5;

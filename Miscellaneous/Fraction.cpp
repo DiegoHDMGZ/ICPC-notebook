@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-typedef long long Long;
+using Long = long long;
 
 const Long INF = 1e18;
 
@@ -40,23 +40,43 @@ struct Fraction {
         return Fraction(num * (F.den / g) - F.num * (den / g), den * (F.den / g));
     }
 
-    Fraction operator*(const Fraction &F) const { return Fraction(num * F.num, den * F.den); }
+    Fraction operator*(const Fraction &F) const {
+        return Fraction(num * F.num, den * F.den);
+    }
 
-    Fraction operator/(const Fraction &F) const { return Fraction(num * F.den, den * F.num); }
+    Fraction operator/(const Fraction &F) const {
+        return Fraction(num * F.den, den * F.num);
+    }
 
-    bool operator==(const Fraction &F) const { return num * F.den == F.num * den; }
+    bool operator==(const Fraction &F) const {
+        return num * F.den == F.num * den;
+    }
 
-    bool operator!=(const Fraction &F) const { return !(*this == F); }
+    bool operator!=(const Fraction &F) const {
+        return !(*this == F);
+    }
 
-    bool operator<(const Fraction &F) const { return num * F.den < den * F.num; }
+    bool operator<(const Fraction &F) const {
+        return num * F.den < den * F.num;
+    }
 
-    bool operator<=(const Fraction &F) const { return *this < F || *this == F; }
+    bool operator<=(const Fraction &F) const {
+        return *this < F || *this == F;
+    }
 
-    bool operator>=(const Fraction &F) const { return *this > F || *this == F; }
+    bool operator>=(const Fraction &F) const {
+        return *this > F || *this == F;
+    }
 
-    bool operator>(const Fraction &F) const { return num * F.den > den * F.num; }
+    bool operator>(const Fraction &F) const {
+        return num * F.den > den * F.num;
+    }
 
-    long double getVal() { return 1.0 * num / den; }
+    long double getVal() {
+        return 1.0 * num / den;
+    }
 
-    void debugFraction(string name) { cout << name << " = " << num << " / " << den << endl; }
+    void debugFraction(string name) {
+        cout << name << " = " << num << " / " << den << endl;
+    }
 };

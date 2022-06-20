@@ -1,8 +1,8 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-typedef long long Long;
-typedef long double Double;
+using Long = long long;
+using Double = long double;
 const Double EPS = 1e-6;
 
 Double f(Double x);
