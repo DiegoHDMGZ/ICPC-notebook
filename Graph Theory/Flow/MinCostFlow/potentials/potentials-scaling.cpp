@@ -77,8 +77,7 @@ struct Graph {
     }
 
     void dijkstra(vector<Cost> &d, vector<Cap> &bottleneck) {
-        using Path = pair<Cost, int>;
-        ; //<weight, node>
+        using Path = pair<Cost, int>; //<weight, node>
         priority_queue<Path, vector<Path>, greater<Path>> q;
         int n = d.size();
         for (int u = 0; u < n; u++) q.push(Path(d[u], u));

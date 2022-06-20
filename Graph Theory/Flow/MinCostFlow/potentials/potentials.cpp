@@ -76,8 +76,7 @@ struct Graph {
 
     pair<Cap, Cost> dijkstra(int s, int t, int n) { // O(E log V)
         //<flow, cost>
-        using Path = pair<Cost, int>;
-        ; //<weight, node>
+        using Path = pair<Cost, int>; //<weight, node>
         priority_queue<Path, vector<Path>, greater<Path>> q;
         vector<Cost> d(n, INF_COST);
         vector<Cap> residualCap(n, 0);
