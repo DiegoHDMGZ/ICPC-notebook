@@ -54,7 +54,8 @@ struct Graph {
     }
 
     Cap maxFlow(int s, int t, int n) { // O(E * |F|)
-        // As the graph is simple, O(|F|) = O(V * u)
+        // Because the graph is simple, O(|F|) = O(V * U)
+        // Where U is the maximum capacity
         Cap ans = 0;
         while (true) { // O(|F|) iterations
             fill(vis, vis + n, false);
