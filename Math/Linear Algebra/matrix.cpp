@@ -74,12 +74,6 @@ struct ModInt {
     bool operator!=(const ModInt &other) const {
         return val != other.val;
     }
-    bool operator<(const ModInt &other) const {
-        return val < other.val;
-    }
-    bool operator>(const ModInt &other) const {
-        return val > other.val;
-    }
 };
 
 istream &operator>>(istream &in, ModInt &A) {
