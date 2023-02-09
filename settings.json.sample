@@ -1,7 +1,7 @@
 {
     "C_Cpp.default.compilerPath": "C:/TDM-GCC-64/bin/g++.exe",
     "C_Cpp.default.cppStandard": "c++17",
-    "C_Cpp.clang_format_fallbackStyle": "{BasedOnStyle: Google, IndentWidth: 4, SpacesBeforeTrailingComments: 1, AllowShortIfStatementsOnASingleLine: AllIfsAndElse, DerivePointerAlignment: false, PointerAlignment: Right, ColumnLimit: 95, FixNamespaceComments: false, NamespaceIndentation: All, AllowShortFunctionsOnASingleLine: None}",
+    "C_Cpp.clang_format_fallbackStyle": "{BasedOnStyle: Google, IndentWidth: 4, SpacesBeforeTrailingComments: 1, AllowShortIfStatementsOnASingleLine: AllIfsAndElse, DerivePointerAlignment: false, PointerAlignment: Right, ColumnLimit: 95, FixNamespaceComments: false, NamespaceIndentation: All, AllowShortFunctionsOnASingleLine: Empty}",
     "C_Cpp.autocomplete": "Disabled",
     "editor.formatOnSave": true,
     "[cpp]": {
