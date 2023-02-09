@@ -14,15 +14,11 @@ Long combine(Long a, Long b) {
     return max(a, b);
 }
 
+const Long NEUTRAL = 0;
 struct SegmentTree {
-    Long query(int l, int r) {
-        return 0;
-    }
-
-    void update(int pos, Long val) {
-        // range updates are also possible
-        return;
-    }
+    void build(vector<Long> &v);
+    Long query(int l, int r);
+    void update(int pos, Long val); // range updates are also possible
 } st;
 
 struct Graph {
@@ -87,13 +83,15 @@ struct Graph {
         parent[root] = -1;
         dfs(root);
         decompose(root, root);
+        vector<Long> vals(v.size());
         for (int i = 0; i < v.size(); i++) {
-            st.update(pos[i], v[i]);
+            vals[pos[i]] = v[i];
         }
+        st.build(vals);
     }
 
     Long query(int u, int v) { // O(O(|query|) log V)
-        Long ans = 0;
+        Long ans = NEUTRAL;
         while (head[u] != head[v]) {
             if (depth[head[u]] > depth[head[v]]) {
                 swap(u, v);
