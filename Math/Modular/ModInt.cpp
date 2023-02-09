@@ -24,7 +24,9 @@ struct ModInt {
     ModInt operator*(const ModInt &other) const {
         return (val * other.val) % MOD;
     }
-
+    ModInt operator-() const {
+        return MOD - val;
+    }
     /*ModInt operator*(const ModInt &other) const {
         ModInt ans = 0;
         Long b = other.val;
@@ -87,6 +89,12 @@ struct ModInt {
     ModInt operator/=(const ModInt &other) {
         *this = *this / other;
         return *this;
+    }
+    bool operator==(const ModInt &other) const {
+        return val == other.val;
+    }
+    bool operator!=(const ModInt &other) const {
+        return val != other.val;
     }
 };
 
