@@ -87,9 +87,10 @@ poly operator*(const poly &a, const poly &b) {
 }
 
 poly operator+(const poly &a, const poly &b) {
-    poly ans(max(a.size(), b.size()), 0);
-    for (int i = 0; i < ans.size(); i++) {
-        ans[i] = (i < a.size() ? a[i] : 0) + (i < b.size() ? b[i] : 0);
+    poly ans = a;
+    ans.resize(max(a.size(), b.size()));
+    for (int i = 0; i < b.size(); i++) {
+        ans[i] += b[i];
     }
     return ans;
 }

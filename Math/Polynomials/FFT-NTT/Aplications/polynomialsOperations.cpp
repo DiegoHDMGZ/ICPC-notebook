@@ -104,12 +104,10 @@ void ntt(vector<ModInt> &a, vector<ModInt> wn) { // O(n log n)
 using poly = vector<ModInt>;
 
 poly operator+(const poly &a, const poly &b) { // O(n)
-    int n = max(a.size(), b.size());
-    poly ans(n);
-    for (int i = 0; i < n; i++) {
-        ModInt valA = (i < a.size()) ? a[i] : 0;
-        ModInt valB = (i < b.size()) ? b[i] : 0;
-        ans[i] = valA + valB;
+    poly ans = a;
+    ans.resize(max(a.size(), b.size()));
+    for (int i = 0; i < b.size(); i++) {
+        ans[i] = ans[i] + b[i];
     }
     return ans;
 }
