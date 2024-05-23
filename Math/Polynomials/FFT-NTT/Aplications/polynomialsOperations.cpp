@@ -113,12 +113,10 @@ poly operator+(const poly &a, const poly &b) { // O(n)
 }
 
 poly operator-(const poly &a, const poly &b) { // O(n)
-    int n = max(a.size(), b.size());
-    poly ans(n);
-    for (int i = 0; i < n; i++) {
-        ModInt valA = (i < a.size()) ? a[i] : 0;
-        ModInt valB = (i < b.size()) ? b[i] : 0;
-        ans[i] = valA - valB;
+    poly ans = a;
+    ans.resize(max(a.size(), b.size()));
+    for (int i = 0; i < b.size(); i++) {
+        ans[i] = ans[i] - b[i];
     }
     return ans;
 }
@@ -194,10 +192,6 @@ poly invert(poly &a, int n) { // O(n log n)
     return truncate(ans, n);
 }
 
-void normalize(poly &a) {
-    while (a.size() > 1 && a.back().val == 0) a.pop_back();
-}
-
 poly operator/(const poly &a, const poly &b) { // O(n log n)
     int n = a.size();
     int m = b.size();
@@ -210,7 +204,6 @@ poly operator/(const poly &a, const poly &b) { // O(n log n)
     poly ans = truncate(aR, n - m + 1) * invert(bR, n - m + 1);
     ans = truncate(ans, n - m + 1);
     reverse(ans.begin(), ans.end());
-    normalize(ans);
     return ans;
 }
 
@@ -219,8 +212,11 @@ poly operator%(const poly &a, const poly &b) { // O(n log n)
     int m = b.size();
     if (m > n) return a;
     poly ans = a - b * (a / b);
-    normalize(ans);
     return ans;
+}
+
+void normalize(poly &a) {
+    while (a.size() > 1 && a.back().val == 0) a.pop_back();
 }
 
 void buildEvaluate(vector<poly> &ans, int id, int l, int r, const vector<ModInt> &X) {
