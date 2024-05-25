@@ -3,7 +3,7 @@ using namespace std;
 
 using Long = long long;
 
-const Long MOD = 1e9 + 7;
+const int MOD = 1e9 + 7;
 struct ModInt {
     Long val;
     ModInt(Long val = 0) {
@@ -95,18 +95,8 @@ poly operator+(const poly &a, const poly &b) {
     return ans;
 }
 
-ModInt derivative(poly &p, ModInt &x) {
-    if (p.size() == 1) return 0;
-    ModInt ans = 0;
-    ModInt cur = 1;
-    for (int i = 1; i < p.size(); i++) {
-        ans += ModInt(i) * p[i] * cur;
-        cur *= x;
-    }
-    return ans;
-}
-
-poly ruffini(poly &p, ModInt &c) {
+poly ruffini(poly &p, ModInt &c) { // O(n)
+    // Calculates p(x) / (x - c)
     int n = p.size();
     poly ans(n - 1);
     ModInt r = 0;
@@ -119,15 +109,21 @@ poly ruffini(poly &p, ModInt &c) {
 
 poly interpolate(vector<ModInt> &X, vector<ModInt> &Y) { // O(n^2)
     // get the polynomial interpolation
-    poly ans(X.size(), 0);
+    int n = X.size();
+    poly ans(n, 0);
     poly f = {1};
-    for (int i = 0; i < X.size(); i++) {
+    for (int i = 0; i < n; i++) {
         f = f * poly({-X[i], 1});
     }
-    for (int i = 0; i < X.size(); i++) {
-        poly cur = poly({Y[i] / derivative(f, X[i])}) * f;
-        cur = ruffini(cur, X[i]);
-        ans = ans + cur;
+    for (int i = 0; i < n; i++) {
+        poly cur = ruffini(f, X[i]);
+        ModInt den = 1;
+        for (int k = 0; k < n; k++) {
+            if (k == i) continue;
+            den *= X[i] - X[k];
+        }
+        ModInt weight = Y[i] / den;
+        for (int k = 0; k < cur.size(); k++) ans[k] += weight * cur[k];
     }
     return ans;
 }
