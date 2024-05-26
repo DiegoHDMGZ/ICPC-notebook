@@ -128,19 +128,45 @@ poly interpolate(vector<ModInt> &X, vector<ModInt> &Y) { // O(n^2)
     return ans;
 }
 
-ModInt interpolate(ModInt x, vector<ModInt> &xSample, vector<ModInt> &ySample) { // O(n^2)
+ModInt interpolate(ModInt x, vector<ModInt> &X, vector<ModInt> &Y) { // O(n^2)
     // interpolate for just one value
+    int n = X.size();
     ModInt y = 0;
-    for (int i = 0; i < xSample.size(); i++) {
-        ModInt cur = ySample[i];
+    for (int i = 0; i < n; i++) {
+        ModInt num = Y[i];
         ModInt den = 1;
-        for (int j = 0; j < xSample.size(); j++) {
-            if (i == j) continue;
-            den *= xSample[i] - xSample[j];
-            cur *= x - xSample[j];
+        for (int k = 0; k < n; k++) {
+            if (i == k) continue;
+            den *= X[i] - X[k];
+            num *= x - X[k];
         }
-        cur /= den;
-        y += cur;
+        y += num / den;
+    }
+    return y;
+}
+
+ModInt interpolate(ModInt x, vector<ModInt> &Y) { // O(n)
+    // interpolate for just one value
+    // the X vector is not given because it's assumed that you picked x_i = i (0-indexed)
+    int n = Y.size();
+    vector<ModInt> fact(n + 1), factInv(n + 1);
+    vector<ModInt> pref(n), suff(n);
+    fact[0] = 1;
+    pref[0] = 1;
+    for (int i = 1; i <= n; i++) {
+        fact[i] = fact[i - 1] * i;
+        if (i < n) pref[i] = pref[i - 1] * (x - (i - 1));
+    }
+    factInv[n] = fact[n].invert();
+    suff[n - 1] = 1;
+    for (int i = n - 1; i >= 0; i--) {
+        factInv[i] = factInv[i + 1] * (i + 1);
+        if (i < n - 1) suff[i] = suff[i + 1] * (x - (i + 1));
+    }
+
+    ModInt y = 0;
+    for (int i = 0; i < n; i++) {
+        y += Y[i] * pref[i] * suff[i] * factInv[max(0, i - 1)] * factInv[n - i + 1];
     }
     return y;
 }
