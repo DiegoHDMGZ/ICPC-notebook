@@ -86,15 +86,6 @@ poly operator*(const poly &a, const poly &b) {
     return ans;
 }
 
-poly operator+(const poly &a, const poly &b) {
-    poly ans = a;
-    ans.resize(max(a.size(), b.size()));
-    for (int i = 0; i < b.size(); i++) {
-        ans[i] += b[i];
-    }
-    return ans;
-}
-
 poly ruffini(poly &p, ModInt &c) { // O(n)
     // Calculates p(x) / (x - c)
     int n = p.size();
