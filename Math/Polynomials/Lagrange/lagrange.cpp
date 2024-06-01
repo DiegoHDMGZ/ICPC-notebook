@@ -140,24 +140,26 @@ ModInt interpolate(ModInt x, vector<ModInt> &Y) { // O(n)
     // interpolate for just one value
     // the X vector is not given because it's assumed that you picked x_i = i (0-indexed)
     int n = Y.size();
-    vector<ModInt> fact(n + 1), factInv(n + 1);
+    vector<ModInt> fact(n), factInv(n);
     vector<ModInt> pref(n), suff(n);
     fact[0] = 1;
     pref[0] = 1;
-    for (int i = 1; i <= n; i++) {
+    for (int i = 1; i < n; i++) {
         fact[i] = fact[i - 1] * i;
-        if (i < n) pref[i] = pref[i - 1] * (x - (i - 1));
+        pref[i] = pref[i - 1] * (x - (i - 1));
     }
-    factInv[n] = fact[n].invert();
+    factInv[n - 1] = fact[n - 1].invert();
     suff[n - 1] = 1;
-    for (int i = n - 1; i >= 0; i--) {
+    for (int i = n - 2; i >= 0; i--) {
         factInv[i] = factInv[i + 1] * (i + 1);
-        if (i < n - 1) suff[i] = suff[i + 1] * (x - (i + 1));
+        suff[i] = suff[i + 1] * (x - (i + 1));
     }
 
     ModInt y = 0;
     for (int i = 0; i < n; i++) {
-        y += Y[i] * pref[i] * suff[i] * factInv[max(0, i - 1)] * factInv[n - i + 1];
+        ModInt sgn = 1;
+        if (i % 2 == n % 2) sgn = -1;
+        y += sgn * Y[i] * pref[i] * suff[i] * factInv[i] * factInv[n - i - 1];
     }
     return y;
 }
