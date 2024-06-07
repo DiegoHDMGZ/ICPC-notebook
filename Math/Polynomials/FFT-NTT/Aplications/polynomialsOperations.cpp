@@ -192,6 +192,10 @@ poly invert(poly &a, int n) { // O(n log n)
     return truncate(ans, n);
 }
 
+void normalize(poly &a) {
+    while (a.size() > 1 && a.back().val == 0) a.pop_back();
+}
+
 poly operator/(const poly &a, const poly &b) { // O(n log n)
     int n = a.size();
     int m = b.size();
@@ -204,6 +208,7 @@ poly operator/(const poly &a, const poly &b) { // O(n log n)
     poly ans = truncate(aR, n - m + 1) * invert(bR, n - m + 1);
     ans = truncate(ans, n - m + 1);
     reverse(ans.begin(), ans.end());
+    normalize(ans);
     return ans;
 }
 
@@ -212,11 +217,8 @@ poly operator%(const poly &a, const poly &b) { // O(n log n)
     int m = b.size();
     if (m > n) return a;
     poly ans = a - b * (a / b);
+    normalize(ans);
     return ans;
-}
-
-void normalize(poly &a) {
-    while (a.size() > 1 && a.back().val == 0) a.pop_back();
 }
 
 void buildEvaluate(vector<poly> &ans, int id, int l, int r, const vector<ModInt> &X) {
