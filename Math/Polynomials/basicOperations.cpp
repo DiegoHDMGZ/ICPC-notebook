@@ -95,6 +95,7 @@ poly operator-(const poly &a, const poly &b) { // O(n)
 }
 
 poly operator*(const poly &a, const poly &b) { // O(n^2)
+    if (a.empty() || b.empty()) return {};
     int n = a.size();
     int m = b.size();
     poly ans(n + m - 1, 0);

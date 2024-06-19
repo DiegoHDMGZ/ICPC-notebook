@@ -44,10 +44,11 @@ void fft(vector<Complex> &a, bool invert) { // O(n log n)
 using poly = vector<Long>;
 
 poly operator*(const poly &a, const poly &b) { // O(n log n)
+    if (a.empty() || b.empty()) return {};
     vector<Complex> fa(a.begin(), a.end());
     vector<Complex> fb(b.begin(), b.end());
-    Long n = 1;
-    while (n < a.size() + b.size()) n <<= 1;
+    int n = 1;
+    while (n < a.size() + b.size() - 1) n <<= 1;
     fa.resize(n);
     fb.resize(n);
 

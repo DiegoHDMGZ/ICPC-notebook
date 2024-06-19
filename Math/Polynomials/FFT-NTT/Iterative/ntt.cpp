@@ -92,12 +92,14 @@ void ntt(vector<ModInt> &a, const vector<ModInt> &wn) { // O(n log n)
 using poly = vector<Long>;
 
 poly operator*(const poly &a, const poly &b) { // O(n log n)
-    int n = 1;
+    if (a.empty() || b.empty()) return {};
     vector<ModInt> fa(a.begin(), a.end());
     vector<ModInt> fb(b.begin(), b.end());
-    while (n < a.size() + b.size()) n <<= 1;
+    int n = 1;
+    while (n < a.size() + b.size() - 1) n <<= 1;
     fa.resize(n);
     fb.resize(n);
+
     int lg = 31 - __builtin_clz(n);
     vector<ModInt> wn(lg);
     wn[lg - 1] = ModInt(root).pow((MOD - 1) / n);
@@ -113,7 +115,7 @@ poly operator*(const poly &a, const poly &b) { // O(n log n)
     for (int i = lg - 2; i >= 0; i--) wn[i] = wn[i + 1] * wn[i + 1];
     ntt(fa, wn);
 
-    poly ans((int)a.size() + (int)b.size() - 1);
+    poly ans(a.size() + b.size() - 1);
     for (int i = 0; i < ans.size(); i++) ans[i] = fa[i].val;
     return ans;
 }

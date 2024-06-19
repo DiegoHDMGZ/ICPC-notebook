@@ -78,10 +78,11 @@ void ntt(vector<ModInt> &a, const ModInt &wn) { // O(n log n)
 using poly = vector<Long>;
 
 poly operator*(const poly &a, const poly &b) { // O(n log n)
-    int n = 1;
+    if (a.empty() || b.empty()) return {};
     vector<ModInt> fa(a.begin(), a.end());
     vector<ModInt> fb(b.begin(), b.end());
-    while (n < a.size() + b.size()) n <<= 1;
+    int n = 1;
+    while (n < a.size() + b.size() - 1) n <<= 1;
     fa.resize(n);
     fb.resize(n);
 
