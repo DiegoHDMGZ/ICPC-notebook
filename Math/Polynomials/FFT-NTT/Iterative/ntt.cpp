@@ -7,9 +7,8 @@ using Long = long long;
 // r = primitive root of MOD
 // wn = r^c
 
-const Long MOD = 998244353;     // MOD = 2^23 * 119 + 1
-const Long root = 3;            // primitive root of MOD
-const Long rootInv = 332748118; // modular inverse of root
+const Long MOD = 998244353; // MOD = 2^23 * 119 + 1
+const Long ROOT = 3;        // primitive root of MOD
 
 struct ModInt {
     Long val;
@@ -89,7 +88,7 @@ void ntt(vector<ModInt> &a, const vector<ModInt> &wn) { // O(n log n)
     }
 }
 
-using poly = vector<Long>;
+using poly = vector<ModInt>;
 
 poly operator*(const poly &a, const poly &b) { // O(n log n)
     if (a.empty() || b.empty()) return {};
@@ -102,7 +101,7 @@ poly operator*(const poly &a, const poly &b) { // O(n log n)
 
     int lg = 31 - __builtin_clz(n);
     vector<ModInt> wn(lg);
-    wn[lg - 1] = ModInt(root).pow((MOD - 1) / n);
+    wn[lg - 1] = ModInt(ROOT).pow((MOD - 1) / n);
     for (int i = lg - 2; i >= 0; i--) wn[i] = wn[i + 1] * wn[i + 1];
     ntt(fa, wn);
     ntt(fb, wn);
@@ -111,11 +110,10 @@ poly operator*(const poly &a, const poly &b) { // O(n log n)
         fa[i] *= fb[i];
         fa[i] /= n;
     }
-    wn[lg - 1] = ModInt(rootInv).pow((MOD - 1) / n);
+    wn[lg - 1] = ModInt(ROOT).invert().pow((MOD - 1) / n);
     for (int i = lg - 2; i >= 0; i--) wn[i] = wn[i + 1] * wn[i + 1];
     ntt(fa, wn);
 
-    poly ans(a.size() + b.size() - 1);
-    for (int i = 0; i < ans.size(); i++) ans[i] = fa[i].val;
-    return ans;
+    fa.resize(a.size() + b.size() - 1);
+    return fa;
 }
