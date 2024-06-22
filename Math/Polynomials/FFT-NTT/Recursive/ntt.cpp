@@ -95,7 +95,7 @@ poly operator*(const poly &a, const poly &b) { // O(n log n)
         fa[i] *= fb[i];
         fa[i] *= nInv;
     }
-    wn = ModInt(ROOT).invert().pow((MOD - 1) / n);
+    wn = wn.invert();
     ntt(fa, wn);
 
     fa.resize(a.size() + b.size() - 1);
