@@ -1,0 +1,41 @@
+{
+    "C_Cpp.default.compilerPath": "/usr/bin/g++",
+    "C_Cpp.default.cppStandard": "c++17",
+    "C_Cpp.clang_format_fallbackStyle": "{BasedOnStyle: Google, IndentWidth: 4, SpacesBeforeTrailingComments: 1, AllowShortIfStatementsOnASingleLine: AllIfsAndElse, DerivePointerAlignment: false, PointerAlignment: Right, ColumnLimit: 95, FixNamespaceComments: false, NamespaceIndentation: All, AllowShortFunctionsOnASingleLine: Empty}",
+    "C_Cpp.autocomplete": "disabled",
+    "editor.formatOnSave": true,
+    "[cpp]": {
+        "editor.wordBasedSuggestions": "currentDocument",
+        "editor.quickSuggestionsDelay": 500,
+    },
+    "cph.general.saveLocation": "[TODO]", // add file location
+    "cph.language.cpp.Args": "-O2 -std=c++17",
+    "cph.general.timeOut": 5000,
+    "git.ignoreWindowsGit27Warning": true,
+    "code-runner.runInTerminal": true,
+    "terminal.integrated.defaultProfile.windows": "Git Bash",
+    "code-runner.executorMap": {
+        "cpp": "ulimit -s unlimited && g++ -O2 -std=c++17 $fileName -o $fileNameWithoutExt && ./$fileNameWithoutExt",
+    },
+    "code-runner.fileDirectoryAsCwd": true,
+    "code-runner.saveFileBeforeRun": true,
+    "terminal.integrated.enableMultiLinePasteWarning": "never",
+    "cpu.compileArgs.common": {
+        "c++": "-std=c++20 -g",
+        "java": "-g"
+    },
+    "cpu.compileArgs.fast": {
+        "c++": "-O2",
+        "rust": "-C opt-level=2"
+    },
+    "cpu.compileArgs.debug": {
+        "c++": "-O0 -D_GLIBCXX_DEBUG -D_GLIBCXX_DEBUG_PEDANTIC",
+        "rust": "-g -C debug-assertions=on"
+    },
+    "cpu.createFiles": false,
+    "cpu.createFileName": "{{#contest}}{{.}}/{{/contest}}{{problem}}.cpp",
+    "cpu.createFileTemplate": "",
+    "cpu.nProcs": 10,
+    "cpu.testDir": "",
+    "cpu.buildDir": "",
+}
